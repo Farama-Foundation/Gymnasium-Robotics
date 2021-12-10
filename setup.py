@@ -23,7 +23,7 @@ setup(
         "numpy>=1.18.0",
         "cloudpickle>=1.2.0",
         "importlib_metadata>=4.8.1; python_version < '3.8'",
-        "git+https://github.com/openai/gym@master",
+        "gym @ git+https://github.com/openai/gym@master",
     ],
     package_data={
         "gym_robotics": [
