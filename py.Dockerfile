@@ -8,7 +8,7 @@ RUN mkdir /root/.mujoco && \
     cd /root/.mujoco  && \
     curl -O https://www.roboti.us/download/mjpro150_linux.zip && \
     unzip mjpro150_linux.zip && \
-    echo DUMMY_KEY > /root/.mujoco/mjkey.txt
+    curl -o /root/.mujoco/mjkey.txt https://roboti.us/file/mjkey.txt
 
 ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mjpro150/bin
 
