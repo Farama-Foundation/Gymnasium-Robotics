@@ -8,6 +8,8 @@ import gym
 from gym import error, spaces
 from gym.utils import seeding
 
+from gym_robotics import GoalEnv
+
 try:
     import mujoco_py
 except ImportError as e:
@@ -20,7 +22,7 @@ except ImportError as e:
 DEFAULT_SIZE = 500
 
 
-class RobotEnv(gym.GoalEnv):
+class RobotEnv(GoalEnv):
     def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
         if model_path.startswith("/"):
             fullpath = model_path
