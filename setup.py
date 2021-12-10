@@ -15,7 +15,9 @@ setup(
     author="Seungjae Ryan Lee",
     author_email="seungjaeryanlee@gmail.com",
     license="",
-    packages=[package for package in find_packages() if package.startswith("gym_robotics")],
+    packages=[
+        package for package in find_packages() if package.startswith("gym_robotics")
+    ],
     zip_safe=False,
     install_requires=[
         "numpy>=1.18.0",
