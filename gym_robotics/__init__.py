@@ -2,6 +2,7 @@ from gym.envs.registration import register
 
 from gym_robotics.core import GoalEnv
 
+
 def _merge(a, b):
     a.update(b)
     return a
