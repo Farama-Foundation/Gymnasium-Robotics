@@ -15,6 +15,7 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/.mujoco/mjpro150/bin
 COPY . /usr/local/gym/
 WORKDIR /usr/local/gym/
 
+RUN pip install "mujoco_py>=1.50, <2.0"
 RUN pip install . && pip install -r test_requirements.txt
 
 ENTRYPOINT ["/usr/local/gym/bin/docker_entrypoint"]
