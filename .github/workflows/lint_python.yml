@@ -8,7 +8,7 @@ jobs:
       - uses: actions/setup-python@v2
       - run: pip install isort mypy pytest pyupgrade safety
       - run: isort --check-only --profile black . || true
-      - run: pip install -e .[nomujoco]
+      - run: pip install -e .
       - run: mypy --install-types --non-interactive . || true
       - run: pytest . || true
       - run: pytest --doctest-modules . || true
