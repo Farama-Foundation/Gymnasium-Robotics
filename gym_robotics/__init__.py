@@ -1,6 +1,9 @@
-from gym.envs.registration import register
+from gym.envs.registration import register, load_env_plugins as _load_env_plugins
 
 from gym_robotics.core import GoalEnv
+
+# Hook to load plugins from entry points
+_load_env_plugins(entry_point="gym_robotics.envs")
 
 
 def _merge(a, b):
