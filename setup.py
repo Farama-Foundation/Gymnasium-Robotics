@@ -3,13 +3,12 @@ import sys
 
 from setuptools import find_packages, setup
 
-# Don't import gym_robotics module here, since deps may not be installed
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "gym_robotics"))
-from version import VERSION
+import versioneer
 
 setup(
     name="gym-robotics",
-    version=VERSION,
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     description="Gym: A universal API for reinforcement learning environments.",
     url="https://github.com/Farama-Foundation/gym-robotics",
     author="Seungjae Ryan Lee",
