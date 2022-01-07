@@ -1,0 +1,2 @@
+include versioneer.py
+include gym_robotics/_version.py
