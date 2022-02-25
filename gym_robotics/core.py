@@ -14,7 +14,7 @@ class GoalEnv(gym.Env):
     actual observations of the environment as per usual.
     """
 
-    def reset(self, seed: Optional[int] = None):
+    def reset(self, options=None, seed: Optional[int] = None, infos=None):
         super().reset(seed=seed)
         # Enforce that each GoalEnv uses a Goal-compatible observation space.
         if not isinstance(self.observation_space, gym.spaces.Dict):
