@@ -9,10 +9,10 @@ setup(
     name="gym-robotics",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
-    description="Gym: A universal API for reinforcement learning environments.",
+    description="Legacy robotics environments from Gym repo",
     url="https://github.com/Farama-Foundation/gym-robotics",
-    author="Seungjae Ryan Lee",
-    author_email="seungjaeryanlee@gmail.com",
+    author="Farama Foundation",
+    author_email="jkterry@farama.org",
     license="",
     packages=[
         package for package in find_packages() if package.startswith("gym_robotics")
