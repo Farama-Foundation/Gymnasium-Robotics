@@ -76,7 +76,11 @@ class RobotEnv(GoalEnv):
             self.data = self._mujoco_bindings.MjData(self.model)
 
             self._env_setup(initial_qpos=initial_qpos)
-            self.initial_state = copy.deepcopy(self.sim.get_state())
+            self.initial_time = self.data.time
+            self.initial_qpos = np.copy(self.data.qpos)
+            self.initial_qvel = np.copy(self.data.qvel)
+            
+
     
         self.viewer = None
         self._viewers = {}
@@ -122,7 +126,12 @@ class RobotEnv(GoalEnv):
 
         action = np.clip(action, self.action_space.low, self.action_space.high)
         self._set_action(action)
-        self.sim.step()
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+                self.sim.step()
+        else:
+            for _ in range(self.n_substeps):
+                self._mujoco_bindings.mj_step(self.model, self.data)
+        
         self._step_callback()
         obs = self._get_obs()
 
@@ -149,7 +158,6 @@ class RobotEnv(GoalEnv):
 
     def close(self):
         if self.viewer is not None:
-            # self.viewer.finish()
             self.viewer = None
             self._viewers = {}
 
@@ -164,13 +172,27 @@ class RobotEnv(GoalEnv):
         elif mode == "human":
             self._get_viewer(mode).render()
 
-    def _get_viewer(self, mode):
+    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == "human":
-                self.viewer = mujoco_py.MjViewer(self.sim)
+                if self._mujoco_bindings.__name__ == "mujoco_py":
+                    self.viewer = self._mujoco_bindings.MjViewer(self.sim)
+                else:
+                    from gym.envs.mujoco.mujoco_rendering import Viewer
+
+                    self.viewer = Viewer(self.model, self.data)
             elif mode == "rgb_array":
-                self.viewer = mujoco_py.MjRenderContextOffscreen(self.sim, device_id=-1)
+                if self._mujoco_bindings.__name__ == "mujoco_py":
+                    self.viewer = self._mujoco_bindings.MjRenderContextOffscreen(
+                        self.sim, -1
+                    )
+                else:
+                    from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
+
+                    self.viewer = RenderContextOffscreen(
+                        width, height, self.model, self.data
+                    )
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer
@@ -178,23 +200,24 @@ class RobotEnv(GoalEnv):
     # Extension methods
     # ----------------------------
 
-    def _get_state(self):
-        """Returns a copy of the simulator state."""
-        qpos = np.copy(self.data.qpos)
-        qvel = np.copy(self.data.qvel)
-        if self.model.na == 0:
-            act = None
-        else:
-            act = np.copy(self.data.act)
-
     def _reset_sim(self):
         """Resets a simulation and indicates whether or not it was successful.
         If a reset was unsuccessful (e.g. if a randomized state caused an error in the
         simulation), this method should indicate such a failure by returning False.
         In such a case, this method will be called again to attempt a the reset again.
         """
-        self.sim.set_state(self.initial_state)
-        self.sim.forward()
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            self.sim.set_state(self.initial_state)
+            self.sim.forward()
+        else:
+            self.data.time = self.initial_time
+            self.data.qpos[:] = np.copy(self.initial_qpos)
+            self.data.qvel[:] = np.copy(self.initial_qvel)
+            if self.model.na != 0:
+                self.data.act[:] = None
+            
+            self._mujoco_bindings.mj_forward(self.model, self.data)
+        
         return True
 
     def _get_obs(self):
