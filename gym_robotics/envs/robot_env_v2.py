@@ -5,13 +5,13 @@ from typing import Optional
 import numpy as np
 
 import gym
-from gym import error, logger, spaces
+from gym import error, spaces
 from gym.utils import seeding
 
 from gym_robotics import GoalEnv
 
 try:
-    import mujoco_py
+    import mujoco
 except ImportError as e:
     raise error.DependencyNotInstalled(
         "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
@@ -23,9 +23,7 @@ DEFAULT_SIZE = 500
 
 
 class RobotEnv(GoalEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings="mujoco"):
-
-
+    def __init__(self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings):
         if model_path.startswith("/"):
             fullpath = model_path
         else:
@@ -33,51 +31,8 @@ class RobotEnv(GoalEnv):
         if not os.path.exists(fullpath):
             raise OSError(f"File {fullpath} does not exist")
 
-        self.n_substeps = n_substeps
-        
-        if mujoco_bindings == "mujoco_py":
-            logger.warn(
-                "This version of the mujoco environments depends "
-                "on the mujoco-py bindings, which are no longer maintained "
-                "and may stop working. Please upgrade to the v4 versions of "
-                "the environments (which depend on the mujoco python bindings instead), unless "
-                "you are trying to precisely replicate previous works)."
-            )
-            try:
-                import mujoco_py
-
-                self._mujoco_bindings = mujoco_py
-
-            except ImportError as e:
-                raise error.DependencyNotInstalled(
-                    "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
-                        e
-                    )
-                )
-
-            self.model = self._mujoco_bindings.load_model_from_path(fullpath)
-            self.sim = self._mujoco_bindings.MjSim(self.model, nsubsteps=n_substeps)
-            self.data = self.sim.data
-
-            self._env_setup(initial_qpos=initial_qpos)
-            self.initial_state = copy.deepcopy(self.sim.get_state())
-
-        elif mujoco_bindings == "mujoco":
-            try:
-                import mujoco
-
-                self._mujoco_bindings = mujoco
-
-            except ImportError as e:
-                raise error.DependencyNotInstalled(
-                    f"{e}. (HINT: you need to install mujoco)"
-                )
-            self.model = self._mujoco_bindings.MjModel.from_xml_path(fullpath)
-            self.data = self._mujoco_bindings.MjData(self.model)
-
-            self._env_setup(initial_qpos=initial_qpos)
-            self.initial_state = copy.deepcopy(self.sim.get_state())
-    
+        self.model = mujoco.MjModel.from_xml_path(fullpath)
+        self.data = mujoco.MjData(self.model)
         self.viewer = None
         self._viewers = {}
 
@@ -86,7 +41,8 @@ class RobotEnv(GoalEnv):
             "video.frames_per_second": int(np.round(1.0 / self.dt)),
         }
 
-        
+        self._env_setup(initial_qpos=initial_qpos)
+        self.initial_state = copy.deepcopy(self.sim.get_state())
 
         self.goal = np.zeros(0)
         obs = self._get_obs()
@@ -105,13 +61,9 @@ class RobotEnv(GoalEnv):
             )
         )
 
-
     @property
     def dt(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":    
-            return self.sim.model.opt.timestep * self.sim.nsubsteps
-        else:
-            return self.model.opt.timestep * self.n_substeps
+        return self.model.opt.timestep * n_substeps
 
     # Env methods
     # ----------------------------
@@ -177,15 +129,6 @@ class RobotEnv(GoalEnv):
 
     # Extension methods
     # ----------------------------
-
-    def _get_state(self):
-        """Returns a copy of the simulator state."""
-        qpos = np.copy(self.data.qpos)
-        qvel = np.copy(self.data.qvel)
-        if self.model.na == 0:
-            act = None
-        else:
-            act = np.copy(self.data.act)
 
     def _reset_sim(self):
         """Resets a simulation and indicates whether or not it was successful.

@@ -37,6 +37,13 @@ def register_robotics_envs():
         )
 
         register(
+            id=f"FetchReach{suffix}-v2",
+            entry_point="gym_robotics.envs:FetchReachEnv",
+            kwargs=kwargs,
+            max_episode_steps=50,
+        )
+
+        register(
             id=f"FetchPush{suffix}-v1",
             entry_point="gym_robotics.envs:FetchPushEnv",
             kwargs=kwargs,
