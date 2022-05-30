@@ -3,7 +3,6 @@ import numpy as np
 
 from gym import utils
 from gym_robotics.envs import hand_env
-from gym_robotics.envs.utils import robot_get_obs
 
 
 FINGERTIP_SITE_NAMES = [

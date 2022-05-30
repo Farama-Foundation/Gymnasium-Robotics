@@ -2,7 +2,7 @@ import numpy as np
 import gym
 
 
-env = gym.make('FetchReach-v1')
+env = gym.make('FetchReach-v3')
 obs = env.reset()
 done = False
 
