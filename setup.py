@@ -5,11 +5,24 @@ from setuptools import find_packages, setup
 
 import versioneer
 
+with open("README.md") as fh:
+    long_description = ""
+    header_count = 0
+    for line in fh:
+        if line.startswith("##"):
+            header_count += 1
+        if header_count < 2:
+            long_description += line
+        else:
+            break
+
 setup(
     name="gym-robotics",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Legacy robotics environments from Gym repo",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/Farama-Foundation/gym-robotics",
     author="Farama Foundation",
     author_email="jkterry@farama.org",
