@@ -1,4 +1,6 @@
-# Robotics environments
+<p align="center">
+    <img src="readme.png" width="500px"/>
+</p>
 
 Details and documentation on these robotics environments are available in OpenAI's [blog post](https://blog.openai.com/ingredients-for-robotics-research/) and the accompanying [technical report](https://arxiv.org/abs/1802.09464).
 
