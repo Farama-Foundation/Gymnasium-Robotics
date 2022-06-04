@@ -3,7 +3,7 @@ import mujoco_py
 import gym
 
 
-env = gym.make("FetchReach-v1")
+env = gym.make("HandManipulatePenTouchSensors-v2")
 obs = env.reset()
 done = False
 

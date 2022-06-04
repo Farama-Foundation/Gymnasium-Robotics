@@ -155,6 +155,29 @@ def set_joint_qpos(model, data, name, value):
     data.qpos[start_idx:end_idx] = value
 
 
+def set_joint_qvel(model, data, name, value):
+    joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    joint_type = model.jnt_type[joint_id]
+    joint_addr = model.jnt_dofadr[joint_id]
+
+    if joint_type == mujoco.mjtJoint.mjJNT_FREE:
+        ndim = 6
+    elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
+        ndim = 3
+    else:
+        assert joint_type in (mujoco.mjtJoint.mjJNT_HINGE, mujoco.mjtJoint.mjJNT_SLIDE)
+        ndim = 1
+
+    start_idx = joint_addr
+    end_idx = joint_addr + ndim
+    value = np.array(value)
+    if ndim > 1:
+        assert value.shape == (
+            end_idx - start_idx
+        ), "Value has incorrect shape %s: %s" % (name, value)
+    data.qvel[start_idx:end_idx] = value
+
+
 def get_joint_qpos(model, data, name):
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]

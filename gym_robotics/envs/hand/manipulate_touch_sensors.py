@@ -93,19 +93,27 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
             elif self.touch_visualisation == "always":
                 pass
         else:
+            _, sensor_name2id, _ = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_sensoradr,
+                self.model.nsensor,
+                self._mujoco_bindings.mjtObj.mjOBJ_SENSOR,
+            )
+            _, site_name2id, _ = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_siteadr,
+                self.model.nsite,
+                self._mujoco_bindings.mjtObj.mjOBJ_SITE,
+            )
             for (
                 k,
                 v,
-            ) in (
-                self.model._sensor_name2id.items()
-            ):  # get touch sensor site names and their ids
+            ) in sensor_name2id.items():  # get touch sensor site names and their ids
                 if "robot0:TS_" in k:
                     self._touch_sensor_id_site_id.append(
                         (
                             v,
-                            self.model._site_name2id[
-                                k.replace("robot0:TS_", "robot0:T_")
-                            ],
+                            site_name2id[k.replace("robot0:TS_", "robot0:T_")],
                         )
                     )
                     self._touch_sensor_id.append(v)
@@ -153,7 +161,9 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
             object_qvel = self.sim.data.get_joint_qvel("object:joint")
         else:
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
-            object_qvel = self.data.get_joint_qvel("object:joint")
+            object_qvel = self._utils.get_joint_qvel(
+                self.model, self.data, "object:joint"
+            )
 
         achieved_goal = (
             self._get_achieved_goal().ravel()

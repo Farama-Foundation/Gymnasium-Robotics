@@ -94,7 +94,9 @@ class ManipulateEnv(hand_env.HandEnv):
             # Object position and rotation.
             object_qpos = self.sim.data.get_joint_qpos("object:joint")
         else:
-            object_qpos = self.data.get_joint_qpos("object:joint")
+            object_qpos = self._utils.get_joint_qpos(
+                self.model, self.data, "object:joint"
+            )
         assert object_qpos.shape == (7,)
         return object_qpos
 
@@ -162,7 +164,7 @@ class ManipulateEnv(hand_env.HandEnv):
             self._mujoco_bindings.mj_forward(self.model, self.data)
 
     def _reset_sim(self):
-        if self._mujoco_bindings == "mujoco_py":
+        if self._mujoco_bindings.__name__ == "mujoco_py":
             self.sim.set_state(self.initial_state)
             self.sim.forward()
 
@@ -175,7 +177,9 @@ class ManipulateEnv(hand_env.HandEnv):
                 self.data.act[:] = None
 
             self._mujoco_bindings.mj_forward(self.model, self.data)
-            initial_qpos = self.data.get_joint_qpos("object:joint").copy()
+            initial_qpos = self._utils.get_joint_qpos(
+                self.model, self.data, "object:joint"
+            ).copy()
 
         initial_pos, initial_quat = initial_qpos[:3], initial_qpos[3:]
         assert initial_qpos.shape == (7,)
@@ -222,7 +226,9 @@ class ManipulateEnv(hand_env.HandEnv):
         if self._mujoco_bindings.__name__ == "mujoco_py":
             self.sim.data.set_joint_qpos("object:joint", initial_qpos)
         else:
-            self.data.set_joint_qpos("object:joint", initial_qpos)
+            self._utils.set_joint_qpos(
+                self.model, self.data, "object:joint", initial_qpos
+            )
 
         def is_on_palm():
             if self._mujoco_bindings.__name__ == "mujoco_py":
@@ -231,7 +237,7 @@ class ManipulateEnv(hand_env.HandEnv):
                 cube_middle_pos = self.sim.data.site_xpos[cube_middle_idx]
             else:
                 self._mujoco_bindings.mj_forward(self.model, self.data)
-                cube_middle_idx = self.model.site_name2id("object:center")
+                cube_middle_idx = self._site_name2id["object:center"]
                 cube_middle_pos = self.data.site_xpos[cube_middle_idx]
             is_on_palm = cube_middle_pos[2] > 0.04
             return is_on_palm
@@ -268,12 +274,19 @@ class ManipulateEnv(hand_env.HandEnv):
             if self._mujoco_bindings.__name__ == "mujoco_py":
                 target_pos = self.sim.data.get_joint_qpos("object:joint")[:3] + offset
             else:
-                target_pos = self.data.get_joint_qpos("object:joint")[:3] + offset
+                target_pos = (
+                    self._utils.get_joint_qpos(self.model, self.data, "object:joint")[
+                        :3
+                    ]
+                    + offset
+                )
         elif self.target_position in ["ignore", "fixed"]:
             if self._mujoco_bindings.__name__ == "mujoco_py":
                 target_pos = self.sim.data.get_joint_qpos("object:joint")[:3]
             else:
-                target_pos = self.data.get_joint_qpos("object:joint")[:3]
+                target_pos = self._utils.get_joint_qpos(
+                    self.model, self.data, "object:joint"
+                )[:3]
         else:
             raise error.Error(
                 f'Unknown target_position option "{self.target_position}".'
@@ -332,11 +345,13 @@ class ManipulateEnv(hand_env.HandEnv):
                 self.sim.model.geom_rgba[hidden_id, 3] = 1.0
             self.sim.forward()
         else:
-            self.data.set_joint_qpos("target:joint", goal)
-            self.data.set_joint_qvel("target:joint", np.zeros(6))
+            self._utils.set_joint_qpos(self.model, self.data, "target:joint", goal)
+            self._utils.set_joint_qvel(
+                self.model, self.data, "target:joint", np.zeros(6)
+            )
 
-            if "object_hidden" in self.model.geom_names:
-                hidden_id = self.model.geom_name2id("object_hidden")
+            if "object_hidden" in self._geom_names:
+                hidden_id = self._geom_name2id["object_hidden"]
                 self.model.geom_rgba[hidden_id, 3] = 1.0
             self._mujoco_bindings.mj_forward(self.model, self.data)
 
@@ -346,7 +361,9 @@ class ManipulateEnv(hand_env.HandEnv):
             object_qvel = self.sim.data.get_joint_qvel("object:joint")
         else:
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
-            object_qvel = self.data.get_joint_qvel("object:joint")
+            object_qvel = self._utils.get_joint_qvel(
+                self.model, self.data, "object:joint"
+            )
         achieved_goal = (
             self._get_achieved_goal().ravel()
         )  # this contains the object position + rotation

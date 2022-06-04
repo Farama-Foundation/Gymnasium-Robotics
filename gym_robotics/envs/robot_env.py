@@ -85,6 +85,107 @@ class RobotEnv(GoalEnv):
             self.initial_qpos = np.copy(self.data.qpos)
             self.initial_qvel = np.copy(self.data.qvel)
 
+            (
+                self._body_names,
+                self._body_name2id,
+                self._body_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_bodyadr,
+                self.model.nbody,
+                self._mujoco_bindings.mjtObj.mjOBJ_BODY,
+            )
+            (
+                self._joint_names,
+                self._joint_name2id,
+                self._joint_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_jntadr,
+                self.model.njnt,
+                self._mujoco_bindings.mjtObj.mjOBJ_JOINT,
+            )
+            (
+                self._geom_names,
+                self._geom_name2id,
+                self._geom_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_geomadr,
+                self.model.ngeom,
+                self._mujoco_bindings.mjtObj.mjOBJ_GEOM,
+            )
+            (
+                self._site_names,
+                self._site_name2id,
+                self._site_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_siteadr,
+                self.model.nsite,
+                self._mujoco_bindings.mjtObj.mjOBJ_SITE,
+            )
+            (
+                self._light_names,
+                self._light_name2id,
+                self._light_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_lightadr,
+                self.model.nlight,
+                self._mujoco_bindings.mjtObj.mjOBJ_LIGHT,
+            )
+            (
+                self._camera_names,
+                self._camera_name2id,
+                self._camera_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_camadr,
+                self.model.ncam,
+                self._mujoco_bindings.mjtObj.mjOBJ_CAMERA,
+            )
+            (
+                self._actuator_names,
+                self._actuator_name2id,
+                self._actuator_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_actuatoradr,
+                self.model.nu,
+                self._mujoco_bindings.mjtObj.mjOBJ_ACTUATOR,
+            )
+            (
+                self._sensor_names,
+                self._sensor_name2id,
+                self._sensor_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_sensoradr,
+                self.model.nsensor,
+                self._mujoco_bindings.mjtObj.mjOBJ_SENSOR,
+            )
+            (
+                self._tendon_names,
+                self._tendon_name2id,
+                self._tendon_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_tendonadr,
+                self.model.ntendon,
+                self._mujoco_bindings.mjtObj.mjOBJ_TENDON,
+            )
+            (
+                self._mesh_names,
+                self._mesh_name2id,
+                self._mesh_id2name,
+            ) = self._utils.extract_mj_names(
+                self.model,
+                self.model.name_meshadr,
+                self.model.nmesh,
+                self._mujoco_bindings.mjtObj.mjOBJ_MESH,
+            )
+
         self.viewer = None
         self._viewers = {}
 
