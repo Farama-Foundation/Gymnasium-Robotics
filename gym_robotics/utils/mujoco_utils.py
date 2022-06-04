@@ -1,3 +1,4 @@
+import site
 import numpy as np
 
 from gym import error
@@ -12,15 +13,34 @@ except ImportError as e:
     )
 
 
+def extract_mj_names(model, name_addr, n_obj, obj_type):
+
+    id2name = {i: None for i in range(n_obj)}
+    name2id = {}
+    for addr in name_addr:
+        name = model.names[addr:].split(b"\x00")[0].decode()
+        if name:
+            obj_id = mujoco.mj_name2id(model, obj_type, name)
+            assert 0 <= obj_id < n_obj and id2name[obj_id] is None
+            name2id[name] = obj_id
+            id2name[obj_id] = name
+
+    return tuple(id2name[id] for id in sorted(name2id.values())), name2id, id2name
+
+
 def robot_get_obs(model, data):
     """Returns all joint positions and velocities associated with
     a robot.
     """
-    if data.qpos is not None and model.joint_names:
-        names = [n for n in model.joint_names if n.startswith("robot")]
+    joint_names, _, _ = extract_mj_names(
+        model, model.name_jntadr, model.njnt, mujoco.mjtObj.mjOBJ_JOINT
+    )
+
+    if data.qpos is not None and joint_names:
+        names = [n for n in joint_names if n.startswith("robot")]
         return (
-            np.array([data.get_joint_qpos(name) for name in names]),
-            np.array([data.get_joint_qvel(name) for name in names]),
+            np.squeeze(np.array([get_joint_qpos(model, data, name) for name in names])),
+            np.squeeze(np.array([get_joint_qvel(model, data, name) for name in names])),
         )
     return np.zeros(0), np.zeros(0)
 
@@ -31,7 +51,8 @@ def ctrl_set_action(model, data, action):
     """
     if model.nmocap > 0:
         _, action = np.split(action, (model.nmocap * 7,))
-    if data.ctrl is not None:
+
+    if len(data.ctrl) > 0:
         for i in range(action.shape[0]):
             if model.actuator_biastype[i] == 0:
                 data.ctrl[i] = action[i]
@@ -75,11 +96,7 @@ def reset_mocap2body_xpos(model, data):
     values as the bodies they're welded to.
     """
 
-    if (
-        model.eq_type is None
-        or model.eq_obj1id is None
-        or model.eq_obj2id is None
-    ):
+    if model.eq_type is None or model.eq_obj1id is None or model.eq_obj2id is None:
         return
     for eq_type, obj1_id, obj2_id in zip(
         model.eq_type, model.eq_obj1id, model.eq_obj2id
@@ -87,7 +104,7 @@ def reset_mocap2body_xpos(model, data):
         if eq_type != mujoco.mjtEq.mjEQ_WELD:
             continue
 
-        mocap_id = model.body_mocapid[obj1_id] 
+        mocap_id = model.body_mocapid[obj1_id]
         if mocap_id != -1:
             # obj1 is the mocap, obj2 is the welded body
             body_idx = obj2_id
@@ -97,5 +114,116 @@ def reset_mocap2body_xpos(model, data):
             body_idx = obj1_id
 
         assert mocap_id != -1
-        data.mocap_pos[mocap_id][:] = data.body_xpos[body_idx]
-        data.mocap_quat[mocap_id][:] = data.body_xquat[body_idx]
+        data.mocap_pos[mocap_id][:] = data.xpos[body_idx]
+        data.mocap_quat[mocap_id][:] = data.xquat[body_idx]
+
+
+def get_site_jacp(model, data, site_id):
+    jacp = np.zeros((3, model.nv))
+    mujoco.mj_jacSite(model, data, jacp, None, site_id)
+
+    return jacp
+
+
+def get_site_jacr(model, data, site_id):
+    jacr = np.zeros((3, model.nv))
+    mujoco.mj_jacSite(model, data, None, jacr, site_id)
+
+    return jacr
+
+
+def set_joint_qpos(model, data, name, value):
+    joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    joint_type = model.jnt_type[joint_id]
+    joint_addr = model.jnt_qposadr[joint_id]
+
+    if joint_type == mujoco.mjtJoint.mjJNT_FREE:
+        ndim = 7
+    elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
+        ndim = 4
+    else:
+        assert joint_type in (mujoco.mjtJoint.mjJNT_HINGE, mujoco.mjtJoint.mjJNT_SLIDE)
+        ndim = 1
+
+    start_idx = joint_addr
+    end_idx = joint_addr + ndim
+    value = np.array(value)
+    if ndim > 1:
+        assert value.shape == (
+            end_idx - start_idx
+        ), "Value has incorrect shape %s: %s" % (name, value)
+    data.qpos[start_idx:end_idx] = value
+
+
+def get_joint_qpos(model, data, name):
+    joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    joint_type = model.jnt_type[joint_id]
+    joint_addr = model.jnt_qposadr[joint_id]
+
+    if joint_type == mujoco.mjtJoint.mjJNT_FREE:
+        ndim = 7
+    elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
+        ndim = 4
+    else:
+        assert joint_type in (mujoco.mjtJoint.mjJNT_HINGE, mujoco.mjtJoint.mjJNT_SLIDE)
+        ndim = 1
+
+    start_idx = joint_addr
+    end_idx = joint_addr + ndim
+
+    return data.qpos[start_idx:end_idx]
+
+
+def get_joint_qvel(model, data, name):
+    joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    joint_type = model.jnt_type[joint_id]
+    joint_addr = model.jnt_qposadr[joint_id]
+
+    if joint_type == mujoco.mjtJoint.mjJNT_FREE:
+        ndim = 7
+    elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
+        ndim = 4
+    else:
+        assert joint_type in (mujoco.mjtJoint.mjJNT_HINGE, mujoco.mjtJoint.mjJNT_SLIDE)
+        ndim = 1
+
+    start_idx = joint_addr
+    end_idx = joint_addr + ndim
+
+    return data.qvel[start_idx:end_idx]
+
+
+def get_site_xpos(model, data, name):
+    site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    return data.site_xpos[site_id]
+
+
+def get_site_xvelp(model, data, name):
+    site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    jacp = get_site_jacp(model, data, site_id)
+    xvelp = jacp @ data.qvel
+    return xvelp
+
+
+def get_site_xvelr(model, data, name):
+    site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    jacp = get_site_jacr(model, data, site_id)
+    xvelp = jacp @ data.qvel
+    return xvelp
+
+
+def set_mocap_pos(model, data, name, value):
+    body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
+    mocap_id = model.body_mocapid[body_id]
+    data.mocap_pos[mocap_id] = value
+
+
+def set_mocap_quat(model, data, name, value):
+    body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
+    mocap_id = model.body_mocapid[body_id]
+    data.mocap_quat[mocap_id] = value
+
+
+def get_site_xmat(model, data, name):
+    site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    return data.site_xmat[site_id].reshape(3, 3)

@@ -2,17 +2,8 @@ import os
 import numpy as np
 
 from gym import utils, error
-from gym_robotics.envs import rotations, hand_env
-from gym_robotics.envs.utils import robot_get_obs
-
-try:
-    import mujoco_py
-except ImportError as e:
-    raise error.DependencyNotInstalled(
-        "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
-            e
-        )
-    )
+from gym_robotics.envs import hand_env
+from gym_robotics.utils import rotations
 
 
 def quat_from_angle_and_axis(angle, axis):
@@ -37,6 +28,7 @@ class ManipulateEnv(hand_env.HandEnv):
         target_rotation,
         target_position_range,
         reward_type,
+        mujoco_bindings,
         initial_qpos=None,
         randomize_initial_position=True,
         randomize_initial_rotation=True,
@@ -94,11 +86,15 @@ class ManipulateEnv(hand_env.HandEnv):
             n_substeps=n_substeps,
             initial_qpos=initial_qpos,
             relative_control=relative_control,
+            mujoco_bindings=mujoco_bindings,
         )
 
     def _get_achieved_goal(self):
-        # Object position and rotation.
-        object_qpos = self.sim.data.get_joint_qpos("object:joint")
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            # Object position and rotation.
+            object_qpos = self.sim.data.get_joint_qpos("object:joint")
+        else:
+            object_qpos = self.data.get_joint_qpos("object:joint")
         assert object_qpos.shape == (7,)
         return object_qpos
 
@@ -156,15 +152,31 @@ class ManipulateEnv(hand_env.HandEnv):
         return achieved_both
 
     def _env_setup(self, initial_qpos):
-        for name, value in initial_qpos.items():
-            self.sim.data.set_joint_qpos(name, value)
-        self.sim.forward()
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            for name, value in initial_qpos.items():
+                self.sim.data.set_joint_qpos(name, value)
+            self.sim.forward()
+        else:
+            for name, value in initial_qpos.items():
+                self.data.set_joint_qpos(name, value)
+            self._mujoco_bindings.mj_forward(self.model, self.data)
 
     def _reset_sim(self):
-        self.sim.set_state(self.initial_state)
-        self.sim.forward()
+        if self._mujoco_bindings == "mujoco_py":
+            self.sim.set_state(self.initial_state)
+            self.sim.forward()
 
-        initial_qpos = self.sim.data.get_joint_qpos("object:joint").copy()
+            initial_qpos = self.sim.data.get_joint_qpos("object:joint").copy()
+        else:
+            self.data.time = self.initial_time
+            self.data.qpos[:] = np.copy(self.initial_qpos)
+            self.data.qvel[:] = np.copy(self.initial_qvel)
+            if self.model.na != 0:
+                self.data.act[:] = None
+
+            self._mujoco_bindings.mj_forward(self.model, self.data)
+            initial_qpos = self.data.get_joint_qpos("object:joint").copy()
+
         initial_pos, initial_quat = initial_qpos[:3], initial_qpos[3:]
         assert initial_qpos.shape == (7,)
         assert initial_pos.shape == (3,)
@@ -206,22 +218,42 @@ class ManipulateEnv(hand_env.HandEnv):
 
         initial_quat /= np.linalg.norm(initial_quat)
         initial_qpos = np.concatenate([initial_pos, initial_quat])
-        self.sim.data.set_joint_qpos("object:joint", initial_qpos)
+
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            self.sim.data.set_joint_qpos("object:joint", initial_qpos)
+        else:
+            self.data.set_joint_qpos("object:joint", initial_qpos)
 
         def is_on_palm():
-            self.sim.forward()
-            cube_middle_idx = self.sim.model.site_name2id("object:center")
-            cube_middle_pos = self.sim.data.site_xpos[cube_middle_idx]
+            if self._mujoco_bindings.__name__ == "mujoco_py":
+                self.sim.forward()
+                cube_middle_idx = self.sim.model.site_name2id("object:center")
+                cube_middle_pos = self.sim.data.site_xpos[cube_middle_idx]
+            else:
+                self._mujoco_bindings.mj_forward(self.model, self.data)
+                cube_middle_idx = self.model.site_name2id("object:center")
+                cube_middle_pos = self.data.site_xpos[cube_middle_idx]
             is_on_palm = cube_middle_pos[2] > 0.04
             return is_on_palm
 
-        # Run the simulation for a bunch of timesteps to let everything settle in.
-        for _ in range(10):
-            self._set_action(np.zeros(20))
-            try:
-                self.sim.step()
-            except mujoco_py.MujocoException:
-                return False
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            # Run the simulation for a bunch of timesteps to let everything settle in.
+            for _ in range(10):
+                self._set_action(np.zeros(20))
+                try:
+                    self.sim.step()
+                except self._mujoco_bindings.MujocoException:
+                    return False
+        else:
+            # Run the simulation for a bunch of timesteps to let everything settle in.
+            for _ in range(10):
+                self._set_action(np.zeros(20))
+                try:
+                    self._mujoco_bindings.mj_step(
+                        self.model, self.data, nstep=self.n_substeps
+                    )
+                except Exception:
+                    return False
         return is_on_palm()
 
     def _sample_goal(self):
@@ -233,9 +265,15 @@ class ManipulateEnv(hand_env.HandEnv):
                 self.target_position_range[:, 0], self.target_position_range[:, 1]
             )
             assert offset.shape == (3,)
-            target_pos = self.sim.data.get_joint_qpos("object:joint")[:3] + offset
+            if self._mujoco_bindings.__name__ == "mujoco_py":
+                target_pos = self.sim.data.get_joint_qpos("object:joint")[:3] + offset
+            else:
+                target_pos = self.data.get_joint_qpos("object:joint")[:3] + offset
         elif self.target_position in ["ignore", "fixed"]:
-            target_pos = self.sim.data.get_joint_qpos("object:joint")[:3]
+            if self._mujoco_bindings.__name__ == "mujoco_py":
+                target_pos = self.sim.data.get_joint_qpos("object:joint")[:3]
+            else:
+                target_pos = self.data.get_joint_qpos("object:joint")[:3]
         else:
             raise error.Error(
                 f'Unknown target_position option "{self.target_position}".'
@@ -262,7 +300,10 @@ class ManipulateEnv(hand_env.HandEnv):
             axis = self.np_random.uniform(-1.0, 1.0, size=3)
             target_quat = quat_from_angle_and_axis(angle, axis)
         elif self.target_rotation in ["ignore", "fixed"]:
-            target_quat = self.sim.data.get_joint_qpos("object:joint")
+            if self._mujoco_bindings.__name__ == "mujoco_py":
+                target_quat = self.sim.data.get_joint_qpos("object:joint")
+            else:
+                target_quat = self.data.get_joint_qpos("object:joint")
         else:
             raise error.Error(
                 f'Unknown target_rotation option "{self.target_rotation}".'
@@ -282,17 +323,30 @@ class ManipulateEnv(hand_env.HandEnv):
         if self.target_position == "ignore":
             # Move the object to the side since we do not care about it's position.
             goal[0] += 0.15
-        self.sim.data.set_joint_qpos("target:joint", goal)
-        self.sim.data.set_joint_qvel("target:joint", np.zeros(6))
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            self.sim.data.set_joint_qpos("target:joint", goal)
+            self.sim.data.set_joint_qvel("target:joint", np.zeros(6))
 
-        if "object_hidden" in self.sim.model.geom_names:
-            hidden_id = self.sim.model.geom_name2id("object_hidden")
-            self.sim.model.geom_rgba[hidden_id, 3] = 1.0
-        self.sim.forward()
+            if "object_hidden" in self.sim.model.geom_names:
+                hidden_id = self.sim.model.geom_name2id("object_hidden")
+                self.sim.model.geom_rgba[hidden_id, 3] = 1.0
+            self.sim.forward()
+        else:
+            self.data.set_joint_qpos("target:joint", goal)
+            self.data.set_joint_qvel("target:joint", np.zeros(6))
+
+            if "object_hidden" in self.model.geom_names:
+                hidden_id = self.model.geom_name2id("object_hidden")
+                self.model.geom_rgba[hidden_id, 3] = 1.0
+            self._mujoco_bindings.mj_forward(self.model, self.data)
 
     def _get_obs(self):
-        robot_qpos, robot_qvel = robot_get_obs(self.sim)
-        object_qvel = self.sim.data.get_joint_qvel("object:joint")
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
+            object_qvel = self.sim.data.get_joint_qvel("object:joint")
+        else:
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
+            object_qvel = self.data.get_joint_qvel("object:joint")
         achieved_goal = (
             self._get_achieved_goal().ravel()
         )  # this contains the object position + rotation
@@ -308,7 +362,11 @@ class ManipulateEnv(hand_env.HandEnv):
 
 class HandBlockEnv(ManipulateEnv, utils.EzPickle):
     def __init__(
-        self, target_position="random", target_rotation="xyz", reward_type="sparse"
+        self,
+        mujoco_bindings,
+        target_position="random",
+        target_rotation="xyz",
+        reward_type="sparse",
     ):
         utils.EzPickle.__init__(self, target_position, target_rotation, reward_type)
         ManipulateEnv.__init__(
@@ -318,12 +376,17 @@ class HandBlockEnv(ManipulateEnv, utils.EzPickle):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            mujoco_bindings=mujoco_bindings,
         )
 
 
 class HandEggEnv(ManipulateEnv, utils.EzPickle):
     def __init__(
-        self, target_position="random", target_rotation="xyz", reward_type="sparse"
+        self,
+        mujoco_bindings,
+        target_position="random",
+        target_rotation="xyz",
+        reward_type="sparse",
     ):
         utils.EzPickle.__init__(self, target_position, target_rotation, reward_type)
         ManipulateEnv.__init__(
@@ -333,12 +396,17 @@ class HandEggEnv(ManipulateEnv, utils.EzPickle):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            mujoco_bindings=mujoco_bindings,
         )
 
 
 class HandPenEnv(ManipulateEnv, utils.EzPickle):
     def __init__(
-        self, target_position="random", target_rotation="xyz", reward_type="sparse"
+        self,
+        mujoco_bindings,
+        target_position="random",
+        target_rotation="xyz",
+        reward_type="sparse",
     ):
         utils.EzPickle.__init__(self, target_position, target_rotation, reward_type)
         ManipulateEnv.__init__(
@@ -351,4 +419,5 @@ class HandPenEnv(ManipulateEnv, utils.EzPickle):
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            mujoco_bindings=mujoco_bindings,
         )

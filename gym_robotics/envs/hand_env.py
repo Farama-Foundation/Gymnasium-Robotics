@@ -9,7 +9,9 @@ from gym_robotics.envs import robot_env
 
 
 class HandEnv(robot_env.RobotEnv):
-    def __init__(self, model_path, n_substeps, initial_qpos, relative_control, mujoco_bindings):
+    def __init__(
+        self, model_path, n_substeps, initial_qpos, relative_control, mujoco_bindings
+    ):
         self.relative_control = relative_control
 
         super().__init__(
@@ -36,7 +38,9 @@ class HandEnv(robot_env.RobotEnv):
                         self.sim.model.actuator_names[i].replace(":A_", ":")
                     )
                 for joint_name in ["FF", "MF", "RF", "LF"]:
-                    act_idx = self.sim.model.actuator_name2id(f"robot0:A_{joint_name}J1")
+                    act_idx = self.sim.model.actuator_name2id(
+                        f"robot0:A_{joint_name}J1"
+                    )
                     actuation_center[act_idx] += self.sim.data.get_joint_qpos(
                         f"robot0:{joint_name}J0"
                     )
@@ -67,13 +71,14 @@ class HandEnv(robot_env.RobotEnv):
                 self.data.ctrl, ctrlrange[:, 0], ctrlrange[:, 1]
             )
 
-
     def _viewer_setup(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":  
+        if self._mujoco_bindings.__name__ == "mujoco_py":
             body_id = self.sim.model.body_name2id("robot0:palm")
             lookat = self.sim.data.body_xpos[body_id]
         else:
-            body_id = self._mujoco_bindings.mj_name2id(self.model, self._mujoco_bindings.mjtObj.mjOBJ_BODY, "robot0:palm")
+            body_id = self._mujoco_bindings.mj_name2id(
+                self.model, self._mujoco_bindings.mjtObj.mjOBJ_BODY, "robot0:palm"
+            )
             lookat = self.data.body_xpos[body_id]
         for idx, value in enumerate(lookat):
             self.viewer.cam.lookat[idx] = value

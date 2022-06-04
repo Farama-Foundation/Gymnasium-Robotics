@@ -87,7 +87,7 @@ def reset_mocap2body_xpos(sim):
         if eq_type != mujoco_py.const.EQ_WELD:
             continue
 
-        mocap_id = sim.model.body_mocapid[obj1_id] 
+        mocap_id = sim.model.body_mocapid[obj1_id]
         if mocap_id != -1:
             # obj1 is the mocap, obj2 is the welded body
             body_idx = obj2_id

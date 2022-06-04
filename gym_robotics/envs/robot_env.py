@@ -23,8 +23,9 @@ DEFAULT_SIZE = 500
 
 
 class RobotEnv(GoalEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings="mujoco"):
-
+    def __init__(
+        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings="mujoco"
+    ):
 
         if model_path.startswith("/"):
             fullpath = model_path
@@ -34,7 +35,7 @@ class RobotEnv(GoalEnv):
             raise OSError(f"File {fullpath} does not exist")
 
         self.n_substeps = n_substeps
-        
+
         if mujoco_bindings == "mujoco_py":
             logger.warn(
                 "This version of the mujoco environments depends "
@@ -44,9 +45,11 @@ class RobotEnv(GoalEnv):
                 "you are trying to precisely replicate previous works)."
             )
             try:
-                import mujoco_py
+                import mujoco_py  # noqa: F811
+                from gym_robotics.utils import mujoco_py_utils
 
                 self._mujoco_bindings = mujoco_py
+                self._utils = mujoco_py_utils
 
             except ImportError as e:
                 raise error.DependencyNotInstalled(
@@ -65,8 +68,10 @@ class RobotEnv(GoalEnv):
         elif mujoco_bindings == "mujoco":
             try:
                 import mujoco
+                from gym_robotics.utils import mujoco_utils
 
                 self._mujoco_bindings = mujoco
+                self._utils = mujoco_utils
 
             except ImportError as e:
                 raise error.DependencyNotInstalled(
@@ -79,9 +84,7 @@ class RobotEnv(GoalEnv):
             self.initial_time = self.data.time
             self.initial_qpos = np.copy(self.data.qpos)
             self.initial_qvel = np.copy(self.data.qvel)
-            
 
-    
         self.viewer = None
         self._viewers = {}
 
@@ -89,8 +92,6 @@ class RobotEnv(GoalEnv):
             "render.modes": ["human", "rgb_array"],
             "video.frames_per_second": int(np.round(1.0 / self.dt)),
         }
-
-        
 
         self.goal = np.zeros(0)
         obs = self._get_obs()
@@ -109,10 +110,9 @@ class RobotEnv(GoalEnv):
             )
         )
 
-
     @property
     def dt(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":    
+        if self._mujoco_bindings.__name__ == "mujoco_py":
             return self.sim.model.opt.timestep * self.sim.nsubsteps
         else:
             return self.model.opt.timestep * self.n_substeps
@@ -127,11 +127,10 @@ class RobotEnv(GoalEnv):
         action = np.clip(action, self.action_space.low, self.action_space.high)
         self._set_action(action)
         if self._mujoco_bindings.__name__ == "mujoco_py":
-                self.sim.step()
+            self.sim.step()
         else:
-            for _ in range(self.n_substeps):
-                self._mujoco_bindings.mj_step(self.model, self.data)
-        
+            self._mujoco_bindings.mj_step(self.model, self.data, nstep=self.n_substeps)
+
         self._step_callback()
         obs = self._get_obs()
 
@@ -215,9 +214,9 @@ class RobotEnv(GoalEnv):
             self.data.qvel[:] = np.copy(self.initial_qvel)
             if self.model.na != 0:
                 self.data.act[:] = None
-            
+
             self._mujoco_bindings.mj_forward(self.model, self.data)
-        
+
         return True
 
     def _get_obs(self):

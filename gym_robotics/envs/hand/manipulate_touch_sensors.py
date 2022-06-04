@@ -18,6 +18,7 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
         target_rotation,
         target_position_range,
         reward_type,
+        mujoco_bindings,
         initial_qpos={},
         randomize_initial_position=True,
         randomize_initial_rotation=True,
@@ -65,30 +66,55 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
             n_substeps=n_substeps,
             relative_control=relative_control,
             ignore_z_target_rotation=ignore_z_target_rotation,
+            mujoco_bindings=mujoco_bindings,
         )
 
-        for (
-            k,
-            v,
-        ) in (
-            self.sim.model._sensor_name2id.items()
-        ):  # get touch sensor site names and their ids
-            if "robot0:TS_" in k:
-                self._touch_sensor_id_site_id.append(
-                    (
-                        v,
-                        self.sim.model._site_name2id[
-                            k.replace("robot0:TS_", "robot0:T_")
-                        ],
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            for (
+                k,
+                v,
+            ) in (
+                self.sim.model._sensor_name2id.items()
+            ):  # get touch sensor site names and their ids
+                if "robot0:TS_" in k:
+                    self._touch_sensor_id_site_id.append(
+                        (
+                            v,
+                            self.sim.model._site_name2id[
+                                k.replace("robot0:TS_", "robot0:T_")
+                            ],
+                        )
                     )
-                )
-                self._touch_sensor_id.append(v)
+                    self._touch_sensor_id.append(v)
 
-        if self.touch_visualisation == "off":  # set touch sensors rgba values
-            for _, site_id in self._touch_sensor_id_site_id:
-                self.sim.model.site_rgba[site_id][3] = 0.0
-        elif self.touch_visualisation == "always":
-            pass
+            if self.touch_visualisation == "off":  # set touch sensors rgba values
+                for _, site_id in self._touch_sensor_id_site_id:
+                    self.sim.model.site_rgba[site_id][3] = 0.0
+            elif self.touch_visualisation == "always":
+                pass
+        else:
+            for (
+                k,
+                v,
+            ) in (
+                self.model._sensor_name2id.items()
+            ):  # get touch sensor site names and their ids
+                if "robot0:TS_" in k:
+                    self._touch_sensor_id_site_id.append(
+                        (
+                            v,
+                            self.model._site_name2id[
+                                k.replace("robot0:TS_", "robot0:T_")
+                            ],
+                        )
+                    )
+                    self._touch_sensor_id.append(v)
+
+            if self.touch_visualisation == "off":  # set touch sensors rgba values
+                for _, site_id in self._touch_sensor_id_site_id:
+                    self.model.site_rgba[site_id][3] = 0.0
+            elif self.touch_visualisation == "always":
+                pass
 
         obs = self._get_obs()
         self.observation_space = spaces.Dict(
@@ -108,25 +134,48 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
     def _render_callback(self):
         super()._render_callback()
         if self.touch_visualisation == "on_touch":
-            for touch_sensor_id, site_id in self._touch_sensor_id_site_id:
-                if self.sim.data.sensordata[touch_sensor_id] != 0.0:
-                    self.sim.model.site_rgba[site_id] = self.touch_color
-                else:
-                    self.sim.model.site_rgba[site_id] = self.notouch_color
+            if self._mujoco_bindings.__name__ == "mujoco_py":
+                for touch_sensor_id, site_id in self._touch_sensor_id_site_id:
+                    if self.sim.data.sensordata[touch_sensor_id] != 0.0:
+                        self.sim.model.site_rgba[site_id] = self.touch_color
+                    else:
+                        self.sim.model.site_rgba[site_id] = self.notouch_color
+            else:
+                for touch_sensor_id, site_id in self._touch_sensor_id_site_id:
+                    if self.data.sensordata[touch_sensor_id] != 0.0:
+                        self.model.site_rgba[site_id] = self.touch_color
+                    else:
+                        self.model.site_rgba[site_id] = self.notouch_color
 
     def _get_obs(self):
-        robot_qpos, robot_qvel = manipulate.robot_get_obs(self.sim)
-        object_qvel = self.sim.data.get_joint_qvel("object:joint")
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
+            object_qvel = self.sim.data.get_joint_qvel("object:joint")
+        else:
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
+            object_qvel = self.data.get_joint_qvel("object:joint")
+
         achieved_goal = (
             self._get_achieved_goal().ravel()
         )  # this contains the object position + rotation
         touch_values = []  # get touch sensor readings. if there is one, set value to 1
-        if self.touch_get_obs == "sensordata":
-            touch_values = self.sim.data.sensordata[self._touch_sensor_id]
-        elif self.touch_get_obs == "boolean":
-            touch_values = self.sim.data.sensordata[self._touch_sensor_id] > 0.0
-        elif self.touch_get_obs == "log":
-            touch_values = np.log(self.sim.data.sensordata[self._touch_sensor_id] + 1.0)
+
+        if self._mujoco_bindings.__name__ == "mujoco_py":
+            if self.touch_get_obs == "sensordata":
+                touch_values = self.sim.data.sensordata[self._touch_sensor_id]
+            elif self.touch_get_obs == "boolean":
+                touch_values = self.sim.data.sensordata[self._touch_sensor_id] > 0.0
+            elif self.touch_get_obs == "log":
+                touch_values = np.log(
+                    self.sim.data.sensordata[self._touch_sensor_id] + 1.0
+                )
+        else:
+            if self.touch_get_obs == "sensordata":
+                touch_values = self.data.sensordata[self._touch_sensor_id]
+            elif self.touch_get_obs == "boolean":
+                touch_values = self.data.sensordata[self._touch_sensor_id] > 0.0
+            elif self.touch_get_obs == "log":
+                touch_values = np.log(self.data.sensordata[self._touch_sensor_id] + 1.0)
         observation = np.concatenate(
             [robot_qpos, robot_qvel, object_qvel, touch_values, achieved_goal]
         )
@@ -141,6 +190,7 @@ class ManipulateTouchSensorsEnv(manipulate.ManipulateEnv):
 class HandBlockTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
     def __init__(
         self,
+        mujoco_bindings,
         target_position="random",
         target_rotation="xyz",
         touch_get_obs="sensordata",
@@ -157,12 +207,14 @@ class HandBlockTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            mujoco_bindings=mujoco_bindings,
         )
 
 
 class HandEggTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
     def __init__(
         self,
+        mujoco_bindings,
         target_position="random",
         target_rotation="xyz",
         touch_get_obs="sensordata",
@@ -179,12 +231,14 @@ class HandEggTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            mujoco_bindings=mujoco_bindings,
         )
 
 
 class HandPenTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
     def __init__(
         self,
+        mujoco_bindings,
         target_position="random",
         target_rotation="xyz",
         touch_get_obs="sensordata",
@@ -204,4 +258,5 @@ class HandPenTouchSensorsEnv(ManipulateTouchSensorsEnv, utils.EzPickle):
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            mujoco_bindings=mujoco_bindings,
         )

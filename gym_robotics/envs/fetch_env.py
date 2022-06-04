@@ -26,7 +26,7 @@ class FetchEnv(robot_env.RobotEnv):
         distance_threshold,
         initial_qpos,
         reward_type,
-        mujoco_bindings="mujoco",
+        mujoco_bindings,
     ):
         """Initializes a new Fetch environment.
 
@@ -53,13 +53,6 @@ class FetchEnv(robot_env.RobotEnv):
         self.target_range = target_range
         self.distance_threshold = distance_threshold
         self.reward_type = reward_type
-
-        if mujoco_bindings == "mujoco_py":
-            from gym_robotics.utils import mujoco_py_utils
-            self._utils = mujoco_py_utils
-        else:
-            from gym_robotics.utils import mujoco_utils
-            self._utils = mujoco_utils
 
         super().__init__(
             model_path=model_path,
@@ -90,10 +83,14 @@ class FetchEnv(robot_env.RobotEnv):
                 self.sim.data.set_joint_qpos("robot0:r_gripper_finger_joint", 0.0)
                 self.sim.forward()
             else:
-                self.data.set_joint_qpos("robot0:l_gripper_finger_joint", 0.0)
-                self.data.set_joint_qpos("robot0:r_gripper_finger_joint", 0.0)
+                self._utils.set_joint_qpos(
+                    self.model, self.data, "robot0:l_gripper_finger_joint", 0.0
+                )
+                self._utils.set_joint_qpos(
+                    self.model, self.data, "robot0:r_gripper_finger_joint", 0.0
+                )
                 self._mujoco_bindings.mj_forward(self.model, self.data)
-        
+
     def _set_action(self, action):
         assert action.shape == (4,)
         action = (
@@ -128,6 +125,7 @@ class FetchEnv(robot_env.RobotEnv):
             grip_pos = self.sim.data.get_site_xpos("robot0:grip")
             dt = self.sim.nsubsteps * self.sim.model.opt.timestep
             grip_velp = self.sim.data.get_site_xvelp("robot0:grip") * dt
+
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
             if self.has_object:
                 object_pos = self.sim.data.get_site_xpos("object0")
@@ -149,17 +147,25 @@ class FetchEnv(robot_env.RobotEnv):
             )  # change to a scalar if the gripper is made symmetric
         else:
             # positions
-            grip_pos = self.data.get_site_xpos("robot0:grip")
+            grip_pos = self._utils.get_site_xpos(self.model, self.data, "robot0:grip")
             dt = self.n_substeps * self.model.opt.timestep
-            grip_velp = self.data.get_site_xvelp("robot0:grip") * dt
+            grip_velp = (
+                self._utils.get_site_xvelp(self.model, self.data, "robot0:grip") * dt
+            )
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
             if self.has_object:
-                object_pos = self.data.get_site_xpos("object0")
+                object_pos = self._utils.get_site_xpos(self.model, self.data, "object0")
                 # rotations
-                object_rot = rotations.mat2euler(self.data.get_site_xmat("object0"))
+                object_rot = rotations.mat2euler(
+                    self._utils.get_site_xmat(self.model, self.data, "object0")
+                )
                 # velocities
-                object_velp = self.data.get_site_xvelp("object0") * dt
-                object_velr = self.data.get_site_xvelr("object0") * dt
+                object_velp = (
+                    self._utils.get_site_xvelp(self.model, self.data, "object0") * dt
+                )
+                object_velr = (
+                    self._utils.get_site_xvelr(self.model, self.data, "object0") * dt
+                )
                 # gripper state
                 object_rel_pos = object_pos - grip_pos
                 object_velp -= grip_velp
@@ -171,11 +177,12 @@ class FetchEnv(robot_env.RobotEnv):
             gripper_vel = (
                 robot_qvel[-2:] * dt
             )  # change to a scalar if the gripper is made symmetric
-    
+
         if not self.has_object:
             achieved_goal = grip_pos.copy()
         else:
             achieved_goal = np.squeeze(object_pos.copy())
+
         obs = np.concatenate(
             [
                 grip_pos,
@@ -197,13 +204,17 @@ class FetchEnv(robot_env.RobotEnv):
         }
 
     def _viewer_setup(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":  
+        if self._mujoco_bindings.__name__ == "mujoco_py":
             body_id = self.sim.model.body_name2id("robot0:gripper_link")
             lookat = self.sim.data.body_xpos[body_id]
         else:
-            body_id = self._mujoco_bindings.mj_name2id(self.model, self._mujoco_bindings.mjtObj.mjOBJ_BODY, "robot0:gripper_link")
-            lookat = self.data.body_xpos[body_id]
-    
+            body_id = self._mujoco_bindings.mj_name2id(
+                self.model,
+                self._mujoco_bindings.mjtObj.mjOBJ_BODY,
+                "robot0:gripper_link",
+            )
+            lookat = self.data.xpos[body_id]
+
         for idx, value in enumerate(lookat):
             self.viewer.cam.lookat[idx] = value
         self.viewer.cam.distance = 2.5
@@ -220,7 +231,9 @@ class FetchEnv(robot_env.RobotEnv):
         else:
             # Visualize target.
             sites_offset = (self.data.site_xpos - self.model.site_pos).copy()
-            site_id = self._mujoco_bindings.mj_name2id(self.model, self._mujoco_bindings.mjtObj.mjOBJ_SITE, "target0")
+            site_id = self._mujoco_bindings.mj_name2id(
+                self.model, self._mujoco_bindings.mjtObj.mjOBJ_SITE, "target0"
+            )
             self.model.site_pos[site_id] = self.goal - sites_offset[0]
             self._mujoco_bindings.mj_forward(self.model, self.data)
 
@@ -232,10 +245,11 @@ class FetchEnv(robot_env.RobotEnv):
             if self.has_object:
                 object_xpos = self.initial_gripper_xpos[:2]
                 while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
-                    object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
-                        -self.obj_range, self.obj_range, size=2
-                    )
+                    object_xpos = self.initial_gripper_xpos[
+                        :2
+                    ] + self.np_random.uniform(-self.obj_range, self.obj_range, size=2)
                 object_qpos = self.sim.data.get_joint_qpos("object0:joint")
+                print(object_qpos)
                 assert object_qpos.shape == (7,)
                 object_qpos[:2] = object_xpos
                 self.sim.data.set_joint_qpos("object0:joint", object_qpos)
@@ -247,18 +261,23 @@ class FetchEnv(robot_env.RobotEnv):
             self.data.qvel[:] = np.copy(self.initial_qvel)
             if self.model.na != 0:
                 self.data.act[:] = None
-            
+
             # Randomize start position of object.
             if self.has_object:
                 object_xpos = self.initial_gripper_xpos[:2]
                 while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
-                    object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
-                        -self.obj_range, self.obj_range, size=2
-                    )
-                object_qpos = self.data.get_joint_qpos("object0:joint")
+                    object_xpos = self.initial_gripper_xpos[
+                        :2
+                    ] + self.np_random.uniform(-self.obj_range, self.obj_range, size=2)
+                object_qpos = self._utils.get_joint_qpos(
+                    self.model, self.data, "object0:joint"
+                )
+                print(object_qpos)
                 assert object_qpos.shape == (7,)
                 object_qpos[:2] = object_xpos
-                self.data.set_joint_qpos("object0:joint", object_qpos)
+                self._utils.set_joint_qpos(
+                    self.model, self.data, "object0:joint", object_qpos
+                )
 
             self._mujoco_bindings.mj_forward(self.model, self.data)
         return True
@@ -300,29 +319,40 @@ class FetchEnv(robot_env.RobotEnv):
                 self.sim.step()
 
             # Extract information for sampling goals.
-            self.initial_gripper_xpos = self.sim.data.get_site_xpos("robot0:grip").copy()
+            self.initial_gripper_xpos = self.sim.data.get_site_xpos(
+                "robot0:grip"
+            ).copy()
             if self.has_object:
                 self.height_offset = self.sim.data.get_site_xpos("object0")[2]
         else:
             for name, value in initial_qpos.items():
-                self.data.set_joint_qpos(name, value)
+                self._utils.set_joint_qpos(self.model, self.data, name, value)
             self._utils.reset_mocap_welds(self.model, self.data)
             self._mujoco_bindings.mj_forward(self.model, self.data)
 
             # Move end effector into position.
             gripper_target = np.array(
                 [-0.498, 0.005, -0.431 + self.gripper_extra_height]
-            ) + self.data.get_site_xpos("robot0:grip")
+            ) + self._utils.get_site_xpos(self.model, self.data, "robot0:grip")
             gripper_rotation = np.array([1.0, 0.0, 1.0, 0.0])
-            self.data.set_mocap_pos("robot0:mocap", gripper_target)
-            self.data.set_mocap_quat("robot0:mocap", gripper_rotation)
+            self._utils.set_mocap_pos(
+                self.model, self.data, "robot0:mocap", gripper_target
+            )
+            self._utils.set_mocap_quat(
+                self.model, self.data, "robot0:mocap", gripper_rotation
+            )
             for _ in range(10):
-                for _ in range (self.n_substeps):
-                    self._mujoco_bindings.mj_step(self.model, self.data)
+                self._mujoco_bindings.mj_step(
+                    self.model, self.data, nstep=self.n_substeps
+                )
             # Extract information for sampling goals.
-            self.initial_gripper_xpos = self.data.get_site_xpos("robot0:grip").copy()
+            self.initial_gripper_xpos = self._utils.get_site_xpos(
+                self.model, self.data, "robot0:grip"
+            ).copy()
             if self.has_object:
-                self.height_offset = self.data.get_site_xpos("object0")[2]
+                self.height_offset = self._utils.get_site_xpos(
+                    self.model, self.data, "object0"
+                )[2]
 
     def render(self, mode="human", width=500, height=500):
         return super().render(mode, width, height)
