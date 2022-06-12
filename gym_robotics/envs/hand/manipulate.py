@@ -237,7 +237,7 @@ class ManipulateEnv(hand_env.HandEnv):
                 cube_middle_pos = self.sim.data.site_xpos[cube_middle_idx]
             else:
                 self._mujoco_bindings.mj_forward(self.model, self.data)
-                cube_middle_idx = self._site_name2id["object:center"]
+                cube_middle_idx = self._model_names._site_name2id["object:center"]
                 cube_middle_pos = self.data.site_xpos[cube_middle_idx]
             is_on_palm = cube_middle_pos[2] > 0.04
             return is_on_palm
@@ -360,7 +360,9 @@ class ManipulateEnv(hand_env.HandEnv):
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
             object_qvel = self.sim.data.get_joint_qvel("object:joint")
         else:
-            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(
+                self.model, self.data, self._model_names.joint_names
+            )
             object_qvel = self._utils.get_joint_qvel(
                 self.model, self.data, "object:joint"
             )

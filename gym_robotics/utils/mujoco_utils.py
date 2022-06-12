@@ -12,8 +12,63 @@ except ImportError as e:
         )
     )
 
+MJ_OBJ_TYPES = [
+    "mjOBJ_BODY",
+    "mjOBJ_JOINT",
+    "mjOBJ_GEOM",
+    "mjOBJ_SITE",
+    "mjOBJ_LIGHT",
+    "mjOBJ_CAMERA",
+    "mjOBJ_ACTUATOR",
+    "mjOBJ_SENSOR",
+    "mjOBJ_TENDON",
+    "mjOBJ_MESH",
+]
 
-def extract_mj_names(model, name_addr, n_obj, obj_type):
+
+def extract_mj_names(model, obj_type):
+
+    if obj_type == mujoco.mjtObj.mjOBJ_BODY:
+        name_addr = model.name_bodyadr
+        n_obj = model.nbody
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_JOINT:
+        name_addr = model.name_jntadr
+        n_obj = model.njnt
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_GEOM:
+        name_addr = model.name_geomadr
+        n_obj = model.ngeom
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_SITE:
+        name_addr = model.name_siteadr
+        n_obj = model.nsite
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_LIGHT:
+        name_addr = model.name_lightadr
+        n_obj = model.nlight
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_CAMERA:
+        name_addr = model.name_camadr
+        n_obj = model.ncam
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_ACTUATOR:
+        name_addr = model.name_actuatoradr
+        n_obj = model.nu
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_SENSOR:
+        name_addr = model.name_sensoradr
+        n_obj = model.nsensor
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_TENDON:
+        name_addr = model.name_tendonadr
+        n_obj = model.ntendon
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_MESH:
+        name_addr = model.name_meshadr
+        n_obj = model.nmesh
+    else:
+        raise error.ValueError("")
 
     id2name = {i: None for i in range(n_obj)}
     name2id = {}
@@ -28,14 +83,10 @@ def extract_mj_names(model, name_addr, n_obj, obj_type):
     return tuple(id2name[id] for id in sorted(name2id.values())), name2id, id2name
 
 
-def robot_get_obs(model, data):
+def robot_get_obs(model, data, joint_names):
     """Returns all joint positions and velocities associated with
     a robot.
     """
-    joint_names, _, _ = extract_mj_names(
-        model, model.name_jntadr, model.njnt, mujoco.mjtObj.mjOBJ_JOINT
-    )
-
     if data.qpos is not None and joint_names:
         names = [n for n in joint_names if n.startswith("robot")]
         return (
@@ -250,3 +301,126 @@ def set_mocap_quat(model, data, name, value):
 def get_site_xmat(model, data, name):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
     return data.site_xmat[site_id].reshape(3, 3)
+
+
+class MujocoModelNames(object):
+    def __init__(self, model):
+        (
+            self._body_names,
+            self._body_name2id,
+            self._body_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_BODY)
+        (
+            self._joint_names,
+            self._joint_name2id,
+            self._joint_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_JOINT)
+        (
+            self._geom_names,
+            self._geom_name2id,
+            self._geom_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_GEOM)
+        (
+            self._site_names,
+            self._site_name2id,
+            self._site_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_SITE)
+        (
+            self._camera_names,
+            self._camera_name2id,
+            self._camera_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_CAMERA)
+        (
+            self._actuator_names,
+            self._actuator_name2id,
+            self._actuator_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_ACTUATOR)
+        (
+            self._sensor_names,
+            self._sensor_name2id,
+            self._sensor_id2name,
+        ) = extract_mj_names(model, mujoco.mjtObj.mjOBJ_SENSOR)
+
+    @property
+    def body_names(self):
+        return self._body_names
+
+    @property
+    def body_name2id(self):
+        return self._body_name2id
+
+    @property
+    def body_id2name(self):
+        return self._body_id2name
+
+    @property
+    def joint_names(self):
+        return self._joint_names
+
+    @property
+    def joint_name2id(self):
+        return self._joint_name2id
+
+    @property
+    def joint_id2name(self):
+        return self._joint_id2name
+
+    @property
+    def geom_names(self):
+        return self._geom_names
+
+    @property
+    def geom_name2id(self):
+        return self._geom_name2id
+
+    @property
+    def geom_id2name(self):
+        return self._geom_id2name
+
+    @property
+    def site_names(self):
+        return self._site_names
+
+    @property
+    def site_name2id(self):
+        return self._site_name2id
+
+    @property
+    def site_id2name(self):
+        return self._site_id2name
+
+    @property
+    def camera_names(self):
+        return self._camera_names
+
+    @property
+    def camera_name2id(self):
+        return self._camera_name2id
+
+    @property
+    def camera_id2name(self):
+        return self._camera_id2name
+
+    @property
+    def actuator_names(self):
+        return self._actuator_names
+
+    @property
+    def actuator_name2id(self):
+        return self._actuator_name2id
+
+    @property
+    def actuator_id2name(self):
+        return self._actuator_id2name
+
+    @property
+    def sensor_names(self):
+        return self._sensor_names
+
+    @property
+    def sensor_name2id(self):
+        return self._sensor_name2id
+
+    @property
+    def sensor_id2name(self):
+        return self._sensor_id2name

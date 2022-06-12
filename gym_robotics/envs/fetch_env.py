@@ -152,7 +152,9 @@ class FetchEnv(robot_env.RobotEnv):
             grip_velp = (
                 self._utils.get_site_xvelp(self.model, self.data, "robot0:grip") * dt
             )
-            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(
+                self.model, self.data, self._model_names.joint_names
+            )
             if self.has_object:
                 object_pos = self._utils.get_site_xpos(self.model, self.data, "object0")
                 # rotations
@@ -208,11 +210,8 @@ class FetchEnv(robot_env.RobotEnv):
             body_id = self.sim.model.body_name2id("robot0:gripper_link")
             lookat = self.sim.data.body_xpos[body_id]
         else:
-            body_id = self._mujoco_bindings.mj_name2id(
-                self.model,
-                self._mujoco_bindings.mjtObj.mjOBJ_BODY,
-                "robot0:gripper_link",
-            )
+            body_id = self._model_names.body_name2id["robot0:gripper_link"]
+
             lookat = self.data.xpos[body_id]
 
         for idx, value in enumerate(lookat):
@@ -249,7 +248,6 @@ class FetchEnv(robot_env.RobotEnv):
                         :2
                     ] + self.np_random.uniform(-self.obj_range, self.obj_range, size=2)
                 object_qpos = self.sim.data.get_joint_qpos("object0:joint")
-                print(object_qpos)
                 assert object_qpos.shape == (7,)
                 object_qpos[:2] = object_xpos
                 self.sim.data.set_joint_qpos("object0:joint", object_qpos)
@@ -272,7 +270,6 @@ class FetchEnv(robot_env.RobotEnv):
                 object_qpos = self._utils.get_joint_qpos(
                     self.model, self.data, "object0:joint"
                 )
-                print(object_qpos)
                 assert object_qpos.shape == (7,)
                 object_qpos[:2] = object_xpos
                 self._utils.set_joint_qpos(

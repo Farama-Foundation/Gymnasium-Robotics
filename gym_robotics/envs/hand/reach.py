@@ -111,14 +111,16 @@ class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
 
             self.initial_goal = self._get_achieved_goal().copy()
             self.palm_xpos = self.data.body_xpos[
-                self.model.body_name2id("robot0:palm")
+                self._model_names.body_name2id["robot0:palm"]
             ].copy()
 
     def _get_obs(self):
         if self._mujoco_bindings.__name__ == "mujoco_py":
             robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
         else:
-            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.model, self.data)
+            robot_qpos, robot_qvel = self._utils.robot_get_obs(
+                self.model, self.data, self._model_names.joint_names
+            )
         achieved_goal = self._get_achieved_goal().ravel()
         observation = np.concatenate([robot_qpos, robot_qvel, achieved_goal])
         return {

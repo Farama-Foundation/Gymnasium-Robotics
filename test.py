@@ -3,7 +3,7 @@ import mujoco_py
 import gym
 
 
-env = gym.make("HandManipulatePenTouchSensors-v2")
+env = gym.make("FetchSlide-v1")
 obs = env.reset()
 done = False
 

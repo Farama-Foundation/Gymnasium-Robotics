@@ -76,9 +76,7 @@ class HandEnv(robot_env.RobotEnv):
             body_id = self.sim.model.body_name2id("robot0:palm")
             lookat = self.sim.data.body_xpos[body_id]
         else:
-            body_id = self._mujoco_bindings.mj_name2id(
-                self.model, self._mujoco_bindings.mjtObj.mjOBJ_BODY, "robot0:palm"
-            )
+            body_id = self._model_names.body_name2id["robot0:palm"]
             lookat = self.data.xpos[body_id]
         for idx, value in enumerate(lookat):
             self.viewer.cam.lookat[idx] = value
