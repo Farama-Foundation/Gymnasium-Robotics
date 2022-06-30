@@ -49,3 +49,8 @@ class GoalEnv(gym.Env):
                 assert reward == env.compute_reward(ob['achieved_goal'], ob['desired_goal'], info)
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def compute_done(self):
+
+        raise NotImplementedError

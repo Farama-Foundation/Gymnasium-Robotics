@@ -10,21 +10,12 @@ from gym.utils import seeding
 
 from gym_robotics import GoalEnv
 
-try:
-    import mujoco_py
-except ImportError as e:
-    raise error.DependencyNotInstalled(
-        "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
-            e
-        )
-    )
-
 DEFAULT_SIZE = 500
 
 
 class RobotEnv(GoalEnv):
     def __init__(
-        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings="mujoco"
+        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
     ):
 
         if model_path.startswith("/"):
@@ -163,6 +154,7 @@ class RobotEnv(GoalEnv):
 
     def render(self, mode="human", width=DEFAULT_SIZE, height=DEFAULT_SIZE):
         self._render_callback()
+
         if mode == "rgb_array":
             self._get_viewer(mode).render(width, height)
             # window size used for old mujoco-py:
@@ -182,7 +174,12 @@ class RobotEnv(GoalEnv):
                     from gym.envs.mujoco.mujoco_rendering import Viewer
 
                     self.viewer = Viewer(self.model, self.data)
-            elif mode == "rgb_array":
+            elif mode in {
+                "rgb_array",
+                "depth_array",
+                "single_rgb_array",
+                "single_depth_array",
+            }:
                 if self._mujoco_bindings.__name__ == "mujoco_py":
                     self.viewer = self._mujoco_bindings.MjRenderContextOffscreen(
                         self.sim, -1

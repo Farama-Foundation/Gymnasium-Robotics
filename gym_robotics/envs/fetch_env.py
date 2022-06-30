@@ -123,6 +123,7 @@ class FetchEnv(robot_env.RobotEnv):
         if self._mujoco_bindings.__name__ == "mujoco_py":
             # positions
             grip_pos = self.sim.data.get_site_xpos("robot0:grip")
+
             dt = self.sim.nsubsteps * self.sim.model.opt.timestep
             grip_velp = self.sim.data.get_site_xvelp("robot0:grip") * dt
 
@@ -148,6 +149,8 @@ class FetchEnv(robot_env.RobotEnv):
         else:
             # positions
             grip_pos = self._utils.get_site_xpos(self.model, self.data, "robot0:grip")
+            # print('GRIP POS MUJOCO')
+            # print(grip_pos)
             dt = self.n_substeps * self.model.opt.timestep
             grip_velp = (
                 self._utils.get_site_xvelp(self.model, self.data, "robot0:grip") * dt
@@ -211,7 +214,6 @@ class FetchEnv(robot_env.RobotEnv):
             lookat = self.sim.data.body_xpos[body_id]
         else:
             body_id = self._model_names.body_name2id["robot0:gripper_link"]
-
             lookat = self.data.xpos[body_id]
 
         for idx, value in enumerate(lookat):

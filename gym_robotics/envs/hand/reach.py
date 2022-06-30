@@ -78,7 +78,10 @@ class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
         if self._mujoco_bindings.__name__ == "mujoco_py":
             goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
         else:
-            goal = [self.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
+            goal = [
+                self._utils.get_site_xpos(self.model, self.data, name)
+                for name in FINGERTIP_SITE_NAMES
+            ]
         return np.array(goal).flatten()
 
     # GoalEnv methods
@@ -106,11 +109,11 @@ class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
             ].copy()
         else:
             for name, value in initial_qpos.items():
-                self.data.set_joint_qpos(name, value)
+                self._utils.set_joint_qpos(self.model, self.data, name, value)
             self._mujoco_bindings.mj_forward(self.model, self.data)
 
             self.initial_goal = self._get_achieved_goal().copy()
-            self.palm_xpos = self.data.body_xpos[
+            self.palm_xpos = self.data.xpos[
                 self._model_names.body_name2id["robot0:palm"]
             ].copy()
 

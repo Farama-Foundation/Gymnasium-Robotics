@@ -1,15 +1,14 @@
-import site
+from typing import Union, Tuple, Dict
 import numpy as np
 
 from gym import error
 
 try:
     import mujoco
+    from mujoco import MjModel, MjData, mjtObj
 except ImportError as e:
     raise error.DependencyNotInstalled(
-        "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
-            e
-        )
+        "{}. (HINT: you need to install mujoco".format(e)
     )
 
 MJ_OBJ_TYPES = [
@@ -17,70 +16,10 @@ MJ_OBJ_TYPES = [
     "mjOBJ_JOINT",
     "mjOBJ_GEOM",
     "mjOBJ_SITE",
-    "mjOBJ_LIGHT",
     "mjOBJ_CAMERA",
     "mjOBJ_ACTUATOR",
     "mjOBJ_SENSOR",
-    "mjOBJ_TENDON",
-    "mjOBJ_MESH",
 ]
-
-
-def extract_mj_names(model, obj_type):
-
-    if obj_type == mujoco.mjtObj.mjOBJ_BODY:
-        name_addr = model.name_bodyadr
-        n_obj = model.nbody
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_JOINT:
-        name_addr = model.name_jntadr
-        n_obj = model.njnt
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_GEOM:
-        name_addr = model.name_geomadr
-        n_obj = model.ngeom
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_SITE:
-        name_addr = model.name_siteadr
-        n_obj = model.nsite
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_LIGHT:
-        name_addr = model.name_lightadr
-        n_obj = model.nlight
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_CAMERA:
-        name_addr = model.name_camadr
-        n_obj = model.ncam
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_ACTUATOR:
-        name_addr = model.name_actuatoradr
-        n_obj = model.nu
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_SENSOR:
-        name_addr = model.name_sensoradr
-        n_obj = model.nsensor
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_TENDON:
-        name_addr = model.name_tendonadr
-        n_obj = model.ntendon
-
-    elif obj_type == mujoco.mjtObj.mjOBJ_MESH:
-        name_addr = model.name_meshadr
-        n_obj = model.nmesh
-    else:
-        raise error.ValueError("")
-
-    id2name = {i: None for i in range(n_obj)}
-    name2id = {}
-    for addr in name_addr:
-        name = model.names[addr:].split(b"\x00")[0].decode()
-        if name:
-            obj_id = mujoco.mj_name2id(model, obj_type, name)
-            assert 0 <= obj_id < n_obj and id2name[obj_id] is None
-            name2id[name] = obj_id
-            id2name[obj_id] = name
-
-    return tuple(id2name[id] for id in sorted(name2id.values())), name2id, id2name
 
 
 def robot_get_obs(model, data, joint_names):
@@ -170,6 +109,9 @@ def reset_mocap2body_xpos(model, data):
 
 
 def get_site_jacp(model, data, site_id):
+    """Return the Jacobian' translational component of the end-effector of
+    the corresponding site id.
+    """
     jacp = np.zeros((3, model.nv))
     mujoco.mj_jacSite(model, data, jacp, None, site_id)
 
@@ -177,6 +119,9 @@ def get_site_jacp(model, data, site_id):
 
 
 def get_site_jacr(model, data, site_id):
+    """Return the Jacobian' rotational component of the end-effector of
+    the corresponding site id.
+    """
     jacr = np.zeros((3, model.nv))
     mujoco.mj_jacSite(model, data, None, jacr, site_id)
 
@@ -184,6 +129,7 @@ def get_site_jacr(model, data, site_id):
 
 
 def set_joint_qpos(model, data, name, value):
+    """Set the joint positions (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_qposadr[joint_id]
@@ -207,6 +153,7 @@ def set_joint_qpos(model, data, name, value):
 
 
 def set_joint_qvel(model, data, name, value):
+    """Set the joints linear and angular (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_dofadr[joint_id]
@@ -230,6 +177,7 @@ def set_joint_qvel(model, data, name, value):
 
 
 def get_joint_qpos(model, data, name):
+    """Return the joints position and orientation (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_qposadr[joint_id]
@@ -249,6 +197,7 @@ def get_joint_qpos(model, data, name):
 
 
 def get_joint_qvel(model, data, name):
+    """Return the joints linear and angular velocities (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_qposadr[joint_id]
@@ -292,19 +241,104 @@ def set_mocap_pos(model, data, name, value):
     data.mocap_pos[mocap_id] = value
 
 
-def set_mocap_quat(model, data, name, value):
+def set_mocap_quat(model: MjModel, data: MjData, name: str, value):
     body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
     mocap_id = model.body_mocapid[body_id]
     data.mocap_quat[mocap_id] = value
 
 
-def get_site_xmat(model, data, name):
+def get_site_xmat(model: MjModel, data: MjData, name: str):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
     return data.site_xmat[site_id].reshape(3, 3)
 
 
+def extract_mj_names(
+    model: MjModel, obj_type: mjtObj
+) -> Tuple[Union[Tuple[str, ...], Tuple[()]], Dict[str, int], Dict[int, str]]:
+
+    if obj_type == mujoco.mjtObj.mjOBJ_BODY:
+        name_addr = model.name_bodyadr
+        n_obj = model.nbody
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_JOINT:
+        name_addr = model.name_jntadr
+        n_obj = model.njnt
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_GEOM:
+        name_addr = model.name_geomadr
+        n_obj = model.ngeom
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_SITE:
+        name_addr = model.name_siteadr
+        n_obj = model.nsite
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_LIGHT:
+        name_addr = model.name_lightadr
+        n_obj = model.nlight
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_CAMERA:
+        name_addr = model.name_camadr
+        n_obj = model.ncam
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_ACTUATOR:
+        name_addr = model.name_actuatoradr
+        n_obj = model.nu
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_SENSOR:
+        name_addr = model.name_sensoradr
+        n_obj = model.nsensor
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_TENDON:
+        name_addr = model.name_tendonadr
+        n_obj = model.ntendon
+
+    elif obj_type == mujoco.mjtObj.mjOBJ_MESH:
+        name_addr = model.name_meshadr
+        n_obj = model.nmesh
+    else:
+        raise ValueError(
+            "`{}` was passed as the MuJoCo model object type. The MuJoCo model object type can only be of the following mjtObj enum types: {}.".format(
+                obj_type, MJ_OBJ_TYPES
+            )
+        )
+
+    id2name = {i: None for i in range(n_obj)}
+    name2id = {}
+    for addr in name_addr:
+        name = model.names[addr:].split(b"\x00")[0].decode()
+        if name:
+            obj_id = mujoco.mj_name2id(model, obj_type, name)
+            assert 0 <= obj_id < n_obj and id2name[obj_id] is None
+            name2id[name] = obj_id
+            id2name[obj_id] = name
+
+    return tuple(id2name[id] for id in sorted(name2id.values())), name2id, id2name
+
+
 class MujocoModelNames(object):
-    def __init__(self, model):
+    """Access mjtObj object names and ids of the current MuJoCo model.
+
+    This class supports access to the names and ids of the following mjObj types:
+        mjOBJ_BODY
+        mjOBJ_JOINT
+        mjOBJ_GEOM
+        mjOBJ_SITE
+        mjOBJ_CAMERA
+        mjOBJ_ACTUATOR
+        mjOBJ_SENSOR
+
+    The properties provided for each ``mjObj`` are:
+        ``mjObj``_names: list of the mjObj names in the model.
+        ``mjObj``_name2id: dictionary with
+        ``mjObj``_id2name:
+    """
+
+    def __init__(self, model: MjModel):
+        """Access mjtObj object names and ids of the current MuJoCo model.
+
+        Args:
+            model: mjModel of the MuJoCo environment.
+        """
         (
             self._body_names,
             self._body_name2id,
