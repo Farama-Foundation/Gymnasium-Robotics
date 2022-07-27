@@ -2,14 +2,14 @@ import os
 import numpy as np
 
 from gym import utils
-from gym_robotics.envs import fetch_env
+from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
 
 
 # Ensure we get the path separator correct on windows
 MODEL_XML_PATH = os.path.join("fetch", "slide.xml")
 
 
-class FetchSlideEnv(fetch_env.FetchEnv, utils.EzPickle):
+class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, utils.EzPickle):
     def __init__(self, mujoco_bindings, reward_type="sparse"):
         initial_qpos = {
             "robot0:slide0": 0.05,
@@ -17,7 +17,34 @@ class FetchSlideEnv(fetch_env.FetchEnv, utils.EzPickle):
             "robot0:slide2": 0.0,
             "object0:joint": [1.7, 1.1, 0.41, 1.0, 0.0, 0.0, 0.0],
         }
-        fetch_env.FetchEnv.__init__(
+        MujocoPyFetchSlideEnv.__init__(
+            self,
+            MODEL_XML_PATH,
+            has_object=True,
+            block_gripper=True,
+            n_substeps=20,
+            gripper_extra_height=-0.02,
+            target_in_the_air=False,
+            target_offset=np.array([0.4, 0.0, 0.0]),
+            obj_range=0.1,
+            target_range=0.3,
+            distance_threshold=0.05,
+            initial_qpos=initial_qpos,
+            reward_type=reward_type,
+            mujoco_bindings=mujoco_bindings,
+        )
+        utils.EzPickle.__init__(self, reward_type=reward_type)
+
+
+class MujocoFetchSlideEnv(MujocoFetchEnv, utils.EzPickle):
+    def __init__(self, mujoco_bindings, reward_type="sparse"):
+        initial_qpos = {
+            "robot0:slide0": 0.05,
+            "robot0:slide1": 0.48,
+            "robot0:slide2": 0.0,
+            "object0:joint": [1.7, 1.1, 0.41, 1.0, 0.0, 0.0, 0.0],
+        }
+        MujocoFetchSlideEnv.__init__(
             self,
             MODEL_XML_PATH,
             has_object=True,

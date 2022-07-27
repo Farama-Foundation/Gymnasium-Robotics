@@ -3,80 +3,51 @@ import copy
 from typing import Optional
 
 import numpy as np
-
-import gym
 from gym import error, logger, spaces
-from gym.utils import seeding
+
+import mujoco
 
 from gym_robotics import GoalEnv
 
-DEFAULT_SIZE = 500
+MUJOCO_PY_NOT_INSTALLED = False
+MUJOCO_NOT_INSTALLED = False
+
+try:
+    import mujoco_py
+    from gym_robotics.utils import mujoco_py_utils
+except ImportError as e:
+    MUJOCO_PY_IMPORT_ERROR = e
+    MUJOCO_PY_NOT_INSTALLED = True
+
+try:
+    import mujoco
+    from gym_robotics.utils import mujoco_utils
+except ImportError as e:
+    MUJOCO_IMPORT_ERROR = e
+    MUJOCO_NOT_INSTALLED = True
 
 
-class RobotEnv(GoalEnv):
+DEFAULT_SIZE = 480
+
+
+class BaseRobotEnv(GoalEnv):
     def __init__(
-        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
+        self, model_path, initial_qpos, n_actions, n_substeps
     ):
 
         if model_path.startswith("/"):
-            fullpath = model_path
+            self.fullpath = model_path
         else:
-            fullpath = os.path.join(os.path.dirname(__file__), "assets", model_path)
-        if not os.path.exists(fullpath):
-            raise OSError(f"File {fullpath} does not exist")
+            self.fullpath = os.path.join(os.path.dirname(__file__), "assets", model_path)
+        if not os.path.exists(self.fullpath):
+            raise OSError(f"File {self.fullpath} does not exist")
 
         self.n_substeps = n_substeps
 
-        if mujoco_bindings == "mujoco_py":
-            logger.warn(
-                "This version of the mujoco environments depends "
-                "on the mujoco-py bindings, which are no longer maintained "
-                "and may stop working. Please upgrade to the v4 versions of "
-                "the environments (which depend on the mujoco python bindings instead), unless "
-                "you are trying to precisely replicate previous works)."
-            )
-            try:
-                import mujoco_py  # noqa: F811
-                from gym_robotics.utils import mujoco_py_utils
+        self.initial_qpos = initial_qpos          
 
-                self._mujoco_bindings = mujoco_py
-                self._utils = mujoco_py_utils
-
-            except ImportError as e:
-                raise error.DependencyNotInstalled(
-                    "{}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)".format(
-                        e
-                    )
-                )
-
-            self.model = self._mujoco_bindings.load_model_from_path(fullpath)
-            self.sim = self._mujoco_bindings.MjSim(self.model, nsubsteps=n_substeps)
-            self.data = self.sim.data
-
-            self._env_setup(initial_qpos=initial_qpos)
-            self.initial_state = copy.deepcopy(self.sim.get_state())
-
-        elif mujoco_bindings == "mujoco":
-            try:
-                import mujoco
-                from gym_robotics.utils import mujoco_utils
-
-                self._mujoco_bindings = mujoco
-                self._utils = mujoco_utils
-
-            except ImportError as e:
-                raise error.DependencyNotInstalled(
-                    f"{e}. (HINT: you need to install mujoco)"
-                )
-            self.model = self._mujoco_bindings.MjModel.from_xml_path(fullpath)
-            self.data = self._mujoco_bindings.MjData(self.model)
-            self._model_names = self._utils.MujocoModelNames(self.model)
-
-            self._env_setup(initial_qpos=initial_qpos)
-            self.initial_time = self.data.time
-            self.initial_qpos = np.copy(self.data.qpos)
-            self.initial_qvel = np.copy(self.data.qvel)
-
+        self._initialize_simulation()
+        
         self.viewer = None
         self._viewers = {}
 
@@ -102,13 +73,6 @@ class RobotEnv(GoalEnv):
             )
         )
 
-    @property
-    def dt(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            return self.sim.model.opt.timestep * self.sim.nsubsteps
-        else:
-            return self.model.opt.timestep * self.n_substeps
-
     # Env methods
     # ----------------------------
 
@@ -118,10 +82,8 @@ class RobotEnv(GoalEnv):
 
         action = np.clip(action, self.action_space.low, self.action_space.high)
         self._set_action(action)
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            self.sim.step()
-        else:
-            self._mujoco_bindings.mj_step(self.model, self.data, nstep=self.n_substeps)
+        
+        self._mujoco_step(action)
 
         self._step_callback()
         obs = self._get_obs()
@@ -164,59 +126,29 @@ class RobotEnv(GoalEnv):
         elif mode == "human":
             self._get_viewer(mode).render()
 
-    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
-        self.viewer = self._viewers.get(mode)
-        if self.viewer is None:
-            if mode == "human":
-                if self._mujoco_bindings.__name__ == "mujoco_py":
-                    self.viewer = self._mujoco_bindings.MjViewer(self.sim)
-                else:
-                    from gym.envs.mujoco.mujoco_rendering import Viewer
-
-                    self.viewer = Viewer(self.model, self.data)
-            elif mode in {
-                "rgb_array",
-                "depth_array",
-                "single_rgb_array",
-                "single_depth_array",
-            }:
-                if self._mujoco_bindings.__name__ == "mujoco_py":
-                    self.viewer = self._mujoco_bindings.MjRenderContextOffscreen(
-                        self.sim, -1
-                    )
-                else:
-                    from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
-
-                    self.viewer = RenderContextOffscreen(
-                        width, height, self.model, self.data
-                    )
-            self._viewer_setup()
-            self._viewers[mode] = self.viewer
-        return self.viewer
 
     # Extension methods
     # ----------------------------
+    def _mujoco_step(self,action):
+        raise NotImplementedError
 
+    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+        raise NotImplementedError
+    
     def _reset_sim(self):
         """Resets a simulation and indicates whether or not it was successful.
         If a reset was unsuccessful (e.g. if a randomized state caused an error in the
         simulation), this method should indicate such a failure by returning False.
         In such a case, this method will be called again to attempt a the reset again.
         """
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            self.sim.set_state(self.initial_state)
-            self.sim.forward()
-        else:
-            self.data.time = self.initial_time
-            self.data.qpos[:] = np.copy(self.initial_qpos)
-            self.data.qvel[:] = np.copy(self.initial_qvel)
-            if self.model.na != 0:
-                self.data.act[:] = None
-
-            self._mujoco_bindings.mj_forward(self.model, self.data)
-
         return True
 
+    def _initialize_simulation(self):
+        """
+        Initialize MuJoCo simulation data structures mjModel and mjData.
+        """
+        raise NotImplementedError
+        
     def _get_obs(self):
         """Returns the observation."""
         raise NotImplementedError()
@@ -256,3 +188,118 @@ class RobotEnv(GoalEnv):
         to enforce additional constraints on the simulation state.
         """
         pass
+
+
+class MujocoRobotEnv(BaseRobotEnv):
+    def __init__(self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings):
+        super().__init__(model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings)
+        self._mujoco = mujoco
+        self._utils = mujoco_utils
+
+    def _initialize_simulation(self):
+        self.model = self._mujoco_bindings.MjModel.from_xml_path(self.fullpath)
+        self.data = self._mujoco_bindings.MjData(self.model)
+        self._model_names = self._utils.MujocoModelNames(self.model)
+
+        self._env_setup(initial_qpos=self.initial_qpos)
+        self.initial_time = self.data.time
+        self.initial_qpos = np.copy(self.data.qpos)
+        self.initial_qvel = np.copy(self.data.qvel)
+
+    def _reset_sim(self):
+        self.data.time = self.initial_time
+        self.data.qpos[:] = np.copy(self.initial_qpos)
+        self.data.qvel[:] = np.copy(self.initial_qvel)
+        if self.model.na != 0:
+            self.data.act[:] = None
+
+        mujoco.mj_forward(self.model, self.data)
+        return super()._reset_sim()
+    
+    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+        self.viewer = self._viewers.get(mode)
+        if self.viewer is None:
+            if mode == "human":
+                from gym.envs.mujoco.mujoco_rendering import Viewer
+                self.viewer = Viewer(self.model, self.data)
+            elif mode in {
+                "rgb_array",
+                "depth_array",
+                "single_rgb_array",
+                "single_depth_array",
+            }:
+                from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
+
+                self.viewer = RenderContextOffscreen(
+                    width, height, self.model, self.data
+                )
+            self._viewer_setup()
+            self._viewers[mode] = self.viewer
+        return self.viewer
+    
+    @property
+    def dt(self):
+        return self.model.opt.timestep * self.n_substeps
+
+    def _mujoco_step(self, action):
+        self._mujoco.mj_step(self.model, self.data, nstep=self.n_substeps)
+
+    
+class MujocoPyRobotEnv(BaseRobotEnv):
+    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
+        if MUJOCO_PY_NOT_INSTALLED:
+            raise error.DependencyNotInstalled(
+                f"{MUJOCO_PY_IMPORT_ERROR}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)"
+            )
+        self._mujoco_py = mujoco_py
+        self._utils = mujoco_py_utils
+
+        logger.warn(
+            "This version of the mujoco environments depends "
+            "on the mujoco-py bindings, which are no longer maintained "
+            "and may stop working. Please upgrade to the v4 versions of "
+            "the environments (which depend on the mujoco python bindings instead), unless "
+            "you are trying to precisely replicate previous works)."
+        )
+
+        super().__init__(model_path, initial_qpos, n_actions, n_substeps)
+    
+    def _initialize_simulation(self):
+        self.model = self._mujoco_py.load_model_from_path(self.fullpath)
+        self.sim = self._mujoco_py.MjSim(self.model, nsubsteps=self.n_substeps)
+        self.data = self.sim.data
+
+        self._env_setup(initial_qpos=self.initial_qpos)
+        self.initial_state = copy.deepcopy(self.sim.get_state())
+
+    def _reset_sim(self):
+        self.sim.set_state(self.initial_state)
+        self.sim.forward()
+        return super()._reset_sim()
+    
+    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+        self.viewer = self._viewers.get(mode)
+        if self.viewer is None:
+            if mode == "human":
+                self.viewer = self._mujoco_py.MjViewer(self.sim)
+
+            elif mode in {
+                "rgb_array",
+                "depth_array",
+                "single_rgb_array",
+                "single_depth_array",
+            }:
+                self.viewer = self._mujoco_py.MjRenderContextOffscreen(
+                    self.sim, -1
+                )
+            self._viewer_setup()
+            self._viewers[mode] = self.viewer
+        return self.viewer
+    
+    @property
+    def dt(self):
+        return self.sim.model.opt.timestep * self.sim.nsubsteps
+    
+    def _mujoco_step(self, action):
+        self.sim.step()
+

@@ -51,6 +51,6 @@ class GoalEnv(gym.Env):
         raise NotImplementedError
 
     @abstractmethod
-    def compute_done(self):
+    def compute_done(self, achieved_goal, desired_goal, info):
 
         raise NotImplementedError
