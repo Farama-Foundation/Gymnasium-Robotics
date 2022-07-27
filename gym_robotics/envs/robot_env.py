@@ -31,23 +31,23 @@ DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
-    def __init__(
-        self, model_path, initial_qpos, n_actions, n_substeps
-    ):
+    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
 
         if model_path.startswith("/"):
             self.fullpath = model_path
         else:
-            self.fullpath = os.path.join(os.path.dirname(__file__), "assets", model_path)
+            self.fullpath = os.path.join(
+                os.path.dirname(__file__), "assets", model_path
+            )
         if not os.path.exists(self.fullpath):
             raise OSError(f"File {self.fullpath} does not exist")
 
         self.n_substeps = n_substeps
 
-        self.initial_qpos = initial_qpos          
+        self.initial_qpos = initial_qpos
 
         self._initialize_simulation()
-        
+
         self.viewer = None
         self._viewers = {}
 
@@ -82,7 +82,7 @@ class BaseRobotEnv(GoalEnv):
 
         action = np.clip(action, self.action_space.low, self.action_space.high)
         self._set_action(action)
-        
+
         self._mujoco_step(action)
 
         self._step_callback()
@@ -126,15 +126,14 @@ class BaseRobotEnv(GoalEnv):
         elif mode == "human":
             self._get_viewer(mode).render()
 
-
     # Extension methods
     # ----------------------------
-    def _mujoco_step(self,action):
+    def _mujoco_step(self, action):
         raise NotImplementedError
 
     def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
         raise NotImplementedError
-    
+
     def _reset_sim(self):
         """Resets a simulation and indicates whether or not it was successful.
         If a reset was unsuccessful (e.g. if a randomized state caused an error in the
@@ -148,7 +147,7 @@ class BaseRobotEnv(GoalEnv):
         Initialize MuJoCo simulation data structures mjModel and mjData.
         """
         raise NotImplementedError
-        
+
     def _get_obs(self):
         """Returns the observation."""
         raise NotImplementedError()
@@ -191,8 +190,12 @@ class BaseRobotEnv(GoalEnv):
 
 
 class MujocoRobotEnv(BaseRobotEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings):
-        super().__init__(model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings)
+    def __init__(
+        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
+    ):
+        super().__init__(
+            model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
+        )
         self._mujoco = mujoco
         self._utils = mujoco_utils
 
@@ -215,12 +218,13 @@ class MujocoRobotEnv(BaseRobotEnv):
 
         mujoco.mj_forward(self.model, self.data)
         return super()._reset_sim()
-    
+
     def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == "human":
                 from gym.envs.mujoco.mujoco_rendering import Viewer
+
                 self.viewer = Viewer(self.model, self.data)
             elif mode in {
                 "rgb_array",
@@ -236,7 +240,7 @@ class MujocoRobotEnv(BaseRobotEnv):
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer
-    
+
     @property
     def dt(self):
         return self.model.opt.timestep * self.n_substeps
@@ -244,7 +248,7 @@ class MujocoRobotEnv(BaseRobotEnv):
     def _mujoco_step(self, action):
         self._mujoco.mj_step(self.model, self.data, nstep=self.n_substeps)
 
-    
+
 class MujocoPyRobotEnv(BaseRobotEnv):
     def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
         if MUJOCO_PY_NOT_INSTALLED:
@@ -263,7 +267,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         )
 
         super().__init__(model_path, initial_qpos, n_actions, n_substeps)
-    
+
     def _initialize_simulation(self):
         self.model = self._mujoco_py.load_model_from_path(self.fullpath)
         self.sim = self._mujoco_py.MjSim(self.model, nsubsteps=self.n_substeps)
@@ -276,7 +280,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         self.sim.set_state(self.initial_state)
         self.sim.forward()
         return super()._reset_sim()
-    
+
     def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
@@ -289,17 +293,14 @@ class MujocoPyRobotEnv(BaseRobotEnv):
                 "single_rgb_array",
                 "single_depth_array",
             }:
-                self.viewer = self._mujoco_py.MjRenderContextOffscreen(
-                    self.sim, -1
-                )
+                self.viewer = self._mujoco_py.MjRenderContextOffscreen(self.sim, -1)
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer
-    
+
     @property
     def dt(self):
         return self.sim.model.opt.timestep * self.sim.nsubsteps
-    
+
     def _mujoco_step(self, action):
         self.sim.step()
-

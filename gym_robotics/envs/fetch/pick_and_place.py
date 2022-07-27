@@ -1,6 +1,6 @@
 import os
 from gym import utils
-from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv 
+from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
 
 
 # Ensure we get the path separator correct on windows
