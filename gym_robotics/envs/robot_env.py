@@ -5,8 +5,6 @@ from typing import Optional
 import numpy as np
 from gym import error, logger, spaces
 
-import mujoco
-
 from gym_robotics import GoalEnv
 
 MUJOCO_PY_NOT_INSTALLED = False
@@ -190,18 +188,15 @@ class BaseRobotEnv(GoalEnv):
 
 
 class MujocoRobotEnv(BaseRobotEnv):
-    def __init__(
-        self, model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
-    ):
-        super().__init__(
-            model_path, initial_qpos, n_actions, n_substeps, mujoco_bindings
-        )
+    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
         self._mujoco = mujoco
         self._utils = mujoco_utils
 
+        super().__init__(model_path, initial_qpos, n_actions, n_substeps)
+
     def _initialize_simulation(self):
-        self.model = self._mujoco_bindings.MjModel.from_xml_path(self.fullpath)
-        self.data = self._mujoco_bindings.MjData(self.model)
+        self.model = self._mujoco.MjModel.from_xml_path(self.fullpath)
+        self.data = self._mujoco.MjData(self.model)
         self._model_names = self._utils.MujocoModelNames(self.model)
 
         self._env_setup(initial_qpos=self.initial_qpos)

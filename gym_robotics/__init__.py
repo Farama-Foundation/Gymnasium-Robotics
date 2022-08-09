@@ -17,90 +17,89 @@ def register_robotics_envs():
         # Fetch
         register(
             id=f"FetchSlide{suffix}-v1",
-            entry_point="gym_robotics.envs:FetchSlideEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyFetchSlideEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchSlide{suffix}-v2",
-            entry_point="gym_robotics.envs:FetchSlideEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoFetchSlideEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchPickAndPlace{suffix}-v1",
-            entry_point="gym_robotics.envs:FetchPickAndPlaceEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyFetchPickAndPlaceEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchPickAndPlace{suffix}-v2",
-            entry_point="gym_robotics.envs:FetchPickAndPlaceEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoFetchPickAndPlaceEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchReach{suffix}-v1",
-            entry_point="gym_robotics.envs:FetchReachEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyFetchReachEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchReach{suffix}-v2",
-            entry_point="gym_robotics.envs:FetchReachEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyFetchReachEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchReach{suffix}-v3",
-            entry_point="gym_robotics.envs:FetchReachEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoFetchReachEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchPush{suffix}-v1",
-            entry_point="gym_robotics.envs:FetchPushEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyFetchPushEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"FetchPush{suffix}-v2",
-            entry_point="gym_robotics.envs:FetchPushEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoFetchPushEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         # Hand
         register(
             id=f"HandReach{suffix}-v0",
-            entry_point="gym_robotics.envs:HandReachEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco_py"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoPyHandReachEnv",
+            kwargs="mujoco_py",
             max_episode_steps=50,
         )
 
         register(
             id=f"HandReach{suffix}-v1",
-            entry_point="gym_robotics.envs:HandReachEnv",
-            kwargs=_merge({"mujoco_bindings": "mujoco"}, kwargs),
+            entry_point="gym_robotics.envs:MujocoHandReachEnv",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 
         register(
             id=f"HandManipulateBlockRotateZ{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "z",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -109,12 +108,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateZ{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "z",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -123,13 +121,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateZTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "z",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -138,13 +135,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateZTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "z",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -153,13 +149,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateZTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "z",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -168,12 +163,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateParallel{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "parallel",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -182,12 +176,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateParallel{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "parallel",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -196,13 +189,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateParallelTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "parallel",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -211,13 +203,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateParallelTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "parallel",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -226,13 +217,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateParallelTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "parallel",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -241,12 +231,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateXYZ{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -255,12 +244,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateXYZ{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -269,13 +257,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateXYZTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -284,13 +271,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateXYZTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -299,13 +285,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockRotateXYZTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -314,12 +299,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockFull{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -328,12 +312,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockFull{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -343,12 +326,11 @@ def register_robotics_envs():
         # Alias for "Full"
         register(
             id=f"HandManipulateBlock{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -357,12 +339,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlock{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -371,13 +352,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -386,13 +366,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -401,13 +380,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateBlockTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandBlockTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandBlockTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -416,12 +394,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggRotate{suffix}-v0",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -430,12 +407,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggRotate{suffix}-v1",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -444,13 +420,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggRotateTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -459,13 +434,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggRotateTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -474,13 +448,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggRotateTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -489,12 +462,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggFull{suffix}-v0",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -503,12 +475,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggFull{suffix}-v1",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -518,12 +489,11 @@ def register_robotics_envs():
         # Alias for "Full"
         register(
             id=f"HandManipulateEgg{suffix}-v0",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -532,12 +502,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEgg{suffix}-v1",
-            entry_point="gym_robotics.envs:HandEggEnv",
+            entry_point="gym_robotics.envs:MujocoHandEggEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -546,13 +515,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -561,13 +529,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -576,13 +543,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulateEggTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandEggTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandEggTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -591,12 +557,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenRotate{suffix}-v0",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -605,12 +570,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenRotate{suffix}-v1",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -619,13 +583,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenRotateTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -634,13 +597,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenRotateTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -649,13 +611,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenRotateTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "ignore",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -664,12 +625,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenFull{suffix}-v0",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -678,12 +638,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenFull{suffix}-v1",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -693,12 +652,11 @@ def register_robotics_envs():
         # Alias for "Full"
         register(
             id=f"HandManipulatePen{suffix}-v0",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -707,12 +665,11 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePen{suffix}-v1",
-            entry_point="gym_robotics.envs:HandPenEnv",
+            entry_point="gym_robotics.envs:MujocoHandPenEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),
@@ -721,13 +678,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenTouchSensors{suffix}-v0",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -736,13 +692,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenTouchSensors{suffix}-v1",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoPyHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "boolean",
-                    "mujoco_bindings": "mujoco_py",
                 },
                 kwargs,
             ),
@@ -751,13 +706,12 @@ def register_robotics_envs():
 
         register(
             id=f"HandManipulatePenTouchSensors{suffix}-v2",
-            entry_point="gym_robotics.envs:HandPenTouchSensorsEnv",
+            entry_point="gym_robotics.envs:MujocoHandPenTouchSensorsEnv",
             kwargs=_merge(
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
                     "touch_get_obs": "sensordata",
-                    "mujoco_bindings": "mujoco",
                 },
                 kwargs,
             ),

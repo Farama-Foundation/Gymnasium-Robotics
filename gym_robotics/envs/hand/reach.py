@@ -1,8 +1,10 @@
 import os
+from re import L
+from typing import Union
 import numpy as np
 
 from gym import utils
-from gym_robotics.envs import hand_env
+from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 
 
 FINGERTIP_SITE_NAMES = [
@@ -51,10 +53,149 @@ def goal_distance(goal_a, goal_b):
     return np.linalg.norm(goal_a - goal_b, axis=-1)
 
 
-class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
+def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
+    class BaseHandReachEnv(HandEnvClass, utils.EzPickle):
+        def __init__(
+            self,
+            distance_threshold=0.01,
+            n_substeps=20,
+            relative_control=False,
+            initial_qpos=DEFAULT_INITIAL_QPOS,
+            reward_type="sparse",
+        ) -> None:
+
+            utils.EzPickle.__init__(**locals())
+            self.distance_threshold = distance_threshold
+            self.reward_type = reward_type
+
+            HandEnvClass.__init__(
+                self,
+                MODEL_XML_PATH,
+                n_substeps=n_substeps,
+                initial_qpos=initial_qpos,
+                relative_control=relative_control,
+            )
+
+        # GoalEnv methods
+        # ----------------------------
+
+        def compute_reward(self, achieved_goal, goal, info):
+            d = goal_distance(achieved_goal, goal)
+            if self.reward_type == "sparse":
+                return -(d > self.distance_threshold).astype(np.float32)
+            else:
+                return -d
+
+        def _sample_goal(self):
+            thumb_name = "robot0:S_thtip"
+            finger_names = [name for name in FINGERTIP_SITE_NAMES if name != thumb_name]
+            finger_name = self.np_random.choice(finger_names)
+
+            thumb_idx = FINGERTIP_SITE_NAMES.index(thumb_name)
+            finger_idx = FINGERTIP_SITE_NAMES.index(finger_name)
+            assert thumb_idx != finger_idx
+
+            # Pick a meeting point above the hand.
+            meeting_pos = self.palm_xpos + np.array([0.0, -0.09, 0.05])
+            meeting_pos += self.np_random.normal(scale=0.005, size=meeting_pos.shape)
+
+            # Slightly move meeting goal towards the respective finger to avoid that they
+            # overlap.
+            goal = self.initial_goal.copy().reshape(-1, 3)
+            for idx in [thumb_idx, finger_idx]:
+                offset_direction = meeting_pos - goal[idx]
+                offset_direction /= np.linalg.norm(offset_direction)
+                goal[idx] = meeting_pos - 0.005 * offset_direction
+
+            if self.np_random.uniform() < 0.1:
+                # With some probability, ask all fingers to move back to the origin.
+                # This avoids that the thumb constantly stays near the goal position already.
+                goal = self.initial_goal.copy()
+            return goal.flatten()
+
+        def _is_success(self, achieved_goal, desired_goal):
+            d = goal_distance(achieved_goal, desired_goal)
+            return (d < self.distance_threshold).astype(np.float32)
+
+        def _get_achieved_goal(self):
+            NotImplementedError
+
+    return BaseHandReachEnv
+
+
+class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     def __init__(
         self,
-        mujoco_bindings,
+        distance_threshold=0.01,
+        n_substeps=20,
+        relative_control=False,
+        initial_qpos=DEFAULT_INITIAL_QPOS,
+        reward_type="sparse",
+    ):
+
+        super().__init__(
+            distance_threshold=distance_threshold,
+            n_substeps=n_substeps,
+            relative_control=relative_control,
+            initial_qpos=initial_qpos,
+            reward_type=reward_type,
+        )
+
+    def _get_achieved_goal(self):
+        goal = [
+            self._utils.get_site_xpos(self.model, self.data, name)
+            for name in FINGERTIP_SITE_NAMES
+        ]
+        return np.array(goal).flatten()
+
+    # RobotEnv methods
+    # ----------------------------
+
+    def _env_setup(self, initial_qpos):
+        for name, value in initial_qpos.items():
+            self._utils.set_joint_qpos(self.model, self.data, name, value)
+        self._mujoco.mj_forward(self.model, self.data)
+
+        self.initial_goal = self._get_achieved_goal().copy()
+        self.palm_xpos = self.data.xpos[
+            self._model_names.body_name2id["robot0:palm"]
+        ].copy()
+
+    def _get_obs(self):
+        robot_qpos, robot_qvel = self._utils.robot_get_obs(
+            self.model, self.data, self._model_names.joint_names
+        )
+        achieved_goal = self._get_achieved_goal().ravel()
+        observation = np.concatenate([robot_qpos, robot_qvel, achieved_goal])
+        return {
+            "observation": observation.copy(),
+            "achieved_goal": achieved_goal.copy(),
+            "desired_goal": self.goal.copy(),
+        }
+
+    def _render_callback(self):
+        # Visualize targets.
+        sites_offset = (self.data.site_xpos - self.model.site_pos).copy()
+        goal = self.goal.reshape(5, 3)
+        for finger_idx in range(5):
+            site_name = f"target{finger_idx}"
+            site_id = self.sim.site_name2id(site_name)
+            self.model.site_pos[site_id] = goal[finger_idx] - sites_offset[site_id]
+
+        # Visualize finger positions.
+        achieved_goal = self._get_achieved_goal().reshape(5, 3)
+        for finger_idx in range(5):
+            site_name = f"finger{finger_idx}"
+            site_id = self.model.site_name2id(site_name)
+            self.model.site_pos[site_id] = (
+                achieved_goal[finger_idx] - sites_offset[site_id]
+            )
+        self._mujoco.mj_forward(self.model, self.data)
+
+
+class MujocoPyHandReachEnv(MujocoPyHandEnv, utils.EzPickle):
+    def __init__(
+        self,
         distance_threshold=0.01,
         n_substeps=20,
         relative_control=False,
@@ -65,65 +206,35 @@ class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
         self.distance_threshold = distance_threshold
         self.reward_type = reward_type
 
-        hand_env.HandEnv.__init__(
+        MujocoPyHandEnv.__init__(
             self,
             MODEL_XML_PATH,
             n_substeps=n_substeps,
             initial_qpos=initial_qpos,
             relative_control=relative_control,
-            mujoco_bindings=mujoco_bindings,
         )
 
     def _get_achieved_goal(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
-        else:
-            goal = [
-                self._utils.get_site_xpos(self.model, self.data, name)
-                for name in FINGERTIP_SITE_NAMES
-            ]
+        goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
+
         return np.array(goal).flatten()
-
-    # GoalEnv methods
-    # ----------------------------
-
-    def compute_reward(self, achieved_goal, goal, info):
-        d = goal_distance(achieved_goal, goal)
-        if self.reward_type == "sparse":
-            return -(d > self.distance_threshold).astype(np.float32)
-        else:
-            return -d
 
     # RobotEnv methods
     # ----------------------------
 
     def _env_setup(self, initial_qpos):
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            for name, value in initial_qpos.items():
-                self.sim.data.set_joint_qpos(name, value)
-            self.sim.forward()
+        for name, value in initial_qpos.items():
+            self.sim.data.set_joint_qpos(name, value)
+        self.sim.forward()
 
-            self.initial_goal = self._get_achieved_goal().copy()
-            self.palm_xpos = self.sim.data.body_xpos[
-                self.sim.model.body_name2id("robot0:palm")
-            ].copy()
-        else:
-            for name, value in initial_qpos.items():
-                self._utils.set_joint_qpos(self.model, self.data, name, value)
-            self._mujoco_bindings.mj_forward(self.model, self.data)
-
-            self.initial_goal = self._get_achieved_goal().copy()
-            self.palm_xpos = self.data.xpos[
-                self._model_names.body_name2id["robot0:palm"]
-            ].copy()
+        self.initial_goal = self._get_achieved_goal().copy()
+        self.palm_xpos = self.sim.data.body_xpos[
+            self.sim.model.body_name2id("robot0:palm")
+        ].copy()
 
     def _get_obs(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
-        else:
-            robot_qpos, robot_qvel = self._utils.robot_get_obs(
-                self.model, self.data, self._model_names.joint_names
-            )
+        robot_qpos, robot_qvel = self._utils.robot_get_obs(self.sim)
+
         achieved_goal = self._get_achieved_goal().ravel()
         observation = np.concatenate([robot_qpos, robot_qvel, achieved_goal])
         return {
@@ -132,73 +243,21 @@ class HandReachEnv(hand_env.HandEnv, utils.EzPickle):
             "desired_goal": self.goal.copy(),
         }
 
-    def _sample_goal(self):
-        thumb_name = "robot0:S_thtip"
-        finger_names = [name for name in FINGERTIP_SITE_NAMES if name != thumb_name]
-        finger_name = self.np_random.choice(finger_names)
-
-        thumb_idx = FINGERTIP_SITE_NAMES.index(thumb_name)
-        finger_idx = FINGERTIP_SITE_NAMES.index(finger_name)
-        assert thumb_idx != finger_idx
-
-        # Pick a meeting point above the hand.
-        meeting_pos = self.palm_xpos + np.array([0.0, -0.09, 0.05])
-        meeting_pos += self.np_random.normal(scale=0.005, size=meeting_pos.shape)
-
-        # Slightly move meeting goal towards the respective finger to avoid that they
-        # overlap.
-        goal = self.initial_goal.copy().reshape(-1, 3)
-        for idx in [thumb_idx, finger_idx]:
-            offset_direction = meeting_pos - goal[idx]
-            offset_direction /= np.linalg.norm(offset_direction)
-            goal[idx] = meeting_pos - 0.005 * offset_direction
-
-        if self.np_random.uniform() < 0.1:
-            # With some probability, ask all fingers to move back to the origin.
-            # This avoids that the thumb constantly stays near the goal position already.
-            goal = self.initial_goal.copy()
-        return goal.flatten()
-
-    def _is_success(self, achieved_goal, desired_goal):
-        d = goal_distance(achieved_goal, desired_goal)
-        return (d < self.distance_threshold).astype(np.float32)
-
     def _render_callback(self):
-        if self._mujoco_bindings.__name__ == "mujoco_py":
-            # Visualize targets.
-            sites_offset = (self.sim.data.site_xpos - self.sim.model.site_pos).copy()
-            goal = self.goal.reshape(5, 3)
-            for finger_idx in range(5):
-                site_name = f"target{finger_idx}"
-                site_id = self.sim.model.site_name2id(site_name)
-                self.sim.model.site_pos[site_id] = (
-                    goal[finger_idx] - sites_offset[site_id]
-                )
+        # Visualize targets.
+        sites_offset = (self.sim.data.site_xpos - self.sim.model.site_pos).copy()
+        goal = self.goal.reshape(5, 3)
+        for finger_idx in range(5):
+            site_name = f"target{finger_idx}"
+            site_id = self.sim.model.site_name2id(site_name)
+            self.sim.model.site_pos[site_id] = goal[finger_idx] - sites_offset[site_id]
 
-            # Visualize finger positions.
-            achieved_goal = self._get_achieved_goal().reshape(5, 3)
-            for finger_idx in range(5):
-                site_name = f"finger{finger_idx}"
-                site_id = self.sim.model.site_name2id(site_name)
-                self.sim.model.site_pos[site_id] = (
-                    achieved_goal[finger_idx] - sites_offset[site_id]
-                )
-            self.sim.forward()
-        else:
-            # Visualize targets.
-            sites_offset = (self.data.site_xpos - self.model.site_pos).copy()
-            goal = self.goal.reshape(5, 3)
-            for finger_idx in range(5):
-                site_name = f"target{finger_idx}"
-                site_id = self.sim.site_name2id(site_name)
-                self.model.site_pos[site_id] = goal[finger_idx] - sites_offset[site_id]
-
-            # Visualize finger positions.
-            achieved_goal = self._get_achieved_goal().reshape(5, 3)
-            for finger_idx in range(5):
-                site_name = f"finger{finger_idx}"
-                site_id = self.model.site_name2id(site_name)
-                self.sim.site_pos[site_id] = (
-                    achieved_goal[finger_idx] - sites_offset[site_id]
-                )
-            self._mujoco_bindings.mj_forward(self.model, self.data)
+        # Visualize finger positions.
+        achieved_goal = self._get_achieved_goal().reshape(5, 3)
+        for finger_idx in range(5):
+            site_name = f"finger{finger_idx}"
+            site_id = self.sim.model.site_name2id(site_name)
+            self.sim.model.site_pos[site_id] = (
+                achieved_goal[finger_idx] - sites_offset[site_id]
+            )
+        self.sim.forward()
