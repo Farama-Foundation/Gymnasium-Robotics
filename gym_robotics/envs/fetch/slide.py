@@ -17,7 +17,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, utils.EzPickle):
             "robot0:slide2": 0.0,
             "object0:joint": [1.7, 1.1, 0.41, 1.0, 0.0, 0.0, 0.0],
         }
-        MujocoPyFetchSlideEnv.__init__(
+        MujocoPyFetchEnv.__init__(
             self,
             MODEL_XML_PATH,
             has_object=True,
@@ -43,7 +43,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, utils.EzPickle):
             "robot0:slide2": 0.0,
             "object0:joint": [1.7, 1.1, 0.41, 1.0, 0.0, 0.0, 0.0],
         }
-        MujocoFetchSlideEnv.__init__(
+        MujocoFetchEnv.__init__(
             self,
             MODEL_XML_PATH,
             has_object=True,

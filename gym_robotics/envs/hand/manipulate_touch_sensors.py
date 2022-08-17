@@ -52,7 +52,6 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
         self.notouch_color = [0, 0.5, 0, 0.2]
 
         super().__init__(
-            self,
             model_path,
             target_position,
             target_rotation,
@@ -184,7 +183,6 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
         self.notouch_color = [0, 0.5, 0, 0.2]
 
         super().__init__(
-            self,
             model_path,
             target_position,
             target_rotation,

@@ -179,21 +179,21 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         goal = self.goal.reshape(5, 3)
         for finger_idx in range(5):
             site_name = f"target{finger_idx}"
-            site_id = self.sim.site_name2id(site_name)
+            site_id = self._model_names.site_name2id[site_name]
             self.model.site_pos[site_id] = goal[finger_idx] - sites_offset[site_id]
 
         # Visualize finger positions.
         achieved_goal = self._get_achieved_goal().reshape(5, 3)
         for finger_idx in range(5):
             site_name = f"finger{finger_idx}"
-            site_id = self.model.site_name2id(site_name)
+            site_id = self._model_names.site_name2id[site_name]
             self.model.site_pos[site_id] = (
                 achieved_goal[finger_idx] - sites_offset[site_id]
             )
         self._mujoco.mj_forward(self.model, self.data)
 
 
-class MujocoPyHandReachEnv(MujocoPyHandEnv, utils.EzPickle):
+class MujocoPyHandReachEnv(get_base_hand_reanch_env(MujocoPyHandEnv)):
     def __init__(
         self,
         distance_threshold=0.01,

@@ -82,7 +82,7 @@ def register_robotics_envs():
         register(
             id=f"HandReach{suffix}-v0",
             entry_point="gym_robotics.envs:MujocoPyHandReachEnv",
-            kwargs="mujoco_py",
+            kwargs=kwargs,
             max_episode_steps=50,
         )
 

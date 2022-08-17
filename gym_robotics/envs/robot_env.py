@@ -86,11 +86,14 @@ class BaseRobotEnv(GoalEnv):
         self._step_callback()
         obs = self._get_obs()
 
-        done = False
         info = {
             "is_success": self._is_success(obs["achieved_goal"], self.goal),
         }
+
+        done = self.compute_done(obs["achieved_goal"], self.goal, info)
+
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
+
         return obs, reward, done, info
 
     def reset(self, seed: Optional[int] = None):

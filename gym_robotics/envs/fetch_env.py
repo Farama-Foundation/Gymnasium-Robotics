@@ -70,6 +70,11 @@ def get_base_fetch_env(
 
         # GoalEnv methods
         # ----------------------------
+        def compute_done(self, achieved_goal, goal, info):
+            # Compute distance between goal and the achieved goal.
+            d = goal_distance(achieved_goal, goal)
+
+            return d < self.distance_threshold
 
         def compute_reward(self, achieved_goal, goal, info):
             # Compute distance between goal and the achieved goal.

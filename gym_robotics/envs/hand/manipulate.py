@@ -82,6 +82,7 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
             assert self.target_rotation in ["ignore", "fixed", "xyz", "z", "parallel"]
             initial_qpos = initial_qpos or {}
 
+            utils.EzPickle.__init__(self, target_position, target_rotation, reward_type)
             HandEnvClass.__init__(
                 self,
                 model_path,
@@ -188,6 +189,7 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
             n_substeps (int): number of substeps the simulation runs on every call to step
             relative_control (boolean): whether or not the hand is actuated in absolute joint positions or relative to the current state
         """
+
         super().__init__(
             model_path,
             target_position=target_position,
@@ -354,8 +356,8 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
         self._utils.set_joint_qpos(self.model, self.data, "target:joint", goal)
         self._utils.set_joint_qvel(self.model, self.data, "target:joint", np.zeros(6))
 
-        if "object_hidden" in self._geom_names:
-            hidden_id = self._geom_name2id["object_hidden"]
+        if "object_hidden" in self._model_names.geom_names:
+            hidden_id = self._model_names.geom_name2id["object_hidden"]
             self.model.geom_rgba[hidden_id, 3] = 1.0
         self._mujoco.mj_forward(self.model, self.data)
 
@@ -377,7 +379,7 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
         }
 
 
-class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
+class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
     def __init__(
         self,
         model_path,
@@ -607,7 +609,6 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_BLOCK_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -624,7 +625,6 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_BLOCK_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -641,7 +641,6 @@ class MujocoHandEggEnv(MujocoManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_EGG_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -658,7 +657,6 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_EGG_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -675,7 +673,6 @@ class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_PEN_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -695,7 +692,6 @@ class MujocoHandPenEnv(MujocoManipulateEnv):
         reward_type="sparse",
     ):
         super().__init__(
-            self,
             model_path=MANIPULATE_PEN_XML,
             target_position=target_position,
             target_rotation=target_rotation,
