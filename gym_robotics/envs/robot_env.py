@@ -202,11 +202,11 @@ class BaseRobotEnv(GoalEnv):
 
 
 class MujocoRobotEnv(BaseRobotEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
+    def __init__(self, **kwargs):
         self._mujoco = mujoco
         self._utils = mujoco_utils
 
-        super().__init__(model_path, initial_qpos, n_actions, n_substeps)
+        super().__init__(**kwargs)
 
     def _initialize_simulation(self):
         self.model = self._mujoco.MjModel.from_xml_path(self.fullpath)
@@ -259,7 +259,7 @@ class MujocoRobotEnv(BaseRobotEnv):
 
 
 class MujocoPyRobotEnv(BaseRobotEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
+    def __init__(self, **kwargs):
         if MUJOCO_PY_NOT_INSTALLED:
             raise error.DependencyNotInstalled(
                 f"{MUJOCO_PY_IMPORT_ERROR}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)"
@@ -275,7 +275,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
             "you are trying to precisely replicate previous works)."
         )
 
-        super().__init__(model_path, initial_qpos, n_actions, n_substeps)
+        super().__init__(**kwargs)
 
     def _initialize_simulation(self):
         self.model = self._mujoco_py.load_model_from_path(self.fullpath)

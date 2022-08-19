@@ -11,9 +11,7 @@ def goal_distance(goal_a, goal_b):
     return np.linalg.norm(goal_a - goal_b, axis=-1)
 
 
-def get_base_fetch_env(
-    RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
-) -> Union[MujocoPyRobotEnv, MujocoRobotEnv]:
+def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
     """
     Factory function
     """
@@ -23,12 +21,12 @@ def get_base_fetch_env(
 
         def __init__(
             self,
-            model_path,
-            n_substeps,
+            model_path: str,
+            n_substeps: int,
             initial_qpos,
             gripper_extra_height,
             block_gripper,
-            has_object,
+            has_object: bool,
             target_in_the_air,
             target_offset,
             obj_range,
@@ -186,37 +184,6 @@ def get_base_fetch_env(
 
 
 class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
-    def __init__(
-        self,
-        model_path,
-        n_substeps,
-        gripper_extra_height,
-        block_gripper,
-        has_object,
-        target_in_the_air,
-        target_offset,
-        obj_range,
-        target_range,
-        distance_threshold,
-        initial_qpos,
-        reward_type,
-    ):
-
-        super().__init__(
-            model_path,
-            n_substeps,
-            initial_qpos,
-            gripper_extra_height,
-            block_gripper,
-            has_object,
-            target_in_the_air,
-            target_offset,
-            obj_range,
-            target_range,
-            distance_threshold,
-            reward_type,
-        )
-
     def _step_callback(self):
         if self.block_gripper:
             self.sim.data.set_joint_qpos("robot0:l_gripper_finger_joint", 0.0)
@@ -303,36 +270,6 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
 
 
 class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
-    def __init__(
-        self,
-        model_path,
-        n_substeps,
-        gripper_extra_height,
-        block_gripper,
-        has_object,
-        target_in_the_air,
-        target_offset,
-        obj_range,
-        target_range,
-        distance_threshold,
-        initial_qpos,
-        reward_type,
-    ):
-        super().__init__(
-            model_path,
-            n_substeps,
-            initial_qpos,
-            gripper_extra_height,
-            block_gripper,
-            has_object,
-            target_in_the_air,
-            target_offset,
-            obj_range,
-            target_range,
-            distance_threshold,
-            reward_type,
-        )
-
     def _step_callback(self):
         if self.block_gripper:
             self._utils.set_joint_qpos(

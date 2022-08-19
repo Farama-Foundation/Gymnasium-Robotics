@@ -43,9 +43,6 @@ def get_base_hand_env(
 
 
 class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
-    def __init__(self, model_path, n_substeps, initial_qpos, relative_control) -> None:
-        super().__init__(model_path, n_substeps, initial_qpos, relative_control)
-
     def _set_action(self, action):
         super()._set_action(action)
         ctrlrange = self.model.actuator_ctrlrange
