@@ -1,11 +1,10 @@
 import os
-from re import L
 from typing import Union
+
 import numpy as np
-
 from gym import utils
-from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 
+from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 
 FINGERTIP_SITE_NAMES = [
     "robot0:S_fftip",
@@ -202,16 +201,12 @@ class MujocoPyHandReachEnv(get_base_hand_reanch_env(MujocoPyHandEnv)):
         initial_qpos=DEFAULT_INITIAL_QPOS,
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(**locals())
-        self.distance_threshold = distance_threshold
-        self.reward_type = reward_type
-
-        MujocoPyHandEnv.__init__(
-            self,
-            MODEL_XML_PATH,
+        super().__init__(
+            distance_threshold=distance_threshold,
             n_substeps=n_substeps,
-            initial_qpos=initial_qpos,
             relative_control=relative_control,
+            initial_qpos=initial_qpos,
+            reward_type=reward_type,
         )
 
     def _get_achieved_goal(self):

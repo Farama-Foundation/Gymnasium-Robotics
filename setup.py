@@ -1,6 +1,3 @@
-import os.path
-import sys
-
 from setuptools import find_packages, setup
 
 import versioneer
@@ -47,7 +44,7 @@ setup(
             "envs/assets/textures/*.png",
         ]
     },
-    entry_points={"gym.envs": ["__root__=gym_robotics:register_robotics_envs"]},
+    entry_points={"gym.envs": ["__root__ = gym_robotics:register_robotics_envs"]},
     tests_require=["pytest", "mock"],
     python_requires=">=3.7",
     classifiers=[

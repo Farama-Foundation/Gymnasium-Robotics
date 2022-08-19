@@ -1,15 +1,13 @@
-from typing import Union, Tuple, Dict
-import numpy as np
+from typing import Dict, Tuple, Union
 
+import numpy as np
 from gym import error
 
 try:
     import mujoco
-    from mujoco import MjModel, MjData, mjtObj
+    from mujoco import MjData, MjModel, mjtObj
 except ImportError as e:
-    raise error.DependencyNotInstalled(
-        "{}. (HINT: you need to install mujoco".format(e)
-    )
+    raise error.DependencyNotInstalled(f"{e}. (HINT: you need to install mujoco")
 
 MJ_OBJ_TYPES = [
     "mjOBJ_BODY",
@@ -148,7 +146,7 @@ def set_joint_qpos(model, data, name, value):
     if ndim > 1:
         assert value.shape == (
             end_idx - start_idx
-        ), "Value has incorrect shape %s: %s" % (name, value)
+        ), f"Value has incorrect shape {name}: {value}"
     data.qpos[start_idx:end_idx] = value
 
 
@@ -172,7 +170,7 @@ def set_joint_qvel(model, data, name, value):
     if ndim > 1:
         assert value.shape == (
             end_idx - start_idx
-        ), "Value has incorrect shape %s: %s" % (name, value)
+        ), f"Value has incorrect shape {name}: {value}"
     data.qvel[start_idx:end_idx] = value
 
 
@@ -315,7 +313,7 @@ def extract_mj_names(
     return tuple(id2name[id] for id in sorted(name2id.values())), name2id, id2name
 
 
-class MujocoModelNames(object):
+class MujocoModelNames:
     """Access mjtObj object names and ids of the current MuJoCo model.
 
     This class supports access to the names and ids of the following mjObj types:

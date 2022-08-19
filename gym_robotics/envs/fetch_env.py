@@ -1,7 +1,9 @@
-import numpy as np
 from typing import Union
+
+import numpy as np
+
+from gym_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 from gym_robotics.utils import rotations
-from gym_robotics.envs.robot_env import MujocoRobotEnv, MujocoPyRobotEnv
 
 
 def goal_distance(goal_a, goal_b):
@@ -71,10 +73,8 @@ def get_base_fetch_env(
         # GoalEnv methods
         # ----------------------------
         def compute_done(self, achieved_goal, goal, info):
-            # Compute distance between goal and the achieved goal.
-            d = goal_distance(achieved_goal, goal)
-
-            return d < self.distance_threshold
+            # There is no terminal state for fetch environments.
+            return False
 
         def compute_reward(self, achieved_goal, goal, info):
             # Compute distance between goal and the achieved goal.
@@ -83,14 +83,6 @@ def get_base_fetch_env(
                 return -(d > self.distance_threshold).astype(np.float32)
             else:
                 return -d
-
-        def _generate_mujoco_observations(self):
-
-            NotImplementedError
-
-        def _get_gripper_xpos(self):
-
-            NotImplementedError
 
         # RobotEnv methods
         # ----------------------------
@@ -128,7 +120,7 @@ def get_base_fetch_env(
                 object_velr,
                 grip_velp,
                 gripper_vel,
-            ) = self._generate_mujoco_observations()
+            ) = self.generate_mujoco_observations()
 
             if not self.has_object:
                 achieved_goal = grip_pos.copy()
@@ -155,8 +147,16 @@ def get_base_fetch_env(
                 "desired_goal": self.goal.copy(),
             }
 
+        def generate_mujoco_observations(self):
+
+            NotImplementedError
+
+        def get_gripper_xpos(self):
+
+            NotImplementedError
+
         def _viewer_setup(self):
-            lookat = self._get_gripper_xpos()
+            lookat = self.get_gripper_xpos()
             for idx, value in enumerate(lookat):
                 self.viewer.cam.lookat[idx] = value
             self.viewer.cam.distance = 2.5
@@ -230,7 +230,7 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
         self._utils.ctrl_set_action(self.sim, action)
         self._utils.mocap_set_action(self.sim, action)
 
-    def _generate_mujoco_observations(self):
+    def generate_mujoco_observations(self):
         # positions
         grip_pos = self.sim.data.get_site_xpos("robot0:grip")
 
@@ -269,7 +269,7 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
             gripper_vel,
         )
 
-    def _get_gripper_xpos(self):
+    def get_gripper_xpos(self):
         body_id = self.sim.model.body_name2id("robot0:gripper_link")
         return self.sim.data.body_xpos[body_id]
 
@@ -350,7 +350,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         self._utils.ctrl_set_action(self.model, self.data, action)
         self._utils.mocap_set_action(self.model, self.data, action)
 
-    def _generate_mujoco_observations(self):
+    def generate_mujoco_observations(self):
         # positions
         grip_pos = self._utils.get_site_xpos(self.model, self.data, "robot0:grip")
 
@@ -398,7 +398,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
             gripper_vel,
         )
 
-    def _get_gripper_xpos(self):
+    def get_gripper_xpos(self):
         body_id = self._model_names.body_name2id["robot0:gripper_link"]
         return self.data.xpos[body_id]
 

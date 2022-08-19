@@ -1,6 +1,8 @@
-import numpy as np
 from typing import Union
-from gym_robotics.envs.robot_env import MujocoRobotEnv, MujocoPyRobotEnv
+
+import numpy as np
+
+from gym_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 
 
 def get_base_hand_env(

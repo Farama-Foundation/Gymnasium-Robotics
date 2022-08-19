@@ -1,9 +1,10 @@
 import os
-from turtle import distance
-import numpy as np
 from typing import Union
 
-from gym import utils, error
+import numpy as np
+from gym import error
+from gym.utils.ezpickle import EzPickle
+
 from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 from gym_robotics.utils import rotations
 
@@ -23,7 +24,7 @@ MANIPULATE_PEN_XML = os.path.join("hand", "manipulate_pen.xml")
 
 
 def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
-    class BaseManipulateEnv(HandEnvClass, utils.EzPickle):
+    class BaseManipulateEnv(HandEnvClass, EzPickle):
         def __init__(
             self,
             model_path,
@@ -82,7 +83,7 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
             assert self.target_rotation in ["ignore", "fixed", "xyz", "z", "parallel"]
             initial_qpos = initial_qpos or {}
 
-            utils.EzPickle.__init__(self, target_position, target_rotation, reward_type)
+            EzPickle.__init__(self, target_position, target_rotation, reward_type)
             HandEnvClass.__init__(
                 self,
                 model_path,

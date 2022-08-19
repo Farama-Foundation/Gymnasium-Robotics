@@ -1,13 +1,14 @@
 import os
-from gym import utils
-from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
 
+from gym.utils.ezpickle import EzPickle
+
+from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
 
 # Ensure we get the path separator correct on windows
 MODEL_XML_PATH = os.path.join("fetch", "push.xml")
 
 
-class MujocoPyFetchPushEnv(MujocoPyFetchEnv, utils.EzPickle):
+class MujocoPyFetchPushEnv(MujocoPyFetchEnv, EzPickle):
     def __init__(self, reward_type="sparse"):
         initial_qpos = {
             "robot0:slide0": 0.405,
@@ -30,10 +31,10 @@ class MujocoPyFetchPushEnv(MujocoPyFetchEnv, utils.EzPickle):
             initial_qpos=initial_qpos,
             reward_type=reward_type,
         )
-        utils.EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type)
 
 
-class MujocoFetchPushEnv(MujocoFetchEnv, utils.EzPickle):
+class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
     def __init__(self, reward_type="sparse"):
         initial_qpos = {
             "robot0:slide0": 0.405,
@@ -56,4 +57,4 @@ class MujocoFetchPushEnv(MujocoFetchEnv, utils.EzPickle):
             initial_qpos=initial_qpos,
             reward_type=reward_type,
         )
-        utils.EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type)

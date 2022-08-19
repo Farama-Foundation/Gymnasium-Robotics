@@ -1,6 +1,8 @@
 from gym.envs.registration import register
 
-from gym_robotics.core import GoalEnv
+from . import _version
+
+__version__ = _version.get_versions()["version"]
 
 
 def register_robotics_envs():
@@ -717,8 +719,3 @@ def register_robotics_envs():
             ),
             max_episode_steps=100,
         )
-
-
-from . import _version
-
-__version__ = _version.get_versions()["version"]

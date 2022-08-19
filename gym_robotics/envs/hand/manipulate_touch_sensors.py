@@ -1,8 +1,9 @@
 import os
-import numpy as np
-from typing import Union
 
-from gym import utils, error, spaces
+import numpy as np
+from gym import spaces
+from gym.utils.ezpickle import EzPickle
+
 from gym_robotics.envs.hand.manipulate import MujocoManipulateEnv, MujocoPyManipulateEnv
 
 # Ensure we get the path separator correct on windows
@@ -272,7 +273,7 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
         }
 
 
-class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPickle):
+class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -280,7 +281,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPi
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoManipulateTouchSensorsEnv.__init__(
@@ -294,7 +295,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPi
         )
 
 
-class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPickle):
+class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -302,7 +303,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPick
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoManipulateTouchSensorsEnv.__init__(
@@ -316,7 +317,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPick
         )
 
 
-class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPickle):
+class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -324,7 +325,7 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPick
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoManipulateTouchSensorsEnv.__init__(
@@ -341,9 +342,7 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, utils.EzPick
         )
 
 
-class MujocoPyHandBlockTouchSensorsEnv(
-    MujocoPyManipulateTouchSensorsEnv, utils.EzPickle
-):
+class MujocoPyHandBlockTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -351,7 +350,7 @@ class MujocoPyHandBlockTouchSensorsEnv(
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoPyManipulateTouchSensorsEnv.__init__(
@@ -365,7 +364,7 @@ class MujocoPyHandBlockTouchSensorsEnv(
         )
 
 
-class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, utils.EzPickle):
+class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -373,7 +372,7 @@ class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, utils.Ez
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoPyManipulateTouchSensorsEnv.__init__(
@@ -387,7 +386,7 @@ class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, utils.Ez
         )
 
 
-class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, utils.EzPickle):
+class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -395,7 +394,7 @@ class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, utils.Ez
         touch_get_obs="sensordata",
         reward_type="sparse",
     ):
-        utils.EzPickle.__init__(
+        EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
         )
         MujocoPyManipulateTouchSensorsEnv.__init__(

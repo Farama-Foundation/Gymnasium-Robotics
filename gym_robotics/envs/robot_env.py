@@ -1,5 +1,5 @@
-import os
 import copy
+import os
 from typing import Optional
 
 import numpy as np
@@ -12,6 +12,7 @@ MUJOCO_NOT_INSTALLED = False
 
 try:
     import mujoco_py
+
     from gym_robotics.utils import mujoco_py_utils
 except ImportError as e:
     MUJOCO_PY_IMPORT_ERROR = e
@@ -19,6 +20,7 @@ except ImportError as e:
 
 try:
     import mujoco
+
     from gym_robotics.utils import mujoco_utils
 except ImportError as e:
     MUJOCO_IMPORT_ERROR = e
@@ -29,7 +31,14 @@ DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
-    def __init__(self, model_path, initial_qpos, n_actions, n_substeps):
+    def __init__(
+        self,
+        model_path,
+        initial_qpos,
+        n_actions,
+        n_substeps,
+        render_mode: Optional[str] = None,
+    ):
 
         if model_path.startswith("/"):
             self.fullpath = model_path
@@ -51,6 +60,7 @@ class BaseRobotEnv(GoalEnv):
 
         self.metadata = {
             "render.modes": ["human", "rgb_array"],
+            "render_modes": ["human", "rgb_array"],
             "video.frames_per_second": int(np.round(1.0 / self.dt)),
         }
 
@@ -70,6 +80,7 @@ class BaseRobotEnv(GoalEnv):
                 ),
             )
         )
+        self.render_mode = render_mode
 
     # Env methods
     # ----------------------------
@@ -90,7 +101,7 @@ class BaseRobotEnv(GoalEnv):
             "is_success": self._is_success(obs["achieved_goal"], self.goal),
         }
 
-        done = self.compute_done(obs["achieved_goal"], self.goal, info)
+        done = False
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
 
