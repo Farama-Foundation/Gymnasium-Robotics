@@ -247,6 +247,24 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
         self.sim.model.site_pos[site_id] = self.goal - sites_offset[0]
         self.sim.forward()
 
+    def _reset_sim(self):
+        self.sim.set_state(self.initial_state)
+
+        # Randomize start position of object.
+        if self.has_object:
+            object_xpos = self.initial_gripper_xpos[:2]
+            while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
+                object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
+                    -self.obj_range, self.obj_range, size=2
+                )
+            object_qpos = self.sim.data.get_joint_qpos("object0:joint")
+            assert object_qpos.shape == (7,)
+            object_qpos[:2] = object_xpos
+            self.sim.data.set_joint_qpos("object0:joint", object_qpos)
+
+        self.sim.forward()
+        return True
+
     def _env_setup(self, initial_qpos):
         for name, value in initial_qpos.items():
             self.sim.data.set_joint_qpos(name, value)
@@ -347,6 +365,32 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         )
         self.model.site_pos[site_id] = self.goal - sites_offset[0]
         self._mujoco.mj_forward(self.model, self.data)
+
+    def _reset_sim(self):
+        self.data.time = self.initial_time
+        self.data.qpos[:] = np.copy(self.initial_qpos)
+        self.data.qvel[:] = np.copy(self.initial_qvel)
+        if self.model.na != 0:
+            self.data.act[:] = None
+
+        # Randomize start position of object.
+        if self.has_object:
+            object_xpos = self.initial_gripper_xpos[:2]
+            while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
+                object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
+                    -self.obj_range, self.obj_range, size=2
+                )
+            object_qpos = self._utils.get_joint_qpos(
+                self.model, self.data, "object0:joint"
+            )
+            assert object_qpos.shape == (7,)
+            object_qpos[:2] = object_xpos
+            self._utils.set_joint_qpos(
+                self.model, self.data, "object0:joint", object_qpos
+            )
+
+        self._mujoco.mj_forward(self.model, self.data)
+        return True
 
     def _env_setup(self, initial_qpos):
         for name, value in initial_qpos.items():
