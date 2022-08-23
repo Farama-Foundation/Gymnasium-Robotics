@@ -21,9 +21,6 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
 
         def __init__(
             self,
-            model_path: str,
-            n_substeps: int,
-            initial_qpos,
             gripper_extra_height,
             block_gripper,
             has_object: bool,
@@ -33,6 +30,7 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
             target_range,
             distance_threshold,
             reward_type,
+            **kwargs
         ):
             """Initializes a new Fetch environment.
 
@@ -61,12 +59,7 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
             self.distance_threshold = distance_threshold
             self.reward_type = reward_type
 
-            super().__init__(
-                model_path=model_path,
-                n_substeps=n_substeps,
-                n_actions=4,
-                initial_qpos=initial_qpos,
-            )
+            super().__init__(n_actions=4, **kwargs)
 
         # GoalEnv methods
         # ----------------------------

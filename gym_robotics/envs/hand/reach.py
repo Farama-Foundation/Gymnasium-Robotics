@@ -61,7 +61,8 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
             relative_control=False,
             initial_qpos=DEFAULT_INITIAL_QPOS,
             reward_type="sparse",
-        ) -> None:
+            **kwargs,
+        ):
 
             utils.EzPickle.__init__(**locals())
             self.distance_threshold = distance_threshold
@@ -69,10 +70,11 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
 
             HandEnvClass.__init__(
                 self,
-                MODEL_XML_PATH,
+                model_path=MODEL_XML_PATH,
                 n_substeps=n_substeps,
                 initial_qpos=initial_qpos,
                 relative_control=relative_control,
+                **kwargs,
             )
 
         # GoalEnv methods
@@ -123,23 +125,6 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
 
 
 class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
-    def __init__(
-        self,
-        distance_threshold=0.01,
-        n_substeps=20,
-        relative_control=False,
-        initial_qpos=DEFAULT_INITIAL_QPOS,
-        reward_type="sparse",
-    ):
-
-        super().__init__(
-            distance_threshold=distance_threshold,
-            n_substeps=n_substeps,
-            relative_control=relative_control,
-            initial_qpos=initial_qpos,
-            reward_type=reward_type,
-        )
-
     def _get_achieved_goal(self):
         goal = [
             self._utils.get_site_xpos(self.model, self.data, name)
@@ -193,22 +178,6 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
 
 
 class MujocoPyHandReachEnv(get_base_hand_reanch_env(MujocoPyHandEnv)):
-    def __init__(
-        self,
-        distance_threshold=0.01,
-        n_substeps=20,
-        relative_control=False,
-        initial_qpos=DEFAULT_INITIAL_QPOS,
-        reward_type="sparse",
-    ):
-        super().__init__(
-            distance_threshold=distance_threshold,
-            n_substeps=n_substeps,
-            relative_control=relative_control,
-            initial_qpos=initial_qpos,
-            reward_type=reward_type,
-        )
-
     def _get_achieved_goal(self):
         goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
 

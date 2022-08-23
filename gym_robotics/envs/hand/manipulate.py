@@ -27,7 +27,6 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
     class BaseManipulateEnv(HandEnvClass, EzPickle):
         def __init__(
             self,
-            model_path,
             target_position,
             target_rotation,
             target_position_range,
@@ -40,6 +39,7 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
             n_substeps=20,
             relative_control=False,
             ignore_z_target_rotation=False,
+            **kwargs,
         ):
             """Initializes a new Hand manipulation environment.
 
@@ -86,10 +86,10 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
             EzPickle.__init__(self, target_position, target_rotation, reward_type)
             HandEnvClass.__init__(
                 self,
-                model_path,
                 n_substeps=n_substeps,
                 initial_qpos=initial_qpos,
                 relative_control=relative_control,
+                **kwargs,
             )
 
         def _goal_distance(self, goal_a, goal_b):
@@ -149,64 +149,6 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
 
 
 class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
-    def __init__(
-        self,
-        model_path,
-        target_position,
-        target_rotation,
-        target_position_range,
-        reward_type,
-        initial_qpos=None,
-        randomize_initial_position=True,
-        randomize_initial_rotation=True,
-        distance_threshold=0.01,
-        rotation_threshold=0.1,
-        n_substeps=20,
-        relative_control=False,
-        ignore_z_target_rotation=False,
-    ):
-        """Initializes a new Hand manipulation environment.
-
-        Args:
-            model_path (string): path to the environments XML file
-            target_position (string): the type of target position:
-                - ignore: target position is fully ignored, i.e. the object can be positioned arbitrarily
-                - fixed: target position is set to the initial position of the object
-                - random: target position is fully randomized according to target_position_range
-            target_rotation (string): the type of target rotation:
-                - ignore: target rotation is fully ignored, i.e. the object can be rotated arbitrarily
-                - fixed: target rotation is set to the initial rotation of the object
-                - xyz: fully randomized target rotation around the X, Y and Z axis
-                - z: fully randomized target rotation around the Z axis
-                - parallel: fully randomized target rotation around Z and axis-aligned rotation around X, Y
-            ignore_z_target_rotation (boolean): whether or not the Z axis of the target rotation is ignored
-            target_position_range (np.array of shape (3, 2)): range of the target_position randomization
-            reward_type ('sparse' or 'dense'): the reward type, i.e. sparse or dense
-            initial_qpos (dict): a dictionary of joint names and values that define the initial configuration
-            randomize_initial_position (boolean): whether or not to randomize the initial position of the object
-            randomize_initial_rotation (boolean): whether or not to randomize the initial rotation of the object
-            distance_threshold (float, in meters): the threshold after which the position of a goal is considered achieved
-            rotation_threshold (float, in radians): the threshold after which the rotation of a goal is considered achieved
-            n_substeps (int): number of substeps the simulation runs on every call to step
-            relative_control (boolean): whether or not the hand is actuated in absolute joint positions or relative to the current state
-        """
-
-        super().__init__(
-            model_path,
-            target_position=target_position,
-            target_rotation=target_rotation,
-            target_position_range=target_position_range,
-            reward_type=reward_type,
-            initial_qpos=initial_qpos,
-            randomize_initial_position=randomize_initial_position,
-            randomize_initial_rotation=randomize_initial_rotation,
-            distance_threshold=distance_threshold,
-            rotation_threshold=rotation_threshold,
-            n_substeps=n_substeps,
-            relative_control=relative_control,
-            ignore_z_target_rotation=ignore_z_target_rotation,
-        )
-
     def _get_achieved_goal(self):
         object_qpos = self._utils.get_joint_qpos(self.model, self.data, "object:joint")
         assert object_qpos.shape == (7,)
@@ -381,63 +323,6 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
 
 
 class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
-    def __init__(
-        self,
-        model_path,
-        target_position,
-        target_rotation,
-        target_position_range,
-        reward_type,
-        initial_qpos=None,
-        randomize_initial_position=True,
-        randomize_initial_rotation=True,
-        distance_threshold=0.01,
-        rotation_threshold=0.1,
-        n_substeps=20,
-        relative_control=False,
-        ignore_z_target_rotation=False,
-    ):
-        """Initializes a new Hand manipulation environment.
-
-        Args:
-            model_path (string): path to the environments XML file
-            target_position (string): the type of target position:
-                - ignore: target position is fully ignored, i.e. the object can be positioned arbitrarily
-                - fixed: target position is set to the initial position of the object
-                - random: target position is fully randomized according to target_position_range
-            target_rotation (string): the type of target rotation:
-                - ignore: target rotation is fully ignored, i.e. the object can be rotated arbitrarily
-                - fixed: target rotation is set to the initial rotation of the object
-                - xyz: fully randomized target rotation around the X, Y and Z axis
-                - z: fully randomized target rotation around the Z axis
-                - parallel: fully randomized target rotation around Z and axis-aligned rotation around X, Y
-            ignore_z_target_rotation (boolean): whether or not the Z axis of the target rotation is ignored
-            target_position_range (np.array of shape (3, 2)): range of the target_position randomization
-            reward_type ('sparse' or 'dense'): the reward type, i.e. sparse or dense
-            initial_qpos (dict): a dictionary of joint names and values that define the initial configuration
-            randomize_initial_position (boolean): whether or not to randomize the initial position of the object
-            randomize_initial_rotation (boolean): whether or not to randomize the initial rotation of the object
-            distance_threshold (float, in meters): the threshold after which the position of a goal is considered achieved
-            rotation_threshold (float, in radians): the threshold after which the rotation of a goal is considered achieved
-            n_substeps (int): number of substeps the simulation runs on every call to step
-            relative_control (boolean): whether or not the hand is actuated in absolute joint positions or relative to the current state
-        """
-        super().__init__(
-            model_path,
-            target_position=target_position,
-            target_rotation=target_rotation,
-            target_position_range=target_position_range,
-            reward_type=reward_type,
-            initial_qpos=initial_qpos,
-            randomize_initial_position=randomize_initial_position,
-            randomize_initial_rotation=randomize_initial_rotation,
-            distance_threshold=distance_threshold,
-            rotation_threshold=rotation_threshold,
-            n_substeps=n_substeps,
-            relative_control=relative_control,
-            ignore_z_target_rotation=ignore_z_target_rotation,
-        )
-
     def _get_achieved_goal(self):
         # Object position and rotation.
         object_qpos = self.sim.data.get_joint_qpos("object:joint")
@@ -608,6 +493,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_BLOCK_XML,
@@ -615,6 +501,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -624,6 +511,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_BLOCK_XML,
@@ -631,6 +519,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -640,6 +529,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_EGG_XML,
@@ -647,6 +537,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -656,6 +547,7 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_EGG_XML,
@@ -663,6 +555,7 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
             target_rotation=target_rotation,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -672,6 +565,7 @@ class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_PEN_XML,
@@ -682,6 +576,7 @@ class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            **kwargs,
         )
 
 
@@ -691,6 +586,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv):
         target_position="random",
         target_rotation="xyz",
         reward_type="sparse",
+        **kwargs,
     ):
         super().__init__(
             model_path=MANIPULATE_PEN_XML,
@@ -701,4 +597,5 @@ class MujocoHandPenEnv(MujocoManipulateEnv):
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            **kwargs,
         )

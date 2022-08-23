@@ -1,9 +1,11 @@
 import copy
 import os
+from functools import partial
 from typing import Optional
 
 import numpy as np
 from gym import error, logger, spaces
+from gym.utils.renderer import Renderer
 
 from gym_robotics import GoalEnv
 
@@ -31,13 +33,25 @@ DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
+
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "single_rgb_array",
+        ],
+        "render_fps": 60,
+    }
+
     def __init__(
         self,
-        model_path,
+        model_path: str,
         initial_qpos,
-        n_actions,
-        n_substeps,
+        n_actions: int,
+        n_substeps: int,
         render_mode: Optional[str] = None,
+        width: int = DEFAULT_SIZE,
+        height: int = DEFAULT_SIZE,
     ):
 
         if model_path.startswith("/"):
@@ -58,12 +72,6 @@ class BaseRobotEnv(GoalEnv):
         self.viewer = None
         self._viewers = {}
 
-        self.metadata = {
-            "render.modes": ["human", "rgb_array"],
-            "render_modes": ["human", "rgb_array"],
-            "video.frames_per_second": int(np.round(1.0 / self.dt)),
-        }
-
         self.goal = np.zeros(0)
         obs = self._get_obs()
         self.action_space = spaces.Box(-1.0, 1.0, shape=(n_actions,), dtype="float32")
@@ -80,7 +88,15 @@ class BaseRobotEnv(GoalEnv):
                 ),
             )
         )
+
         self.render_mode = render_mode
+
+        render_frame = partial(
+            self._render,
+            width=width,
+            height=height,
+        )
+        self.renderer = Renderer(self.render_mode, render_frame)
 
     # Env methods
     # ----------------------------
@@ -104,10 +120,17 @@ class BaseRobotEnv(GoalEnv):
         done = False
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
+        self.renderer.render_step()
 
         return obs, reward, done, info
 
-    def reset(self, seed: Optional[int] = None):
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        return_info: bool = False,
+        options: Optional[dict] = None,
+    ):
         # Attempt to reset the simulator. Since we randomize initial conditions, it
         # is possible to get into a state with numerical issues (e.g. due to penetration or
         # Gimbel lock) or we may not achieve an initial condition (e.g. an object is within the hand).
@@ -119,17 +142,28 @@ class BaseRobotEnv(GoalEnv):
             did_reset_sim = self._reset_sim()
         self.goal = self._sample_goal().copy()
         obs = self._get_obs()
-        return obs
+
+        self.renderer.reset()
+        self.renderer.render_step()
+
+        if not return_info:
+            return obs
+        else:
+            return obs, {}
 
     def close(self):
         if self.viewer is not None:
             self.viewer = None
             self._viewers = {}
 
-    def render(self, mode="human", width=DEFAULT_SIZE, height=DEFAULT_SIZE):
-        self._render_callback()
-
-        if mode == "rgb_array":
+    def _render(
+        self, mode: str = "human", width: int = DEFAULT_SIZE, height: int = DEFAULT_SIZE
+    ):
+        assert mode in self.metadata["render_modes"]
+        if mode in {
+            "rgb_array",
+            "single_rgb_array",
+        }:
             self._get_viewer(mode).render(width, height)
             # window size used for old mujoco-py:
             data = self._get_viewer(mode).read_pixels(width, height, depth=False)
@@ -137,6 +171,11 @@ class BaseRobotEnv(GoalEnv):
             return data[::-1, :, :]
         elif mode == "human":
             self._get_viewer(mode).render()
+
+    def render(self):
+        self._render_callback()
+
+        return self.renderer.get_renders()
 
     # Extension methods
     # ----------------------------
@@ -237,9 +276,7 @@ class MujocoRobotEnv(BaseRobotEnv):
                 self.viewer = Viewer(self.model, self.data)
             elif mode in {
                 "rgb_array",
-                "depth_array",
                 "single_rgb_array",
-                "single_depth_array",
             }:
                 from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 

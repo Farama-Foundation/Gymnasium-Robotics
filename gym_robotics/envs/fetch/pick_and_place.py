@@ -9,7 +9,7 @@ MODEL_XML_PATH = os.path.join("fetch", "pick_and_place.xml")
 
 
 class MujocoPyFetchPickAndPlaceEnv(MujocoPyFetchEnv, EzPickle):
-    def __init__(self, reward_type="sparse"):
+    def __init__(self, reward_type="sparse", **kwargs):
         initial_qpos = {
             "robot0:slide0": 0.405,
             "robot0:slide1": 0.48,
@@ -18,7 +18,7 @@ class MujocoPyFetchPickAndPlaceEnv(MujocoPyFetchEnv, EzPickle):
         }
         MujocoPyFetchEnv.__init__(
             self,
-            MODEL_XML_PATH,
+            model_path=MODEL_XML_PATH,
             has_object=True,
             block_gripper=False,
             n_substeps=20,
@@ -30,12 +30,13 @@ class MujocoPyFetchPickAndPlaceEnv(MujocoPyFetchEnv, EzPickle):
             distance_threshold=0.05,
             initial_qpos=initial_qpos,
             reward_type=reward_type,
+            **kwargs,
         )
         EzPickle.__init__(self, reward_type=reward_type)
 
 
 class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
-    def __init__(self, reward_type="sparse"):
+    def __init__(self, reward_type="sparse", **kwargs):
         initial_qpos = {
             "robot0:slide0": 0.405,
             "robot0:slide1": 0.48,
@@ -44,7 +45,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
         }
         MujocoFetchEnv.__init__(
             self,
-            MODEL_XML_PATH,
+            model_path=MODEL_XML_PATH,
             has_object=True,
             block_gripper=False,
             n_substeps=20,
@@ -56,5 +57,6 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
             distance_threshold=0.05,
             initial_qpos=initial_qpos,
             reward_type=reward_type,
+            **kwargs,
         )
         EzPickle.__init__(self, reward_type=reward_type)

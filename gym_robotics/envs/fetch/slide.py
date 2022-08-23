@@ -10,7 +10,7 @@ MODEL_XML_PATH = os.path.join("fetch", "slide.xml")
 
 
 class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
-    def __init__(self, reward_type="sparse"):
+    def __init__(self, reward_type="sparse", **kwargs):
         initial_qpos = {
             "robot0:slide0": 0.05,
             "robot0:slide1": 0.48,
@@ -31,12 +31,13 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
             distance_threshold=0.05,
             initial_qpos=initial_qpos,
             reward_type=reward_type,
+            **kwargs,
         )
         EzPickle.__init__(self, reward_type=reward_type)
 
 
 class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
-    def __init__(self, reward_type="sparse"):
+    def __init__(self, reward_type="sparse", **kwargs):
         initial_qpos = {
             "robot0:slide0": 0.05,
             "robot0:slide1": 0.48,
@@ -57,5 +58,6 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
             distance_threshold=0.05,
             initial_qpos=initial_qpos,
             reward_type=reward_type,
+            **kwargs,
         )
         EzPickle.__init__(self, reward_type=reward_type)

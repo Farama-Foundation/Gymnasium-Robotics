@@ -9,15 +9,10 @@ def get_base_hand_env(
     RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
 ) -> Union[MujocoPyRobotEnv, MujocoRobotEnv]:
     class BaseHandEnv(RobotEnvClass):
-        def __init__(self, model_path, n_substeps, initial_qpos, relative_control):
+        def __init__(self, relative_control, **kwargs):
             self.relative_control = relative_control
 
-            super().__init__(
-                model_path=model_path,
-                n_substeps=n_substeps,
-                n_actions=20,
-                initial_qpos=initial_qpos,
-            )
+            super().__init__(n_actions=20, **kwargs)
 
         # RobotEnv methods
         # ----------------------------
@@ -35,9 +30,6 @@ def get_base_hand_env(
             self.viewer.cam.distance = 0.5
             self.viewer.cam.azimuth = 55.0
             self.viewer.cam.elevation = -25.0
-
-        def render(self, mode="human", width=500, height=500):
-            return super().render(mode, width, height)
 
     return BaseHandEnv
 
@@ -69,9 +61,6 @@ class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
 
 
 class MujocoPyHandEnv(get_base_hand_env(MujocoPyRobotEnv)):
-    def __init__(self, model_path, n_substeps, initial_qpos, relative_control) -> None:
-        super().__init__(model_path, n_substeps, initial_qpos, relative_control)
-
     def _set_action(self, action):
         super()._set_action(action)
 

@@ -15,7 +15,6 @@ MANIPULATE_PEN_XML = os.path.join("hand", "manipulate_pen_touch_sensors.xml")
 class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
     def __init__(
         self,
-        model_path,
         target_position,
         target_rotation,
         target_position_range,
@@ -30,6 +29,7 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
         ignore_z_target_rotation=False,
         touch_visualisation="on_touch",
         touch_get_obs="sensordata",
+        **kwargs,
     ):
         """Initializes a new Hand manipulation environment with touch sensors.
 
@@ -53,11 +53,10 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
         self.notouch_color = [0, 0.5, 0, 0.2]
 
         super().__init__(
-            model_path,
-            target_position,
-            target_rotation,
-            target_position_range,
-            reward_type,
+            target_position=target_position,
+            target_rotation=target_rotation,
+            target_position_range=target_position_range,
+            reward_type=reward_type,
             initial_qpos=initial_qpos,
             randomize_initial_position=randomize_initial_position,
             randomize_initial_rotation=randomize_initial_rotation,
@@ -66,6 +65,7 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
             n_substeps=n_substeps,
             relative_control=relative_control,
             ignore_z_target_rotation=ignore_z_target_rotation,
+            **kwargs,
         )
 
         for (
@@ -146,7 +146,6 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
 class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
     def __init__(
         self,
-        model_path,
         target_position,
         target_rotation,
         target_position_range,
@@ -161,6 +160,7 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
         ignore_z_target_rotation=False,
         touch_visualisation="on_touch",
         touch_get_obs="sensordata",
+        **kwargs,
     ):
         """Initializes a new Hand manipulation environment with touch sensors.
 
@@ -184,11 +184,10 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
         self.notouch_color = [0, 0.5, 0, 0.2]
 
         super().__init__(
-            model_path,
-            target_position,
-            target_rotation,
-            target_position_range,
-            reward_type,
+            target_position=target_position,
+            target_rotation=target_rotation,
+            target_position_range=target_position_range,
+            reward_type=reward_type,
             initial_qpos=initial_qpos,
             randomize_initial_position=randomize_initial_position,
             randomize_initial_rotation=randomize_initial_rotation,
@@ -197,6 +196,7 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
             n_substeps=n_substeps,
             relative_control=relative_control,
             ignore_z_target_rotation=ignore_z_target_rotation,
+            **kwargs,
         )
 
         for (
@@ -280,6 +280,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -292,6 +293,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -302,6 +304,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -314,6 +317,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -324,6 +328,7 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -339,6 +344,7 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            **kwargs,
         )
 
 
@@ -349,6 +355,7 @@ class MujocoPyHandBlockTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPick
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -361,6 +368,7 @@ class MujocoPyHandBlockTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPick
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -371,6 +379,7 @@ class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -383,6 +392,7 @@ class MujocoPyHandEggTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle
             target_position=target_position,
             target_position_range=np.array([(-0.04, 0.04), (-0.06, 0.02), (0.0, 0.06)]),
             reward_type=reward_type,
+            **kwargs,
         )
 
 
@@ -393,6 +403,7 @@ class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle
         target_rotation="xyz",
         touch_get_obs="sensordata",
         reward_type="sparse",
+        **kwargs,
     ):
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type
@@ -408,4 +419,5 @@ class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle
             reward_type=reward_type,
             ignore_z_target_rotation=True,
             distance_threshold=0.05,
+            **kwargs,
         )
