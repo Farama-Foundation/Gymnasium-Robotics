@@ -128,7 +128,6 @@ class BaseRobotEnv(GoalEnv):
         self,
         *,
         seed: Optional[int] = None,
-        return_info: bool = False,
         options: Optional[dict] = None,
     ):
         # Attempt to reset the simulator. Since we randomize initial conditions, it
@@ -146,10 +145,7 @@ class BaseRobotEnv(GoalEnv):
         self.renderer.reset()
         self.renderer.render_step()
 
-        if not return_info:
-            return obs
-        else:
-            return obs, {}
+        return obs, {}
 
     def close(self):
         if self.viewer is not None:

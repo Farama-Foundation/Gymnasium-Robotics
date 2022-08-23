@@ -64,7 +64,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
             **kwargs,
         ):
 
-            utils.EzPickle.__init__(**locals())
+            utils.EzPickle.__init__(distance_threshold, reward_type)
             self.distance_threshold = distance_threshold
             self.reward_type = reward_type
 
