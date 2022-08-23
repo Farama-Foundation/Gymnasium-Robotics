@@ -2,7 +2,7 @@ import os
 from typing import Union
 
 import numpy as np
-from gym import utils
+from gym.utils.ezpickle import EzPickle
 
 from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 
@@ -53,7 +53,7 @@ def goal_distance(goal_a, goal_b):
 
 
 def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
-    class BaseHandReachEnv(HandEnvClass, utils.EzPickle):
+    class BaseHandReachEnv(HandEnvClass, EzPickle):
         def __init__(
             self,
             distance_threshold=0.01,
@@ -64,7 +64,6 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
             **kwargs,
         ):
 
-            utils.EzPickle.__init__(distance_threshold, reward_type)
             self.distance_threshold = distance_threshold
             self.reward_type = reward_type
 
@@ -74,6 +73,16 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
                 n_substeps=n_substeps,
                 initial_qpos=initial_qpos,
                 relative_control=relative_control,
+                **kwargs,
+            )
+
+            EzPickle.__init__(
+                self,
+                distance_threshold,
+                n_substeps,
+                relative_control,
+                initial_qpos,
+                reward_type,
                 **kwargs,
             )
 

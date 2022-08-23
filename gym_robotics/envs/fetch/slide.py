@@ -19,7 +19,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
         }
         MujocoPyFetchEnv.__init__(
             self,
-            MODEL_XML_PATH,
+            model_path=MODEL_XML_PATH,
             has_object=True,
             block_gripper=True,
             n_substeps=20,
@@ -33,7 +33,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
 
 
 class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
@@ -46,7 +46,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
         }
         MujocoFetchEnv.__init__(
             self,
-            MODEL_XML_PATH,
+            model_path=MODEL_XML_PATH,
             has_object=True,
             block_gripper=True,
             n_substeps=20,
@@ -60,4 +60,4 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)

@@ -32,7 +32,7 @@ class MujocoPyFetchPushEnv(MujocoPyFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
 
 
 class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
@@ -59,4 +59,4 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)

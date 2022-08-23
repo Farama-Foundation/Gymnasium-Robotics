@@ -24,7 +24,7 @@ MANIPULATE_PEN_XML = os.path.join("hand", "manipulate_pen.xml")
 
 
 def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
-    class BaseManipulateEnv(HandEnvClass, EzPickle):
+    class BaseManipulateEnv(HandEnvClass):
         def __init__(
             self,
             target_position,
@@ -83,9 +83,7 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
             assert self.target_rotation in ["ignore", "fixed", "xyz", "z", "parallel"]
             initial_qpos = initial_qpos or {}
 
-            EzPickle.__init__(self, target_position, target_rotation, reward_type)
-            HandEnvClass.__init__(
-                self,
+            super().__init__(
                 n_substeps=n_substeps,
                 initial_qpos=initial_qpos,
                 relative_control=relative_control,
@@ -495,7 +493,8 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_BLOCK_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -503,9 +502,10 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
             reward_type=reward_type,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)
 
 
-class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
+class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -513,7 +513,8 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoPyManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_BLOCK_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -521,9 +522,10 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv):
             reward_type=reward_type,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)
 
 
-class MujocoHandEggEnv(MujocoManipulateEnv):
+class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -531,7 +533,8 @@ class MujocoHandEggEnv(MujocoManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_EGG_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -539,9 +542,10 @@ class MujocoHandEggEnv(MujocoManipulateEnv):
             reward_type=reward_type,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)
 
 
-class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
+class MujocoPyHandEggEnv(MujocoPyManipulateEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -549,7 +553,8 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoPyManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_EGG_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -557,9 +562,10 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv):
             reward_type=reward_type,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)
 
 
-class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
+class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -567,7 +573,8 @@ class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_PEN_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -578,9 +585,10 @@ class MujocoPyHandPenEnv(MujocoPyManipulateEnv):
             distance_threshold=0.05,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)
 
 
-class MujocoHandPenEnv(MujocoManipulateEnv):
+class MujocoPyHandPenEnv(MujocoPyManipulateEnv, EzPickle):
     def __init__(
         self,
         target_position="random",
@@ -588,7 +596,8 @@ class MujocoHandPenEnv(MujocoManipulateEnv):
         reward_type="sparse",
         **kwargs,
     ):
-        super().__init__(
+        MujocoPyManipulateEnv.__init__(
+            self,
             model_path=MANIPULATE_PEN_XML,
             target_position=target_position,
             target_rotation=target_rotation,
@@ -599,3 +608,4 @@ class MujocoHandPenEnv(MujocoManipulateEnv):
             distance_threshold=0.05,
             **kwargs,
         )
+        EzPickle.__init__(self, target_position, target_rotation, reward_type, **kwargs)

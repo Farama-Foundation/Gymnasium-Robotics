@@ -32,7 +32,7 @@ class MujocoPyFetchPickAndPlaceEnv(MujocoPyFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
 
 
 class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
@@ -59,4 +59,4 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
             reward_type=reward_type,
             **kwargs,
         )
-        EzPickle.__init__(self, reward_type=reward_type)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
