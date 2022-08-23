@@ -117,12 +117,13 @@ class BaseRobotEnv(GoalEnv):
             "is_success": self._is_success(obs["achieved_goal"], self.goal),
         }
 
-        done = False
+        terminated = False
+        truncated = False
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
         self.renderer.render_step()
 
-        return obs, reward, done, info
+        return obs, reward, terminated, truncated, info
 
     def reset(
         self,
