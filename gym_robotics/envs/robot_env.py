@@ -74,6 +74,7 @@ class BaseRobotEnv(GoalEnv):
 
         self.goal = np.zeros(0)
         obs = self._get_obs()
+
         self.action_space = spaces.Box(-1.0, 1.0, shape=(n_actions,), dtype="float32")
         self.observation_space = spaces.Dict(
             dict(

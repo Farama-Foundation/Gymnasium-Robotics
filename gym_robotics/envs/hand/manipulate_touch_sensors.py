@@ -95,13 +95,13 @@ class MujocoManipulateTouchSensorsEnv(MujocoManipulateEnv):
         self.observation_space = spaces.Dict(
             dict(
                 desired_goal=spaces.Box(
-                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float64"
                 ),
                 achieved_goal=spaces.Box(
-                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float64"
                 ),
                 observation=spaces.Box(
-                    -np.inf, np.inf, shape=obs["observation"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["observation"].shape, dtype="float64"
                 ),
             )
         )
@@ -226,13 +226,13 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
         self.observation_space = spaces.Dict(
             dict(
                 desired_goal=spaces.Box(
-                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float64"
                 ),
                 achieved_goal=spaces.Box(
-                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["achieved_goal"].shape, dtype="float64"
                 ),
                 observation=spaces.Box(
-                    -np.inf, np.inf, shape=obs["observation"].shape, dtype="float32"
+                    -np.inf, np.inf, shape=obs["observation"].shape, dtype="float64"
                 ),
             )
         )
@@ -418,6 +418,7 @@ class MujocoPyHandPenTouchSensorsEnv(MujocoPyManipulateTouchSensorsEnv, EzPickle
             distance_threshold=0.05,
             **kwargs,
         )
+
         EzPickle.__init__(
             self, target_position, target_rotation, touch_get_obs, reward_type, **kwargs
         )
