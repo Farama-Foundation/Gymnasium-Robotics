@@ -1,8 +1,8 @@
 import copy
 import os
-from functools import partial
-from typing import Optional
+from typing import Optional, Union
 
+import gym
 import numpy as np
 from gym import error, logger, spaces
 from gym.utils.renderer import Renderer
@@ -67,6 +67,8 @@ class BaseRobotEnv(GoalEnv):
 
         self.initial_qpos = initial_qpos
 
+        self.width = width
+        self.height = height
         self._initialize_simulation()
 
         self.viewer = None
@@ -92,12 +94,7 @@ class BaseRobotEnv(GoalEnv):
 
         self.render_mode = render_mode
 
-        render_frame = partial(
-            self._render,
-            width=width,
-            height=height,
-        )
-        self.renderer = Renderer(self.render_mode, render_frame)
+        self.renderer = Renderer(self.render_mode, self._render)
 
     # Env methods
     # ----------------------------
@@ -155,20 +152,15 @@ class BaseRobotEnv(GoalEnv):
             self._viewers = {}
 
     def _render(
-        self, mode: str = "human", width: int = DEFAULT_SIZE, height: int = DEFAULT_SIZE
+        self,
+        mode: str = "human",
+        camera_id: Optional[int] = None,
+        camera_name: Optional[str] = None,
     ):
-        assert mode in self.metadata["render_modes"]
-        if mode in {
-            "rgb_array",
-            "single_rgb_array",
-        }:
-            self._get_viewer(mode).render(width, height)
-            # window size used for old mujoco-py:
-            data = self._get_viewer(mode).read_pixels(width, height, depth=False)
-            # original image is upside-down, so flip it
-            return data[::-1, :, :]
-        elif mode == "human":
-            self._get_viewer(mode).render()
+        """
+        Render a frame from the MuJoCo simulation as specified by the render_mode.
+        """
+        raise NotImplementedError
 
     def render(self):
         self._render_callback()
@@ -180,7 +172,7 @@ class BaseRobotEnv(GoalEnv):
     def _mujoco_step(self, action):
         raise NotImplementedError
 
-    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+    def _get_viewer(self, mode):
         raise NotImplementedError
 
     def _reset_sim(self):
@@ -250,6 +242,9 @@ class MujocoRobotEnv(BaseRobotEnv):
         self.data = self._mujoco.MjData(self.model)
         self._model_names = self._utils.MujocoModelNames(self.model)
 
+        self.model.vis.global_.offwidth = self.width
+        self.model.vis.global_.offheight = self.height
+
         self._env_setup(initial_qpos=self.initial_qpos)
         self.initial_time = self.data.time
         self.initial_qpos = np.copy(self.data.qpos)
@@ -265,7 +260,23 @@ class MujocoRobotEnv(BaseRobotEnv):
         mujoco.mj_forward(self.model, self.data)
         return super()._reset_sim()
 
-    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+    def _render(self, mode: str = "human"):
+        assert mode in self.metadata["render_modes"]
+
+        if mode in {
+            "rgb_array",
+            "single_rgb_array",
+        }:
+            self._get_viewer(mode).render()
+            data = self._get_viewer(mode).read_pixels(depth=False)
+            # original image is upside-down, so flip it
+            return data[::-1, :, :]
+        elif mode == "human":
+            self._get_viewer(mode).render()
+
+    def _get_viewer(
+        self, mode
+    ) -> Union["gym.envs.mujoco.Viewer", "gym.envs.mujoco.RenderContextOffscreen"]:
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == "human":
@@ -278,9 +289,7 @@ class MujocoRobotEnv(BaseRobotEnv):
             }:
                 from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 
-                self.viewer = RenderContextOffscreen(
-                    width, height, self.model, self.data
-                )
+                self.viewer = RenderContextOffscreen(self.model, self.data)
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer
@@ -325,7 +334,24 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         self.sim.forward()
         return super()._reset_sim()
 
-    def _get_viewer(self, mode, width=DEFAULT_SIZE, height=DEFAULT_SIZE):
+    def _render(self, mode: str = "human"):
+        width, height = self.width, self.height
+        assert mode in self.metadata["render_modes"]
+        if mode in {
+            "rgb_array",
+            "single_rgb_array",
+        }:
+            self._get_viewer(mode).render(width, height)
+            # window size used for old mujoco-py:
+            data = self._get_viewer(mode).read_pixels(width, height, depth=False)
+            # original image is upside-down, so flip it
+            return data[::-1, :, :]
+        elif mode == "human":
+            self._get_viewer(mode).render()
+
+    def _get_viewer(
+        self, mode
+    ) -> Union["mujoco_py.MjViewer", "mujoco_py.MjRenderContextOffscreen"]:
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == "human":
