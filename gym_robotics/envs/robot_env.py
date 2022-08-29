@@ -127,6 +127,7 @@ class BaseRobotEnv(GoalEnv):
         self,
         *,
         seed: Optional[int] = None,
+        return_info: bool = False,
         options: Optional[dict] = None,
     ):
         # Attempt to reset the simulator. Since we randomize initial conditions, it
@@ -140,11 +141,12 @@ class BaseRobotEnv(GoalEnv):
             did_reset_sim = self._reset_sim()
         self.goal = self._sample_goal().copy()
         obs = self._get_obs()
-
         self.renderer.reset()
         self.renderer.render_step()
-
-        return obs, {}
+        if not return_info:
+            return obs
+        else:
+            return obs, {}
 
     def close(self):
         if self.viewer is not None:
@@ -267,8 +269,10 @@ class MujocoRobotEnv(BaseRobotEnv):
             "rgb_array",
             "single_rgb_array",
         }:
-            self._get_viewer(mode).render()
-            data = self._get_viewer(mode).read_pixels(depth=False)
+            self._get_viewer(mode).render(height=480, width=480)
+            data = self._get_viewer(mode).read_pixels(
+                height=480, width=480, depth=False
+            )
             # original image is upside-down, so flip it
             return data[::-1, :, :]
         elif mode == "human":
@@ -289,7 +293,9 @@ class MujocoRobotEnv(BaseRobotEnv):
             }:
                 from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 
-                self.viewer = RenderContextOffscreen(self.model, self.data)
+                self.viewer = RenderContextOffscreen(
+                    model=self.model, data=self.data, width=480, height=480
+                )
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer
