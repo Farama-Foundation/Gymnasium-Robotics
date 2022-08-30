@@ -97,6 +97,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
                 return -d
 
         def _sample_goal(self):
+
             thumb_name = "robot0:S_thtip"
             finger_names = [name for name in FINGERTIP_SITE_NAMES if name != thumb_name]
             finger_name = self.np_random.choice(finger_names)
@@ -121,6 +122,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
                 # With some probability, ask all fingers to move back to the origin.
                 # This avoids that the thumb constantly stays near the goal position already.
                 goal = self.initial_goal.copy()
+
             return goal.flatten()
 
         def _is_success(self, achieved_goal, desired_goal):

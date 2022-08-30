@@ -53,7 +53,6 @@ class BaseRobotEnv(GoalEnv):
         width: int = DEFAULT_SIZE,
         height: int = DEFAULT_SIZE,
     ):
-
         if model_path.startswith("/"):
             self.fullpath = model_path
         else:
@@ -165,8 +164,6 @@ class BaseRobotEnv(GoalEnv):
         raise NotImplementedError
 
     def render(self):
-        self._render_callback()
-
         return self.renderer.get_renders()
 
     # Extension methods
@@ -264,14 +261,14 @@ class MujocoRobotEnv(BaseRobotEnv):
 
     def _render(self, mode: str = "human"):
         assert mode in self.metadata["render_modes"]
-
+        self._render_callback()
         if mode in {
             "rgb_array",
             "single_rgb_array",
         }:
-            self._get_viewer(mode).render(height=480, width=480)
+            self._get_viewer(mode).render(width=DEFAULT_SIZE, height=DEFAULT_SIZE)
             data = self._get_viewer(mode).read_pixels(
-                height=480, width=480, depth=False
+                depth=False, width=DEFAULT_SIZE, height=DEFAULT_SIZE
             )
             # original image is upside-down, so flip it
             return data[::-1, :, :]
@@ -343,6 +340,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
     def _render(self, mode: str = "human"):
         width, height = self.width, self.height
         assert mode in self.metadata["render_modes"]
+        self._render_callback()
         if mode in {
             "rgb_array",
             "single_rgb_array",
