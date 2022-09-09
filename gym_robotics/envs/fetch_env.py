@@ -63,9 +63,6 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
 
         # GoalEnv methods
         # ----------------------------
-        def compute_done(self, achieved_goal, goal, info):
-            # There is no terminal state for fetch environments.
-            return False
 
         def compute_reward(self, achieved_goal, goal, info):
             # Compute distance between goal and the achieved goal.

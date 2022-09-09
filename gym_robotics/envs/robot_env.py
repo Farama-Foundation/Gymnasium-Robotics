@@ -5,7 +5,6 @@ from typing import Optional, Union
 import gym
 import numpy as np
 from gym import error, logger, spaces
-from gym.utils.renderer import Renderer
 
 from gym_robotics import GoalEnv
 
@@ -33,14 +32,15 @@ DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
+    """"""
 
     metadata = {
         "render_modes": [
             "human",
             "rgb_array",
-            "single_rgb_array",
+            "rgb_array_list",
         ],
-        "render_fps": 60,
+        "render_fps": 25,
     }
 
     def __init__(
@@ -76,6 +76,10 @@ class BaseRobotEnv(GoalEnv):
         self.goal = np.zeros(0)
         obs = self._get_obs()
 
+        assert (
+            int(np.round(1.0 / self.dt)) == self.metadata["render_fps"]
+        ), f'Expected value: {int(np.round(1.0 / self.dt))}, Actual value: {self.metadata["render_fps"]}'
+
         self.action_space = spaces.Box(-1.0, 1.0, shape=(n_actions,), dtype="float32")
         self.observation_space = spaces.Dict(
             dict(
@@ -93,10 +97,13 @@ class BaseRobotEnv(GoalEnv):
 
         self.render_mode = render_mode
 
-        self.renderer = Renderer(self.render_mode, self._render)
-
     # Env methods
     # ----------------------------
+    def compute_terminated(self, achieved_goal, desired_goal, info):
+        return False
+
+    def compute_truncated(self, achievec_goal, desired_goal, info):
+        return False
 
     def step(self, action):
         if np.array(action).shape != self.action_space.shape:
@@ -108,17 +115,19 @@ class BaseRobotEnv(GoalEnv):
         self._mujoco_step(action)
 
         self._step_callback()
+
+        if self.render_mode == "human":
+            self.render()
         obs = self._get_obs()
 
         info = {
             "is_success": self._is_success(obs["achieved_goal"], self.goal),
         }
 
-        terminated = False
-        truncated = False
+        terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
+        truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
-        self.renderer.render_step()
 
         return obs, reward, terminated, truncated, info
 
@@ -126,7 +135,6 @@ class BaseRobotEnv(GoalEnv):
         self,
         *,
         seed: Optional[int] = None,
-        return_info: bool = False,
         options: Optional[dict] = None,
     ):
         # Attempt to reset the simulator. Since we randomize initial conditions, it
@@ -140,31 +148,15 @@ class BaseRobotEnv(GoalEnv):
             did_reset_sim = self._reset_sim()
         self.goal = self._sample_goal().copy()
         obs = self._get_obs()
-        self.renderer.reset()
-        self.renderer.render_step()
-        if not return_info:
-            return obs
-        else:
-            return obs, {}
+        if self.render_mode == "human":
+            self.render()
+
+        return obs, {}
 
     def close(self):
         if self.viewer is not None:
             self.viewer = None
             self._viewers = {}
-
-    def _render(
-        self,
-        mode: str = "human",
-        camera_id: Optional[int] = None,
-        camera_name: Optional[str] = None,
-    ):
-        """
-        Render a frame from the MuJoCo simulation as specified by the render_mode.
-        """
-        raise NotImplementedError
-
-    def render(self):
-        return self.renderer.get_renders()
 
     # Extension methods
     # ----------------------------
@@ -259,21 +251,15 @@ class MujocoRobotEnv(BaseRobotEnv):
         mujoco.mj_forward(self.model, self.data)
         return super()._reset_sim()
 
-    def _render(self, mode: str = "human"):
-        assert mode in self.metadata["render_modes"]
+    def render(self):
         self._render_callback()
-        if mode in {
-            "rgb_array",
-            "single_rgb_array",
-        }:
-            self._get_viewer(mode).render(width=DEFAULT_SIZE, height=DEFAULT_SIZE)
-            data = self._get_viewer(mode).read_pixels(
-                depth=False, width=DEFAULT_SIZE, height=DEFAULT_SIZE
-            )
+        if self.render_mode == "rgb_array":
+            self._get_viewer(self.render_mode).render()
+            data = self._get_viewer(self.render_mode).read_pixels(depth=False)
             # original image is upside-down, so flip it
             return data[::-1, :, :]
-        elif mode == "human":
-            self._get_viewer(mode).render()
+        elif self.render_mode == "human":
+            self._get_viewer(self.render_mode).render()
 
     def _get_viewer(
         self, mode
@@ -286,7 +272,7 @@ class MujocoRobotEnv(BaseRobotEnv):
                 self.viewer = Viewer(self.model, self.data)
             elif mode in {
                 "rgb_array",
-                "single_rgb_array",
+                "rgb_array_list",
             }:
                 from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 
@@ -337,21 +323,23 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         self.sim.forward()
         return super()._reset_sim()
 
-    def _render(self, mode: str = "human"):
+    def render(self):
         width, height = self.width, self.height
-        assert mode in self.metadata["render_modes"]
+        assert self.render_mode in self.metadata["render_modes"]
         self._render_callback()
-        if mode in {
+        if self.render_mode in {
             "rgb_array",
-            "single_rgb_array",
+            "rgb_array_list",
         }:
-            self._get_viewer(mode).render(width, height)
+            self._get_viewer(self.render_mode).render(width, height)
             # window size used for old mujoco-py:
-            data = self._get_viewer(mode).read_pixels(width, height, depth=False)
+            data = self._get_viewer(self.render_mode).read_pixels(
+                width, height, depth=False
+            )
             # original image is upside-down, so flip it
             return data[::-1, :, :]
-        elif mode == "human":
-            self._get_viewer(mode).render()
+        elif self.render_mode == "human":
+            self._get_viewer(self.render_mode).render()
 
     def _get_viewer(
         self, mode
@@ -363,9 +351,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
 
             elif mode in {
                 "rgb_array",
-                "depth_array",
-                "single_rgb_array",
-                "single_depth_array",
+                "rgb_array_list",
             }:
                 self.viewer = self._mujoco_py.MjRenderContextOffscreen(self.sim, -1)
             self._viewer_setup()
