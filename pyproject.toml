@@ -15,6 +15,9 @@ strict = [
 
 ]
 
+# This is required as the CI pre-commit does not download the module (i.e. numpy)
+#   Therefore, we have to ignore missing imports
+reportMissingImports = "none"
 typeCheckingMode = "basic"
 pythonVersion = "3.7"
 typeshedPath = "typeshed"
