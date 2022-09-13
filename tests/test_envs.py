@@ -10,13 +10,16 @@ from tests.utils import all_testing_env_specs, assert_equals
 CHECK_ENV_IGNORE_WARNINGS = [
     f"\x1b[33mWARN: {message}\x1b[0m"
     for message in [
+        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works).",
         "A Box observation space minimum value is -infinity. This is probably too low.",
         "A Box observation space maximum value is -infinity. This is probably too high.",
         "For Box action spaces, we recommend using a symmetric and normalized space (range=[-1, 1] or [0, 1]). See https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html for more information.",
-        "Initializing wrapper in old step API which returns one bool instead of two. It is recommended to set `new_step_api=True` to use new step API. This will be the default behaviour in future.",
-        "Initializing environment in old step API which returns one bool instead of two. It is recommended to set `new_step_api=True` to use new step API. This will be the default behaviour in future.",
-        "Core environment is written in old step API which returns one bool instead of two. It is recommended to  norewrite the environment with new step API. ",
     ]
+]
+
+# Exclude mujoco_py environments in test_render_modes test due to OpenGL error.
+non_mujoco_py_env_specs = [
+    spec for spec in all_testing_env_specs if "MujocoPy" not in spec.entry_point
 ]
 
 
@@ -59,8 +62,8 @@ def test_env_determinism_rollout(env_spec: EnvSpec):
     if env_spec.nondeterministic is True:
         return
 
-    env_1 = env_spec.make(disable_env_checker=True, new_step_api=True)
-    env_2 = env_spec.make(disable_env_checker=True, new_step_api=True)
+    env_1 = env_spec.make(disable_env_checker=True)
+    env_2 = env_spec.make(disable_env_checker=True)
 
     initial_obs_1 = env_1.reset(seed=SEED)
     initial_obs_2 = env_2.reset(seed=SEED)
@@ -100,14 +103,14 @@ def test_env_determinism_rollout(env_spec: EnvSpec):
 
 
 @pytest.mark.parametrize(
-    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
+    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
 )
 def test_render_modes(spec):
-    env = spec.make(new_step_api=True)
+    env = spec.make()
 
     for mode in env.metadata.get("render_modes", []):
         if mode != "human":
-            new_env = spec.make(new_step_api=True, render_mode=mode)
+            new_env = spec.make(render_mode=mode)
 
             new_env.reset()
             new_env.step(new_env.action_space.sample())

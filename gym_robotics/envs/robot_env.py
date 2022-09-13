@@ -276,9 +276,7 @@ class MujocoRobotEnv(BaseRobotEnv):
             }:
                 from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 
-                self.viewer = RenderContextOffscreen(
-                    model=self.model, data=self.data, width=480, height=480
-                )
+                self.viewer = RenderContextOffscreen(model=self.model, data=self.data)
             self._viewer_setup()
             self._viewers[mode] = self.viewer
         return self.viewer

@@ -368,10 +368,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
 
         # Randomize start position of object.
         if self.has_object:
-            print(self.initial_gripper_xpos)
             object_xpos = self.initial_gripper_xpos[:2]
-            print("INITIAL OBJECT XPOS FROM GRIPPER XPOS")
-            print(object_xpos)
             while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
                 object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
                     -self.obj_range, self.obj_range, size=2
