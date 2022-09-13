@@ -1,8 +1,8 @@
 import warnings
 
-import gym
 import pytest
 from gym.envs.registration import EnvSpec
+from gym.error import Error
 from gym.utils.env_checker import check_env
 
 from tests.utils import all_testing_env_specs, assert_equals
@@ -32,7 +32,7 @@ def test_env(spec):
         check_env(env)
     for warning in w:
         if warning.message.args[0] not in CHECK_ENV_IGNORE_WARNINGS:
-            raise gym.error.Error(f"Unexpected warning: {warning.message}")
+            raise Error(f"Unexpected warning: {warning.message}")
 
 
 # Note that this precludes running this test in multiple threads.

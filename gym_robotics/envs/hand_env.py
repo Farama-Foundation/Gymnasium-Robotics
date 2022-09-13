@@ -18,7 +18,7 @@ def get_base_hand_env(
         # ----------------------------
         def _get_palm_xpos(self):
 
-            NotImplementedError
+            raise NotImplementedError
 
         def _set_action(self, action):
             assert action.shape == (20,)

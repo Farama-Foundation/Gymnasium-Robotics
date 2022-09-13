@@ -137,11 +137,11 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
 
         def generate_mujoco_observations(self):
 
-            NotImplementedError
+            raise NotImplementedError
 
         def get_gripper_xpos(self):
 
-            NotImplementedError
+            raise NotImplementedError
 
         def _viewer_setup(self):
             lookat = self.get_gripper_xpos()
@@ -210,6 +210,7 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
                 object_rot
             ) = object_velp = object_velr = object_rel_pos = np.zeros(0)
         gripper_state = robot_qpos[-2:]
+
         gripper_vel = (
             robot_qvel[-2:] * dt
         )  # change to a scalar if the gripper is made symmetric
@@ -303,6 +304,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         grip_velp = (
             self._utils.get_site_xvelp(self.model, self.data, "robot0:grip") * dt
         )
+
         robot_qpos, robot_qvel = self._utils.robot_get_obs(
             self.model, self.data, self._model_names.joint_names
         )
@@ -327,6 +329,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
                 object_rot
             ) = object_velp = object_velr = object_rel_pos = np.zeros(0)
         gripper_state = robot_qpos[-2:]
+
         gripper_vel = (
             robot_qvel[-2:] * dt
         )  # change to a scalar if the gripper is made symmetric
@@ -365,7 +368,10 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
 
         # Randomize start position of object.
         if self.has_object:
+            print(self.initial_gripper_xpos)
             object_xpos = self.initial_gripper_xpos[:2]
+            print("INITIAL OBJECT XPOS FROM GRIPPER XPOS")
+            print(object_xpos)
             while np.linalg.norm(object_xpos - self.initial_gripper_xpos[:2]) < 0.1:
                 object_xpos = self.initial_gripper_xpos[:2] + self.np_random.uniform(
                     -self.obj_range, self.obj_range, size=2

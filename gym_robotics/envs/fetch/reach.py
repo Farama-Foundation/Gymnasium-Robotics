@@ -1,6 +1,6 @@
 import os
 
-from gym.utils import EzPickle
+from gym.utils.ezpickle import EzPickle
 
 from gym_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
 

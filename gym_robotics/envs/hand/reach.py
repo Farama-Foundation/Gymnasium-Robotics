@@ -130,7 +130,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
             return (d < self.distance_threshold).astype(np.float32)
 
         def _get_achieved_goal(self):
-            NotImplementedError
+            raise NotImplementedError
 
     return BaseHandReachEnv
 
