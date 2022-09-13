@@ -4,9 +4,9 @@ import gym
 import pytest
 
 ENVIRONMENT_IDS = (
-    "HandManipulateEggTouchSensors-v1",
-    "HandManipulatePenTouchSensors-v0",
-    "HandManipulateBlockTouchSensors-v0",
+    "HandManipulateEgg_ContinuousTouchSensors-v1",
+    "HandManipulatePen_BooleanTouchSensors-v1",
+    "HandManipulateBlock_BooleanTouchSensors-v1",
 )
 
 
