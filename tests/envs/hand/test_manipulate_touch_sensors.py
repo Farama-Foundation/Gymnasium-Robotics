@@ -1,21 +1,18 @@
 import pickle
 
+import gym
 import pytest
 
-from gym import envs
-import gym_robotics
-
-
 ENVIRONMENT_IDS = (
-    "HandManipulateEggTouchSensors-v1",
-    "HandManipulatePenTouchSensors-v0",
-    "HandManipulateBlockTouchSensors-v0",
+    "HandManipulateEgg_ContinuousTouchSensors-v1",
+    "HandManipulatePen_BooleanTouchSensors-v1",
+    "HandManipulateBlock_BooleanTouchSensors-v1",
 )
 
 
 @pytest.mark.parametrize("environment_id", ENVIRONMENT_IDS)
 def test_serialize_deserialize(environment_id):
-    env1 = envs.make(environment_id, target_position="fixed")
+    env1 = gym.make(environment_id, target_position="fixed")
     env1.reset()
     env2 = pickle.loads(pickle.dumps(env1))
 

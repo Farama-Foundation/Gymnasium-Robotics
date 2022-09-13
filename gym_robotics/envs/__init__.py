@@ -1,14 +1,24 @@
-from gym_robotics.envs.fetch_env import FetchEnv
-from gym_robotics.envs.fetch.slide import FetchSlideEnv
-from gym_robotics.envs.fetch.pick_and_place import FetchPickAndPlaceEnv
-from gym_robotics.envs.fetch.push import FetchPushEnv
-from gym_robotics.envs.fetch.reach import FetchReachEnv
-
-from gym_robotics.envs.hand.reach import HandReachEnv
-from gym_robotics.envs.hand.manipulate import HandBlockEnv
-from gym_robotics.envs.hand.manipulate import HandEggEnv
-from gym_robotics.envs.hand.manipulate import HandPenEnv
-
-from gym_robotics.envs.hand.manipulate_touch_sensors import HandBlockTouchSensorsEnv
-from gym_robotics.envs.hand.manipulate_touch_sensors import HandEggTouchSensorsEnv
-from gym_robotics.envs.hand.manipulate_touch_sensors import HandPenTouchSensorsEnv
+from gym_robotics.envs.fetch.pick_and_place import (
+    MujocoFetchPickAndPlaceEnv,
+    MujocoPyFetchPickAndPlaceEnv,
+)
+from gym_robotics.envs.fetch.push import MujocoFetchPushEnv, MujocoPyFetchPushEnv
+from gym_robotics.envs.fetch.reach import MujocoFetchReachEnv, MujocoPyFetchReachEnv
+from gym_robotics.envs.fetch.slide import MujocoFetchSlideEnv, MujocoPyFetchSlideEnv
+from gym_robotics.envs.hand.manipulate import (
+    MujocoHandBlockEnv,
+    MujocoHandEggEnv,
+    MujocoHandPenEnv,
+    MujocoPyHandBlockEnv,
+    MujocoPyHandEggEnv,
+    MujocoPyHandPenEnv,
+)
+from gym_robotics.envs.hand.manipulate_touch_sensors import (
+    MujocoHandBlockTouchSensorsEnv,
+    MujocoHandEggTouchSensorsEnv,
+    MujocoHandPenTouchSensorsEnv,
+    MujocoPyHandBlockTouchSensorsEnv,
+    MujocoPyHandEggTouchSensorsEnv,
+    MujocoPyHandPenTouchSensorsEnv,
+)
+from gym_robotics.envs.hand.reach import MujocoHandReachEnv, MujocoPyHandReachEnv
