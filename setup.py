@@ -1,6 +1,3 @@
-import os.path
-import sys
-
 from setuptools import find_packages, setup
 
 import versioneer
@@ -16,11 +13,21 @@ with open("README.md") as fh:
         else:
             break
 
+# pytest is pinned to 7.0.1 as this is last version for python 3.6
+extras = {
+    "testing": [
+        "pytest==7.0.1",
+        "mujoco_py<2.2,>=2.1",
+    ],
+    "mujoco_py": ["mujoco_py<2.2,>=2.1"],
+}
+
 setup(
     name="gym-robotics",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Legacy robotics environments from Gym repo",
+    extras_require=extras,
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Farama-Foundation/gym-robotics",
@@ -32,10 +39,9 @@ setup(
     ],
     zip_safe=False,
     install_requires=[
+        "mujoco==2.2.2",
         "numpy>=1.18.0",
-        "cloudpickle>=1.2.0",
-        "importlib_metadata>=4.8.1; python_version < '3.8'",
-        "gym>=0.22",
+        "gym>=0.26",
     ],
     package_data={
         "gym_robotics": [
@@ -47,8 +53,7 @@ setup(
             "envs/assets/textures/*.png",
         ]
     },
-    entry_points={"gym.envs": ["__root__=gym_robotics:register_robotics_envs"]},
-    tests_require=["pytest", "mock"],
+    entry_points={"gym.envs": ["__root__ = gym_robotics:register_robotics_envs"]},
     python_requires=">=3.7",
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -57,4 +62,5 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
+    tests_require=extras["testing"],
 )
