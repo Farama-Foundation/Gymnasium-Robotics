@@ -12,8 +12,8 @@ def goal_distance(goal_a, goal_b):
 
 
 def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
-    """
-    Factory function
+    """Factory function that returns a BaseFetchEnv class that inherits
+    from MujocoPyRobotEnv or MujocoRobotEnv depending on the mujoco python bindings.
     """
 
     class BaseFetchEnv(RobotEnvClass):

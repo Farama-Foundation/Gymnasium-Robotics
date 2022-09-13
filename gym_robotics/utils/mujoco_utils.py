@@ -326,9 +326,9 @@ class MujocoModelNames:
         mjOBJ_SENSOR
 
     The properties provided for each ``mjObj`` are:
-        ``mjObj``_names: list of the mjObj names in the model.
-        ``mjObj``_name2id: dictionary with
-        ``mjObj``_id2name:
+        ``mjObj``_names: list of the mjObj names in the model of type mjOBJ_FOO.
+        ``mjObj``_name2id: dictionary with name of the mjObj as keys and id of the mjObj as values.
+        ``mjObj``_id2name: dictionary with id of the mjObj as keys and name of the mjObj as values.
     """
 
     def __init__(self, model: MjModel):

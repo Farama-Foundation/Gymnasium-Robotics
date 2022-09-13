@@ -845,3 +845,8 @@ def register_robotics_envs():
             ),
             max_episode_steps=100,
         )
+
+
+from . import _version  # noqa
+
+__version__ = _version.get_versions()["version"]

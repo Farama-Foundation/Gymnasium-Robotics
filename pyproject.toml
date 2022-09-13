@@ -1,5 +1,4 @@
 [tool.pyright]
-
 include = [
     "gym_robotics/**",
     "tests/**"
@@ -8,7 +7,7 @@ include = [
 exclude = [
     "**/node_modules",
     "**/__pycache__",
-    "_version.py"
+    "**/_version.py"
 ]
 
 
@@ -25,3 +24,7 @@ enableTypeIgnoreComments = true
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 # reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
 reportOptionalMemberAccess = "none" # -> raise _version.py error
+
+[build-system]
+requires = ["setuptools", "versioneer==0.24"]
+build-backend = "setuptools.build_meta"

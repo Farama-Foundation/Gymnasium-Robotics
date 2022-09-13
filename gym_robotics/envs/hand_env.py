@@ -8,16 +8,20 @@ from gym_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 def get_base_hand_env(
     RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
 ) -> Union[MujocoPyRobotEnv, MujocoRobotEnv]:
+    """Factory function that returns a BaseHandEnv class that inherits
+    from MujocoPyRobotEnv or MujocoRobotEnv depending on the mujoco python bindings.
+    """
+
     class BaseHandEnv(RobotEnvClass):
+        """Base class for all robotic hand environments."""
+
         def __init__(self, relative_control, **kwargs):
             self.relative_control = relative_control
-
             super().__init__(n_actions=20, **kwargs)
 
         # RobotEnv methods
         # ----------------------------
         def _get_palm_xpos(self):
-
             raise NotImplementedError
 
         def _set_action(self, action):

@@ -24,6 +24,10 @@ MANIPULATE_PEN_XML = os.path.join("hand", "manipulate_pen.xml")
 
 
 def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
+    """Factory function that returns a BaseManipulateEnv class that inherits
+    from MujocoPyHandEnv or MujocoHandEnv depending on the mujoco python bindings.
+    """
+
     class BaseManipulateEnv(HandEnvClass):
         def __init__(
             self,

@@ -8,16 +8,14 @@ from gym import error, logger, spaces
 
 from gym_robotics import GoalEnv
 
-MUJOCO_PY_NOT_INSTALLED = False
-MUJOCO_NOT_INSTALLED = False
-
 try:
     import mujoco_py
 
     from gym_robotics.utils import mujoco_py_utils
 except ImportError as e:
     MUJOCO_PY_IMPORT_ERROR = e
-    MUJOCO_PY_NOT_INSTALLED = True
+else:
+    MUJOCO_PY_IMPORT_ERROR = None
 
 try:
     import mujoco
@@ -25,14 +23,14 @@ try:
     from gym_robotics.utils import mujoco_utils
 except ImportError as e:
     MUJOCO_IMPORT_ERROR = e
-    MUJOCO_NOT_INSTALLED = True
-
+else:
+    MUJOCO_IMPORT_ERROR = None
 
 DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
-    """"""
+    """Superclass for all MuJoCo robotic environments."""
 
     metadata = {
         "render_modes": [
@@ -100,9 +98,11 @@ class BaseRobotEnv(GoalEnv):
     # Env methods
     # ----------------------------
     def compute_terminated(self, achieved_goal, desired_goal, info):
+        """All the available environments are currently continuing tasks and non-time dependent. The objective is to reach the goal for an indefinite period of time."""
         return False
 
     def compute_truncated(self, achievec_goal, desired_goal, info):
+        """The environments will be truncated only if setting a time limit with max_steps which will automatically wrap the environment in a gym TimeLimit wrapper."""
         return False
 
     def step(self, action):
@@ -161,9 +161,9 @@ class BaseRobotEnv(GoalEnv):
     # Extension methods
     # ----------------------------
     def _mujoco_step(self, action):
-        raise NotImplementedError
-
-    def _get_viewer(self, mode):
+        """Advance the mujoco simulation. Override depending on the python binginds,
+        either mujoco or mujoco_py
+        """
         raise NotImplementedError
 
     def _reset_sim(self):
@@ -223,6 +223,11 @@ class BaseRobotEnv(GoalEnv):
 
 class MujocoRobotEnv(BaseRobotEnv):
     def __init__(self, **kwargs):
+        if MUJOCO_IMPORT_ERROR is not None:
+            raise error.DependencyNotInstalled(
+                f"{MUJOCO_IMPORT_ERROR}. (HINT: you need to install mujoco)"
+            )
+
         self._mujoco = mujoco
         self._utils = mujoco_utils
 
@@ -291,7 +296,7 @@ class MujocoRobotEnv(BaseRobotEnv):
 
 class MujocoPyRobotEnv(BaseRobotEnv):
     def __init__(self, **kwargs):
-        if MUJOCO_PY_NOT_INSTALLED:
+        if MUJOCO_PY_IMPORT_ERROR is not None:
             raise error.DependencyNotInstalled(
                 f"{MUJOCO_PY_IMPORT_ERROR}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)"
             )
