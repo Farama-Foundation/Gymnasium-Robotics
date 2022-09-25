@@ -138,19 +138,6 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"HandManipulateBlockRotateZ{suffix}-v1",
-            entry_point="gym_robotics.envs:MujocoHandBlockEnv",
-            kwargs=_merge(
-                {
-                    "target_position": "ignore",
-                    "target_rotation": "z",
-                },
-                kwargs,
-            ),
-            max_episode_steps=100,
-        )
-
-        register(
             id=f"HandManipulateBlockRotateZ_BooleanTouchSensors{suffix}-v1",
             entry_point="gym_robotics.envs:MujocoHandBlockTouchSensorsEnv",
             kwargs=_merge(
