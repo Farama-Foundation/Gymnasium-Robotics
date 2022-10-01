@@ -82,7 +82,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
 
 
     ### Rewards
-    
+
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the puck hasn't reached its final target position, and `0` if the puck is in the final target position (the puck is considered to have reached the goal if the Euclidean distance between both is lower than 0.05 m).
     - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
