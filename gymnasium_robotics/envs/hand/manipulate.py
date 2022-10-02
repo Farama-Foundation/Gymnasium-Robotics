@@ -314,6 +314,19 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
         achieved_goal = (
             self._get_achieved_goal().ravel()
         )  # this contains the object position + rotation
+
+        print('ROBOT QPOS')
+        print(robot_qpos)
+        print(robot_qpos.shape)
+        print('ROBOT QVEL')
+        print(robot_qvel)
+        print(robot_qvel.shape)
+        print('OBJECT QVEL')
+        print(object_qvel)
+        print(object_qvel.shape)
+        print('ACHIEVED GOAL')
+        print(achieved_goal)
+        print(achieved_goal.shape)
         observation = np.concatenate(
             [robot_qpos, robot_qvel, object_qvel, achieved_goal]
         )
