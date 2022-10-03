@@ -44,8 +44,8 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = ""
-    cfg.parentdir_prefix = "gym_robotics-"
-    cfg.versionfile_source = "gym_robotics/_version.py"
+    cfg.parentdir_prefix = "gymnasium_robotics-"
+    cfg.versionfile_source = "gymnasium_robotics/_version.py"
     cfg.verbose = False
     return cfg
 
