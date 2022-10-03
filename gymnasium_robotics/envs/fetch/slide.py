@@ -43,23 +43,23 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
         | 0   | End effector x position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
         | 1   | End effector y position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
         | 2   | End effector z position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-        | 3   | Puck x position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 4   | Puck y position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 5   | Puck z position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 6   | Relative puck x position with respect to gripper x position in globla coordinates. Equals to x<sub>gripper</sub> - x<sub>puck</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 7   | Relative puck y position with respect to gripper y position in globla coordinates. Equals to y<sub>gripper</sub> - y<sub>puck</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 8   | Relative puck z position with respect to gripper z position in globla coordinates. Equals to z<sub>gripper</sub> - z<sub>puck</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 3   | Puck x position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 4   | Puck y position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 5   | Puck z position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 6   | Relative puck x position with respect to gripper x position in globla coordinates. Equals to x<sub>gripper</sub> - x<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 7   | Relative puck y position with respect to gripper y position in globla coordinates. Equals to y<sub>gripper</sub> - y<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
+        | 8   | Relative puck z position with respect to gripper z position in globla coordinates. Equals to z<sub>gripper</sub> - z<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
         | 9   | Joint displacement of the right gripper finger                                                                                        | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | position (m)             |
         | 10  | Joint displacement of the left gripper finger                                                                                         | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | position (m)             |
-        | 11  | Global x rotation of the puck in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-        | 12  | Global y rotation of the puck in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-        | 13  | Global z rotation of the puck in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
+        | 11  | Global x rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
+        | 12  | Global y rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
+        | 13  | Global z rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
         | 14  | Relative puck linear velocity in x direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
         | 15  | Relative puck linear velocity in y direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-        | 16  | Relative puck linear velocity in z direction                                                                                         | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-        | 17  | Puck angular velocity along the x axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-        | 18  | Puck angular velocity along the y axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-        | 19  | Puck angular velocity along the z axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
+        | 16  | Relative puck linear velocity in z direction                                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
+        | 17  | Puck angular velocity along the x axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
+        | 18  | Puck angular velocity along the y axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
+        | 19  | Puck angular velocity along the z axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
         | 20  | End effector linear velocity x direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
         | 21  | End effector linear velocity y direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
         | 22  | End effector linear velocity z direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
@@ -74,11 +74,11 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
         | 2   | Final goal puck position in the z coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
 
     - `achieved_goal`: this key represents the current state of the puck, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER). The value is an `ndarray` with shape `(3,)`. The elements of the array are the following:
-        | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|--------------|
-        | 0   | Current puck position in the x coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
-        | 1   | Current puck position in the y coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
-        | 2   | Current puck position in the z coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
+        | Num | Observation                                | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
+        |-----|--------------------------------------------|--------|--------|---------------------------------------|--------------|
+        | 0   | Current puck position in the x coordinate  | -Inf   | Inf    | object0                               | position (m) |
+        | 1   | Current puck position in the y coordinate  | -Inf   | Inf    | object0                               | position (m) |
+        | 2   | Current puck position in the z coordinate  | -Inf   | Inf    | object0                               | position (m) |
 
 
     ### Rewards
@@ -90,6 +90,8 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
     To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchSlide-v2`. However, for `dense` reward the id must be modified to `FetchSlideDense-v2` and initialized as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchSlideDense-v2')
     ```
 
@@ -113,6 +115,8 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchSlide-v2', max_episode_steps=100)
     ```
 

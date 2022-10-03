@@ -89,6 +89,8 @@ class MujocoPyFetchPushEnv(MujocoPyFetchEnv, EzPickle):
     To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchPush-v2`. However, for `dense` reward the id must be modified to `FetchPush-v2` and initialized as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchPushDense-v2')
     ```
 
@@ -113,6 +115,8 @@ class MujocoPyFetchPushEnv(MujocoPyFetchEnv, EzPickle):
     The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchPush-v2', max_episode_steps=100)
     ```
 

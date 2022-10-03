@@ -78,6 +78,8 @@ class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
     reward the id must be modified to `FetchReachDense-v2` and initialized as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchReachDense-v2')
     ```
 
@@ -98,6 +100,8 @@ class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('FetchReach-v2', max_episode_steps=100)
     ```
 

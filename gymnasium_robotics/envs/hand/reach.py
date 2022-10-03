@@ -310,6 +310,8 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     However, for `dense` reward the id must be modified to `HandReachDense-v1` and initialized as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('HandReachDense-v1')
     ```
 
@@ -379,6 +381,8 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     to increase the total number of timesteps to 100 make the environment as follows:
 
     ```
+    import gymnasium as gym
+
     env = gym.make('HandReach-v1', max_episode_steps=100)
     ```
 
