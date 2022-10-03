@@ -279,7 +279,9 @@ class MujocoRobotEnv(BaseRobotEnv):
                 "rgb_array",
                 "rgb_array_list",
             }:
-                from gymnasium.envs.mujoco.mujoco_rendering import RenderContextOffscreen
+                from gymnasium.envs.mujoco.mujoco_rendering import (
+                    RenderContextOffscreen,
+                )
 
                 self.viewer = RenderContextOffscreen(model=self.model, data=self.data)
             self._viewer_setup()

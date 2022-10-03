@@ -3,8 +3,14 @@ from gymnasium_robotics.envs.fetch.pick_and_place import (
     MujocoPyFetchPickAndPlaceEnv,
 )
 from gymnasium_robotics.envs.fetch.push import MujocoFetchPushEnv, MujocoPyFetchPushEnv
-from gymnasium_robotics.envs.fetch.reach import MujocoFetchReachEnv, MujocoPyFetchReachEnv
-from gymnasium_robotics.envs.fetch.slide import MujocoFetchSlideEnv, MujocoPyFetchSlideEnv
+from gymnasium_robotics.envs.fetch.reach import (
+    MujocoFetchReachEnv,
+    MujocoPyFetchReachEnv,
+)
+from gymnasium_robotics.envs.fetch.slide import (
+    MujocoFetchSlideEnv,
+    MujocoPyFetchSlideEnv,
+)
 from gymnasium_robotics.envs.hand.manipulate import (
     MujocoHandBlockEnv,
     MujocoHandEggEnv,
