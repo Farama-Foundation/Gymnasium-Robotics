@@ -1,9 +1,9 @@
 import warnings
 
 import pytest
-from gym.envs.registration import EnvSpec
-from gym.error import Error
-from gym.utils.env_checker import check_env
+from gymnasium.envs.registration import EnvSpec
+from gymnasium.error import Error
+from gymnasium.utils.env_checker import check_env
 
 from tests.utils import all_testing_env_specs, assert_equals
 

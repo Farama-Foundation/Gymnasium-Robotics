@@ -1,10 +1,10 @@
 import os
 
 import numpy as np
-from gym import spaces
-from gym.utils.ezpickle import EzPickle
+from gymnasium import spaces
+from gymnasium.utils.ezpickle import EzPickle
 
-from gym_robotics.envs.hand.manipulate import MujocoManipulateEnv, MujocoPyManipulateEnv
+from gymnasium_robotics.envs.hand.manipulate import MujocoManipulateEnv, MujocoPyManipulateEnv
 
 # Ensure we get the path separator correct on windows
 MANIPULATE_BLOCK_XML = os.path.join("hand", "manipulate_block_touch_sensors.xml")

@@ -4,12 +4,12 @@
     <img src="readme.png" width="500px"/>
 </p>
 
-# Gym-Robotics
+# Gymnasium-Robotics
 Details and documentation on these robotics environments are available in OpenAI's [blog post](https://blog.openai.com/ingredients-for-robotics-research/) and the accompanying [technical report](https://arxiv.org/abs/1802.09464).
 
 Requirements:
 - Python 3.7 to 3.10
-- Gym v0.26
+- Gymnasium v0.26
 - NumPy 1.18+
 - Mujoco 2.2.2
 
@@ -26,8 +26,8 @@ If you use these environments, please cite the following paper:
 
 ## New MuJoCo Python Bindings
 
-The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gym MuJoCo environment versions. Old gym MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
-Dependencies for old MuJoCo environments can still be installed by `pip install gym_robotics[mujoco_py]`.
+The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
+Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
 
 ## Fetch environments
 <img src="https://openai.com/content/images/2018/02/fetch-reach.png" width="500">

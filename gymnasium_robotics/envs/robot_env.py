@@ -2,16 +2,16 @@ import copy
 import os
 from typing import Optional, Union
 
-import gym
+import gymnasium as gym
 import numpy as np
-from gym import error, logger, spaces
+from gymnasium import error, logger, spaces
 
-from gym_robotics import GoalEnv
+from gymnasium_robotics import GoalEnv
 
 try:
     import mujoco_py
 
-    from gym_robotics.utils import mujoco_py_utils
+    from gymnasium_robotics.utils import mujoco_py_utils
 except ImportError as e:
     MUJOCO_PY_IMPORT_ERROR = e
 else:
@@ -20,7 +20,7 @@ else:
 try:
     import mujoco
 
-    from gym_robotics.utils import mujoco_utils
+    from gymnasium_robotics.utils import mujoco_utils
 except ImportError as e:
     MUJOCO_IMPORT_ERROR = e
 else:
@@ -102,7 +102,7 @@ class BaseRobotEnv(GoalEnv):
         return False
 
     def compute_truncated(self, achievec_goal, desired_goal, info):
-        """The environments will be truncated only if setting a time limit with max_steps which will automatically wrap the environment in a gym TimeLimit wrapper."""
+        """The environments will be truncated only if setting a time limit with max_steps which will automatically wrap the environment in a gymnasium TimeLimit wrapper."""
         return False
 
     def step(self, action):

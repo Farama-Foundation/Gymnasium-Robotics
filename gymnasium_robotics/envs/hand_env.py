@@ -2,7 +2,7 @@ from typing import Union
 
 import numpy as np
 
-from gym_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
+from gymnasium_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 
 
 def get_base_hand_env(
