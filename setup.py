@@ -23,28 +23,30 @@ extras = {
 }
 
 setup(
-    name="gym-robotics",
+    name="gymnasium-robotics",
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     description="Legacy robotics environments from Gym repo",
     extras_require=extras,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Farama-Foundation/gym-robotics",
+    url="https://github.com/Farama-Foundation/gymnasium-robotics",
     author="Farama Foundation",
     author_email="jkterry@farama.org",
     license="",
     packages=[
-        package for package in find_packages() if package.startswith("gym_robotics")
+        package
+        for package in find_packages()
+        if package.startswith("gymnasium_robotics")
     ],
     zip_safe=False,
     install_requires=[
         "mujoco==2.2.2",
         "numpy>=1.18.0",
-        "gym>=0.26",
+        "gymnasium>=0.26",
     ],
     package_data={
-        "gym_robotics": [
+        "gymnasium_robotics": [
             "envs/assets/LICENSE.md",
             "envs/assets/fetch/*.xml",
             "envs/assets/hand/*.xml",
@@ -53,7 +55,9 @@ setup(
             "envs/assets/textures/*.png",
         ]
     },
-    entry_points={"gym.envs": ["__root__ = gym_robotics:register_robotics_envs"]},
+    entry_points={
+        "gymnasium.envs": ["__root__ = gymnasium_robotics:register_robotics_envs"]
+    },
     python_requires=">=3.7",
     classifiers=[
         "Programming Language :: Python :: 3",

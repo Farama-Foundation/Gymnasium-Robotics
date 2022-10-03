@@ -2,9 +2,9 @@ import os
 from typing import Union
 
 import numpy as np
-from gym.utils.ezpickle import EzPickle
+from gymnasium.utils.ezpickle import EzPickle
 
-from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
+from gymnasium_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
 
 FINGERTIP_SITE_NAMES = [
     "robot0:S_fftip",

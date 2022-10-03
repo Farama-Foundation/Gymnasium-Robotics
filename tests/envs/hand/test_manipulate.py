@@ -1,6 +1,6 @@
 import pickle
 
-import gym
+import gymnasium as gym
 import pytest
 
 ENVIRONMENT_IDS = (

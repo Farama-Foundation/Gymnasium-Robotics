@@ -1,12 +1,12 @@
 from abc import abstractmethod
 from typing import Optional
 
-import gym
-from gym import error
+import gymnasium as gym
+from gymnasium import error
 
 
 class GoalEnv(gym.Env):
-    r"""A goal-based environment. It functions just as any regular Gym environment but it
+    r"""A goal-based environment. It functions just as any regular Gymnasium environment but it
     imposes a required structure on the observation_space. More concretely, the observation
     space is required to contain at least three elements, namely `observation`, `desired_goal`, and
     `achieved_goal`. Here, `desired_goal` specifies the goal that the agent should attempt to achieve.

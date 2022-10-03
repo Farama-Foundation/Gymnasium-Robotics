@@ -30,4 +30,4 @@ Add any other context or screenshots about the feature request here.
 
 ### Checklist
 
-- [ ] I have checked that there is no similar [issue](https://github.com/Farama-Foundation/gym-robotics/issues) in the repo (**required**)
+- [ ] I have checked that there is no similar [issue](https://github.com/Farama-Foundation/gymnasium-robotics/issues) in the repo (**required**)

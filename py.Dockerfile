@@ -1,4 +1,4 @@
-# A Dockerfile that sets up a full gym-robotics install with test dependencies
+# A Dockerfile that sets up a full gymnasium-robotics install with test dependencies
 ARG PYTHON_VERSION
 FROM python:$PYTHON_VERSION
 
@@ -13,9 +13,9 @@ RUN mkdir /root/.mujoco \
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 
-COPY . /usr/local/gym-robotics/
-WORKDIR /usr/local/gym-robotics/
+COPY . /usr/local/gymnasium-robotics/
+WORKDIR /usr/local/gymnasium-robotics/
 
 RUN pip install .[testing] --no-cache-dir
 
-ENTRYPOINT ["/usr/local/gym-robotics/bin/docker_entrypoint"]
+ENTRYPOINT ["/usr/local/gymnasium-robotics/bin/docker_entrypoint"]

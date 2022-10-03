@@ -2,11 +2,11 @@ import os
 from typing import Union
 
 import numpy as np
-from gym import error
-from gym.utils.ezpickle import EzPickle
+from gymnasium import error
+from gymnasium.utils.ezpickle import EzPickle
 
-from gym_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
-from gym_robotics.utils import rotations
+from gymnasium_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
+from gymnasium_robotics.utils import rotations
 
 
 def quat_from_angle_and_axis(angle, axis):

@@ -2,8 +2,8 @@ from typing import Union
 
 import numpy as np
 
-from gym_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
-from gym_robotics.utils import rotations
+from gymnasium_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
+from gymnasium_robotics.utils import rotations
 
 
 def goal_distance(goal_a, goal_b):

@@ -1,6 +1,6 @@
 [tool.pyright]
 include = [
-    "gym_robotics/**",
+    "gymnasium_robotics/**",
     "tests/**"
 ]
 
