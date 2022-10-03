@@ -1,3 +1,5 @@
+from warnings import warn
+
 from gym.envs.registration import register
 
 from gym_robotics.core import GoalEnv
@@ -8,6 +10,14 @@ __version__ = _version.get_versions()["version"]
 
 
 def register_robotics_envs():
+
+    # gym_robotics package deprecated in favor of gymnasium_robotics
+    warn(
+        "The package name gym_robotics has been deprecated in favor of gymnasium_robotics. Please uninstall gym_robotics and install gymnasium_robotics with `pip install gymnasium_robotics`. Future releases will be maintained under the new package name gymnasium_robotics.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
     def _merge(a, b):
         a.update(b)
         return a
