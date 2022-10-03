@@ -272,14 +272,14 @@ class MujocoRobotEnv(BaseRobotEnv):
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == "human":
-                from gym.envs.mujoco.mujoco_rendering import Viewer
+                from gymnasium.envs.mujoco.mujoco_rendering import Viewer
 
                 self.viewer = Viewer(self.model, self.data)
             elif mode in {
                 "rgb_array",
                 "rgb_array_list",
             }:
-                from gym.envs.mujoco.mujoco_rendering import RenderContextOffscreen
+                from gymnasium.envs.mujoco.mujoco_rendering import RenderContextOffscreen
 
                 self.viewer = RenderContextOffscreen(model=self.model, data=self.data)
             self._viewer_setup()
