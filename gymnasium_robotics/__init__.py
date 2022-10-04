@@ -431,7 +431,7 @@ def register_robotics_envs():
                 {
                     "target_position": "random",
                     "target_rotation": "xyz",
-                    "touch_get_obs": "boolean",
+                    "touch_get_obs": "sensordata",
                 },
                 kwargs,
             ),

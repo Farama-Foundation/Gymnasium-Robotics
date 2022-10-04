@@ -89,7 +89,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
 
     To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchSlide-v2`. However, for `dense` reward the id must be modified to `FetchSlideDense-v2` and initialized as follows:
 
-    ```
+    ```python
     import gymnasium as gym
 
     env = gym.make('FetchSlideDense-v2')
@@ -114,7 +114,7 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
-    ```
+    ```python
     import gymnasium as gym
 
     env = gym.make('FetchSlide-v2', max_episode_steps=100)
