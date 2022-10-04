@@ -201,7 +201,7 @@ def get_joint_qvel(model, data, name):
     joint_addr = model.jnt_qposadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
-        ndim = 7
+        ndim = 6
     elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
         ndim = 4
     else:

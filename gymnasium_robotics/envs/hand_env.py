@@ -43,6 +43,7 @@ class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
         super()._set_action(action)
         ctrlrange = self.model.actuator_ctrlrange
         actuation_range = (ctrlrange[:, 1] - ctrlrange[:, 0]) / 2.0
+
         if self.relative_control:
             actuation_center = np.zeros_like(action)
             for i in range(self.data.ctrl.shape[0]):
