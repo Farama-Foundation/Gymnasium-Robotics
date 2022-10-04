@@ -5,7 +5,7 @@
 </p>
 
 # Gymnasium-Robotics
-Details and documentation on these robotics environments are available in OpenAI's [blog post](https://blog.openai.com/ingredients-for-robotics-research/) and the accompanying [technical report](https://arxiv.org/abs/1802.09464).
+A collection of robotics simulation environments for reinforcement learning based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
 
 Requirements:
 - Python 3.7 to 3.10
@@ -30,55 +30,42 @@ The latest version and future versions of the MuJoCo environments will no longer
 Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
 
 ## Fetch environments
-<img src="https://openai.com/content/images/2018/02/fetch-reach.png" width="500">
 
-[FetchReach-v3](https://gym.openai.com/envs/FetchReach-v0/): Fetch has to move its end-effector to the desired goal position.
+The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following: 
 
+* `FetchReach-v2`: Fetch has to move its end-effector to the desired goal position.
+* `FetchPush-v2`: Fetch has to move a box by pushing it until it reaches a desired goal position.
+* `FetchSlide-v2`: Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.
+* `FetchPickAndPlace-v2`: Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.
 
-<img src="https://openai.com/content/images/2018/02/fetch-slide.png" width="500">
-
-[FetchSlide-v2](https://gym.openai.com/envs/FetchSlide-v0/): Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.
-
-
-<img src="https://openai.com/content/images/2018/02/fetch-push.png" width="500">
-
-[FetchPush-v2](https://gym.openai.com/envs/FetchPush-v0/): Fetch has to move a box by pushing it until it reaches a desired goal position.
-
-
-<img src="https://openai.com/content/images/2018/02/fetch-pickandplace.png" width="500">
-
-[FetchPickAndPlace-v2](https://gym.openai.com/envs/FetchPickAndPlace-v0/): Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.
+<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/fetchpickandplace.gif" alt="animated" width="300" height="300"/> </p>
 
 ## Shadow Dexterous Hand environments
-<img src="https://openai.com/content/images/2018/02/hand-reach.png" width="500">
 
-[HandReach-v1](https://gym.openai.com/envs/HandReach-v0/): ShadowHand has to reach with its thumb and a selected finger until they meet at a desired goal position above the palm.
+These environments are based on the [Shadow Dexterous Hand](https://www.shadowrobot.com/), 5 which is an anthropomorphic robotic hand with 24 degrees of freedom. Of those 24 joints, 20 can be can be controlled independently whereas the remaining ones are coupled joints.
 
+* `HandReach-v1`: ShadowHand has to reach with its thumb and a selected finger until they meet at a desired goal position above the palm.
+* `HandManipulateBlock-v1`: ShadowHand has to manipulate a block until it achieves a desired goal position and rotation.
+* `HandManipulateEgg-v1`: ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
+* `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
 
-<img src="https://openai.com/content/images/2018/02/hand-block.png" width="500">
-
-[HandManipulateBlock-v1](https://gym.openai.com/envs/HandManipulateBlock-v0/): ShadowHand has to manipulate a block until it achieves a desired goal position and rotation.
-
-
-<img src="https://openai.com/content/images/2018/02/hand-egg.png" width="500">
-
-[HandManipulateEgg-v1](https://gym.openai.com/envs/HandManipulateEgg-v0/): ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
-
-
-<img src="https://openai.com/content/images/2018/02/hand-pen.png" width="500">
-
-[HandManipulatePen-v1](https://gym.openai.com/envs/HandManipulatePen-v0/): ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
+<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/handblock.gif" alt="animated" width="300" height="300"/> </p>
 
 # Hand environments with Touch Sensors
 
-Touch sensor observations are also available in all Hand environments, with exception of `HandReach`. These environments add to the palm of the hand and the phalanges of the fingers two types of touch sensors depending on the environment. These touch sensors are:
-- **Boolean Touch Sensor**: the observations of each touch sensor can return a value of `0` if no contact is detected with and object, and `1` otherwise.
+Touch sensor observations are also available in all Hand environments, with exception of `HandReach`. These environments add to the palm of the hand and the phalanges of the fingers 92 touch sensors with different recorded data depending on the environment. These touch sensors are:
+- **Boolean Touch Sensor**: the observations of each touch sensor return a value of `0` if no contact is detected with and object, and `1` otherwise.
 - **Continuous Touch Sensor**: the value returned by each touch sensor is a continuous value that represents the external force made by an object over the sensor.
 
-These environments are instanceated by adding the following strings to the Hand environment id's: `_BooleanTouchSensor` or `_ContinuousTouchSensor`. For example, to add boolean touch sensors to `HandManipulateBlock-v1`, make the environment in the following way:
+These environments are instanceated by adding the following strings to the Hand environment id's: `_BooleanTouchSensor` or `_ContinuousTouchSensor`. For example, to add boolean touch sensors to `HandManipulateEgg-v1`, make the environment in the following way:
+
+```python
+import gymnasium as gym
+
+env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
-env = gym.make('HandManipulateBlock_BooleanTouchSensor-v1')
-```
+
+<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
 
 If using these environments please also cite the following paper:
 
