@@ -13,14 +13,6 @@ from gymnasium.envs.registration import registry
 from tqdm import tqdm
 from utils import trim
 
-all_testing_env_specs = [
-    env_spec
-    for env_spec in gym.envs.registry.values()
-    if env_spec.entry_point.startswith("gymnasium_robotics.envs")
-]
-
-print(all_testing_env_specs)
-
 readme_path = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
     "README.md",
@@ -57,16 +49,14 @@ filtered_envs = {
 }
 
 for env_name, env_spec in filtered_envs.items():
-    print(env_spec.make().unwrapped.__doc__)
+    docstring = env_spec.make().unwrapped.__doc__
 
     # docstring = trim(made.unwrapped.__doc__)
 
-    pascal_env_name = env_spec.id.split("-")[1]
+    pascal_env_name = env_spec.name
     # remove suffix
-    p = re.compile(r"([A-Z][a-z]+)*")
-    name = p.search(pascal_env_name).group()
 
-    snake_env_name = pattern.sub("_", name).lower()
+    snake_env_name = pattern.sub("_", pascal_env_name).lower()
     env_names.append(snake_env_name)
     title_env_name = snake_env_name.replace("_", " ").title()
 
