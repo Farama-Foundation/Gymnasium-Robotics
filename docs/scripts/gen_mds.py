@@ -7,10 +7,19 @@ __email__ = "contact@fenggu.me"
 
 import os
 import re
+import gymnasium as gym
 
 from gymnasium.envs.registration import registry
 from tqdm import tqdm
 from utils import trim
+
+all_testing_env_specs = [
+    env_spec
+    for env_spec in gym.envs.registry.values()
+    if env_spec.entry_point.startswith("gymnasium_robotics.envs")
+]
+
+print(all_testing_env_specs)
 
 readme_path = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -40,17 +49,17 @@ for env_spec in tqdm(all_envs):
 
 
 filtered_envs = {
-    k.split(":")[1]: v
-    for k, v in sorted(
+    env[0]: env[1]
+    for env in sorted(
         filtered_envs_by_type.items(),
         key=lambda item: item[1].entry_point.split(".")[1],
     )
 }
 
 for env_name, env_spec in filtered_envs.items():
-    made = env_spec.make()
+    print(env_spec.make().unwrapped.__doc__)
 
-    docstring = trim(made.unwrapped.__doc__)
+    # docstring = trim(made.unwrapped.__doc__)
 
     pascal_env_name = env_spec.id.split("-")[1]
     # remove suffix
@@ -86,4 +95,3 @@ title: {title_env_name}
     file.write(all_text)
     file.close() """
 
-print(env_names)
