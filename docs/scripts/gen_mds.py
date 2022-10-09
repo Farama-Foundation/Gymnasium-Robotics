@@ -81,7 +81,7 @@ title: {title_env_name}
 
 {docstring}
 """
-    """ file = open(v_path, "w+", encoding="utf-8")
+    file = open(v_path, "w+", encoding="utf-8")
     file.write(all_text)
-    file.close() """
+    file.close()
 
