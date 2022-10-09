@@ -50,6 +50,7 @@ filtered_envs = {
 
 for env_name, env_spec in filtered_envs.items():
     docstring = env_spec.make().unwrapped.__doc__
+    print(env_name)
 
     # docstring = trim(made.unwrapped.__doc__)
 
