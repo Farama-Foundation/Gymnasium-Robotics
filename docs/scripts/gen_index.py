@@ -17,7 +17,7 @@ output_path = os.path.join(
     "index.md",
 )
 
-sections = []
+
 all_text = """---
 hide-toc: true
 firstpage:
@@ -27,49 +27,26 @@ lastpage:
 index_toctree = """
 ```{toctree}
 :hidden:
-:caption: Introduction
-
-content/installation
-content/basic_usage
-api/wrappers
-content/pubs
-```
-
-
-```{toctree}
-:hidden:
 :caption: Environments
-
-environments/design
-environments/index
+envs/index
 ```
-
 ```{toctree}
 :hidden:
 :caption: Development
-
-Github <https://github.com/Farama-Foundation/MiniGrid>
+Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 Donate <https://farama.org/donations>
-Contribute to the Docs <https://github.com/Farama-Foundation/MiniGrid/blob/master/.github/PULL_REQUEST_TEMPLATE.md>
+Contribute to the Docs <https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/.github/PULL_REQUEST_TEMPLATE.md>
 ```
-
 """
 # gen index.md
-with open(readme_path) as f:
+with open(readme_path, "r") as f:
     readme = f.read()
 
     """
     sections = [description, publications, installation, basic usage, wrappers, design, included environments&etc]
     """
     all_text += readme
-all_text += index_toctree
+    all_text += index_toctree
 
 with open(output_path, "w") as f:
     f.write(all_text)
-
-
-"""
-1. gen index.md
-2. gen /environments/index.md
-3. gen /environments/design.md
-"""

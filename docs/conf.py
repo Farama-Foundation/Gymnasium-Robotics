@@ -16,7 +16,7 @@
 
 # -- Project information -----------------------------------------------------
 # TODO: change to robotics version
-# from TODO import __version__ as minigrid_version
+# from TODO import __version__ as robotics_version
 
 import os
 import sys
@@ -28,7 +28,7 @@ author = "Farama Foundation"
 
 # The full version, including alpha/beta/rc tags
 # TODO: change to Robotics version
-release = "1.2.1"
+release = "1.0.0"
 
 sys.path.insert(0, os.path.abspath("../.."))
 
