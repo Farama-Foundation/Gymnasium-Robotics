@@ -19,7 +19,7 @@ jobs:
         run: pip install -r docs/requirements.txt && pip install mujoco-py && wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz && tar -xvzf mujoco210-linux-x86_64.tar.gz
 
       - name: Install mujoco
-        run: mv mujoco210-linux-x86_64.tar.gz/mujoco210 ~/.mujoco/mujoco210
+        run: ls -a && mv mujoco210 ~/.mujoco/mujoco210
 
       - name: Register Envs
         run: pip install -e .
