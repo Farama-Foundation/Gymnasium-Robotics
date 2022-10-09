@@ -19,13 +19,13 @@ jobs:
         run: pip install -r docs/requirements.txt && pip install mujoco-py && wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz && tar -xvzf mujoco210-linux-x86_64.tar.gz
 
       - name: Install mujoco
-        run: mkdir ~/.mujoco && mv mujoco210 ~/.mujoco/mujoco210 && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/runner/.mujoco/mujoco210/bin"  >>  ~/.bashrc && source ~/.bashrc && cat ~/.bashrc
+        run: mkdir ~/.mujoco && mv mujoco210 ~/.mujoco/mujoco210 && echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/runner/.mujoco/mujoco210/bin"  >>  ~/.bashrc && source ~/.bashrc
 
       - name: Register Envs
         run: pip install -e .
 
       - name: Build Envs Docs
-        run: python docs/scripts/gen_mds.py
+        run: source $HOME/.bashrc && python docs/scripts/gen_mds.py
 
       - name: Build
         run: sphinx-build -b dirhtml -v docs _build
