@@ -12,6 +12,8 @@ from tqdm import tqdm
 from utils import trim
 from itertools import chain
 
+pattern = re.compile(r"(?<!^)(?=[A-Z])")
+
 readme_path = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
     "README.md",
@@ -87,15 +89,17 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
             curr_class = ""
             match = False
 
-            for line in lines:
+            for trimmed in lines:
                 # remove leading whitespace
-                trimmed = line.lstrip()
+                # trimmed = line.lstrip()
 
                 if trimmed.startswith("class"):
                     class_name = re.search(class_p, trimmed).group(1)
-                    # ignore Py classes
+                    # ignore Py classes and remove the "Mujoco" suffix
                     if "Py" not in class_name:
                         curr_class = class_name[:-3]
+                        if curr_class.startswith("Mujoco"):
+                            curr_class = curr_class[6:]
 
                 if trimmed.startswith('"""'):
                     match = not match
@@ -115,8 +119,10 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
 
             # write to file
             for name, docstring in docstrings.items():
-                generate(name, docstring, type)
-                env_index_toctree += f"{type}/{name}\n"
+                snake_env_name = pattern.sub("_", name).lower()
+                title_env_name = snake_env_name.replace("_", " ").title()
+                generate(title_env_name, docstring, type)
+                env_index_toctree += f"{type}/{title_env_name}\n"
 
 env_index_toctree += """\n```\n"""
 
@@ -126,6 +132,12 @@ env_path = os.path.join(
     "index.md",
 )
 
+with open(readme_path) as f:
+    readme = f.read()
+    sections = readme.split("<br>")
+
+
 with open(env_path, "w") as f:
+    index_texts += sections[2]
     f.write(index_texts + env_index_toctree)
     f.close()

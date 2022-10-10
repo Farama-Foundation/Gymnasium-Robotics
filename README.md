@@ -4,6 +4,8 @@
     <img src="readme.png" width="500px"/>
 </p>
 
+<br>
+
 # Gymnasium-Robotics
 A collection of robotics simulation environments for reinforcement learning based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
 
@@ -28,6 +30,8 @@ If you use these environments, please cite the following paper:
 
 The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
 Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
+
+<br>
 
 ## Fetch environments
 

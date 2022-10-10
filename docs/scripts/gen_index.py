@@ -43,9 +43,10 @@ with open(readme_path, "r") as f:
     readme = f.read()
 
     """
-    sections = [description, publications, installation, basic usage, wrappers, design, included environments&etc]
+    sections = [image & precommit, main, envs]
     """
-    all_text += readme
+    sections = readme.split("<br>")
+    all_text += sections[1]
     all_text += index_toctree
 
 with open(output_path, "w") as f:
