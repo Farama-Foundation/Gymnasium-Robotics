@@ -43,11 +43,11 @@ with open(readme_path, "r") as f:
     readme = f.read()
 
     """
-    sections = [image & precommit, main, envs]
+    sections = [precommit, img, main, fetch, img, hand, image, sensor, image, citation]
     """
     sections = readme.split("<br>")
     all_text += index_toctree
-    all_text += sections[1]
+    all_text += sections[2]
 
 
 with open(output_path, "w") as f:

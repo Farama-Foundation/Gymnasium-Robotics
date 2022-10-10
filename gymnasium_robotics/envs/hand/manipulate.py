@@ -491,6 +491,7 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
 
 class MujocoHandBlockEnv(MujocoManipulateEnv):
     """
+    ![Block](../../_static/img/handblock.gif)
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
@@ -723,6 +724,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
 
 class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     """
+    ![Egg Touch](../../_static/img/eggtouch.gif)
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).

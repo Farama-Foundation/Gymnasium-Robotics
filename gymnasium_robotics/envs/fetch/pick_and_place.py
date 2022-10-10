@@ -9,6 +9,8 @@ MODEL_XML_PATH = os.path.join("fetch", "pick_and_place.xml")
 
 class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     """
+    ![Pick and place](../../_static/img/fetchpickandplace.gif)
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).

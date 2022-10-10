@@ -1,5 +1,6 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/) 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+<br>
 <p align="center">
     <img src="readme.png" width="500px"/>
 </p>
@@ -42,6 +43,7 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 * `FetchSlide-v2`: Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.
 * `FetchPickAndPlace-v2`: Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.
 
+<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/fetchpickandplace.gif" alt="animated" width="300" height="300"/> </p>
 
 <br>
@@ -55,6 +57,7 @@ These environments are based on the [Shadow Dexterous Hand](https://www.shadowro
 * `HandManipulateEgg-v1`: ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
 * `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
 
+<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/handblock.gif" alt="animated" width="300" height="300"/> </p>
 
 <br>
@@ -72,7 +75,7 @@ import gymnasium as gym
 
 env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
-
+<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
 
 <br>

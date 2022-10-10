@@ -155,18 +155,18 @@ env_path = os.path.join(
 
 with open(readme_path) as f:
     readme = f.read()
-    """sections = [image, main, fetch, shadow, hand, citation]"""
+    """sections = [precommit, img, main, fetch, img, hand, image, sensor, image, citation]"""
     sections = readme.split("<br>")
 
 
 with open(env_path, "w") as f:
-    index_texts += sections[2]
+    index_texts += sections[3]
     f.write(
         index_texts
         + fetch_toctree
-        + sections[3]
+        + sections[5]
         + hand_toctree
-        + sections[4]
+        + sections[7]
         + touch_sensor_toctree
     )
     f.close()
