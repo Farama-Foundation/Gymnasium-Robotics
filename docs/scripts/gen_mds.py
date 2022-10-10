@@ -103,8 +103,11 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
             match = False
 
             for line in lines:
+                if line.strip() == "":
+                    trimmed = '\n'
                 # remove leading whitespace
-                trimmed = line.lstrip()
+                else:
+                    trimmed = line.lstrip()
 
                 if trimmed.startswith("class"):
                     class_name = re.search(class_p, trimmed).group(1)
@@ -129,7 +132,7 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
                             docstrings[curr_class] = docstring
                         docstring = ""
                         curr_class = ""
-            
+
             # write to file
             for name, docstring in docstrings.items():
                 generate(name, docstring, type)
@@ -152,11 +155,18 @@ env_path = os.path.join(
 
 with open(readme_path) as f:
     readme = f.read()
-    '''sections = [image, main, fetch, shadow, hand, citation]'''
+    """sections = [image, main, fetch, shadow, hand, citation]"""
     sections = readme.split("<br>")
 
 
 with open(env_path, "w") as f:
     index_texts += sections[2]
-    f.write(index_texts + fetch_toctree + sections[3] + hand_toctree + sections[4] + touch_sensor_toctree)
+    f.write(
+        index_texts
+        + fetch_toctree
+        + sections[3]
+        + hand_toctree
+        + sections[4]
+        + touch_sensor_toctree
+    )
     f.close()
