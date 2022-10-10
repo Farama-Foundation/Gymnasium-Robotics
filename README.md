@@ -44,6 +44,8 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/fetchpickandplace.gif" alt="animated" width="300" height="300"/> </p>
 
+<br>
+
 ## Shadow Dexterous Hand environments
 
 These environments are based on the [Shadow Dexterous Hand](https://www.shadowrobot.com/), 5 which is an anthropomorphic robotic hand with 24 degrees of freedom. Of those 24 joints, 20 can be can be controlled independently whereas the remaining ones are coupled joints.
@@ -54,6 +56,8 @@ These environments are based on the [Shadow Dexterous Hand](https://www.shadowro
 * `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
 
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/handblock.gif" alt="animated" width="300" height="300"/> </p>
+
+<br>
 
 # Hand environments with Touch Sensors
 
@@ -70,6 +74,8 @@ env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
 
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
+
+<br>
 
 If using these environments please also cite the following paper:
 

@@ -46,8 +46,9 @@ with open(readme_path, "r") as f:
     sections = [image & precommit, main, envs]
     """
     sections = readme.split("<br>")
-    all_text += sections[1]
     all_text += index_toctree
+    all_text += sections[1]
+
 
 with open(output_path, "w") as f:
     f.write(all_text)
