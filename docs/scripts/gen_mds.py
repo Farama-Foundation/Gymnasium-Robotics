@@ -104,7 +104,7 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
 
             for line in lines:
                 if line.strip() == "":
-                    trimmed = '\n'
+                    trimmed = "\n"
                 # remove leading whitespace
                 else:
                     trimmed = line.lstrip()
