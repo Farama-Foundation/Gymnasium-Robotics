@@ -22,7 +22,7 @@ jobs:
         run: pip install -e .
 
       - name: Build Envs Docs
-        run: source $HOME/.bashrc && python docs/scripts/gen_mds.py && python docs/scripts/gen_index.py
+        run: python docs/scripts/gen_mds.py
 
       - name: Build
         run: sphinx-build -b dirhtml -v docs _build

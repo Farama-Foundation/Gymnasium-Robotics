@@ -1,11 +1,8 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/) 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-<br>
 <p align="center">
     <img src="readme.png" width="500px"/>
 </p>
-
-<br>
 
 # Gymnasium-Robotics
 A collection of robotics simulation environments for reinforcement learning based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
@@ -32,8 +29,6 @@ If you use these environments, please cite the following paper:
 The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
 Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
 
-<br>
-
 ## Fetch environments
 
 The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following: 
@@ -43,10 +38,7 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 * `FetchSlide-v2`: Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.
 * `FetchPickAndPlace-v2`: Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.
 
-<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/fetchpickandplace.gif" alt="animated" width="300" height="300"/> </p>
-
-<br>
 
 ## Shadow Dexterous Hand environments
 
@@ -57,10 +49,7 @@ These environments are based on the [Shadow Dexterous Hand](https://www.shadowro
 * `HandManipulateEgg-v1`: ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
 * `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
 
-<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/handblock.gif" alt="animated" width="300" height="300"/> </p>
-
-<br>
 
 # Hand environments with Touch Sensors
 
@@ -75,10 +64,7 @@ import gymnasium as gym
 
 env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
-<br>
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
-
-<br>
 
 If using these environments please also cite the following paper:
 

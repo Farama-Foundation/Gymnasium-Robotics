@@ -37,30 +37,8 @@ output_path = os.path.join(
     "envs",
 )
 
-# for gen envs/index.md
-index_texts = """---
-firstpage:
-lastpage:
----
-"""
-hand_toctree = """
-```{toctree}
-:hidden:
-"""
-
-fetch_toctree = """
-```{toctree}
-:hidden:
-"""
-
-touch_sensor_toctree = """
-```{toctree}
-:hidden:
-"""
-
 # regex to find the class name
 class_p = re.compile(r"class\s([\w]+)\(.*")
-
 
 # write to file
 def generate(name, docstring, type):
@@ -136,37 +114,3 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
             # write to file
             for name, docstring in docstrings.items():
                 generate(name, docstring, type)
-                if name.endswith("TouchSensors"):
-                    touch_sensor_toctree += f"{type}/{name}\n"
-                elif type == "fetch":
-                    fetch_toctree += f"{type}/{name}\n"
-                else:
-                    hand_toctree += f"{type}/{name}\n"
-
-hand_toctree += """\n```\n"""
-fetch_toctree += """\n```\n"""
-touch_sensor_toctree += """\n```\n"""
-
-env_path = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
-    "envs",
-    "index.md",
-)
-
-with open(readme_path) as f:
-    readme = f.read()
-    """sections = [precommit, img, main, fetch, img, hand, image, sensor, image, citation]"""
-    sections = readme.split("<br>")
-
-
-with open(env_path, "w") as f:
-    index_texts += sections[3]
-    f.write(
-        index_texts
-        + fetch_toctree
-        + sections[5]
-        + hand_toctree
-        + sections[7]
-        + touch_sensor_toctree
-    )
-    f.close()
