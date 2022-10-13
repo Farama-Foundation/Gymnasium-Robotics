@@ -40,6 +40,7 @@ output_path = os.path.join(
 # regex to find the class name
 class_p = re.compile(r"class\s([\w]+)\(.*")
 
+
 # write to file
 def generate(name, docstring, type):
     snake_env_name = pattern.sub(" ", name).lower()
