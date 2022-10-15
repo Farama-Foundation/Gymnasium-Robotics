@@ -1,6 +1,7 @@
-"""Setups up the PettingZoo module."""
+"""Setups up the Gymnasium Robotics module."""
 
 from setuptools import find_packages, setup
+
 import versioneer
 
 
@@ -38,7 +39,8 @@ setup(
     author_email="contact@farama.org",
     description="Robotics environments for the Gymnasium repo.",
     url="https://github.com/Farama-Foundation/gymnasium-robotics",
-    license_files=("LICENSE.txt",),
+    license="MIT",
+    license_files=("LICENSE",),
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords=["Reinforcement Learning", "Gymnasium", "RL", "AI", "Robotics"],
