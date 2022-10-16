@@ -17,6 +17,7 @@ def get_description():
                 break
     return header_count, long_description
 
+
 def get_version():
     """Gets the minigrid version."""
     path = "gymnasium_robotics/__init__.py"
