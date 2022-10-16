@@ -78,7 +78,7 @@ html_theme = "furo"
 html_title = "Gymnasium-Robotics Documentation"
 html_baseurl = "https://gymnasium-robotics.farama.org/"
 html_copy_source = False
-html_favicon = "img/robotics-white.png"
+html_favicon = "_static/img/robotics-white.png"
 html_theme_options = {
     "light_logo": "img/robotics.png",
     "dark_logo": "img/robotics-white.png",
