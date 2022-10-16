@@ -74,7 +74,7 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
         else:
             type = "fetch" if "fetch" in root else "hand"
             curr_path = os.path.join(root, f)
-            curr_file = open(curr_path, "r")
+            curr_file = open(curr_path)
             lines = curr_file.readlines()
             docstrings = {}
             docstring = ""

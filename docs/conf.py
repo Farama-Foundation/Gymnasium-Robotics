@@ -1,3 +1,4 @@
+# flake8: noqa
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -21,7 +22,9 @@
 import os
 import sys
 from typing import Any, Dict
+
 import gymnasium
+
 import gymnasium_robotics
 
 project = "Gymnasium-Robotics"
