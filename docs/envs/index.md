@@ -3,6 +3,18 @@ firstpage:
 lastpage:
 ---
 
+## Goal-Aware Environments
+
+```{eval-rst}
+.. autoclass:: gymnasium_robotics.GoalEnv
+```
+
+### Methods
+```{eval-rst}
+.. gymnasium_robotics.GoalEnv.compute_reward
+.. gymnasium_robotics.GoalEnv.compute_terminated
+.. gymnasium_robotics.GoalEnv.compute_truncated
+```
 
 ## Fetch environments
 
