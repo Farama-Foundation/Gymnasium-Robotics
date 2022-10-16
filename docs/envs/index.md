@@ -11,9 +11,9 @@ lastpage:
 
 ### Methods
 ```{eval-rst}
-.. gymnasium_robotics.core.GoalEnv.compute_reward
-.. gymnasium_robotics.core.GoalEnv.compute_terminated
-.. gymnasium_robotics.core.GoalEnv.compute_truncated
+.. autofunction:: gymnasium_robotics.core.GoalEnv.compute_reward
+.. autofunction:: gymnasium_robotics.core.GoalEnv.compute_terminated
+.. autofunction:: gymnasium_robotics.core.GoalEnv.compute_truncated
 ```
 
 ## Fetch environments
