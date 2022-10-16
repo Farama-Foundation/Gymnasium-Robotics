@@ -2,8 +2,6 @@
 
 from setuptools import find_packages, setup
 
-import versioneer
-
 
 def get_description():
     """Gets the description from the readme."""
