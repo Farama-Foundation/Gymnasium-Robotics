@@ -56,7 +56,9 @@ setup(
         ]
     },
     entry_points={
-        "gymnasium.envs": ["__root__ = gymnasium_robotics:register_robotics_envs"]
+        "gymnasium.envs": [
+            "__root__ = gymnasium_robotics.__init__:register_robotics_envs"
+        ]
     },
     python_requires=">=3.7",
     classifiers=[

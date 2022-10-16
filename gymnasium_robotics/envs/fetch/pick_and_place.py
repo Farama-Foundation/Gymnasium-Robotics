@@ -9,7 +9,9 @@ MODEL_XML_PATH = os.path.join("fetch", "pick_and_place.xml")
 
 class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     """
-    ![Pick and place](../../_static/img/fetchpickandplace.gif)
+    <p align="center">
+        <img alt="Pick and place" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/fetchpickandplace.gif" width="300px" height="300px" />
+    </p>
 
     ### Description
 

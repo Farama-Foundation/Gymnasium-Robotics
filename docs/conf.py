@@ -45,7 +45,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
     "myst_parser",
-    "notfound.extension",
 ]
 
 source_suffix = {
@@ -92,4 +91,3 @@ html_context["slug"] = "gymnasium"
 
 html_static_path = ["_static"]
 html_css_files = []
-notfound_urls_prefix = None

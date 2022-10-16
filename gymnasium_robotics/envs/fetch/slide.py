@@ -38,7 +38,10 @@ class MujocoPyFetchSlideEnv(MujocoPyFetchEnv, EzPickle):
 
 class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
     """
-    ![Slide](../../_static/img/fetchslide.gif)
+    <p align="center">
+        <img alt="Slide" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/fetchslide.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
@@ -65,7 +68,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's end effector state and goal. The kinematics observations are derived from Mujoco bodies known as [sites](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site) attached to
     the body of interest such as the puck or the end effector. Only the observations from the gripper fingers are derived from joints. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:
 
-    - `observation`: its value is an `ndarray` of shape `(25,)`. It consists of kinematic information of the puck object and gripper. The elements of the array correspond to the following:
+    `observation`: its value is an `ndarray` of shape `(25,)`. It consists of kinematic information of the puck object and gripper. The elements of the array correspond to the following:
         | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
         |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|----------------------------------------|----------|--------------------------|
         | 0   | End effector x position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
@@ -94,14 +97,14 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
         | 23  | Right gripper finger linear velocity                                                                                                  | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | velocity (m/s)           |
         | 24  | Left gripper finger linear velocity                                                                                                   | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | velocity (m/s)           |
 
-    - `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 3-dimensional `ndarray`, `(3,)`, that consists of the three cartesian coordinates of the desired final puck position `[x,y,z]`. In order for the robot to perform a pick and place trajectory, the goal position can be elevated over the table or on top of the table. The elements of the array are the following:
+    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 3-dimensional `ndarray`, `(3,)`, that consists of the three cartesian coordinates of the desired final puck position `[x,y,z]`. In order for the robot to perform a pick and place trajectory, the goal position can be elevated over the table or on top of the table. The elements of the array are the following:
         | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
         |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|--------------|
         | 0   | Final goal puck position in the x coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
         | 1   | Final goal puck position in the y coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
         | 2   | Final goal puck position in the z coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
 
-    - `achieved_goal`: this key represents the current state of the puck, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER). The value is an `ndarray` with shape `(3,)`. The elements of the array are the following:
+    `achieved_goal`: this key represents the current state of the puck, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER). The value is an `ndarray` with shape `(3,)`. The elements of the array are the following:
         | Num | Observation                                | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
         |-----|--------------------------------------------|--------|--------|---------------------------------------|--------------|
         | 0   | Current puck position in the x coordinate  | -Inf   | Inf    | object0                               | position (m) |

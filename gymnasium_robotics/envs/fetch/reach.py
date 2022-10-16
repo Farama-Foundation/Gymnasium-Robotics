@@ -10,7 +10,10 @@ MODEL_XML_PATH = os.path.join("fetch", "reach.xml")
 
 class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
     """
-    ![Reach](../../_static/img/fetchreach.gif)
+    <p align="center">
+        <img alt="Reach" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/fetchreach.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
