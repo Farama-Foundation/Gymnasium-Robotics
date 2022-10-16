@@ -30,7 +30,7 @@ author = "Farama Foundation"
 # TODO: change to Robotics version
 release = "1.0.0"
 
-sys.path.insert(0, os.path.abspath("../.."))
+sys.path.insert(0, os.path.abspath(".."))
 
 # -- General configuration ---------------------------------------------------
 
