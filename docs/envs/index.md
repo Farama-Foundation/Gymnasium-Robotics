@@ -6,14 +6,14 @@ lastpage:
 ## Goal-Aware Environments
 
 ```{eval-rst}
-.. autoclass:: gymnasium_robotics.GoalEnv
+.. autoclass:: gymnasium_robotics.core.GoalEnv
 ```
 
 ### Methods
 ```{eval-rst}
-.. gymnasium_robotics.GoalEnv.compute_reward
-.. gymnasium_robotics.GoalEnv.compute_terminated
-.. gymnasium_robotics.GoalEnv.compute_truncated
+.. gymnasium_robotics.core.GoalEnv.compute_reward
+.. gymnasium_robotics.core.GoalEnv.compute_terminated
+.. gymnasium_robotics.core.GoalEnv.compute_truncated
 ```
 
 ## Fetch environments
