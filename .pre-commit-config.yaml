@@ -34,7 +34,6 @@ repos:
   - repo: local
     hooks:
       - id: pyright
-        exclude: ^gymnasium_robotics/_version.py
         name: pyright
         entry: pyright
         language: node
