@@ -17,6 +17,17 @@ def get_description():
                 break
     return header_count, long_description
 
+def get_version():
+    """Gets the minigrid version."""
+    path = "gymnasium_robotics/__init__.py"
+    with open(path) as file:
+        lines = file.readlines()
+
+    for line in lines:
+        if line.startswith("__version__"):
+            return line.strip().split()[-1].strip().strip('"')
+    raise RuntimeError("bad version data in __init__.py")
+
 
 # pytest is pinned to 7.0.1 as this is last version for python 3.6
 extras = {
@@ -27,12 +38,12 @@ extras = {
     "mujoco_py": ["mujoco_py<2.2,>=2.1"],
 }
 
+version = get_version()
 header_count, long_description = get_description()
 
 setup(
     name="gymnasium-robotics",
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version=version,
     author="Farama Foundation",
     author_email="contact@farama.org",
     description="Robotics environments for the Gymnasium repo.",

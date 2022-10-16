@@ -830,6 +830,4 @@ def register_robotics_envs():
         )
 
 
-from . import _version  # noqa
-
-__version__ = _version.get_versions()["version"]
+__version__ = "1.1.0"
