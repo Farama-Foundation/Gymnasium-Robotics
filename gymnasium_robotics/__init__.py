@@ -2,10 +2,6 @@ from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
 
-from . import _version
-
-__version__ = _version.get_versions()["version"]
-
 
 def register_robotics_envs():
     def _merge(a, b):
@@ -834,6 +830,4 @@ def register_robotics_envs():
         )
 
 
-from . import _version  # noqa
-
-__version__ = _version.get_versions()["version"]
+__version__ = "1.1.0"

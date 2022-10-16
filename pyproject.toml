@@ -7,7 +7,6 @@ include = [
 exclude = [
     "**/node_modules",
     "**/__pycache__",
-    "**/_version.py"
 ]
 
 
@@ -29,5 +28,5 @@ reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 reportOptionalMemberAccess = "none" # -> raise _version.py error
 
 [build-system]
-requires = ["setuptools", "versioneer==0.24"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"

@@ -1,2 +1,0 @@
-include versioneer.py
-include gymnasium_robotics/_version.py
