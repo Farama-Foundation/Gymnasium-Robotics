@@ -4,16 +4,31 @@
     <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
 </p>
 
-# Gymnasium-Robotics
-A collection of robotics simulation environments for reinforcement learning based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
+This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
 
-Requirements:
-- Python 3.7 to 3.10
-- Gymnasium v0.26
-- NumPy 1.18+
-- Mujoco 2.2.2
+The documentation website is at [gymnasium-robotics.farama.org](gymnasium-robotics.farama.org), and we have a public discord server (which we also use to coordinate development work) that you can join here: [https://discord.gg/YymmHrvS](https://discord.gg/YymmHrvS)
 
-If you use these environments, please cite the following paper:
+## Environments
+
+Gymnasium-Robotics includes the following groups of environments:
+
+* [Fetch]() - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
+* [Shadow Dexterous Hand]() - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
+* [Shadow Hand Dexterous with Touch Sensors]() - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
+
+## Installation
+
+To install the Gymnasium-Robotics environments use `pip install gymnasium-robotics`
+
+These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).  
+
+Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depende on [mujoco-py](https://github.com/openai/mujoco-py) please install this library with `pip install gymnasium-robotics[mujoco-py]`
+
+We support and test for Python 3.7, 3.8, 3.9 and 3.10 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
+
+## Citation
+
+If using the `Fetch` or `Shadow Hand` environments, please cite:
 
 ```bibtex
 @misc{1802.09464,
@@ -24,49 +39,7 @@ If you use these environments, please cite the following paper:
 }
 ```
 
-## New MuJoCo Python Bindings
-
-The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
-Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
-
-## Fetch environments
-
-The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following:
-
-* `FetchReach-v2`: Fetch has to move its end-effector to the desired goal position.
-* `FetchPush-v2`: Fetch has to move a box by pushing it until it reaches a desired goal position.
-* `FetchSlide-v2`: Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.
-* `FetchPickAndPlace-v2`: Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.
-
-<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/fetchpickandplace.gif" alt="animated" width="300" height="300"/> </p>
-
-## Shadow Dexterous Hand environments
-
-These environments are based on the [Shadow Dexterous Hand](https://www.shadowrobot.com/), 5 which is an anthropomorphic robotic hand with 24 degrees of freedom. Of those 24 joints, 20 can be can be controlled independently whereas the remaining ones are coupled joints.
-
-* `HandReach-v1`: ShadowHand has to reach with its thumb and a selected finger until they meet at a desired goal position above the palm.
-* `HandManipulateBlock-v1`: ShadowHand has to manipulate a block until it achieves a desired goal position and rotation.
-* `HandManipulateEgg-v1`: ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
-* `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
-
-<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/handblock.gif" alt="animated" width="300" height="300"/> </p>
-
-# Hand environments with Touch Sensors
-
-Touch sensor observations are also available in all Hand environments, with exception of `HandReach`. These environments add to the palm of the hand and the phalanges of the fingers 92 touch sensors with different recorded data depending on the environment. These touch sensors are:
-- **Boolean Touch Sensor**: the observations of each touch sensor return a value of `0` if no contact is detected with and object, and `1` otherwise.
-- **Continuous Touch Sensor**: the value returned by each touch sensor is a continuous value that represents the external force made by an object over the sensor.
-
-These environments are instanceated by adding the following strings to the Hand environment id's: `_BooleanTouchSensor` or `_ContinuousTouchSensor`. For example, to add boolean touch sensors to `HandManipulateEgg-v1`, make the environment in the following way:
-
-```python
-import gymnasium as gym
-
-env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
-```
-<p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
-
-If using these environments please also cite the following paper:
+To cite the `Shadow Dexterous Hand with Touch Sensors` environments, please use:
 
 ```bibtex
 @article{melnik2021using,
