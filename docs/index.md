@@ -17,28 +17,27 @@ Donate <https://farama.org/donations>
 Contribute to the Docs <https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/.github/PULL_REQUEST_TEMPLATE.md>
 ```
 
-
-# Gymnasium-Robotics is a collection of robotics simulation environments for reinforcement learning 
-Gymnasium-robotics is based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
-
-Requirements:
-- Python 3.7 to 3.10
-- Gymnasium v0.26
-- NumPy 1.18+
-- Mujoco 2.2.2
-
-If you use these environments, please cite the following paper:
-
-```bibtex
-@misc{1802.09464,
-  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
-  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
-  Year = {2018},
-  Eprint = {arXiv:1802.09464},
-}
+```{figure} img/fetchpickandplace.gif
+   :alt: Fetch Pick And Place
+   :width: 500
 ```
 
-## New MuJoCo Python Bindings
+# Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning 
 
-The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
-Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
+This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
+
+The creation and interaction with the robotic environments follow the Gymnasium interface:
+
+```{code-block} python
+
+import gymnasium as gym
+env = gym.make("FetchPickAndPlace-v2", render_mode="human")
+observation, info = env.reset(seed=42)
+for _ in range(1000):
+   action = policy(observation)  # User-defined policy function
+   observation, reward, terminated, truncated, info = env.step(action)
+
+   if terminated or truncated:
+      observation, info = env.reset()
+env.close()
+```

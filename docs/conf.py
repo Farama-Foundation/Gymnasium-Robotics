@@ -76,7 +76,7 @@ napoleon_custom_sections = [("Returns", "params_style")]
 #
 html_theme = "furo"
 html_title = "Gymnasium-Robotics Documentation"
-html_baseurl = "https://gymnasium-robotics.farama.org/"
+html_baseurl = "https://robotics.farama.org/"
 html_copy_source = False
 html_favicon = "_static/img/robotics-white.png"
 html_theme_options = {

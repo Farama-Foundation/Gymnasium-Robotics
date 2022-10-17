@@ -1,4 +1,4 @@
-# MiniGrid-docs
+# Gymnasium-Robotics-docs
 
 
 This repo contains the [NEW website]() for [Gymnasium-robotics](https://github.com/Farama-Foundation/Gymnasium-Robotics). This site is currently in Beta and we are in the process of adding/editing information.
