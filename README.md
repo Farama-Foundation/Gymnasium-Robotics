@@ -35,7 +35,7 @@ The robotic environments use an extension of the core Gymansium API by inheritin
 * `desired_goal` - The goal that the agent has to achieved
 * `achieved_goal` - The goal that the agent has currently achieved instead. The objective of the environments is for this value to be close to `desired_goal`
 
-This API also exposes the function of the reward, as well as the terminated and truncated signals to re-compute their values with different goals. This is functionality is useful for algorithms that use Hindsight Experience Replay (HER).
+This API also exposes the function of the reward, as well as the terminated and truncated signals to re-compute their values with different goals. This functionality is useful for algorithms that use Hindsight Experience Replay (HER).
 
 The following example demonstrates how the exposed reward, terminated, and truncated functions
 can be used to re-compute the values with substituted goals. The info dictionary can be used to store
