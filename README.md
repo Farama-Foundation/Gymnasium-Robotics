@@ -62,7 +62,11 @@ substitute_terminated = env.compute_terminated(obs['achieved_goal'], substitute_
 substitute_truncated = env.compute_truncated(obs['achieved_goal'], substitute_goal, info)
 ```
 
+<<<<<<< HEAD
 The `GoalEnv` class can also be used for custom environments.
+=======
+The `GoalEnv` class can also be used for custome environments.
+>>>>>>> ad multi-goal api readme
 
 ## Citation
 
