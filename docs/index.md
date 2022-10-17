@@ -17,12 +17,14 @@ Donate <https://farama.org/donations>
 Contribute to the Docs <https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/.github/PULL_REQUEST_TEMPLATE.md>
 ```
 
+# Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
+
+
 ```{figure} img/fetchpickandplace.gif
    :alt: Fetch Pick And Place
    :width: 500
+   :height: 500
 ```
-
-# Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning 
 
 This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
 
