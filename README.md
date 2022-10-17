@@ -29,11 +29,11 @@ Gymnasium-Robotics includes the following groups of environments:
 
 ## Multi-goal API
 
-The robotics environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/envs/#) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
+The robotic environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/envs/#) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
 
 * `observation` - The actual observation of the environment
 * `desired_goal` - The goal that the agent has to achieved
-* `achieved_goal` - The goal that the agent has currently achieved instead.
+* `achieved_goal` - The goal that the agent has currently achieved instead. The objective of the environments is for this value to be close to `desired_goal`
 
 This API also exposes the function of the reward, as well as the terminated and truncated signals to re-compute their values with different goals. This is functionality is useful for algorithms that use Hindsight Experience Replay (HER).
 
