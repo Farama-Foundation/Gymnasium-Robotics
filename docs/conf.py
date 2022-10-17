@@ -82,7 +82,7 @@ html_favicon = "_static/img/robotics-white.png"
 html_theme_options = {
     "light_logo": "img/robotics.png",
     "dark_logo": "img/robotics-white.png",
-    "gtag": "",
+    "gtag": "G-M37ZN7PPMN",
 }
 html_context: Dict[str, Any] = {}
 html_context["conf_py_path"] = "/docs/"
