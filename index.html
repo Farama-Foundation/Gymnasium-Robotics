@@ -7,9 +7,9 @@
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
-    <meta property="og:url" content="https://gymnasium-robotics.farama.org/index.html" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta property="og:url" content="https://robotics.farama.org/index.html" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex/" /><link rel="search" title="Search" href="search/" /><link rel="next" title="Goal-Aware Environments" href="envs/" />
-        <link rel="canonical" href="https://gymnasium-robotics.farama.org/index.html" />
+        <link rel="canonical" href="https://robotics.farama.org/index.html" />
 
     <link rel="shortcut icon" href="_static/robotics-white.png"/><meta name="generator" content="sphinx-5.2.3, furo 2022.09.15.dev1"/>
         <title>Gymnasium-Robotics Documentation</title>
@@ -427,30 +427,25 @@
 </div>
 <div class="toctree-wrapper compound">
 </div>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/fetchpickandplace.gif"><img alt="Fetch Pick And Place" src="_images/fetchpickandplace.gif" style="width: 500px;" /></a>
+</figure>
 <section id="gymnasium-robotics-is-a-collection-of-robotics-simulation-environments-for-reinforcement-learning">
-<h1>Gymnasium-Robotics is a collection of robotics simulation environments for reinforcement learning<a class="headerlink" href="#gymnasium-robotics-is-a-collection-of-robotics-simulation-environments-for-reinforcement-learning" title="Permalink to this heading">#</a></h1>
-<p>Gymnasium-robotics is based on the <a class="reference external" href="https://mujoco.org/">MuJoCo</a> physics engine, and first introduced in the following <a class="reference external" href="https://arxiv.org/abs/1802.09464">technical report</a>.</p>
-<p>Requirements:</p>
-<ul class="simple">
-<li><p>Python 3.7 to 3.10</p></li>
-<li><p>Gymnasium v0.26</p></li>
-<li><p>NumPy 1.18+</p></li>
-<li><p>Mujoco 2.2.2</p></li>
-</ul>
-<p>If you use these environments, please cite the following paper:</p>
-<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@misc</span><span class="p">{</span><span class="nl">1802.09464</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="na">Author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba}</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="na">Title</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research}</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="na">Year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{2018}</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="na">Eprint</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{arXiv:1802.09464}</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<h1>Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning<a class="headerlink" href="#gymnasium-robotics-is-a-collection-of-robotics-simulation-environments-for-reinforcement-learning" title="Permalink to this heading">#</a></h1>
+<p>This library contains a collection of Reinforcement Learning robotic environments that use the <a class="reference external" href="https://gymnasium.farama.org/">Gymansium</a> API. The environments run with the <a class="reference external" href="https://mujoco.org/">MuJoCo</a> physics engine and the maintained <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a>.</p>
+<p>The creation and interaction with the robotic environments follow the Gymnasium interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;FetchPickAndPlace-v2&quot;</span><span class="p">,</span> <span class="n">render_mode</span><span class="o">=</span><span class="s2">&quot;human&quot;</span><span class="p">)</span>
+<span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+   <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>  <span class="c1"># User-defined policy function</span>
+   <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">terminated</span><span class="p">,</span> <span class="n">truncated</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">terminated</span> <span class="ow">or</span> <span class="n">truncated</span><span class="p">:</span>
+      <span class="n">observation</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
-<section id="new-mujoco-python-bindings">
-<h2>New MuJoCo Python Bindings<a class="headerlink" href="#new-mujoco-python-bindings" title="Permalink to this heading">#</a></h2>
-<p>The latest version and future versions of the MuJoCo environments will no longer depend on <code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code>. Instead the new <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco</a> python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on <code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code> will still be kept but unmaintained.
-Dependencies for old MuJoCo environments can still be installed by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gymnasium_robotics[mujoco_py]</span></code>.</p>
-</section>
 </section>
 
         </article>
