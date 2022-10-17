@@ -189,7 +189,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and finger states, as well as information about the goal. The finger tip observations are derived from
     Mujoco bodies known as [sites](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site) attached to the body of interest such as the finger tips. The dictionary consists of the following 3 keys:
 
-    - `observation`: its value is an `ndarray` of shape `(63,)`. It consists of kinematic information of the block object and gripper. The elements of the array correspond to the following:
+    `observation`: its value is an `ndarray` of shape `(63,)`. It consists of kinematic information of the block object and gripper. The elements of the array correspond to the following:
 
         | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) | Site Name (in corresponding XML file) |Joint Type| Unit                     |
         |-----|-------------------------------------------------------------------|--------|--------|----------------------------------------|---------------------------------------|----------|------------------------- |
@@ -257,7 +257,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         | 61  | y coordinate of the tip of the thumb finger                       | -Inf   | Inf    | -                                      | robot0:S_thtip                        | -        | position (m)             |
         | 62  | z coordinate of the tip of the thumb finger                       | -Inf   | Inf    | -                                      | robot0:S_thtip                        | -        | position (m)             |
 
-    - `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 15-dimensional `ndarray`, `(15,)`, that consists of the 15 cartesian coordinates of the desired final finger tip position `[x,y,z]`.
+    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 15-dimensional `ndarray`, `(15,)`, that consists of the 15 cartesian coordinates of the desired final finger tip position `[x,y,z]`.
     The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
@@ -278,7 +278,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         | 13  | Target y coordinate of the tip of the thumb finger                                                                                    | -Inf   | Inf    | target4                               | position (m) |
         | 14  | Target z coordinate of the tip of the thumb finger                                                                                    | -Inf   | Inf    | target4                               | position (m) |
 
-    - `achieved_goal`: this key represents the current state of the fingers, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+    `achieved_goal`: this key represents the current state of the fingers, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
     The value is an `ndarray` with shape `(15,)`. The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |

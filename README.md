@@ -64,7 +64,6 @@ import gymnasium as gym
 
 env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
-
 <p align="center"> <img src="https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/docs/img/eggtouch.gif" alt="animated" width="300" height="300"/> </p>
 
 If using these environments please also cite the following paper:

@@ -37,3 +37,8 @@ tutorial/*.html
 # PyCharm project files
 .idea
 vizdoom.ini
+
+# docs
+docs/envs/fetch/*.md
+docs/envs/hand/*.md
+/_build
