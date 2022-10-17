@@ -491,6 +491,10 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
 
 class MujocoHandBlockEnv(MujocoManipulateEnv):
     """
+    <p align="center">
+        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handblock.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
@@ -537,7 +541,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and block states, as well as information about the goal. The dictionary consists of the following 3 keys:
 
-    - `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the block object and finger joints. The elements of the array correspond to the following:
+    `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the block object and finger joints. The elements of the array correspond to the following:
 
         | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
         |-----|-------------------------------------------------------------------|--------|--------|----------------------------------------|----------|------------------------- |
@@ -603,7 +607,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         | 59  | y component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
         | 60  | z component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
 
-    - `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the block. The elements of the array are the following:
+    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the block. The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
         |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
@@ -616,7 +620,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         | 6   | Target z component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | target:joint                           | free       | -            |
 
 
-    - `achieved_goal`: this key represents the current state of the block, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+    `achieved_goal`: this key represents the current state of the block, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
     The value is an `ndarray` with shape `(7,)`. The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
@@ -723,6 +727,10 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
 
 class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     """
+    <p align="center">
+        <img alt="Egg Touch" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/eggtouch.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
@@ -769,7 +777,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and egg states, as well as information about the goal.
     The dictionary consists of the following 3 keys:
 
-    - `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the egg object and finger joints. The elements of the array correspond to the
+    `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the egg object and finger joints. The elements of the array correspond to the
     following:
 
         | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
@@ -836,7 +844,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
         | 59  | y component of the quaternion orientation of the egg              | -Inf   | Inf    | object:joint                           | free     | -                        |
         | 60  | z component of the quaternion orientation of the egg              | -Inf   | Inf    | object:joint                           | free     | -                        |
 
-    - `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the egg.
+    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the egg.
     The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
@@ -850,7 +858,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
         | 6   | Target z component of the quaternion orientation of the egg                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
 
 
-    - `achieved_goal`: this key represents the current state of the egg, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+    `achieved_goal`: this key represents the current state of the egg, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
     The value is an `ndarray` with shape `(7,)`. The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
@@ -1004,7 +1012,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and pen states, as well as information about the goal.
     The dictionary consists of the following 3 keys:
 
-    - `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the pen and finger joints. The elements of the array correspond to the
+    `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the pen and finger joints. The elements of the array correspond to the
     following:
 
         | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
@@ -1071,7 +1079,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
         | 59  | y component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
         | 60  | z component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
 
-    - `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the pen.
+    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the pen.
     The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
@@ -1085,7 +1093,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
         | 6   | Target z component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
 
 
-    - `achieved_goal`: this key represents the current state of the pen, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+    `achieved_goal`: this key represents the current state of the pen, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
     The value is an `ndarray` with shape `(7,)`. The elements of the array are the following:
 
         | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
