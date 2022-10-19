@@ -1,3 +1,4 @@
+from gymnasium_robotics.envs.ant.ant_maze import AntMazeEnv
 from gymnasium_robotics.envs.fetch.pick_and_place import (
     MujocoFetchPickAndPlaceEnv,
     MujocoPyFetchPickAndPlaceEnv,

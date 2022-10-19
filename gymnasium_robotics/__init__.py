@@ -829,5 +829,11 @@ def register_robotics_envs():
             max_episode_steps=100,
         )
 
+    register(
+        id="antmaze-umaze-diverse-v0",
+        entry_point="gymnasium_robotics.envs:AntMazeEnv",
+        max_episode_steps=700,
+    )
+
 
 __version__ = "1.1.0"

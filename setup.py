@@ -65,6 +65,7 @@ setup(
         "mujoco==2.2.2",
         "numpy>=1.18.0",
         "gymnasium>=0.26",
+        "imageio>=2.14.1",
     ],
     package_data={
         "gymnasium_robotics": [
