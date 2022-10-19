@@ -1,0 +1,2 @@
+class MazeGenerator:
+    pass
