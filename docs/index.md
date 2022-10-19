@@ -6,6 +6,7 @@ lastpage:
 
 ```{toctree}
 :hidden:
+:titlesonly:
 :caption: Introduction
 content/installation
 content/multi-goal_api
