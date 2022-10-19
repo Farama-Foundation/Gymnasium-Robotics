@@ -14,7 +14,7 @@ To install the Gymnasium-Robotics environments use `pip install gymnasium-roboti
 
 These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).  
 
-Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depende on [mujoco-py](https://github.com/openai/mujoco-py) please install this library with `pip install gymnasium-robotics[mujoco-py]`
+Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depend on [mujoco-py](https://github.com/openai/mujoco-py), please install this library with `pip install gymnasium-robotics[mujoco-py]`
 
 We support and test for Python 3.7, 3.8, 3.9 and 3.10 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
 
@@ -39,30 +39,29 @@ This API also exposes the function of the reward, as well as the terminated and 
 
 The following example demonstrates how the exposed reward, terminated, and truncated functions
 can be used to re-compute the values with substituted goals. The info dictionary can be used to store
-additional information that may be necessary to re-compute the reward but that is independent of the
+additional information that may be necessary to re-compute the reward, but that is independent of the
 goal, e.g. state derived from the simulation.
 
 ```python
-
 import gymnasium as gym
 
-env = gym.make('FetchReach-v2')
+env = gym.make("FetchReach-v2")
 env.reset()
 obs, reward, terminated, truncated, info = env.step(env.action_space.sample())
 
 # The following always has to hold:
-assert reward == env.compute_reward(obs['achieved_goal'], obs['desired_goal'], info)
-assert tuncated == env.compute_truncated(obs['achieved_goal'], obs['desired_goal'], info)
-assert tuncated == env.compute_terminated(obs['achieved_goal'], obs['desired_goal'], info)
+assert reward == env.compute_reward(obs["achieved_goal"], obs["desired_goal"], info)
+assert truncated == env.compute_truncated(obs["achieved_goal"], obs["desired_goal"], info)
+assert terminated == env.compute_terminated(obs["achieved_goal"], obs["desired_goal"], info)
 
 # However goals can also be substituted:
-substitute_goal = obs['achieved_goal'].copy()
-substitute_reward = env.compute_reward(obs['achieved_goal'], substitute_goal, info)
-substitute_terminated = env.compute_terminated(obs['achieved_goal'], substitute_goal, info)
-substitute_truncated = env.compute_truncated(obs['achieved_goal'], substitute_goal, info)
+substitute_goal = obs["achieved_goal"].copy()
+substitute_reward = env.compute_reward(obs["achieved_goal"], substitute_goal, info)
+substitute_terminated = env.compute_terminated(obs["achieved_goal"], substitute_goal, info)
+substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_goal, info)
 ```
 
-The `GoalEnv` class can also be used for custome environments.
+The `GoalEnv` class can also be used for custom environments.
 
 ## Citation
 
