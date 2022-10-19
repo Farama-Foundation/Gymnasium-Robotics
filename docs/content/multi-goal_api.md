@@ -1,7 +1,7 @@
---
+---
 firstpage:
 lastpage:
---
+---
 
 ## Multi-goal API
 
