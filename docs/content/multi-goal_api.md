@@ -37,13 +37,15 @@ substitute_terminated = env.compute_terminated(obs["achieved_goal"], substitute_
 substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_goal, info)
 ```
 
+### GoalEnv
+
 The `GoalEnv` class can also be used for custom environments.
 
 ```{eval-rst}
 .. autoclass:: gymnasium_robotics.core.GoalEnv
 ```
 
-### Methods
+#### Methods
 ```{eval-rst}
 .. autofunction:: gymnasium_robotics.core.GoalEnv.compute_reward
 .. autofunction:: gymnasium_robotics.core.GoalEnv.compute_terminated
