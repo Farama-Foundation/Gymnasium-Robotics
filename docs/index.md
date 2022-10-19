@@ -9,6 +9,7 @@ lastpage:
 :caption: Introduction
 content/installation
 content/multi-goal_api
+```
 
 ```{toctree}
 :hidden:
