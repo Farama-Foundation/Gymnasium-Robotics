@@ -23,8 +23,6 @@ import os
 import sys
 from typing import Any, Dict
 
-import gymnasium
-
 import gymnasium_robotics
 
 project = "Gymnasium-Robotics"
