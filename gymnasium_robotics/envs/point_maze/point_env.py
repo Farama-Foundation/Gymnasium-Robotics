@@ -35,7 +35,7 @@ class PointEnv(MujocoEnv):
 
     def reset_model(self):
         self.set_state(self.init_qpos, self.init_qvel)
-        obs = self._get_obs()
+        obs, _ = self._get_obs()
 
         return obs
 

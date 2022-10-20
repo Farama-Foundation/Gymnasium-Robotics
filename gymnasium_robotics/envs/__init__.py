@@ -29,3 +29,4 @@ from gymnasium_robotics.envs.hand.manipulate_touch_sensors import (
     MujocoPyHandPenTouchSensorsEnv,
 )
 from gymnasium_robotics.envs.hand.reach import MujocoHandReachEnv, MujocoPyHandReachEnv
+from gymnasium_robotics.envs.point_maze.point_maze_env import PointMazeEnv

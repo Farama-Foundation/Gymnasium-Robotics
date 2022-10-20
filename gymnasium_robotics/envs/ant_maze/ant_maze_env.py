@@ -7,7 +7,7 @@ from gymnasium import spaces
 from gymnasium.envs.mujoco.ant_v4 import AntEnv
 from gymnasium.utils.ezpickle import EzPickle
 
-from gymnasium_robotics.envs.ant_maze.maps import HARDEST_MAZE_EVAL
+from gymnasium_robotics.envs.ant_maze.maps import U_MAZE
 from gymnasium_robotics.envs.point_maze.maze_env import MazeEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
@@ -27,7 +27,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
     def __init__(
         self,
         render_mode: Optional[str] = None,
-        maze_map=HARDEST_MAZE_EVAL,
+        maze_map=U_MAZE,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package

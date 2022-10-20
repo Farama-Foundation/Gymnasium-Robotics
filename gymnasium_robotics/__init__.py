@@ -835,5 +835,11 @@ def register_robotics_envs():
         max_episode_steps=700,
     )
 
+    register(
+        id="pointmaze-umaze-diverse-v0",
+        entry_point="gymnasium_robotics.envs:PointMazeEnv",
+        max_episode_steps=700,
+    )
+
 
 __version__ = "1.1.0"

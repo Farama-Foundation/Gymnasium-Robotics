@@ -110,7 +110,6 @@ class Maze:
                 elif maze_map[i][j] in [
                     RESET,
                 ]:
-                    print("RESET")
                     maze._unique_reset_locations.append(np.array([x, y]))
                 elif maze_map[i][j] in [
                     GOAL,
@@ -163,7 +162,7 @@ class MazeEnv(GoalEnv):
             agent_xml_path, maze_map, maze_size_scaling, maze_height
         )
 
-        self.postion_noise_range = position_noise_range
+        self.position_noise_range = position_noise_range
 
     def generate_target_goal(self):
         assert len(self.maze.unique_goal_locations) > 0
@@ -238,13 +237,13 @@ class MazeEnv(GoalEnv):
     def add_xy_position_noise(self, xy_pos: np.ndarray) -> np.ndarray:
         noise_x = (
             self.np_random.uniform(
-                low=-self.postion_noise_range, high=self.postion_noise_range
+                low=-self.position_noise_range, high=self.position_noise_range
             )
             * self.maze.maze_size_scaling
         )
         noise_y = (
             self.np_random.uniform(
-                low=-self.postion_noise_range, high=self.postion_noise_range
+                low=-self.position_noise_range, high=self.position_noise_range
             )
             * self.maze.maze_size_scaling
         )
