@@ -2,6 +2,11 @@ RESET = R = "r"  # Reset position.
 GOAL = G = "g"
 COMBINED = C = "c"
 
+
+# Two type:
+#    * Fixed Reset variable Goal
+#    * Variable Goal/Reset
+#
 # Maze specifications for dataset generation
 U_MAZE = [
     [1, 1, 1, 1, 1],
@@ -10,6 +15,7 @@ U_MAZE = [
     [1, G, 0, 0, 1],
     [1, 1, 1, 1, 1],
 ]
+
 
 BIG_MAZE = [
     [1, 1, 1, 1, 1, 1, 1, 1],
@@ -35,14 +41,6 @@ HARDEST_MAZE = [
 ]
 
 # Maze specifications with a single target goal
-U_MAZE_TEST = [
-    [1, 1, 1, 1, 1],
-    [1, R, 0, 0, 1],
-    [1, 1, 1, 0, 1],
-    [1, G, 0, 0, 1],
-    [1, 1, 1, 1, 1],
-]
-
 BIG_MAZE_TEST = [
     [1, 1, 1, 1, 1, 1, 1, 1],
     [1, R, 0, 1, 1, 0, 0, 1],

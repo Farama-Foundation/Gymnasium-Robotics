@@ -1,6 +1,6 @@
 import sys
 from os import path
-from typing import Optional
+from typing import Dict, List, Optional, Union
 
 import numpy as np
 from gymnasium import spaces
@@ -27,7 +27,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
     def __init__(
         self,
         render_mode: Optional[str] = None,
-        maze_map=U_MAZE,
+        maze_map: List[List[Union[str, int]]] = U_MAZE,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package
@@ -98,7 +98,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
         return obs, reward, terminated, truncated, info
 
-    def _get_obs(self, ant_obs):
+    def _get_obs(self, ant_obs: np.ndarray) -> Dict[str, np.ndarray]:
         achieved_goal = ant_obs[:2]
         observation = ant_obs[2:]
 

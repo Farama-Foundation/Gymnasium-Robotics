@@ -33,7 +33,7 @@ class PointEnv(MujocoEnv):
             **kwargs
         )
 
-    def reset_model(self):
+    def reset_model(self) -> np.ndarray:
         self.set_state(self.init_qpos, self.init_qvel)
         obs, _ = self._get_obs()
 
@@ -54,7 +54,7 @@ class PointEnv(MujocoEnv):
 
         return obs, reward, terminated, truncated, info
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         return np.concatenate([self.data.qpos, self.data.qvel]).ravel(), {}
 
     def _clip_velocity(self):

@@ -1,5 +1,5 @@
 from os import path
-from typing import Optional
+from typing import Dict, Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -84,7 +84,7 @@ class PointMazeEnv(MazeEnv):
             self.goal, self.maze.maze_height / 2 * self.maze.maze_size_scaling
         )
 
-    def _get_obs(self, point_obs):
+    def _get_obs(self, point_obs) -> Dict[str, np.ndarray]:
         achieved_goal = point_obs[2:]
         return {
             "observation": point_obs.copy(),
