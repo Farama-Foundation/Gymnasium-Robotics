@@ -6,7 +6,7 @@ from typing import Dict, List, Optional, Union
 import numpy as np
 
 from gymnasium_robotics.core import GoalEnv
-from gymnasium_robotics.envs.ant_maze.maps import COMBINED, GOAL, RESET, U_MAZE
+from gymnasium_robotics.envs.point_maze.maps import COMBINED, GOAL, RESET, U_MAZE
 
 
 class Maze:
@@ -25,7 +25,7 @@ class Maze:
         self._unique_reset_locations = []
         self._combined_locations = []
 
-        # Get the center cell position of the maze. This will be the origin
+        # Get the center cell Cartesian position of the maze. This will be the origin
         self._map_length = len(maze_map)
         self._map_width = len(maze_map[0])
         self._x_map_center = np.ceil(self.map_width / 2) * maze_size_scaling

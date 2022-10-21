@@ -1,6 +1,7 @@
 from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
+from gymnasium_robotics.envs.point_maze import maps
 
 
 def register_robotics_envs():
@@ -829,17 +830,181 @@ def register_robotics_envs():
             max_episode_steps=100,
         )
 
-    register(
-        id="antmaze-umaze-diverse-v0",
-        entry_point="gymnasium_robotics.envs:AntMazeEnv",
-        max_episode_steps=700,
-    )
+        #####################
+        # D4RL Environments #
+        #####################
 
-    register(
-        id="pointmaze-umaze-diverse-v0",
-        entry_point="gymnasium_robotics.envs:PointMazeEnv",
-        max_episode_steps=700,
-    )
+        # ----- AntMaze -----
+
+        register(
+            id=f"AntMaze_UMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.U_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=700,
+        )
+
+        register(
+            id=f"AntMaze_BigMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        register(
+            id=f"AntMaze_BigMaze_DG{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE_DIVERSE_G,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        register(
+            id=f"AntMaze_BigMaze_DGR{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE_DIVERSE_GR,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        register(
+            id=f"AntMaze_HardestMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        register(
+            id=f"AntMaze_HardestMaze_DG{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE_DIVERSE_G,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        register(
+            id=f"AntMaze_HardestMaze_DGR{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE_DIVERSE_GR,
+                },
+                kwargs,
+            ),
+            max_episode_steps=1000,
+        )
+
+        # ----- PointMaze -----
+
+        register(
+            id=f"PointMaze_UMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.U_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=300,
+        )
+
+        register(
+            id=f"PointMaze_BigMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=600,
+        )
+
+        register(
+            id=f"PointMaze_BigMaze_DG{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE_DIVERSE_G,
+                },
+                kwargs,
+            ),
+            max_episode_steps=600,
+        )
+
+        register(
+            id=f"PointMaze_BigMaze_DGR{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.BIG_MAZE_DIVERSE_GR,
+                },
+                kwargs,
+            ),
+            max_episode_steps=600,
+        )
+
+        register(
+            id=f"PointMaze_HardestMaze{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE,
+                },
+                kwargs,
+            ),
+            max_episode_steps=800,
+        )
+
+        register(
+            id=f"PointMaze_HardestMaze_DG{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE_DIVERSE_G,
+                },
+                kwargs,
+            ),
+            max_episode_steps=800,
+        )
+
+        register(
+            id=f"PointMaze_HardestMaze_DGR{suffix}-v3",
+            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.HARDEST_MAZE_DIVERSE_GR,
+                },
+                kwargs,
+            ),
+            max_episode_steps=800,
+        )
 
 
 __version__ = "1.1.0"

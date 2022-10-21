@@ -1,11 +1,11 @@
 from os import path
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Union
 
 import numpy as np
 from gymnasium import spaces
 
 # from gymnasium_robotics.envs.point_maze.point_env import PointEnv
-from gymnasium_robotics.envs.ant_maze.maps import U_MAZE
+from gymnasium_robotics.envs.point_maze.maps import U_MAZE
 from gymnasium_robotics.envs.point_maze.maze_env import MazeEnv
 from gymnasium_robotics.envs.point_maze.point_env import PointEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
@@ -22,15 +22,24 @@ class PointMazeEnv(MazeEnv):
         "render_fps": 50,
     }
 
-    def __init__(self, render_mode: Optional[str] = None, **kwargs):
+    def __init__(
+        self,
+        maze_map: List[List[Union[str, int]]] = U_MAZE,
+        render_mode: Optional[str] = None,
+        reward_type: str = "sparse",
+        continuing_task: bool = True,
+        **kwargs,
+    ):
         point_xml_file_path = path.join(
             path.dirname(path.realpath(__file__)), "../assets/point/point.xml"
         )
         super().__init__(
             agent_xml_path=point_xml_file_path,
-            maze_map=U_MAZE,
+            maze_map=maze_map,
             maze_size_scaling=1,
             maze_height=0.4,
+            reward_type=reward_type,
+            continuing_task=continuing_task,
             **kwargs,
         )
 

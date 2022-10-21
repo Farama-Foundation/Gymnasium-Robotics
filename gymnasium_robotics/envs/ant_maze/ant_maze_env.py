@@ -7,7 +7,7 @@ from gymnasium import spaces
 from gymnasium.envs.mujoco.ant_v4 import AntEnv
 from gymnasium.utils.ezpickle import EzPickle
 
-from gymnasium_robotics.envs.ant_maze.maps import U_MAZE
+from gymnasium_robotics.envs.point_maze.maps import U_MAZE
 from gymnasium_robotics.envs.point_maze.maze_env import MazeEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
@@ -28,6 +28,8 @@ class AntMazeEnv(MazeEnv, EzPickle):
         self,
         render_mode: Optional[str] = None,
         maze_map: List[List[Union[str, int]]] = U_MAZE,
+        reward_type: str = "sparse",
+        continuing_task: bool = True,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package
@@ -39,6 +41,8 @@ class AntMazeEnv(MazeEnv, EzPickle):
             maze_map=maze_map,
             maze_size_scaling=4,
             maze_height=0.5,
+            reward_type=reward_type,
+            continuing_task=continuing_task,
             **kwargs,
         )
         # Create the MuJoCo environment, include position observation of the Ant for GoalEnv
