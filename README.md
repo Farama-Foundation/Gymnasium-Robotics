@@ -25,7 +25,7 @@ Gymnasium-Robotics includes the following groups of environments:
 
 * [Fetch](https://robotics.farama.org/envs/#fetch-environments) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
 * [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
-* [Shadow Hand Dexterous with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
+* [Shadow Dexterous Hand with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
 
 The environments found in the [D4RL](https://github.com/Farama-Foundation/D4RL) repository will also be included in the near future. Currently, the following D4RL environments are present in Gymnasium-Robotics:
 
