@@ -27,6 +27,11 @@ Gymnasium-Robotics includes the following groups of environments:
 * [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
 * [Shadow Hand Dexterous with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
 
+The environments found in the [D4RL](https://github.com/Farama-Foundation/D4RL) repository will also be included in the near future. Currently, the following D4RL environments are present in Gymnasium-Robotics:
+
+* [Point Maze]() - These environments consist of a 2-DoF force-controlled ball (x and y direction) that has to reach a target position in a closed maze. The environment can be initialized with a variety of mazes with increasing levels of difficulty. 
+* [Ant Maze]() - These environments use the same mazes as the `Point Maze` environments. However, the given task is now solved by a quadruped ant which needs to learn how to walk in addition of reaching the goal. The ant agent is re-used from the [Gymnasium Ant environment](https://gymnasium.farama.org/environments/mujoco/ant/).
+
 ## Multi-goal API
 
 The robotic environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/envs/#) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
