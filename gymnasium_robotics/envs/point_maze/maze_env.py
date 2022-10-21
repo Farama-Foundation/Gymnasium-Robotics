@@ -201,7 +201,7 @@ class MazeEnv(GoalEnv):
     ):
         super().reset(seed=seed)
 
-        if options["goal_cell"] is not None:
+        if "goal_cell" in options and options["goal_cell"] is not None:
             # assert that goal cell is valid
             assert self.maze.map_length > options["goal_cell"][1]
             assert self.maze.map_width > options["goal_cell"][0]
@@ -221,7 +221,7 @@ class MazeEnv(GoalEnv):
         # Update the position of the target site for visualization
         self.update_target_site_pos()
 
-        if options["reset_cell"] is not None:
+        if "reset_cell" in options and options["reset_cell"] is not None:
             # assert that goal cell is valid
             assert self.maze.map_length > options["reset_cell"][1]
             assert self.maze.map_width > options["reset_cell"][0]
