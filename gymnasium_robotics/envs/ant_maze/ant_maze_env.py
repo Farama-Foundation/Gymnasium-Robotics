@@ -235,8 +235,10 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
         EzPickle.__init__(
             self,
-            maze_map,
             render_mode,
+            maze_map,
+            reward_type,
+            continuing_task,
             **kwargs,
         )
 

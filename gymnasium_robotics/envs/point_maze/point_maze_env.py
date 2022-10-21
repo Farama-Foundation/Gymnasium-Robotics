@@ -3,6 +3,7 @@ from typing import Dict, List, Optional, Union
 
 import numpy as np
 from gymnasium import spaces
+from gymnasium.utils.ezpickle import EzPickle
 
 # from gymnasium_robotics.envs.point_maze.point_env import PointEnv
 from gymnasium_robotics.envs.point_maze.maps import U_MAZE
@@ -11,7 +12,7 @@ from gymnasium_robotics.envs.point_maze.point_env import PointEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
 
-class PointMazeEnv(MazeEnv):
+class PointMazeEnv(MazeEnv, EzPickle):
     """
     ### Description
 
@@ -280,6 +281,15 @@ class PointMazeEnv(MazeEnv):
         )
 
         self.render_mode = render_mode
+
+        EzPickle.__init__(
+            self,
+            render_mode,
+            maze_map,
+            reward_type,
+            continuing_task,
+            **kwargs,
+        )
 
     def reset(
         self,
