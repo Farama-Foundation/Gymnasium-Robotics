@@ -924,7 +924,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_UMaze{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.U_MAZE,
@@ -936,7 +936,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_BigMaze{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.BIG_MAZE,
@@ -948,7 +948,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_BigMaze_DG{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.BIG_MAZE_DIVERSE_G,
@@ -960,7 +960,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_BigMaze_DGR{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.BIG_MAZE_DIVERSE_GR,
@@ -972,7 +972,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_HardestMaze{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.HARDEST_MAZE,
@@ -984,7 +984,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_HardestMaze_DG{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.HARDEST_MAZE_DIVERSE_G,
@@ -996,7 +996,7 @@ def register_robotics_envs():
 
         register(
             id=f"PointMaze_HardestMaze_DGR{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.HARDEST_MAZE_DIVERSE_GR,

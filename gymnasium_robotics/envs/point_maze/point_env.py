@@ -58,6 +58,8 @@ class PointEnv(MujocoEnv):
         return np.concatenate([self.data.qpos, self.data.qvel]).ravel(), {}
 
     def _clip_velocity(self):
+        """The velocity needs to be limited because the ball is
+        force actuated and the velocity can grow unbounded."""
         qvel = np.clip(self.data.qvel, -5.0, 5.0)
         self.set_state(self.data.qpos, qvel)
 
