@@ -284,8 +284,8 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
         EzPickle.__init__(
             self,
-            render_mode,
             maze_map,
+            render_mode,
             reward_type,
             continuing_task,
             **kwargs,
