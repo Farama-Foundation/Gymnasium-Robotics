@@ -489,7 +489,7 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
         }
 
 
-class MujocoHandBlockEnv(MujocoManipulateEnv):
+class MujocoHandBlockEnv(MujocoManipulateEnv, EzPickle):
     """
     <p align="center">
         <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handblock.gif" width="300px" height="300px" />
