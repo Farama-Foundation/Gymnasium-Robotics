@@ -22,10 +22,10 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     def __init__(self, **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
-            "../assets/adroit_hand/adroit_door.xml",
+            "../assets/adroit_hand/adroit_hammer.xml",
         )
         observation_space = spaces.Box(
-            low=-np.inf, high=np.inf, shape=(39,), dtype=np.float64
+            low=-np.inf, high=np.inf, shape=(46,), dtype=np.float64
         )
 
         MujocoEnv.__init__(
@@ -50,21 +50,21 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             + 1,
             :3,
         ] = np.array([10, 0, 0])
-        self._model_names.actuator_gainprm[
+        self.model.actuator_gainprm[
             self._model_names.actuator_name2id[
                 "A_FFJ3"
             ] : self._model_names.actuator_name2id["A_THJ0"]
             + 1,
             :3,
         ] = np.array([1, 0, 0])
-        self._model_names.actuator_biasprm[
+        self.model.actuator_biasprm[
             self._model_names.actuator_name2id[
                 "A_WRJ1"
             ] : self._model_names.actuator_name2id["A_WRJ0"]
             + 1,
             :3,
         ] = np.array([0, -10, 0])
-        self._model_names.actuator_biasprm[
+        self.model.actuator_biasprm[
             self._model_names.actuator_name2id[
                 "A_FFJ3"
             ] : self._model_names.actuator_name2id["A_THJ0"]
@@ -89,12 +89,12 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         a = self.act_mean + a * self.act_rng  # mean center and scale
 
         self.do_simulation(a, self.frame_skip)
-        ob = self.get_obs()
-        obj_pos = self.data.body_xpos[self.obj_bid].ravel()
-        palm_pos = self.data.site_xpos[self.S_grasp_sid].ravel()
-        tool_pos = self.data.site_xpos[self.tool_sid].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_sid].ravel()
-        goal_pos = self.data.site_xpos[self.goal_sid].ravel()
+        obs = self._get_obs()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel()
+        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
+        tool_pos = self.data.site_xpos[self.tool_site_id].ravel()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
+        goal_pos = self.data.site_xpos[self.goal_site_id].ravel()
 
         # get to hammer
         reward = -0.1 * np.linalg.norm(palm_pos - obj_pos)
@@ -117,20 +117,23 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
         goal_achieved = True if np.linalg.norm(target_pos - goal_pos) < 0.010 else False
 
-        return ob, reward, False, dict(success=goal_achieved)
+        if self.render_mode == "human":
+            self.render()
 
-    def get_obs(self):
+        return obs, reward, False, False, dict(success=goal_achieved)
+
+    def _get_obs(self):
         # qpos for hand
         # xpos for obj
         # xpos for target
         qp = self.data.qpos.ravel()
         qv = np.clip(self.data.qvel.ravel(), -1.0, 1.0)
-        obj_pos = self.data.body_xpos[self.obj_bid].ravel()
-        obj_rot = quat2euler(self.data.body_xquat[self.obj_bid].ravel()).ravel()
-        palm_pos = self.data.site_xpos[self.S_grasp_sid].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_sid].ravel()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel()
+        obj_rot = quat2euler(self.data.xquat[self.obj_body_id].ravel()).ravel()
+        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
         nail_impact = np.clip(
-            self.sim.data.sensordata[self.sim.model.sensor_name2id("S_nail")], -1.0, 1.0
+            self.data.sensordata[self._model_names.sensor_name2id["S_nail"]], -1.0, 1.0
         )
         return np.concatenate(
             [
@@ -145,11 +148,10 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         )
 
     def reset_model(self):
-        self.sim.reset()
-        target_bid = self.model.body_name2id("nail_board")
+        target_bid = self._model_names.body_name2id["nail_board"]
         self.model.body_pos[target_bid, 2] = self.np_random.uniform(low=0.1, high=0.25)
-        self.sim.forward()
-        return self.get_obs()
+        self.set_state(self.init_qpos, self.init_qvel)
+        return self._get_obs()
 
     def get_env_state(self):
         """
@@ -161,7 +163,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         target_pos = self.data.site_xpos[self.target_obj_sid].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, board_pos=board_pos, target_pos=target_pos)
 
-    def mj_viewer_setup(self):
+    def viewer_setup(self):
         assert self.viewer is not None
         self.viewer.cam.azimuth = 45
         self.viewer.cam.distance = 2.0

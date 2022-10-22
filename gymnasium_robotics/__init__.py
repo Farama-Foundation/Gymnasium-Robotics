@@ -832,7 +832,13 @@ def register_robotics_envs():
     register(
         id="AdroitHandDoor-v0",
         entry_point="gymnasium_robotics.envs:AdroitHandDoorEnv",
-        max_episode_steps=100,
+        max_episode_steps=200,
+    )
+
+    register(
+        id="AdroitHandHammer-v0",
+        entry_point="gymnasium_robotics.envs:AdroitHandHammerEnv",
+        max_episode_steps=200,
     )
 
 

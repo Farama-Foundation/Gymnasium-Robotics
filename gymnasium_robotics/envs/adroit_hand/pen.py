@@ -1,31 +1,34 @@
-import os
+from os import path
 
 import numpy as np
-from d4rl import offline_env
-from d4rl.utils.quatmath import euler2quat
-from gym import spaces, utils
-from mjrl.envs import mujoco_env
-from mujoco_py import MjViewer
+from gymnasium import spaces
+from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
+from gymnasium.utils.ezpickle import EzPickle
 
-ADD_BONUS_REWARDS = True
+from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
+from gymnasium_robotics.utils.rotations import euler2quat
 
 
-class PenEnvV0(mujoco_env.MujocoEnv, utils.EzPickle, offline_env.OfflineEnv):
+class AdroitHandPenEnv(MujocoEnv, EzPickle):
     def __init__(self, **kwargs):
-        offline_env.OfflineEnv.__init__(self, **kwargs)
-        self.target_obj_bid = 0
-        self.S_grasp_sid = 0
-        self.eps_ball_sid = 0
-        self.obj_bid = 0
-        self.obj_t_sid = 0
-        self.obj_b_sid = 0
-        self.tar_t_sid = 0
-        self.tar_b_sid = 0
         self.pen_length = 1.0
         self.tar_length = 1.0
 
-        curr_dir = os.path.dirname(os.path.abspath(__file__))
-        mujoco_env.MujocoEnv.__init__(self, curr_dir + "/assets/DAPG_pen.xml", 5)
+        xml_file_path = path.join(
+            path.dirname(path.realpath(__file__)),
+            "../assets/adroit_hand/adroit_pen.xml",
+        )
+        observation_space = spaces.Box(
+            low=-np.inf, high=np.inf, shape=(39,), dtype=np.float64
+        )
+        MujocoEnv.__init__(
+            self,
+            model_path=xml_file_path,
+            frame_skip=5,
+            observation_space=observation_space,
+            **kwargs
+        )
+        self._model_names = MujocoModelNames(self.model)
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -33,36 +36,35 @@ class PenEnvV0(mujoco_env.MujocoEnv, utils.EzPickle, offline_env.OfflineEnv):
         )
 
         # change actuator sensitivity
-        self.sim.model.actuator_gainprm[
-            self.sim.model.actuator_name2id("A_WRJ1") : self.sim.model.actuator_name2id(
-                "A_WRJ0"
-            )
+        self.model.actuator_gainprm[
+            self._model_names.actuator_name2id[
+                "A_WRJ1"
+            ] : self._model_names.actuator_name2id["A_WRJ0"]
             + 1,
             :3,
         ] = np.array([10, 0, 0])
-        self.sim.model.actuator_gainprm[
-            self.sim.model.actuator_name2id("A_FFJ3") : self.sim.model.actuator_name2id(
-                "A_THJ0"
-            )
+        self.model.actuator_gainprm[
+            self._model_names.actuator_name2id[
+                "A_FFJ3"
+            ] : self._model_names.actuator_name2id["A_THJ0"]
             + 1,
             :3,
         ] = np.array([1, 0, 0])
-        self.sim.model.actuator_biasprm[
-            self.sim.model.actuator_name2id("A_WRJ1") : self.sim.model.actuator_name2id(
-                "A_WRJ0"
-            )
+        self.model.actuator_biasprm[
+            self._model_names.actuator_name2id[
+                "A_WRJ1"
+            ] : self._model_names.actuator_name2id["A_WRJ0"]
             + 1,
             :3,
         ] = np.array([0, -10, 0])
-        self.sim.model.actuator_biasprm[
-            self.sim.model.actuator_name2id("A_FFJ3") : self.sim.model.actuator_name2id(
-                "A_THJ0"
-            )
+        self.model.actuator_biasprm[
+            self._model_names.actuator_name2id[
+                "A_FFJ3"
+            ] : self._model_names.actuator_name2id["A_THJ0"]
             + 1,
             :3,
         ] = np.array([0, -1, 0])
 
-        utils.EzPickle.__init__(self)
         self.target_obj_bid = self.sim.model.body_name2id("target")
         self.S_grasp_sid = self.sim.model.site_name2id("S_grasp")
         self.obj_bid = self.sim.model.body_name2id("Object")
@@ -83,6 +85,8 @@ class PenEnvV0(mujoco_env.MujocoEnv, utils.EzPickle, offline_env.OfflineEnv):
         self.act_rng = 0.5 * (
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
+
+        EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
         a = np.clip(a, -1.0, 1.0)
@@ -110,12 +114,11 @@ class PenEnvV0(mujoco_env.MujocoEnv, utils.EzPickle, offline_env.OfflineEnv):
         orien_similarity = np.dot(obj_orien, desired_orien)
         reward += orien_similarity
 
-        if ADD_BONUS_REWARDS:
-            # bonus for being close to desired orientation
-            if dist < 0.075 and orien_similarity > 0.9:
-                reward += 10
-            if dist < 0.075 and orien_similarity > 0.95:
-                reward += 50
+        # bonus for being close to desired orientation
+        if dist < 0.075 and orien_similarity > 0.9:
+            reward += 10
+        if dist < 0.075 and orien_similarity > 0.95:
+            reward += 50
 
         # penalty for dropping the pen
         done = False
@@ -170,29 +173,6 @@ class PenEnvV0(mujoco_env.MujocoEnv, utils.EzPickle, offline_env.OfflineEnv):
         desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
 
-    def set_env_state(self, state_dict):
-        """
-        Set the state which includes hand as well as objects and targets in the scene
-        """
-        qp = state_dict["qpos"]
-        qv = state_dict["qvel"]
-        desired_orien = state_dict["desired_orien"]
-        self.set_state(qp, qv)
-        self.model.body_quat[self.target_obj_bid] = desired_orien
-        self.sim.forward()
-
-    def mj_viewer_setup(self):
-        self.viewer = MjViewer(self.sim)
+    def viewer_setup(self):
         self.viewer.cam.azimuth = -45
-        self.sim.forward()
         self.viewer.cam.distance = 1.0
-
-    def evaluate_success(self, paths):
-        num_success = 0
-        num_paths = len(paths)
-        # success if pen within 15 degrees of target for 20 steps
-        for path in paths:
-            if np.sum(path["env_infos"]["goal_achieved"]) > 20:
-                num_success += 1
-        success_percentage = num_success * 100.0 / num_paths
-        return success_percentage

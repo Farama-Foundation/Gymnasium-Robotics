@@ -89,7 +89,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         a = self.act_mean + a * self.act_rng  # mean center and scale
 
         self.do_simulation(a, self.frame_skip)
-        ob = self._get_obs()
+        obs = self._get_obs()
 
         handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
         palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
@@ -115,7 +115,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         if self.render_mode == "human":
             self.render()
 
-        return ob, reward, False, False, dict(success=goal_achieved)
+        return obs, reward, False, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         # qpos for hand
