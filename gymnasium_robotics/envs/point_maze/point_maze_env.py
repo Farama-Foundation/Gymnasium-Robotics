@@ -51,9 +51,17 @@ class PointMazeEnv(MazeEnv, EzPickle):
               [1, G, 0, 0, 1],
               [1, 1, 1, 1, 1]]
 
-    # ID: PointMaze_BigMaze-v3
+    # ID: PointMaze_Open-v3
 
-    BIG_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1],
+    OPEN = [[1, 1, 1, 1, 1, 1, 1],
+            [1, R, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 0, 0, 0, G, 1],
+            [1, 1, 1, 1, 1, 1, 1]]
+
+    # ID: PointMaze_Medium-v3
+
+    MEDIUM_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1],
                 [1, R, 0, 1, 1, 0, 0, 1],
                 [1, 0, 0, 1, 0, 0, 0, 1],
                 [1, 1, 0, 0, 0, 1, 1, 1],
@@ -62,9 +70,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
                 [1, 0, 0, 0, 1, G, 0, 1],
                 [1, 1, 1, 1, 1, 1, 1, 1]]
 
-    # ID: PointMaze_HardestMaze-v3
+    # ID: PointMaze_Large-v3
 
-    HARDEST_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    LARGE_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                     [1, R, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
                     [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                     [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
@@ -76,12 +84,20 @@ class PointMazeEnv(MazeEnv, EzPickle):
     ```
 
     Environment variations can also be found with multi-goal configurations, also referred to as `diverse`. Their `id` is the same as their
-    default but adding the `_DG` string (`diverse goal`) to it:
+    default but adding the `_Diverse_G` string (`G` stands for Goal) to it:
 
     ```python
-    # ID: PointMaze_BigMaze_DG-v3
+    # ID: PointMaze_Open_Diverse_G-v3
 
-    BIG_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1],
+    OPEN_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1],
+                      [1, R, G, G, G, G, 1],
+                      [1, G, G, G, G, G, 1],
+                      [1, G, G, G, G, G, 1],
+                      [1, 1, 1, 1, 1, 1, 1]]
+
+    # ID: PointMaze_Medium_Diverse_G-v3
+
+    MEDIUM_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1],
                           [1, R, 0, 1, 1, 0, 0, 1],
                           [1, 0, 0, 1, 0, 0, G, 1],
                           [1, 1, 0, 0, 0, 1, 1, 1],
@@ -90,9 +106,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
                           [1, 0, 0, 0, 1, G, 0, 1],
                           [1, 1, 1, 1, 1, 1, 1, 1]]
 
-    # ID: PointMaze_HardestMaze_DG-v3
+    # ID: PointMaze_Large_Diverse_G-v3
 
-    HARDEST_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    LARGE_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                               [1, R, 0, 0, 0, 1, G, 0, 0, 0, 0, 1],
                               [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                               [1, 0, 0, 0, 0, G, 0, 1, 0, 0, G, 1],
@@ -104,12 +120,20 @@ class PointMazeEnv(MazeEnv, EzPickle):
     ```
 
     The last group of environment variations instantiates another type of `diverse` maze for which the goals and agent initialization locations are randomly selected at reset. The `id` of this environments is the same as their
-    default but adding the `_DGR` string (`diverse goal/reset`) to it:
+    default but adding the `_Diverse_GR` string (`GR` stands for Goal and Reset) to it:
 
     ```python
-    # ID: PointMaze_BigMaze_DGR-v3
+    # ID: PointMaze_Open_Diverse_GR-v3
 
-    BIG_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1],
+    OPEN_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1],
+                       [1, C, C, C, C, C, 1],
+                       [1, C, C, C, C, C, 1],
+                       [1, C, C, C, C, C, 1],
+                       [1, 1, 1, 1, 1, 1, 1]]
+
+    # ID: PointMaze_Medium_Diverse_GR-v3
+
+    MEDIUM_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1],
                            [1, C, 0, 1, 1, 0, 0, 1],
                            [1, 0, 0, 1, 0, 0, C, 1],
                            [1, 1, 0, 0, 0, 1, 1, 1],
@@ -118,9 +142,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
                            [1, 0, 0, 0, 1, C, 0, 1],
                            [1, 1, 1, 1, 1, 1, 1, 1]]
 
-    # ID: PointMaze_HardestMaze_DGR-v3
+    # ID: PointMaze_Large_Diverse_GR-v3
 
-    HARDEST_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    LARGE_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
                                [1, C, 0, 0, 0, 1, C, 0, 0, 0, 0, 1],
                                [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
                                [1, 0, 0, 0, 0, C, 0, 1, 0, 0, C, 1],

@@ -10,7 +10,7 @@ from gymnasium_robotics.envs.point_maze.maps import COMBINED, GOAL, RESET, U_MAZ
 
 
 class Maze:
-    r"""This class creaets and holds information about the maze in the MuJoCo simulation.
+    r"""This class creates and holds information about the maze in the MuJoCo simulation.
 
     The accessible attributes are the following:
     - :attr:`maze_map` - The maze discrete data structure.
@@ -297,7 +297,9 @@ class MazeEnv(GoalEnv):
         self.reset_pos = self.add_xy_position_noise(reset_pos)
 
     def add_xy_position_noise(self, xy_pos: np.ndarray) -> np.ndarray:
-        """Returns"""
+        """Pass an x,y coordinate and it will return the same coordinate with a noise addition
+        sampled from a uniform distribution
+        """
         noise_x = (
             self.np_random.uniform(
                 low=-self.position_noise_range, high=self.position_noise_range
