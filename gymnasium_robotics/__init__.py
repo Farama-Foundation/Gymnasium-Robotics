@@ -829,5 +829,11 @@ def register_robotics_envs():
             max_episode_steps=100,
         )
 
+    register(
+        id="AdroitHandDoor-v0",
+        entry_point="gymnasium_robotics.envs:AdroitHandDoorEnv",
+        max_episode_steps=100,
+    )
+
 
 __version__ = "1.1.0"
