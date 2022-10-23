@@ -6,9 +6,20 @@ lastpage:
 
 ```{toctree}
 :hidden:
-:caption: Environments
-envs/index
+:titlesonly:
+:caption: Introduction
+content/installation
+content/multi-goal_api
 ```
+
+```{toctree}
+:hidden:
+:caption: Environments
+envs/fetch
+envs/shadow_dexterous_hand
+envs/shadow_dexterous_hand_with_touch_sensors
+```
+
 ```{toctree}
 :hidden:
 :caption: Development
@@ -17,17 +28,19 @@ Donate <https://farama.org/donations>
 Contribute to the Docs <https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/.github/PULL_REQUEST_TEMPLATE.md>
 ```
 
+# Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
 
-# Gymnasium-Robotics is a collection of robotics simulation environments for reinforcement learning 
-Gymnasium-robotics is based on the [MuJoCo](https://mujoco.org/) physics engine, and first introduced in the following [technical report](https://arxiv.org/abs/1802.09464).
+```{figure} img/fetchpickandplace.gif
+   :alt: Fetch Pick And Place
+   :width: 500
+   :height: 500
+```
 
-Requirements:
-- Python 3.7 to 3.10
-- Gymnasium v0.26
-- NumPy 1.18+
-- Mujoco 2.2.2
+This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
 
-If you use these environments, please cite the following paper:
+## Citation
+
+If using the `Fetch` or `Shadow Hand` environments, please cite:
 
 ```bibtex
 @misc{1802.09464,
@@ -38,7 +51,15 @@ If you use these environments, please cite the following paper:
 }
 ```
 
-## New MuJoCo Python Bindings
+To cite the `Shadow Dexterous Hand with Touch Sensors` environments, please use:
 
-The latest version and future versions of the MuJoCo environments will no longer depend on `mujoco-py`. Instead the new [mujoco](https://mujoco.readthedocs.io/en/latest/python.html) python bindings will be the required dependency for future gymnasium MuJoCo environment versions. Old gymnasium MuJoCo environment versions that depend on `mujoco-py` will still be kept but unmaintained.
-Dependencies for old MuJoCo environments can still be installed by `pip install gymnasium_robotics[mujoco_py]`.
+```bibtex
+@article{melnik2021using,
+  title={Using tactile sensing to improve the sample efficiency and performance of deep deterministic policy gradients for simulated in-hand manipulation tasks},
+  author={Melnik, Andrew and Lach, Luca and Plappert, Matthias and Korthals, Timo and Haschke, Robert and Ritter, Helge},
+  journal={Frontiers in Robotics and AI},
+  pages={57},
+  year={2021},
+  publisher={Frontiers}
+}
+```
