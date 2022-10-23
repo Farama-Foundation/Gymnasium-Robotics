@@ -841,5 +841,11 @@ def register_robotics_envs():
         max_episode_steps=200,
     )
 
+    register(
+        id="AdroitHandPen-v0",
+        entry_point="gymnasium_robotics.envs:AdroitHandPenEnv",
+        max_episode_steps=200,
+    )
+
 
 __version__ = "1.1.0"

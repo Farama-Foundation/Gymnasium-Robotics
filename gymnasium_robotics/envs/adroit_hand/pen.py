@@ -10,6 +10,15 @@ from gymnasium_robotics.utils.rotations import euler2quat
 
 
 class AdroitHandPenEnv(MujocoEnv, EzPickle):
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+        "render_fps": 100,
+    }
+
     def __init__(self, **kwargs):
         self.pen_length = 1.0
         self.tar_length = 1.0
@@ -65,23 +74,25 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             :3,
         ] = np.array([0, -1, 0])
 
-        self.target_obj_bid = self.sim.model.body_name2id("target")
-        self.S_grasp_sid = self.sim.model.site_name2id("S_grasp")
-        self.obj_bid = self.sim.model.body_name2id("Object")
-        self.eps_ball_sid = self.sim.model.site_name2id("eps_ball")
-        self.obj_t_sid = self.sim.model.site_name2id("object_top")
-        self.obj_b_sid = self.sim.model.site_name2id("object_bottom")
-        self.tar_t_sid = self.sim.model.site_name2id("target_top")
-        self.tar_b_sid = self.sim.model.site_name2id("target_bottom")
+        self.target_obj_body_id = self._model_names.body_name2id["target"]
+        self.S_grasp_site_id = self._model_names.site_name2id["S_grasp"]
+        self.obj_body_id = self._model_names.body_name2id["Object"]
+        self.eps_ball_site_id = self._model_names.site_name2id["eps_ball"]
+        self.obj_t_site_id = self._model_names.site_name2id["object_top"]
+        self.obj_b_site_id = self._model_names.site_name2id["object_bottom"]
+        self.tar_t_site_id = self._model_names.site_name2id["target_top"]
+        self.tar_b_site_id = self._model_names.site_name2id["target_bottom"]
 
         self.pen_length = np.linalg.norm(
-            self.data.site_xpos[self.obj_t_sid] - self.data.site_xpos[self.obj_b_sid]
+            self.data.site_xpos[self.obj_t_site_id]
+            - self.data.site_xpos[self.obj_b_site_id]
         )
         self.tar_length = np.linalg.norm(
-            self.data.site_xpos[self.tar_t_sid] - self.data.site_xpos[self.tar_b_sid]
+            self.data.site_xpos[self.tar_t_site_id]
+            - self.data.site_xpos[self.tar_b_site_id]
         )
 
-        self.act_mid = np.mean(self.model.actuator_ctrlrange, axis=1)
+        self.act_mean = np.mean(self.model.actuator_ctrlrange, axis=1)
         self.act_rng = 0.5 * (
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
@@ -90,21 +101,19 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     def step(self, a):
         a = np.clip(a, -1.0, 1.0)
-        # try:
-        starting_up = False
-        a = self.act_mid + a * self.act_rng  # mean center and scale
-        # except:
-        #     starting_up = True
-        #     a = a  # only for the initialization phase
+        a = self.act_mean + a * self.act_rng  # mean center and scale
         self.do_simulation(a, self.frame_skip)
 
-        obj_pos = self.data.body_xpos[self.obj_bid].ravel()
-        desired_loc = self.data.site_xpos[self.eps_ball_sid].ravel()
+        obs = self._get_obs()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel()
+        desired_loc = self.data.site_xpos[self.eps_ball_site_id].ravel()
         obj_orien = (
-            self.data.site_xpos[self.obj_t_sid] - self.data.site_xpos[self.obj_b_sid]
+            self.data.site_xpos[self.obj_t_site_id]
+            - self.data.site_xpos[self.obj_b_site_id]
         ) / self.pen_length
         desired_orien = (
-            self.data.site_xpos[self.tar_t_sid] - self.data.site_xpos[self.tar_b_sid]
+            self.data.site_xpos[self.tar_t_site_id]
+            - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
 
         # pos cost
@@ -121,29 +130,34 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             reward += 50
 
         # penalty for dropping the pen
-        done = False
+        terminated = False
         if obj_pos[2] < 0.075:
             reward -= 5
-            done = True if not starting_up else False
+            terminated = True
 
         goal_achieved = True if (dist < 0.075 and orien_similarity > 0.95) else False
 
-        return self.get_obs(), reward, done, dict(goal_achieved=goal_achieved)
+        if self.render_mode == "human":
+            self.render()
 
-    def get_obs(self):
-        qp = self.data.qpos.ravel()
+        return obs, reward, terminated, False, dict(success=goal_achieved)
+
+    def _get_obs(self):
+        qpos = self.data.qpos.ravel()
         obj_vel = self.data.qvel[-6:].ravel()
-        obj_pos = self.data.body_xpos[self.obj_bid].ravel()
-        desired_pos = self.data.site_xpos[self.eps_ball_sid].ravel()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel()
+        desired_pos = self.data.site_xpos[self.eps_ball_site_id].ravel()
         obj_orien = (
-            self.data.site_xpos[self.obj_t_sid] - self.data.site_xpos[self.obj_b_sid]
+            self.data.site_xpos[self.obj_t_site_id]
+            - self.data.site_xpos[self.obj_b_site_id]
         ) / self.pen_length
         desired_orien = (
-            self.data.site_xpos[self.tar_t_sid] - self.data.site_xpos[self.tar_b_sid]
+            self.data.site_xpos[self.tar_t_site_id]
+            - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
         return np.concatenate(
             [
-                qp[:-6],
+                qpos[:-6],
                 obj_pos,
                 obj_vel,
                 obj_orien,
@@ -154,15 +168,15 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         )
 
     def reset_model(self):
-        qp = self.init_qpos.copy()
-        qv = self.init_qvel.copy()
-        self.set_state(qp, qv)
         desired_orien = np.zeros(3)
         desired_orien[0] = self.np_random.uniform(low=-1, high=1)
         desired_orien[1] = self.np_random.uniform(low=-1, high=1)
-        self.model.body_quat[self.target_obj_bid] = euler2quat(desired_orien)
-        self.sim.forward()
-        return self.get_obs()
+        self.model.body_quat[self.target_obj_body_id] = euler2quat(desired_orien)
+
+        self.set_state(self.init_qpos, self.init_qvel)
+
+        obs = self._get_obs
+        return obs
 
     def get_env_state(self):
         """
