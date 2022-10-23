@@ -28,7 +28,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             "../assets/adroit_hand/adroit_pen.xml",
         )
         observation_space = spaces.Box(
-            low=-np.inf, high=np.inf, shape=(39,), dtype=np.float64
+            low=-np.inf, high=np.inf, shape=(45,), dtype=np.float64
         )
         MujocoEnv.__init__(
             self,
@@ -83,15 +83,6 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         self.tar_t_site_id = self._model_names.site_name2id["target_top"]
         self.tar_b_site_id = self._model_names.site_name2id["target_bottom"]
 
-        self.pen_length = np.linalg.norm(
-            self.data.site_xpos[self.obj_t_site_id]
-            - self.data.site_xpos[self.obj_b_site_id]
-        )
-        self.tar_length = np.linalg.norm(
-            self.data.site_xpos[self.tar_t_site_id]
-            - self.data.site_xpos[self.tar_b_site_id]
-        )
-
         self.act_mean = np.mean(self.model.actuator_ctrlrange, axis=1)
         self.act_rng = 0.5 * (
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
@@ -105,6 +96,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         self.do_simulation(a, self.frame_skip)
 
         obs = self._get_obs()
+
         obj_pos = self.data.xpos[self.obj_body_id].ravel()
         desired_loc = self.data.site_xpos[self.eps_ball_site_id].ravel()
         obj_orien = (
@@ -155,6 +147,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             self.data.site_xpos[self.tar_t_site_id]
             - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
+
         return np.concatenate(
             [
                 qpos[:-6],
@@ -175,7 +168,16 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
         self.set_state(self.init_qpos, self.init_qvel)
 
-        obs = self._get_obs
+        self.pen_length = np.linalg.norm(
+            self.data.site_xpos[self.obj_t_site_id]
+            - self.data.site_xpos[self.obj_b_site_id]
+        )
+        self.tar_length = np.linalg.norm(
+            self.data.site_xpos[self.tar_t_site_id]
+            - self.data.site_xpos[self.tar_b_site_id]
+        )
+
+        obs = self._get_obs()
         return obs
 
     def get_env_state(self):
