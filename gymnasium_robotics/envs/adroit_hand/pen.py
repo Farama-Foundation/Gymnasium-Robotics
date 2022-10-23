@@ -102,7 +102,6 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         self.do_simulation(a, self.frame_skip)
 
         obs = self._get_obs()
-
         obj_pos = self.data.xpos[self.obj_body_id].ravel()
         desired_loc = self.data.site_xpos[self.eps_ball_site_id].ravel()
         obj_orien = (
