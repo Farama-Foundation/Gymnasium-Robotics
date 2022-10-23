@@ -847,5 +847,11 @@ def register_robotics_envs():
         max_episode_steps=200,
     )
 
+    register(
+        id="AdroitHandRelocate-v0",
+        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
+        max_episode_steps=200,
+    )
+
 
 __version__ = "1.1.0"

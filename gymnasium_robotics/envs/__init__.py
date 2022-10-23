@@ -1,6 +1,7 @@
 from gymnasium_robotics.envs.adroit_hand.door import AdroitHandDoorEnv
 from gymnasium_robotics.envs.adroit_hand.hammer import AdroitHandHammerEnv
 from gymnasium_robotics.envs.adroit_hand.pen import AdroitHandPenEnv
+from gymnasium_robotics.envs.adroit_hand.relocate import AdroitHandRelocateEnv
 from gymnasium_robotics.envs.fetch.pick_and_place import (
     MujocoFetchPickAndPlaceEnv,
     MujocoPyFetchPickAndPlaceEnv,
