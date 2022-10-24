@@ -7,9 +7,9 @@
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
-    <meta property="og:url" content="https://robotics.farama.org/envs/fetch.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta property="og:url" content="https://robotics.farama.org/envs/fetch/index.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Fetch Reach" href="FetchReach/" /><link rel="prev" title="Multi-goal API" href="../../content/multi-goal_api/" />
-        <link rel="canonical" href="https://robotics.farama.org/envs/fetch.html" />
+        <link rel="canonical" href="https://robotics.farama.org/envs/fetch/index.html" />
 
     <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.2.3, furo 2022.09.15.dev1"/>
         <title>Fetch - Gymnasium-Robotics Documentation</title>
@@ -363,17 +363,17 @@
 <li class="toctree-l2"><a class="reference internal" href="FetchPush/">Fetch Push</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../shadow_dexterous_hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../hand/HandReach/">Hand Reach</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hand/HandBlock/">Hand Block</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hand/HandEgg/">Hand Egg</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../hand/HandPen/">Hand Pen</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../shadow_dexterous_hand_with_touch_sensors/">Shadow Dexterous Hand with Touch Sensors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../hand/HandBlockTouchSensors/">Hand Block Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../hand/HandEggTouchSensors/">Hand Egg Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../hand/HandPenTouchSensors/">Hand Pen Touch Sensors</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../hand_touch/">Shadow Dexterous Hand with Touch Sensors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../hand_touch/HandBlockTouchSensors/">Hand Block Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hand_touch/HandEggTouchSensors/">Hand Egg Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hand_touch/HandPenTouchSensors/">Hand Pen Touch Sensors</a></li>
 </ul>
 </li>
 </ul>
@@ -402,7 +402,7 @@
           
     
     <div class="edit-this-page">
-  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/master/docs/envs/fetch.md" title="Edit this page">
+  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/master/docs/envs/fetch/index.md" title="Edit this page">
     <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
@@ -434,6 +434,59 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">FetchSlide-v2</span></code>: Fetch has to hit a puck across a long table such that it slides and comes to rest on the desired goal.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">FetchPickAndPlace-v2</span></code>: Fetch has to pick up a box from a table using its gripper and move it to a desired goal above the table.</p></li>
 </ul>
+
+<div class="env-grid">
+    
+            <a href="FetchPickAndPlace">
+                <div class="env-grid__cell">
+                    <div class="cell__image-container">
+                        <img src="/_static/videos/fetch/FetchPickAndPlace.gif">
+                    </div>
+                    <div class="cell__title">
+                        <span>Fetchpickandplace</span>
+                    </div>
+                </div>
+            </a>
+    
+
+            <a href="FetchPush">
+                <div class="env-grid__cell">
+                    <div class="cell__image-container">
+                        <img src="/_static/videos/fetch/FetchPush.gif">
+                    </div>
+                    <div class="cell__title">
+                        <span>Fetchpush</span>
+                    </div>
+                </div>
+            </a>
+    
+
+            <a href="FetchReach">
+                <div class="env-grid__cell">
+                    <div class="cell__image-container">
+                        <img src="/_static/videos/fetch/FetchReach.gif">
+                    </div>
+                    <div class="cell__title">
+                        <span>Fetchreach</span>
+                    </div>
+                </div>
+            </a>
+    
+
+            <a href="FetchSlide">
+                <div class="env-grid__cell">
+                    <div class="cell__image-container">
+                        <img src="/_static/videos/fetch/FetchSlide.gif">
+                    </div>
+                    <div class="cell__title">
+                        <span>Fetchslide</span>
+                    </div>
+                </div>
+            </a>
+    
+</div>
+
+    
 <div class="toctree-wrapper compound">
 </div>
 </section>
