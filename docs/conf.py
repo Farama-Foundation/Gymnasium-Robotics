@@ -76,11 +76,12 @@ html_theme = "furo"
 html_title = "Gymnasium-Robotics Documentation"
 html_baseurl = "https://robotics.farama.org/"
 html_copy_source = False
-html_favicon = "_static/img/robotics-white.png"
+html_favicon = "_static/img/robotics-favicon.png"
 html_theme_options = {
     "light_logo": "img/robotics.png",
     "dark_logo": "img/robotics-white.png",
     "gtag": "G-M37ZN7PPMN",
+    "image": "img/robotics-github.png",
 }
 html_context: Dict[str, Any] = {}
 html_context["conf_py_path"] = "/docs/"
