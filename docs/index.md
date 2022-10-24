@@ -15,9 +15,9 @@ content/multi-goal_api
 ```{toctree}
 :hidden:
 :caption: Environments
-envs/fetch
-envs/shadow_dexterous_hand
-envs/shadow_dexterous_hand_with_touch_sensors
+envs/fetch/index
+envs/hand/index
+envs/hand_touch/index
 ```
 
 ```{toctree}
@@ -28,7 +28,7 @@ Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 # Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
 
 
-```{figure} img/fetchpickandplace.gif
+```{figure} _static/videos/FetchPickAndPlace.gif
    :alt: Fetch Pick And Place
    :width: 500
    :height: 500
@@ -46,7 +46,7 @@ observation, info = env.reset(seed=42)
 for _ in range(1000):
    action = policy(observation)  # User-defined policy function
    observation, reward, terminated, truncated, info = env.step(action)
-   
+
    if terminated or truncated:
       observation, info = env.reset()
 env.close()

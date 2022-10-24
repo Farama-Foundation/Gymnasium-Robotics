@@ -39,6 +39,6 @@ tutorial/*.html
 vizdoom.ini
 
 # docs
-docs/envs/fetch/*.md
-docs/envs/hand/*.md
+docs/envs/**/*.*
+!docs/envs/**/index.md
 _build/
