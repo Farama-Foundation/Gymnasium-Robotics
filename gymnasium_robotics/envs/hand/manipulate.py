@@ -728,7 +728,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
 class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     """
     <p align="center">
-        <img alt="Egg Touch" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/eggtouch.gif" width="300px" height="300px" />
+        <img alt="Egg Touch" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handegg.gif" width="300px" height="300px" />
     </p>
 
     ### Description

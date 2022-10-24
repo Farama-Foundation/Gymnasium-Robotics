@@ -285,7 +285,7 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
 class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
     <p align="center">
-        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handblock.gif" width="300px" height="300px" />
+        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/blocktouch.gif" width="300px" height="300px" />
     </p>
 
     ### Description
@@ -369,7 +369,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
     <p align="center">
-        <img alt="Egg" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handegg.gif" width="300px" height="300px" />
+        <img alt="Egg" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/eggtouch.gif" width="300px" height="300px" />
     </p>
 
     ### Description
@@ -447,7 +447,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
     <p align="center">
-        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handpen.gif" width="300px" height="300px" />
+        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/pentouch.gif" width="300px" height="300px" />
     </p>
 
     ### Description
