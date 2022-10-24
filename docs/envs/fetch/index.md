@@ -16,7 +16,6 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
     :file: list.html
 ```
 
-
 ```{toctree}
 :hidden:
 FetchReach

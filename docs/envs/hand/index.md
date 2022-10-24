@@ -12,6 +12,9 @@ These environments are based on the [Shadow Dexterous Hand](https://www.shadowro
 * `HandManipulateEgg-v1`: ShadowHand has to manipulate an egg until it achieves a desired goal position and rotation.
 * `HandManipulatePen-v1`: ShadowHand has to manipulate a pen until it achieves a desired goal position and rotation.
 
+```{raw} html
+    :file: list.html
+```
 
 ```{toctree}
 :hidden:

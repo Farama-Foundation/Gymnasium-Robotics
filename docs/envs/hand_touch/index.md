@@ -17,6 +17,10 @@ import gymnasium as gym
 env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 ```
 
+```{raw} html
+    :file: list.html
+```
+
 ```{toctree}
 :hidden:
 HandBlockTouchSensors
