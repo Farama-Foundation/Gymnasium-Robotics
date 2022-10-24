@@ -9,11 +9,7 @@ MODEL_XML_PATH = os.path.join("fetch", "pick_and_place.xml")
 
 class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Pick and place" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/fetchpickandplace.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -23,7 +19,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
 
     The control frequency of the robot is of `f = 25 Hz`. This is achieved by applying the same action in 20 subsequent simulator step (with a time step of `dt = 0.002 s`) before returning the control to the robot.
 
-    ### Action Space
+    ## Action Space
 
     The action space is a `Box(-1.0, 1.0, (4,), float32)`. An action represents the Cartesian displacement dx, dy, and dz of the end effector. In addition to a last action that controls closing and opening of the gripper.
 
@@ -34,7 +30,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     | 2   | Displacement of the end effector in the z direction dz | -1          | 1           | robot0:mocap                                                    | hinge | position (m) |
     | 3   | Positional displacement per timestep of each finger of the gripper  | -1          | 1           | robot0:r_gripper_finger_joint and robot0:l_gripper_finger_joint | hinge | position (m) |
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's end effector state and goal. The kinematics observations are derived from Mujoco bodies known as [sites](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site) attached to the body of interest such as the block or the end effector.
     Only the observations from the gripper fingers are derived from joints. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:
@@ -82,7 +78,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
         | 2   | Current block position in the z coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
 
 
-    ### Rewards
+    ## Rewards
 
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the block hasn't reached its final target position, and `0` if the block is in the final target position (the block is considered to have reached the goal if the Euclidean distance between both is lower than 0.05 m).
@@ -96,7 +92,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     env = gym.make('FetchPickAndPlaceDense-v2')
     ```
 
-    ### Starting State
+    ## Starting State
 
     When the environment is reset the gripper is placed in the following global cartesian coordinates `(x,y,z) = [1.3419 0.7491 0.555] m`, and its orientation in quaternions is `(w,x,y,z) = [1.0, 0.0, 1.0, 0.0]`. The joint positions are computed by inverse kinematics internally by MuJoCo. The base of the robot will always be fixed at `(x,y,z) = [0.405, 0.48, 0]` in global coordinates.
 
@@ -107,12 +103,12 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     The height of the target is initialized at `(z) = [0.42] m ` and an offset is added to it sampled from another uniform distribution with a range of `[0, 0.45] m`.
 
 
-    ### Episode End
+    ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 50 timesteps.
     The episode is never `terminated` since the task is continuing with infinite horizon.
 
-    ### Arguments
+    ## Arguments
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
@@ -122,7 +118,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
     env = gym.make('FetchPickAndPlace-v2', max_episode_steps=100)
     ```
 
-    ### Version History
+    ## Version History
 
     * v2: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v1: the environment depends on `mujoco_py` which is no longer maintained.

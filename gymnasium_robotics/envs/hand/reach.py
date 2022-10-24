@@ -137,11 +137,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
 
 class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     """
-    <p align="center">
-        <img alt="Reach" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handreach.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -159,7 +155,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     In the robot hand an extra joint is added to the little finger `LFJ4` in order to perform the opposition movement with the thumb. Also the the human thumb has two different joints than the rest of the fingers. The *carpometacarpal* (CMC) joint located close
     to the palm area, `THJ4` and `THJ3`in the robot. And the *interphalangeal* joint which is in the same location as the DIP but in this case actuated. This joint is the `THJ0` in the robot hand.
 
-    ### Action Space
+    ## Action Space
 
     The action space is a `Box(-1.0, 1.0, (20,), float32)`. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges.
     The elements of the action array are the following:
@@ -188,7 +184,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     | 19  | Angular position of the IP joint of the thumb finger (flexion/extension)                | -1          | 1           | -1.571 (rad) | 0 (rad)     | robot0:A_THJ0                    | hinge | angle (rad) |
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and finger states, as well as information about the goal. The finger tip observations are derived from
     Mujoco bodies known as [sites](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site) attached to the body of interest such as the finger tips. The dictionary consists of the following 3 keys:
@@ -304,7 +300,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         | 14  | Current z coordinate of the tip of the thumb finger                                                                                   | -Inf   | Inf    | robot0:S_thtip                        | position (m) |
 
 
-    ### Rewards
+    ## Rewards
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the fingers haven't reached their final target position, and `0` if the fingers are in their final target position (the fingers are considered to have reached their goal if the 2-nom between
     the achieved goal vector and the desired goal vector is lower than 0.01).
@@ -319,7 +315,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     env = gym.make('HandReachDense-v1')
     ```
 
-    ### Starting State
+    ## Starting State
 
     When the environment is reset the joints of the hand are initialized with the following angles (rad):
 
@@ -374,12 +370,12 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     In the other possible episode intializaitons one of the fingers is randomly selected to meet the tip of the thumb over the palm of the hand. The rest of the finger tips must maintain the initial positions mentioned before.
 
 
-    ### Episode End
+    ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 50 timesteps.
     The episode is never `terminated` since the task is continuing with infinite horizon.
 
-    ### Arguments
+    ## Arguments
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example,
     to increase the total number of timesteps to 100 make the environment as follows:
@@ -390,7 +386,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     env = gym.make('HandReach-v1', max_episode_steps=100)
     ```
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
