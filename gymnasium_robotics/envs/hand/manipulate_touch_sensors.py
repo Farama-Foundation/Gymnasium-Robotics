@@ -284,6 +284,10 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
 
 class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
+    <p align="center">
+        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handblock.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
@@ -364,6 +368,10 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 
 class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
+    <p align="center">
+        <img alt="Egg" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handegg.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
@@ -438,6 +446,10 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 
 class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
+    <p align="center">
+        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handpen.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
