@@ -15,7 +15,8 @@ from itertools import chain
 pattern = re.compile(r"(?<!^)(?=[A-Z])")
 
 readme_path = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "README.md",
+    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+    "README.md",
 )
 
 fetch_path = os.path.join(
@@ -32,7 +33,10 @@ hand_path = os.path.join(
     "hand",
 )
 
-output_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "envs",)
+output_path = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "envs",
+)
 
 # regex to find the class name
 class_p = re.compile(r"class\s([\w]+)\(.*")

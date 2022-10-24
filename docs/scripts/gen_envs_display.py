@@ -53,9 +53,22 @@ if __name__ == "__main__":
     type_dict = [
         {
             "id": "fetch",
-            "list": ["FetchPickAndPlace", "FetchPush", "FetchReach", "FetchSlide",],
+            "list": [
+                "FetchPickAndPlace",
+                "FetchPush",
+                "FetchReach",
+                "FetchSlide",
+            ],
         },
-        {"id": "hand", "list": ["HandBlock", "HandEgg", "HandPen", "HandReach",]},
+        {
+            "id": "hand",
+            "list": [
+                "HandBlock",
+                "HandEgg",
+                "HandPen",
+                "HandReach",
+            ],
+        },
         {
             "id": "hand_touch",
             "list": [
