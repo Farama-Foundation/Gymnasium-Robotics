@@ -137,6 +137,10 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
 
 class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     """
+    <p align="center">
+        <img alt="Reach" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handreach.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
