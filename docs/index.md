@@ -24,8 +24,6 @@ envs/shadow_dexterous_hand_with_touch_sensors
 :hidden:
 :caption: Development
 Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
-Donate <https://farama.org/donations>
-Contribute to the Docs <https://github.com/Farama-Foundation/Gymnasium-Robotics/blob/main/.github/PULL_REQUEST_TEMPLATE.md>
 ```
 # Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
 
@@ -48,7 +46,7 @@ observation, info = env.reset(seed=42)
 for _ in range(1000):
    action = policy(observation)  # User-defined policy function
    observation, reward, terminated, truncated, info = env.step(action)
-
+   
    if terminated or truncated:
       observation, info = env.reset()
 env.close()
