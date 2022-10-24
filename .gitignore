@@ -41,4 +41,4 @@ vizdoom.ini
 # docs
 docs/envs/fetch/*.md
 docs/envs/hand/*.md
-/_build
+_build/
