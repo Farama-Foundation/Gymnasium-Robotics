@@ -16,8 +16,8 @@
 
 import os
 
-ENVS_ROOT_PATH = os.path.abspath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "../../"))
+ENVS_ROOT_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../")
+)
 
 MODELS_PATH = os.path.abspath(os.path.join(ENVS_ROOT_PATH, "../adept_models/"))

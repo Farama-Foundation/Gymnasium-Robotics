@@ -15,5 +15,4 @@
 # limitations under the License.
 
 import d4rl.kitchen.adept_envs.franka
-
 from d4rl.kitchen.adept_envs.utils.configurable import global_config

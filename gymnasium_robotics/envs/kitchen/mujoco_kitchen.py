@@ -1,4 +1,6 @@
-from gymnasium_robotics.envs.kitchen.kitchen_env import KitchenMicrowaveKettleBottomBurnerLightV0
+from gymnasium_robotics.envs.kitchen.kitchen_env import (
+    KitchenMicrowaveKettleBottomBurnerLightV0,
+)
 
 env = KitchenMicrowaveKettleBottomBurnerLightV0()
 

@@ -20,7 +20,11 @@ import os
 from typing import Dict, Optional
 
 from d4rl.kitchen.adept_envs.simulation import module
-from d4rl.kitchen.adept_envs.simulation.renderer import DMRenderer, MjPyRenderer, RenderMode
+from d4rl.kitchen.adept_envs.simulation.renderer import (
+    DMRenderer,
+    MjPyRenderer,
+    RenderMode,
+)
 
 
 class MujocoSimRobot:
@@ -32,10 +36,12 @@ class MujocoSimRobot:
     2. dm_control - MuJoCo v2.00
     """
 
-    def __init__(self,
-                 model_file: str,
-                 use_dm_backend: bool = False,
-                 camera_settings: Optional[Dict] = None):
+    def __init__(
+        self,
+        model_file: str,
+        use_dm_backend: bool = False,
+        camera_settings: Optional[Dict] = None,
+    ):
         """Initializes a new simulation.
 
         Args:
@@ -49,26 +55,22 @@ class MujocoSimRobot:
         self._use_dm_backend = use_dm_backend
 
         if not os.path.isfile(model_file):
-            raise ValueError(
-                '[MujocoSimRobot] Invalid model file path: {}'.format(
-                    model_file))
+            raise ValueError(f"[MujocoSimRobot] Invalid model file path: {model_file}")
 
         if self._use_dm_backend:
             dm_mujoco = module.get_dm_mujoco()
-            if model_file.endswith('.mjb'):
+            if model_file.endswith(".mjb"):
                 self.sim = dm_mujoco.Physics.from_binary_path(model_file)
             else:
                 self.sim = dm_mujoco.Physics.from_xml_path(model_file)
             self.model = self.sim.model
             self._patch_mjlib_accessors(self.model, self.sim.data)
-            self.renderer = DMRenderer(
-                self.sim, camera_settings=camera_settings)
+            self.renderer = DMRenderer(self.sim, camera_settings=camera_settings)
         else:  # Use mujoco_py
             mujoco_py = module.get_mujoco_py()
             self.model = mujoco_py.load_model_from_path(model_file)
             self.sim = mujoco_py.MjSim(self.model)
-            self.renderer = MjPyRenderer(
-                self.sim, camera_settings=camera_settings)
+            self.renderer = MjPyRenderer(self.sim, camera_settings=camera_settings)
 
         self.data = self.sim.data
 
@@ -79,14 +81,13 @@ class MujocoSimRobot:
     def save_binary(self, path: str):
         """Saves the loaded model to a binary .mjb file."""
         if os.path.exists(path):
-            raise ValueError(
-                '[MujocoSimRobot] Path already exists: {}'.format(path))
-        if not path.endswith('.mjb'):
-            path = path + '.mjb'
+            raise ValueError(f"[MujocoSimRobot] Path already exists: {path}")
+        if not path.endswith(".mjb"):
+            path = path + ".mjb"
         if self._use_dm_backend:
             self.model.save_binary(path)
         else:
-            with open(path, 'wb') as f:
+            with open(path, "wb") as f:
                 f.write(self.model.get_mjb())
 
     def get_mjlib(self):
@@ -102,34 +103,33 @@ class MujocoSimRobot:
         mjlib = self.get_mjlib()
 
         def name2id(type_name, name):
-            obj_id = mjlib.mj_name2id(model.ptr,
-                                      mjlib.mju_str2Type(type_name.encode()),
-                                      name.encode())
+            obj_id = mjlib.mj_name2id(
+                model.ptr, mjlib.mju_str2Type(type_name.encode()), name.encode()
+            )
             if obj_id < 0:
-                raise ValueError('No {} with name "{}" exists.'.format(
-                    type_name, name))
+                raise ValueError(f'No {type_name} with name "{name}" exists.')
             return obj_id
 
-        if not hasattr(model, 'body_name2id'):
-            model.body_name2id = lambda name: name2id('body', name)
+        if not hasattr(model, "body_name2id"):
+            model.body_name2id = lambda name: name2id("body", name)
 
-        if not hasattr(model, 'geom_name2id'):
-            model.geom_name2id = lambda name: name2id('geom', name)
+        if not hasattr(model, "geom_name2id"):
+            model.geom_name2id = lambda name: name2id("geom", name)
 
-        if not hasattr(model, 'site_name2id'):
-            model.site_name2id = lambda name: name2id('site', name)
+        if not hasattr(model, "site_name2id"):
+            model.site_name2id = lambda name: name2id("site", name)
 
-        if not hasattr(model, 'joint_name2id'):
-            model.joint_name2id = lambda name: name2id('joint', name)
+        if not hasattr(model, "joint_name2id"):
+            model.joint_name2id = lambda name: name2id("joint", name)
 
-        if not hasattr(model, 'actuator_name2id'):
-            model.actuator_name2id = lambda name: name2id('actuator', name)
+        if not hasattr(model, "actuator_name2id"):
+            model.actuator_name2id = lambda name: name2id("actuator", name)
 
-        if not hasattr(model, 'camera_name2id'):
-            model.camera_name2id = lambda name: name2id('camera', name)
+        if not hasattr(model, "camera_name2id"):
+            model.camera_name2id = lambda name: name2id("camera", name)
 
-        if not hasattr(data, 'body_xpos'):
+        if not hasattr(data, "body_xpos"):
             data.body_xpos = data.xpos
 
-        if not hasattr(data, 'body_xquat'):
+        if not hasattr(data, "body_xquat"):
             data.body_xquat = data.xquat

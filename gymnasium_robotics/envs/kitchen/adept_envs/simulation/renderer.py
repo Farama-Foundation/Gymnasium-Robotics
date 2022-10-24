@@ -22,20 +22,20 @@ import sys
 from typing import Dict, Optional
 
 import numpy as np
-
 from d4rl.kitchen.adept_envs.simulation import module
 
 # Default window dimensions.
 DEFAULT_WINDOW_WIDTH = 1024
 DEFAULT_WINDOW_HEIGHT = 768
 
-DEFAULT_WINDOW_TITLE = 'MuJoCo Viewer'
+DEFAULT_WINDOW_TITLE = "MuJoCo Viewer"
 
 _MAX_RENDERBUFFER_SIZE = 2048
 
 
 class RenderMode(enum.Enum):
     """Rendering modes for offscreen rendering."""
+
     RGB = 0
     DEPTH = 1
     SEGMENTATION = 2
@@ -56,11 +56,13 @@ class Renderer(abc.ABC):
         """Renders the simulation to a window."""
 
     @abc.abstractmethod
-    def render_offscreen(self,
-                         width: int,
-                         height: int,
-                         mode: RenderMode = RenderMode.RGB,
-                         camera_id: int = -1) -> np.ndarray:
+    def render_offscreen(
+        self,
+        width: int,
+        height: int,
+        mode: RenderMode = RenderMode.RGB,
+        camera_id: int = -1,
+    ) -> np.ndarray:
         """Renders the camera view as a NumPy array of pixels.
 
         Args:
@@ -78,10 +80,10 @@ class Renderer(abc.ABC):
         """Updates the given camera to move to the initial settings."""
         if not self._camera_settings:
             return
-        distance = self._camera_settings.get('distance')
-        azimuth = self._camera_settings.get('azimuth')
-        elevation = self._camera_settings.get('elevation')
-        lookat = self._camera_settings.get('lookat')
+        distance = self._camera_settings.get("distance")
+        azimuth = self._camera_settings.get("azimuth")
+        elevation = self._camera_settings.get("elevation")
+        lookat = self._camera_settings.get("lookat")
 
         if distance is not None:
             camera.distance = distance
@@ -97,8 +99,9 @@ class MjPyRenderer(Renderer):
     """Class for rendering mujoco_py simulations."""
 
     def __init__(self, sim, **kwargs):
-        assert isinstance(sim, module.get_mujoco_py().MjSim), \
-            'MjPyRenderer takes a mujoco_py MjSim object.'
+        assert isinstance(
+            sim, module.get_mujoco_py().MjSim
+        ), "MjPyRenderer takes a mujoco_py MjSim object."
         super().__init__(**kwargs)
         self._sim = sim
         self._onscreen_renderer = None
@@ -112,11 +115,13 @@ class MjPyRenderer(Renderer):
 
         self._onscreen_renderer.render()
 
-    def render_offscreen(self,
-                         width: int,
-                         height: int,
-                         mode: RenderMode = RenderMode.RGB,
-                         camera_id: int = -1) -> np.ndarray:
+    def render_offscreen(
+        self,
+        width: int,
+        height: int,
+        mode: RenderMode = RenderMode.RGB,
+        camera_id: int = -1,
+    ) -> np.ndarray:
         """Renders the camera view as a NumPy array of pixels.
 
         Args:
@@ -130,8 +135,9 @@ class MjPyRenderer(Renderer):
             A NumPy array of the pixels.
         """
         if not self._offscreen_renderer:
-            self._offscreen_renderer = module.get_mujoco_py() \
-                .MjRenderContextOffscreen(self._sim)
+            self._offscreen_renderer = module.get_mujoco_py().MjRenderContextOffscreen(
+                self._sim
+            )
 
         # Update the camera configuration for the free-camera.
         if camera_id == -1:
@@ -139,13 +145,11 @@ class MjPyRenderer(Renderer):
 
         self._offscreen_renderer.render(width, height, camera_id)
         if mode == RenderMode.RGB:
-            data = self._offscreen_renderer.read_pixels(
-                width, height, depth=False)
+            data = self._offscreen_renderer.read_pixels(width, height, depth=False)
             # Original image is upside-down, so flip it
             return data[::-1, :, :]
         elif mode == RenderMode.DEPTH:
-            data = self._offscreen_renderer.read_pixels(
-                width, height, depth=True)[1]
+            data = self._offscreen_renderer.read_pixels(width, height, depth=True)[1]
             # Original image is upside-down, so flip it
             return data[::-1, :]
         else:
@@ -159,16 +163,17 @@ class DMRenderer(Renderer):
     """Class for rendering DM Control Physics objects."""
 
     def __init__(self, physics, **kwargs):
-        assert isinstance(physics, module.get_dm_mujoco().Physics), \
-            'DMRenderer takes a DM Control Physics object.'
+        assert isinstance(
+            physics, module.get_dm_mujoco().Physics
+        ), "DMRenderer takes a DM Control Physics object."
         super().__init__(**kwargs)
         self._physics = physics
         self._window = None
 
         # Set the camera to lookat the center of the geoms. (mujoco_py does
         # this automatically.
-        if 'lookat' not in self._camera_settings:
-            self._camera_settings['lookat'] = [
+        if "lookat" not in self._camera_settings:
+            self._camera_settings["lookat"] = [
                 np.median(self._physics.data.geom_xpos[:, i]) for i in range(3)
             ]
 
@@ -185,11 +190,13 @@ class DMRenderer(Renderer):
             self._update_camera(self._window.camera)
         self._window.run_frame()
 
-    def render_offscreen(self,
-                         width: int,
-                         height: int,
-                         mode: RenderMode = RenderMode.RGB,
-                         camera_id: int = -1) -> np.ndarray:
+    def render_offscreen(
+        self,
+        width: int,
+        height: int,
+        mode: RenderMode = RenderMode.RGB,
+        camera_id: int = -1,
+    ) -> np.ndarray:
         """Renders the camera view as a NumPy array of pixels.
 
         Args:
@@ -205,10 +212,8 @@ class DMRenderer(Renderer):
         mujoco = module.get_dm_mujoco()
         # TODO(michaelahn): Consider caching the camera.
         camera = mujoco.Camera(
-            physics=self._physics,
-            height=height,
-            width=width,
-            camera_id=camera_id)
+            physics=self._physics, height=height, width=width, camera_id=camera_id
+        )
 
         # Update the camera configuration for the free-camera.
         if camera_id == -1:
@@ -218,7 +223,8 @@ class DMRenderer(Renderer):
 
         image = camera.render(
             depth=(mode == RenderMode.DEPTH),
-            segmentation=(mode == RenderMode.SEGMENTATION))
+            segmentation=(mode == RenderMode.SEGMENTATION),
+        )
         camera._scene.free()  # pylint: disable=protected-access
         return image
 
@@ -232,10 +238,12 @@ class DMRenderer(Renderer):
 class DMRenderWindow:
     """Class that encapsulates a graphical window."""
 
-    def __init__(self,
-                 width: int = DEFAULT_WINDOW_WIDTH,
-                 height: int = DEFAULT_WINDOW_HEIGHT,
-                 title: str = DEFAULT_WINDOW_TITLE):
+    def __init__(
+        self,
+        width: int = DEFAULT_WINDOW_WIDTH,
+        height: int = DEFAULT_WINDOW_HEIGHT,
+        title: str = DEFAULT_WINDOW_TITLE,
+    ):
         """Creates a graphical render window.
 
         Args:
@@ -246,8 +254,9 @@ class DMRenderWindow:
         dmv = module.get_dm_viewer()
         self._viewport = dmv.renderer.Viewport(width, height)
         self._window = dmv.gui.RenderWindow(width, height, title)
-        self._viewer = dmv.viewer.Viewer(self._viewport, self._window.mouse,
-                                         self._window.keyboard)
+        self._viewer = dmv.viewer.Viewer(
+            self._viewport, self._window.mouse, self._window.keyboard
+        )
         self._draw_surface = None
         self._renderer = dmv.renderer.NullRenderer()
 
@@ -266,9 +275,11 @@ class DMRenderWindow:
         self._viewer.deinitialize()
 
         self._draw_surface = module.get_dm_render().Renderer(
-            max_width=_MAX_RENDERBUFFER_SIZE, max_height=_MAX_RENDERBUFFER_SIZE)
+            max_width=_MAX_RENDERBUFFER_SIZE, max_height=_MAX_RENDERBUFFER_SIZE
+        )
         self._renderer = module.get_dm_viewer().renderer.OffScreenRenderer(
-            physics.model, self._draw_surface)
+            physics.model, self._draw_surface
+        )
 
         self._viewer.initialize(physics, self._renderer, touchpad=False)
 
@@ -287,7 +298,6 @@ class DMRenderWindow:
         pixels = self._renderer.pixels
 
         with self._window._context.make_current() as ctx:
-            ctx.call(self._window._update_gui_on_render_thread, glfw_window,
-                     pixels)
+            ctx.call(self._window._update_gui_on_render_thread, glfw_window, pixels)
         self._window._mouse.process_events()
         self._window._keyboard.process_events()

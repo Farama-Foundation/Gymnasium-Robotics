@@ -28,7 +28,7 @@ def import_class_from_path(class_path):
     return getattr(module, class_name)
 
 
-class ConfigCache(object):
+class ConfigCache:
     """Configuration class to store constructor arguments.
 
     This is used to store parameters to pass to Gym environments at init time.
@@ -77,7 +77,7 @@ class ConfigCache(object):
         env_id = cls_or_env_id
         assert isinstance(env_id, str)
         if env_id not in gym_registry.env_specs:
-            raise ValueError("Unregistered environment name {}.".format(env_id))
+            raise ValueError(f"Unregistered environment name {env_id}.")
         entry_point = gym_registry.env_specs[env_id]._entry_point
         if callable(entry_point):
             return entry_point
@@ -111,11 +111,13 @@ def configurable(config_id=None, pickleable=False, config_cache=global_config):
         config_cache: The ConfigCache to use to read config data from. Uses
             the global ConfigCache by default.
     """
+
     def cls_decorator(cls):
         assert inspect.isclass(cls)
 
         # Overwrite the class constructor to pass arguments from the config.
         base_init = cls.__init__
+
         def __init__(self, *args, **kwargs):
 
             config = config_cache.get_config(config_id or type(self))
@@ -123,27 +125,29 @@ def configurable(config_id=None, pickleable=False, config_cache=global_config):
             kwargs = {**config, **kwargs}
 
             # print('Initializing {} with params: {}'.format(type(self).__name__,
-                                                           # kwargs))
+            # kwargs))
 
             if pickleable:
                 self._pkl_env_args = args
                 self._pkl_env_kwargs = kwargs
 
             base_init(self, *args, **kwargs)
+
         cls.__init__ = __init__
 
         # If the class is pickleable, overwrite the state methods to save
         # the constructor arguments and config.
         if pickleable:
             # Use same pickle keys as gym.utils.ezpickle for backwards compat.
-            PKL_ARGS_KEY = '_ezpickle_args'
-            PKL_KWARGS_KEY = '_ezpickle_kwargs'
+            PKL_ARGS_KEY = "_ezpickle_args"
+            PKL_KWARGS_KEY = "_ezpickle_kwargs"
 
             def __getstate__(self):
                 return {
                     PKL_ARGS_KEY: self._pkl_env_args,
                     PKL_KWARGS_KEY: self._pkl_env_kwargs,
                 }
+
             cls.__getstate__ = __getstate__
 
             def __setstate__(self, data):
@@ -157,7 +161,9 @@ def configurable(config_id=None, pickleable=False, config_cache=global_config):
 
                 inst = type(self)(*saved_args, **kwargs)
                 self.__dict__.update(inst.__dict__)
+
             cls.__setstate__ = __setstate__
 
         return cls
+
     return cls_decorator
