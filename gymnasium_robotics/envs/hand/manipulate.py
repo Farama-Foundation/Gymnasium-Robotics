@@ -966,6 +966,10 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv, EzPickle):
 
 class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     """
+    <p align="center">
+        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handpen.gif" width="300px" height="300px" />
+    </p>
+
     ### Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
