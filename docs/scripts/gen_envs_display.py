@@ -1,7 +1,5 @@
 import os
 
-import gymnasium
-
 
 def create_grid_cell(type_id, env_id, base_path):
     return f"""
@@ -55,33 +53,18 @@ if __name__ == "__main__":
     type_dict = [
         {
             "id": "fetch",
-            "list": [
-                "FetchPickAndPlace",
-                "FetchPush",
-                "FetchReach",
-                "FetchSlide",
-            ]
+            "list": ["FetchPickAndPlace", "FetchPush", "FetchReach", "FetchSlide",],
         },
-        {
-            "id": "hand",
-            "list": [
-                "HandBlock",
-                "HandEgg",
-                "HandPen",
-                "HandReach",
-            ]
-        },
+        {"id": "hand", "list": ["HandBlock", "HandEgg", "HandPen", "HandReach",]},
         {
             "id": "hand_touch",
             "list": [
                 "HandBlockTouchSensors",
                 "HandEggTouchSensors",
                 "HandPenTouchSensors",
-            ]
-        }
-
+            ],
+        },
     ]
-
 
     for type_dict in type_dict:
         page = generate_page(type_dict)
