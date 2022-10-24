@@ -491,11 +491,7 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
 
 class MujocoHandBlockEnv(MujocoManipulateEnv):
     """
-    <p align="center">
-        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handblock.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -508,7 +504,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
     * `HandManipulateBlockRotateXYZ-v1`: Random target rotation for all axes of the block. No target position.
     * `HandManipulateBlockFull-v1`: Random target rotation for all axes of the block. Random target position.
 
-    ### Action Space
+    ## Action Space
 
     The action space is a `Box(-1.0, 1.0, (20,), float32)`. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges.
     The elements of the action array are the following:
@@ -537,7 +533,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
     | 19  | Angular position of the IP joint of the thumb finger (flexion/extension)                | -1          | 1           | -1.571 (rad) | 0 (rad)     | robot0:A_THJ0                    | hinge | angle (rad) |
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and block states, as well as information about the goal. The dictionary consists of the following 3 keys:
 
@@ -634,7 +630,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
         | 6   | Current z component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | object:joint                           | free       | -            |
 
 
-    ### Rewards
+    ## Rewards
 
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the block hasn't reached its final target pose, and `0` if the block is in its final target pose. The block is considered to have reached its final goal if the theta angle difference (theta angle of the
@@ -652,7 +648,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
 
     The rest of the id's of the other environment variations follow the same convention to select between a sparse or dense reward function.
 
-    ### Starting State
+    ## Starting State
 
     When the environment is reset the joints of the hand are initialized to their resting position with a 0 displacement. The blocks position and orientation are randomly selected. The initial position is set to `(x,y,z)=(1, 0.87, 0.2)` and an offset is added to each coordinate
     sampled from a normal distribution with 0 mean and 0.005 standard deviation.
@@ -662,12 +658,12 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
     offset is sampled from a uniform distribution with range `[-pi,pi]` and added to one of the Euler axis depending on the environment variation.
 
 
-    ### Episode End
+    ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 50 timesteps.
     The episode is never `terminated` since the task is continuing with infinite horizon.
 
-    ### Arguments
+    ## Arguments
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
@@ -679,7 +675,7 @@ class MujocoHandBlockEnv(MujocoManipulateEnv):
 
     The same applies for the other environment variations.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
@@ -727,11 +723,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
 
 class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Egg Touch" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handegg.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -743,7 +735,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     * `HandManipulateEggRotate-v1`: Random target rotation for all axes of the egg. No target position.
     * `HandManipulateEggFull-v1`:  Random target rotation for all axes of the egg. Random target position.
 
-    ### Action Space
+    ## Action Space
 
     The action space is a `Box(-1.0, 1.0, (20,), float32)`. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control
     actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges. The elements of the action array are the following:
@@ -772,7 +764,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     | 19  | Angular position of the IP joint of the thumb finger (flexion/extension)                | -1          | 1           | -1.571 (rad) | 0 (rad)     | robot0:A_THJ0                    | hinge | angle (rad) |
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and egg states, as well as information about the goal.
     The dictionary consists of the following 3 keys:
@@ -872,7 +864,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
         | 6   | Current z component of the quaternion orientation of the egg                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
 
 
-    ### Rewards
+    ## Rewards
 
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the egg hasn't reached its final target pose, and `0` if the egg is in its final target pose. The egg is considered to have reached its final goal if the theta angle difference
@@ -891,7 +883,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
 
     The rest of the id's of the other environment variations follow the same convention to select between a sparse or dense reward function.
 
-    ### Starting State
+    ## Starting State
 
     When the environment is reset the joints of the hand are initialized to their resting position with a 0 displacement. The egg's position and orientation are randomly selected. The initial position is set to `(x,y,z)=(1, 0.87, 0.2)` and an offset is added
     to each coordinate sampled from a normal distribution with 0 mean and 0.005 standard deviation.
@@ -901,12 +893,12 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
     The orientation offset is sampled from a uniform distribution with range `[-pi,pi]` and added to one of the Euler axis depending on the environment variation.
 
 
-    ### Episode End
+    ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 50 timesteps.
     The episode is never `terminated` since the task is continuing with infinite horizon.
 
-    ### Arguments
+    ## Arguments
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
@@ -918,7 +910,7 @@ class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
 
     The same applies for the other environment variations.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
@@ -966,11 +958,7 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv, EzPickle):
 
 class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/handpen.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -982,7 +970,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     * `HandManipulatePenRotate-v1`: Random target rotation *x* and *y* axes of the pen and no target rotation around the *z* axis. No target position.
     * `HandManipulatePenFull-v1`:  Random target rotation x and y axes of the pen and no target rotation around the z axis. Random target position.
 
-    ### Action Space
+    ## Action Space
 
     The action space is a `Box(-1.0, 1.0, (20,), float32)`. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control
     actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges. The elements of the action array are the following:
@@ -1011,7 +999,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     | 19  | Angular position of the IP joint of the thumb finger (flexion/extension)                | -1          | 1           | -1.571 (rad) | 0 (rad)     | robot0:A_THJ0                    | hinge | angle (rad) |
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and pen states, as well as information about the goal.
     The dictionary consists of the following 3 keys:
@@ -1111,7 +1099,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
         | 6   | Current z component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
 
 
-    ### Rewards
+    ## Rewards
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `-1` if the pen hasn't reached its final target pose, and `0` if the pen is in its final target pose. The pen is considered to have reached its final goal if the theta angle difference
     (theta angle of the [3D axis angle representation](https://en.wikipedia.org/wiki/Axis%E2%80%93angle_representation) is less than 0.1 and if the Euclidean distance to the target position is also less than 0.01 m.
@@ -1129,7 +1117,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
 
     The rest of the id's of the other environment variations follow the same convention to select between a sparse or dense reward function.
 
-    ### Starting State
+    ## Starting State
 
     When the environment is reset the joints of the hand are initialized to their resting position with a 0 displacement. The pen's position and orientation are randomly selected. The initial position is set to `(x,y,z)=(1, 0.87, 0.2)` and an offset is added
     to each coordinate sampled from a normal distribution with 0 mean and 0.005 standard deviation.
@@ -1139,12 +1127,12 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     The orientation offset is sampled from a uniform distribution with range `[-pi,pi]` and added to one of the Euler axis depending on the environment variation.
 
 
-    ### Episode End
+    ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 50 timesteps.
     The episode is never `terminated` since the task is continuing with infinite horizon.
 
-    ### Arguments
+    ## Arguments
 
     To increase/decrease the maximum number of timesteps before the episode is `truncated` the `max_episode_steps` argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:
 
@@ -1156,7 +1144,7 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
 
     The same applies for the other environment variations.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.

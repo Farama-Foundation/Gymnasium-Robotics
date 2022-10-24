@@ -284,11 +284,7 @@ class MujocoPyManipulateTouchSensorsEnv(MujocoPyManipulateEnv):
 
 class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Block" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/blocktouch.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
 
@@ -312,7 +308,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     When adding the sensors to the `HandManipulateBlock` environment there are two possible environment initializations depending on the type of data returned by the touch sensors. This data can be continuous values of external forces or a boolean value which is `True` if the sensor detects any contact force and `False` if not.
     This two types of environments can be initialized from the environment id variations of `HandManipulateBlock` by adding the `_ContinuousTouchSensors` string to the id if the touch sensors return continuous force values or `_BooleanTouchSensors` if the values are boolean.
 
-    ##### Continuous Touch Sensor Environments:
+    #### Continuous Touch Sensor Environments:
 
     * `HandManipulateBlock_ContinuousTouchSensors-v1`
     * `HandManipulateBlockRotateZ_ContinuousTouchSensors-v1`
@@ -320,7 +316,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     * `HandManipulateBlockRotateXYZ_ContinuousTouchSensors-v1`
     * `HandManipulateBlockFull_ContinuousTouchSensors-v1`
 
-    ##### Boolean Touch Sensor Environments:
+    #### Boolean Touch Sensor Environments:
 
     * `HandManipulateBlock_BooleanTouchSensors-v1`
     * `HandManipulateBlockRotateZ_BooleanTouchSensors-v1`
@@ -331,12 +327,12 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     The `Action Space`, `Rewards`, `Starting State`, `Episode End`, and `Arguments` sections are the same as for the `HandManipulateBlock` environment and its variations.
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and block states, as well as information about the goal and touch sensors. The dictionary consists of the same 3 keys as the `HandManipulateBlock` environments (`observation`,`desired_goal`, and `achieved_goal`).
     However, the `ndarray` of the observation is now of shape `(153, )` instead of `(61, )` since the touch sensor information is added at the end of the array with shape `(92,)`.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
@@ -368,11 +364,7 @@ class MujocoHandBlockTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 
 class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Egg" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/eggtouch.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
 
@@ -396,12 +388,12 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     When adding the sensors to the `HandManipulateEgg` environment there are two possible environment initializations depending on the type of data returned by the touch sensors. This data can be continuous values of external forces or a boolean value which is `True` if the sensor detects any contact force and `False` if not.
     This two types of environments can be initialized from the environment id variations of `HandManipulateEgg` by adding the `_ContinuousTouchSensors` string to the id if the touch sensors return continuous force values or `_BooleanTouchSensors` if the values are boolean.
 
-    ##### Continuous Touch Sensor Environments:
+    #### Continuous Touch Sensor Environments:
     * `HandManipulateEgg_ContinuousTouchSensors-v1`
     * `HandManipulateEggRotate_ContinuousTouchSensors-v1`
     * `HandManipulateEggFull_ContinuousTouchSensors-v1`
 
-    ##### Boolean Touch Sensor Environments:
+    #### Boolean Touch Sensor Environments:
     * `HandManipulateEgg_BooleanTouchSensors-v1`
     * `HandManipulateEggRotate_BooleanTouchSensors-v1`
     * `HandManipulateEggFull_BooleanTouchSensors-v1`
@@ -409,12 +401,12 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     The `Action Space`, `Rewards`, `Starting State`, `Episode End`, and `Arguments` are the same as for the `HandManipulateEgg` environment and its variations.
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and egg states, as well as information about the goal and touch sensors. The dictionary consists of the same 3 keys as the `HandManipulateEgg` environments (`observation`,`desired_goal`, and `achieved_goal`).
     However, the `ndarray` of the observation is now of shape `(153, )` instead of `(61, )` since the touch sensor information is added at the end of the array with shape `(92,)`.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
@@ -446,11 +438,7 @@ class MujocoHandEggTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
 
 class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     """
-    <p align="center">
-        <img alt="Pen" src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/img/pentouch.gif" width="300px" height="300px" />
-    </p>
-
-    ### Description
+    ## Description
 
     This environment was introduced in ["Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks"](https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full).
 
@@ -474,12 +462,12 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     When adding the sensors to the `HandManipulatePen` environment there are two possible environment initializations depending on the type of data returned by the touch sensors. This data can be continuous values of external forces or a boolean value which is `True` if the sensor detects any contact force and `False` if not.
     This two types of environments can be initialized from the environment id variations of `HandManipulatePen` by adding the `_ContinuousTouchSensors` string to the id if the touch sensors return continuous force values or `_BooleanTouchSensors` if the values are boolean.
 
-    ##### Continuous Touch Sensor Environments:
+    #### Continuous Touch Sensor Environments:
     * `HandManipulatePen_ContinuousTouchSensors-v1`
     * `HandManipulatePenRotate_ContinuousTouchSensors-v1`
     * `HandManipulatePenFull_ContinuousTouchSensors-v1`
 
-    ##### Boolean Touch Sensor Environments:
+    #### Boolean Touch Sensor Environments:
     * `HandManipulatePen_BooleanTouchSensors-v1`
     * `HandManipulatePenRotate_BooleanTouchSensors-v1`
     * `HandManipulatePenFull_BooleanTouchSensors-v1`
@@ -487,12 +475,12 @@ class MujocoHandPenTouchSensorsEnv(MujocoManipulateTouchSensorsEnv, EzPickle):
     The `Action Space`, `Rewards`, `Starting State`, `Episode End`, and `Arguments` are the same as for the `HandManipulatePen` environment and its variations.
 
 
-    ### Observation Space
+    ## Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and Pen states, as well as information about the goal and touch sensors. The dictionary consists of the same 3 keys as the `HandManipulatePen` environments (`observation`,`desired_goal`, and `achieved_goal`).
     However, the `ndarray` of the observation is now of shape `(153, )` instead of `(61, )` since the touch sensor information is added at the end of the array with shape `(92,)`.
 
-    ### Version History
+    ## Version History
 
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.

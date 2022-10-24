@@ -19,8 +19,8 @@ env = gym.make('HandManipulateEgg_BooleanTouchSensor-v1')
 
 ```{toctree}
 :hidden:
-hand/HandBlockTouchSensors
-hand/HandEggTouchSensors
-hand/HandPenTouchSensors
+HandBlockTouchSensors
+HandEggTouchSensors
+HandPenTouchSensors
 
 ```
