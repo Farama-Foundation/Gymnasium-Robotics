@@ -487,9 +487,11 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
         }
 
 
-class MujocoHandBlockEnv(MujocoManipulateEnv):
+
+class MujocoHandBlockEnv(MujocoManipulateEnv, EzPickle):
     # noqa: D415
-    """## Description
+    """
+    ## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
