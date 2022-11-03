@@ -1,9 +1,11 @@
+import pickle
 import warnings
 
+import gymnasium as gym
 import pytest
 from gymnasium.envs.registration import EnvSpec
 from gymnasium.error import Error
-from gymnasium.utils.env_checker import check_env
+from gymnasium.utils.env_checker import check_env, data_equivalence
 
 from tests.utils import all_testing_env_specs, assert_equals
 
@@ -117,3 +119,20 @@ def test_render_modes(spec):
             new_env.render()
 
             new_env.close
+
+
+@pytest.mark.parametrize(
+    "env_spec",
+    non_mujoco_py_env_specs,
+    ids=[spec.id for spec in non_mujoco_py_env_specs],
+)
+def test_pickle_env(env_spec):
+    env: gym.Env = env_spec.make()
+    pickled_env: gym.Env = pickle.loads(pickle.dumps(env))
+
+    data_equivalence(env.reset(), pickled_env.reset())
+
+    action = env.action_space.sample()
+    data_equivalence(env.step(action), pickled_env.step(action))
+    env.close()
+    pickled_env.close()
