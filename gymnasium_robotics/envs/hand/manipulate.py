@@ -487,6 +487,10 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
         }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
 class MujocoHandBlockEnv(MujocoManipulateEnv, EzPickle):
     # noqa: D415
     """

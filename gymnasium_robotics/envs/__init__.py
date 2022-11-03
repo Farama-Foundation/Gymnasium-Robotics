@@ -1,8 +1,11 @@
 # noqa: D104
+<<<<<<< HEAD
 from gymnasium_robotics.envs.adroit_hand.door import AdroitHandDoorEnv
 from gymnasium_robotics.envs.adroit_hand.hammer import AdroitHandHammerEnv
 from gymnasium_robotics.envs.adroit_hand.pen import AdroitHandPenEnv
 from gymnasium_robotics.envs.adroit_hand.relocate import AdroitHandRelocateEnv
+=======
+>>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
 from gymnasium_robotics.envs.ant_maze.ant_maze_env import AntMazeEnv
 from gymnasium_robotics.envs.fetch.pick_and_place import (
     MujocoFetchPickAndPlaceEnv,
