@@ -1,0 +1,90 @@
+<!-- ======================================================
+    Model       :: ADROIT Pen
+ 
+    Mujoco      :: Advanced physics simulation engine
+        Source      : www.roboti.us
+        Version     : 1.50
+        Released    : 17Jan'17
+        
+    Author      :: Vikash Kumar
+        Contacts    : vikash@cs.washington.edu
+        Last edits  : 17Jan'17
+
+    Designed for :: Demo Augmented Policy Gradient (DAPG)
+
+    Copyright   :: Vikash Kumar
+        Licensed under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+====================================================== -->
+
+<mujoco model='ADROIT-pen(v1.5)'>
+    
+    <!-- ======= WORLD ======= -->
+    <worldbody>
+        <light directional='false' diffuse='.7 .7 .7' specular='0.03 0.03 0.03' pos='-1 -1.0 4.0' dir='1 1.0 -4'/>
+        <geom name='ground' size="1.5 1.5 0.25" pos="0 0 -1" type="plane" contype="1" conaffinity="0" material="groundplane" />
+        <camera name="fixed" pos="0 -0.7 0.7" quat="0.92388 0.382683 0 0" />
+        <!-- Cameras for the VIL paper -->
+        <camera name="vil_camera" pos="0 -1.2 1.2" quat="0.92388 0.382683 0 0" />
+        <camera name="view_1" pos="-0.8 -0.8 0.8" euler="0.785 -0.785 -0.785" />
+        <camera name="view_2" pos="0 0.5 0.2" euler="-1.57 0 3.14" />
+        <camera name="view_3" pos="0 0.2 -0.2" euler="-2.35 0 3.14" />
+        <camera name="view_4" pos="0.8 -0.8 0.8" euler="0.785 0.785 0.785" />
+        <camera name="view_5" pos="0 -0.25 -0.4" euler="-3.2 0 3.14" />
+ 
+        <!-- ======= TABLE ======= -->
+        <body name="table">
+            <!-- <geom size="0.5 0.5 0.025" type="plane" material="table2d" /> --> <!-- Plane has better contacts -->
+            <geom size="0.45 0.45 0.025" pos="0 0 -0.025" type="box" material="tablecube" />
+            <geom size="0.04 0.5" pos="0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+        </body>
+        
+        <!-- ======= MOCAP ======= -->
+        <body name="vive_tracker" pos="0 -0.35 0.25" mocap="true">
+            <inertial pos="0 0 0" mass="0.064" diaginertia="1.70667e-05 1.70667e-05 1.70667e-05" />
+            <geom size="0.03 0.01" type="cylinder" contype="0" conaffinity="0" group="3" rgba="0.3 0.3 0.3 0.3" />
+        </body>
+
+        <!-- ======= HAND ======= -->
+        <body name="forearm" pos="0 -0.7 0.2" euler="-1.57 0 0">
+            <inertial pos="0.001 -0.002 0.29" quat="0.982037 -0.0160006 0 -0.188007" mass="4" diaginertia="0.01 0.01 0.0075" />
+            <geom name="V_forearm" class="D_Vizual" pos="0 -.01 .181" euler="0 0 -1.57"  mesh="forearm_simple" />
+            <geom name="C_forearm1" class="DC_Hand" size="0.05 0.033" pos="0 0 0.29" type="capsule" rgba="0.4 0.5 0.6 0.1" />
+            <!-- ======= Adroit ======= -->
+            <include file="adroit_model.xml"/>
+        </body>
+
+        <!-- ======= PEN ======= -->
+        <site name="eps_ball" type="sphere" pos="0.0 -0.2 0.25" size="0.075" rgba="0 0 0 0" />
+        <body name="Object" pos="-0.00 -0.2 0.25" user="1001 0 2003 27 0 0 0.06 0 0" euler="0 1.57 0">
+            <joint name="OBJTx" pos="0 0 0" axis="1 0 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTy" pos="0 0 0" axis="0 1 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTz" pos="0 0 0" axis="0 0 1" type="slide" limited="false" damping="0" />
+            <joint name="OBJRx" pos="0 0 0" axis="1 0 0" limited="false" damping="0" />
+            <joint name="OBJRy" pos="0 0 0" axis="0 1 0" limited="false" damping="0" />
+            <joint name="OBJRz" pos="0 0 0" axis="0 0 1" limited="false" damping="0" />
+            <geom name="pen" type="cylinder" size="0.015 0.065" condim="4" rgba=".6 .6 .6 .6" density="1500" />
+            
+            <geom name="top" type="cylinder" size="0.017 0.020" condim="4" pos="0 0 -.0455" rgba="0 .5 1 1" contype="0" conaffinity="0"/>
+            <geom name="bot" type="cylinder" size="0.013 0.002" pos="0 0 0.067" rgba="0 .5 1 1" contype="0" conaffinity="0"/>
+            <geom name="cli" type="box" size="0.004 0.006 0.03" pos="-.015 0 -.0255" rgba="0 .5 1 1" contype="0" conaffinity="0"/>
+
+            <site name="object_top" type="sphere" size="0.005" rgba="0.8 0.2 0.2 0" pos="0 0 0.065" />
+            <site name="object_bottom" type="sphere" size="0.005" rgba="0.2 0.8 0.2 0" pos="0 0 -0.065" />
+        </body>
+
+        <body name="target" pos="0.2 -0.2 0.25" >
+            <site name="target_top" type="sphere" size="0.005" rgba="0.8 0.2 0.2 0" pos="0 0 0.065" />
+            <site name="target_bottom" type="sphere" size="0.005" rgba="0.2 0.8 0.2 0" pos="0 0 -0.065" />
+
+            <geom name="target" type="cylinder" size="0.015 0.065" condim="4" rgba=".6 .6 .6 .3" />
+            <geom name="t_top" type="cylinder" size="0.017 0.020" condim="4" pos="0 0 -.0455" rgba="0 1 .5 1" contype="0" conaffinity="0"/>
+            <geom name="t_bot" type="cylinder" size="0.013 0.002" pos="0 0 0.067" rgba="0 1 .5 1" contype="0" conaffinity="0"/>
+            <geom name="t_cli" type="box" size="0.004 0.006 0.03" pos="-.015 0 -.0255" rgba="0 1 .5 1" contype="0" conaffinity="0"/>
+        </body>
+    </worldbody>
+    
+    <include file='adroit_assets.xml'/>
+</mujoco>
