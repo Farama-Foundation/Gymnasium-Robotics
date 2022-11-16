@@ -1,95 +1,126 @@
-"""Environments using kitchen and Franka robot."""
+from gymnasium_robotics.core import GoalEnv
+from gymnasium_robotics.envs.kitchen.controller import JointVelocityController
+from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames, robot_get_obs
+from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
+from gymnasium import utils
+from gymnasium.spaces import Box
+from os import path
 import numpy as np
-from d4rl.kitchen.adept_envs.utils.configurable import configurable
-
-from gymnasium_robotics.envs.kitchen.kitchen_multitask_v0 import KitchenTaskRelaxV1
-
-OBS_ELEMENT_INDICES = {
-    "bottom burner": np.array([11, 12]),
-    "top burner": np.array([15, 16]),
-    "light switch": np.array([17, 18]),
-    "slide cabinet": np.array([19]),
-    "hinge cabinet": np.array([20, 21]),
-    "microwave": np.array([22]),
-    "kettle": np.array([23, 24, 25, 26, 27, 28, 29]),
-}
-OBS_ELEMENT_GOALS = {
-    "bottom burner": np.array([-0.88, -0.01]),
-    "top burner": np.array([-0.92, -0.01]),
-    "light switch": np.array([-0.69, -0.05]),
-    "slide cabinet": np.array([0.37]),
-    "hinge cabinet": np.array([0.0, 1.45]),
-    "microwave": np.array([-0.75]),
-    "kettle": np.array([-0.23, 0.75, 1.62, 0.99, 0.0, 0.0, -0.06]),
-}
-BONUS_THRESH = 0.3
 
 
-@configurable(pickleable=True)
-class KitchenBase(KitchenTaskRelaxV1):
-    # A string of element names. The robot's task is then to modify each of
-    # these elements appropriately.
-    TASK_ELEMENTS = []
-    REMOVE_TASKS_WHEN_COMPLETE = True
-    TERMINATE_ON_TASK_COMPLETE = True
-
-    def __init__(
-        self,
-        task_elemets=[
-            "microwave",
-            "kettle",
-            "bottom burner",
-            "light switch",
-            "slide cabinet",
+class FrankaRobot(MujocoEnv):
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
         ],
-        **kwargs
-    ):
-        self.tasks_to_complete = set(task_elemets)
-        super().__init__(**kwargs)
+        "render_fps": 500,
+    }
+    def __init__(self, 
+                    model_path="../assets/kitchen_franka/franka_assets/franka_panda.xml", 
+                    frame_skip=1, 
+                    observation_space=Box(low=-np.inf, high=np.inf, shape=(9, ), dtype=np.float32),
+                    **kwargs):
+        
+        xml_file_path = path.join(
+            path.dirname(path.realpath(__file__)),
+            model_path,
+        )
 
-    def _get_task_goal(self):
-        new_goal = np.zeros_like(self.goal)
-        for element in self.TASK_ELEMENTS:
-            element_idx = OBS_ELEMENT_INDICES[element]
-            element_goal = OBS_ELEMENT_GOALS[element]
-            new_goal[element_idx] = element_goal
+        super().__init__(xml_file_path, frame_skip, observation_space, **kwargs)
 
-        return new_goal
+        self._model_names = MujocoModelNames(self.model)
+
+        self.simulation_timestep = self.model.opt.timestep
+        self.control_timestep = 0.05 # Control frequency of 20 Hz
+
+        # Joint control limits of the model
+        torque_actuator_idx = []
+        for name in self._model_names.actuator_names:
+            if 'gripper' not in name:
+                torque_actuator_idx.append(self._model_names.actuator_name2id[name])
+
+        low = self.model.actuator_ctrlrange[torque_actuator_idx, 0]
+        high = self.model.actuator_ctrlrange[torque_actuator_idx, 1]
+        self.velocity_controller = JointVelocityController(actuator_range=[low, high], velocity_limits=[-1,1])
+
+    def _get_obs(self):
+        q_pos, q_vel = robot_get_obs(self.model, self.data, self._model_names.joint_names)
+
+        # Add robot noise
+
+        return q_pos, q_vel
+
+    def step(self, action):
+
+        action = np.clip(action, -1.0, 1.0)
+
+        action = self.act_mid + action * self.act_amp  # mean center and scale
+
+        policy_step = True
+        for i in range(int(self.control_timestep/self.simulation_timestep)):
+            if policy_step:
+                self.velocity_controller.set_goal(action)
+            torques = self.velocity_controller.run_controller()
+            self.do_simulation(torques, self.frame_skip)
+            policy_step = False
+
+        observation = self._get_obs()
+
+        if self.render_mode == "human":
+            self.render()
+
+        return observation, 0.0, False, False, {}}
+
+    def _get_obs(self):
+        position = self.data.qpos.flat.copy()
+        velocity = self.data.qvel.flat.copy()
+
+        if self._exclude_current_positions_from_observation:
+            position = position[2:]
+
+        if self._use_contact_forces:
+            contact_force = self.contact_forces.flat.copy()
+            return np.concatenate((position, velocity, contact_force))
+        else:
+            return np.concatenate((position, velocity))
 
     def reset_model(self):
-        self.tasks_to_complete = set(self.TASK_ELEMENTS)
-        return super().reset_model()
+        noise_low = -self._reset_noise_scale
+        noise_high = self._reset_noise_scale
 
-    def _get_reward_n_score(self, obs_dict):
-        reward_dict, score = super()._get_reward_n_score(obs_dict)
-        reward = 0.0
-        next_q_obs = obs_dict["qp"]
-        next_obj_obs = obs_dict["obj_qp"]
-        next_goal = obs_dict["goal"]
-        idx_offset = len(next_q_obs)
-        completions = []
-        for element in self.tasks_to_complete:
-            element_idx = OBS_ELEMENT_INDICES[element]
-            distance = np.linalg.norm(
-                next_obj_obs[..., element_idx - idx_offset] - next_goal[element_idx]
-            )
-            complete = distance < BONUS_THRESH
-            if complete:
-                completions.append(element)
-        if self.REMOVE_TASKS_WHEN_COMPLETE:
-            [self.tasks_to_complete.remove(element) for element in completions]
-        bonus = float(len(completions))
-        reward_dict["bonus"] = bonus
-        reward_dict["r_total"] = bonus
-        score = bonus
-        return reward_dict, score
+        qpos = self.init_qpos + self.np_random.uniform(
+            low=noise_low, high=noise_high, size=self.model.nq
+        )
+        qvel = (
+            self.init_qvel
+            + self._reset_noise_scale * self.np_random.standard_normal(self.model.nv)
+        )
+        self.set_state(qpos, qvel)
 
-    def step(self, a, b=None):
-        obs, reward, done, env_info = super().step(a, b=b)
-        if self.TERMINATE_ON_TASK_COMPLETE:
-            done = not self.tasks_to_complete
-        return obs, reward, done, env_info
+        observation = self._get_obs()
 
-    def render(self, mode="human"):
-        # Disable rendering to speed up environment evaluation.
-        return []
+        return observation
+
+    def viewer_setup(self):
+        pass
+    
+
+
+# class KitchenEnv(GoalEnv, utils.EzPickle):
+#     def __init__(self):
+
+
+#         self.robot_env = FrankaRobot()
+#         pass
+
+#     def step(self, action):
+#         pass
+
+#     def reset(self):
+#         pass
+
+#     def render(self):
+#         pass
+

@@ -20,6 +20,7 @@
     <include file="franka_assets/franka_assets.xml"/>
     <include file="franka_assets/gripper_assets.xml"/>
     <include file="franka_assets/actuator.xml"/>
+    <include file='franka_assets/gripper_actuator.xml'/>
     <include file="kitchen_assets/oven_asset.xml"/>
     <include file="kitchen_assets/counters_asset.xml"/>
     <include file="kitchen_assets/backwall_asset.xml"/>

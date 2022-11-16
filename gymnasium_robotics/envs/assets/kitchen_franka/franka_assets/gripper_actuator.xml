@@ -8,7 +8,7 @@
 ====================================================== -->
 
     <actuator>
-        <position name="r_gripper_finger_joint" joint="panda0_finger_joint1" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> velocity=".2"
-        <position name="l_gripper_finger_joint" joint="panda0_finger_joint2" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> velocity=".2"
+        <position name="r_gripper_finger_joint" joint="robot:panda0_finger_joint1" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> velocity=".2"
+        <position name="l_gripper_finger_joint" joint="robot:panda0_finger_joint2" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> velocity=".2"
     </actuator>
 </mujocoinclude>

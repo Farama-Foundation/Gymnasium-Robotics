@@ -1,4 +1,19 @@
 <mujocoinclude>
+
+    <default>
+    <default class="translation">
+      <position kp="300"/>
+    </default>
+    <default class="rotation">
+      <!--
+      Note that the rotational control range is purposefully limited to (-pi/2, pi/2) to avoid the
+      documented instabillity near pi, which is due to taking quaternion differences.
+      Increase this range to pi or bigger in order to see the instabillity.
+      See here for more details https://mujoco.readthedocs.io/en/latest/XMLreference.html#actuator
+      -->
+      <position ctrllimited="true" kp="40" ctrlrange="-1.571 1.571"/>
+    </default>
+  </default>
 <!-- =================================================
     Copyright 2018 Vikash Kumar
     Model   :: Franka (MuJoCoV2.0)
@@ -6,14 +21,30 @@
     source  :: https://github.com/vikashplus/franka_sim
     License :: Under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 ====================================================== -->
-
     <actuator>
-        <position name="panda0_joint1" joint="panda0_joint1" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
-        <position name="panda0_joint2" joint="panda0_joint2" class="panda" kp="870" forcerange="-87 87" ctrlrange="-1.8326 1.8326"/> <!-- velocity="2.1750" -->
-        <position name="panda0_joint3" joint="panda0_joint3" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
-        <position name="panda0_joint4" joint="panda0_joint4" class="panda" kp="870" forcerange="-87 87" ctrlrange="-3.1416 0.0"/> <!-- velocity="2.1750" -->
-        <position name="panda0_joint5" joint="panda0_joint5" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.6100" -->
-        <position name="panda0_joint6" joint="panda0_joint6" class="panda" kp="120" forcerange="-12 12" ctrlrange="-1.66 2.1817"/> <!-- velocity="2.6100" -->
-        <position name="panda0_joint7" joint="panda0_joint7" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.9671" -->
-    </actuator>
+        <position name="panda0_joint1" joint="robot:panda0_joint1" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint2" joint="robot:panda0_joint2" class="panda" kp="870" forcerange="-87 87" ctrlrange="-1.8326 1.8326"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint3" joint="robot:panda0_joint3" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint4" joint="robot:panda0_joint4" class="panda" kp="870" forcerange="-87 87" ctrlrange="-3.1416 0.0"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint5" joint="robot:panda0_joint5" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint6" joint="robot:panda0_joint6" class="panda" kp="120" forcerange="-12 12" ctrlrange="-1.66 2.1817"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint7" joint="robot:panda0_joint7" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> velocity="2.9671"
+        <position name="x"  site="end_effector" refsite="reference" gear="1 0 0 0 0 0" class="translation"/>
+        <position name="y"  site="end_effector" refsite="reference" gear="0 1 0 0 0 0" class="translation"/>
+        <position name="z"  site="end_effector" refsite="reference" gear="0 0 1 0 0 0" class="translation"/>
+        <position name="rx" site="end_effector" refsite="reference" gear="0 0 0 1 0 0" class="rotation"/>
+        <position name="ry" site="end_effector" refsite="reference" gear="0 0 0 0 1 0" class="rotation"/>
+        <position name="rz" site="end_effector" refsite="reference" gear="0 0 0 0 0 1" class="rotation"/>
+  </actuator>
 </mujocoinclude>
+
+
+<!-- <actuator>
+        <position name="panda0_joint1" joint="robot:panda0_joint1" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint2" joint="robot:panda0_joint2" class="panda" kp="870" forcerange="-87 87" ctrlrange="-1.8326 1.8326"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint3" joint="robot:panda0_joint3" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint4" joint="robot:panda0_joint4" class="panda" kp="870" forcerange="-87 87" ctrlrange="-3.1416 0.0"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint5" joint="robot:panda0_joint5" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint6" joint="robot:panda0_joint6" class="panda" kp="120" forcerange="-12 12" ctrlrange="-1.66 2.1817"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint7" joint="robot:panda0_joint7" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> velocity="2.9671"
+    </actuator> -->
