@@ -46,6 +46,8 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, utils.EzPickle):
         reward_run2 = (xposafter2 - xposbefore2) / self.dt
         reward = (reward_ctrl1 + reward_ctrl2) / 2.0 + (reward_run1 + reward_run2) / 2.0
         terminal = False
+        if self.render_mode == "human":
+            self.render()
         return (
             ob,
             reward,
