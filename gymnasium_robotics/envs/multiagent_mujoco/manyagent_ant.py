@@ -124,6 +124,8 @@ class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         notdone = np.isfinite(state).all() and state[2] >= 0.2 and state[2] <= 1.0
         done = not notdone
         ob = self._get_obs()
+        if self.render_mode == "human":
+            self.render()
         return (
             ob,
             reward,

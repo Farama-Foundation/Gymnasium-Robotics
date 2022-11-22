@@ -74,6 +74,7 @@ setup(
             "envs/assets/stls/fetch/*.stl",
             "envs/assets/stls/hand/*.stl",
             "envs/assets/textures/*.png",
+            "envs/multiagent_mujoco/assets/*.xml*",
         ]
     },
     entry_points={
