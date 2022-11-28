@@ -1,4 +1,5 @@
 mujoco==2.2.0
 mujoco_py<2.2,>=2.1
 pytest==7.0.1
-PettingZoo==1.22.0
+PettingZoo==1.22.2
+Jinja2>=3.0.3
