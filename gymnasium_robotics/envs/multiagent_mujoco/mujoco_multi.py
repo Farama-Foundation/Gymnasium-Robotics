@@ -41,7 +41,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
     # State Spaces
 
-    Depends on Enviroment
+    Depends on Environment
 
     # valid Configurations
 

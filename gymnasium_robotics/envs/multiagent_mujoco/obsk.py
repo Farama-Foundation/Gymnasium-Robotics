@@ -70,7 +70,7 @@ def get_joints_at_kdist(
 
     def _adjacent(lst, kagents=False):
         # return all sets adjacent to any element in lst
-        ret = set([])
+        ret = set()
         for element in lst:
             ret = ret.union(
                 set(
@@ -85,8 +85,8 @@ def get_joints_at_kdist(
             )
         return ret
 
-    seen = set([])
-    new = set([])
+    seen = set()
+    new = set()
     k_dict = {}
     for _k in range(k + 1):
         if not _k:
