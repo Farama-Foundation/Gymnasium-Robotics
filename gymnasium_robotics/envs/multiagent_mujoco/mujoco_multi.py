@@ -278,6 +278,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         ).any(), "FATAL: At least one env action is undefined!"
         return env_actions
 
+    def map_states(self, global_observations):
+        pass
+
     def observation_space(self, agent: str):
         return self.observation_spaces[str(agent)]
 
@@ -304,7 +307,6 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
                 self.k_categories,
                 self.mujoco_globals,
                 self.global_categories,
-                vec_len=getattr(self, "obs_size", None),
             )
 
     def reset(self, seed=None, return_info=False, options=None):
