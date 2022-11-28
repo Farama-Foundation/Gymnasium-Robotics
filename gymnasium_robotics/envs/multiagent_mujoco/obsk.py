@@ -99,13 +99,12 @@ def get_joints_at_kdist(
     return k_dict
 
 
-def build_obs(env, k_dict, k_categories, global_dict, global_categories, vec_len=None):
+def build_obs(env, k_dict, k_categories, global_dict, global_categories):
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
     :param k_dict: k_dict
     :param qpos: qpos numpy array
     :param qvel: qvel numpy array
-    :param vec_len: if None no padding, else zero-pad to vec_len
     :return:
     observation vector
     """
@@ -173,10 +172,6 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories, vec_len
                     obs_lst.extend(getattr(env.unwrapped.data, c)[b].tolist())
                     body_set_dict[c].add(b)
 
-    if vec_len is not None:
-        pad = np.array((vec_len - len(obs_lst)) * [0])
-        if len(pad):
-            return np.concatenate([np.array(obs_lst), pad])
     return np.array(obs_lst)
 
 
