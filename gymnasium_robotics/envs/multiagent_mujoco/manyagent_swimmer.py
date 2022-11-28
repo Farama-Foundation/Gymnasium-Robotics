@@ -56,7 +56,7 @@ class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             "assets",
             "manyagent_swimmer.xml.template",
         )
-        with open(template_path, "r") as f:
+        with open(template_path) as f:
             t = Template(f.read())
         body_str_template = """
         <body name="mid{:d}" pos="-1 0 0">
