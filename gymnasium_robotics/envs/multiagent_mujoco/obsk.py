@@ -118,59 +118,62 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
     obs_lst = []
     # Add parts attributes
     for k in sorted(list(k_dict.keys())):
-        cats = k_categories[k]
         for _t in k_dict[k]:
-            for c in cats:
-                if c in _t.extra_obs:
-                    items = _t.extra_obs[c](env).tolist()
+            for category in k_categories[k]:
+                if category in _t.extra_obs:
+                    items = _t.extra_obs[category](env).tolist()
                     obs_lst.extend(items if isinstance(items, list) else [items])
                 else:
-                    if c in [
+                    if category in [
                         "qvel",
                         "qpos",
                     ]:  # this is a "joint position/velocity" item
-                        items = getattr(env.unwrapped.data, c)[
-                            getattr(_t, "{}_ids".format(c))
+                        items = getattr(env.unwrapped.data, category)[
+                            getattr(_t, "{}_ids".format(category))
                         ]
                         obs_lst.extend(items if isinstance(items, list) else [items])
-                    elif c in ["qfrc_actuator"]:  # this is a "vel position" item
-                        items = getattr(env.unwrapped.data, c)[
+                    elif category in ["qfrc_actuator"]:  # this is a "vel position" item
+                        items = getattr(env.unwrapped.data, category)[
                             getattr(_t, "{}_ids".format("qvel"))
                         ]
                         obs_lst.extend(items if isinstance(items, list) else [items])
-                    elif c in [
+                    elif category in [
                         "cvel",
                         "cinert",
                         "cfrc_ext",
                     ]:  # this is a "body position" item
                         if _t.bodies is not None:
                             for b in _t.bodies:
-                                if c not in body_set_dict:
-                                    body_set_dict[c] = set()
-                                if b not in body_set_dict[c]:
-                                    items = getattr(env.unwrapped.data, c)[b].tolist()
+                                if category not in body_set_dict:
+                                    body_set_dict[category] = set()
+                                if b not in body_set_dict[category]:
+                                    items = getattr(env.unwrapped.data, category)[
+                                        b
+                                    ].tolist()
                                     items = getattr(_t, "body_fn", lambda _id, x: x)(
                                         b, items
                                     )
                                     obs_lst.extend(
                                         items if isinstance(items, list) else [items]
                                     )
-                                    body_set_dict[c].add(b)
+                                    body_set_dict[category].add(b)
 
     # Add global attributes
     body_set_dict = {}
-    for c in global_categories:
-        if c in ["qvel", "qpos"]:  # this is a "joint position" item
+    for category in global_categories:
+        if category in ["qvel", "qpos"]:  # this is a "joint position" item
             for j in global_dict.get("joints", []):
-                items = getattr(env.unwrapped.data, c)[getattr(j, "{}_ids".format(c))]
+                items = getattr(env.unwrapped.data, category)[
+                    getattr(j, "{}_ids".format(category))
+                ]
                 obs_lst.extend(items if isinstance(items, list) else [items])
         else:
             for b in global_dict.get("bodies", []):
-                if c not in body_set_dict:
-                    body_set_dict[c] = set()
-                if b not in body_set_dict[c]:
-                    obs_lst.extend(getattr(env.unwrapped.data, c)[b].tolist())
-                    body_set_dict[c].add(b)
+                if category not in body_set_dict:
+                    body_set_dict[category] = set()
+                if b not in body_set_dict[category]:
+                    obs_lst.extend(getattr(env.unwrapped.data, category)[b].tolist())
+                    body_set_dict[category].add(b)
 
     return np.array(obs_lst)
 
