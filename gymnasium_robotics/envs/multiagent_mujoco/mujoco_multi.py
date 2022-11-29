@@ -238,7 +238,15 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
         pass
 
-    def step(self, actions: dict[str, numpy.float32]):
+    def step(
+        self, actions: dict[str, numpy.array]
+    ) -> tuple[
+        dict[str, numpy.array],
+        dict[str, numpy.array],
+        dict[str, numpy.array],
+        dict[str, numpy.array],
+        dict[str, str]
+    ]:
         _, reward_n, is_terminal_n, is_truncated_n, info_n = self.env.step(
             self.map_actions(actions)
         )
@@ -256,7 +264,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
         return observations, rewards, terminations, truncations, info
 
-    def map_actions(self, actions: dict[str, numpy.float32]):
+    def map_actions(self, actions: dict[str, numpy.array]) -> numpy.array:
         """
         Maps actions back into MuJoCo action space
         Returns:
@@ -278,26 +286,23 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         ).any(), "FATAL: At least one env action is undefined!"
         return env_actions
 
-    def map_states(self, global_observations):
-        pass
-
-    def observation_space(self, agent: str):
+    def observation_space(self, agent: str) -> gymnasium.spaces.Box:
         return self.observation_spaces[str(agent)]
 
-    def action_space(self, agent: str):
+    def action_space(self, agent: str) -> gymnasium.spaces.Box:
         return self.action_spaces[str(agent)]
 
-    def state(self):
+    def state(self) -> numpy.array:
         return self.env.unwrapped._get_obs()
 
-    def _get_obs(self):
+    def _get_obs(self) -> dict[str, numpy.array]:
         "Returns all agent observations in a dict[str, ActionType]"
         observations = {}
         for agent_id in self.agents:
             observations[str(agent_id)] = self._get_obs_agent(int(agent_id))
         return observations
 
-    def _get_obs_agent(self, agent_id):
+    def _get_obs_agent(self, agent_id) -> numpy.array:
         if self.agent_obsk is None:
             return self.env.unwrapped._get_obs()
         else:
