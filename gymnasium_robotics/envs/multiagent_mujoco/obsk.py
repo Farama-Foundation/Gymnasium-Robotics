@@ -178,12 +178,6 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
     return np.array(obs_lst)
 
 
-def build_actions(agent_partitions, k_dict):
-    # Composes agent actions output from networks
-    # into coherent joint action vector to be sent to the env.
-    pass
-
-
 def get_parts_and_edges(label, partitioning):
     if label in ["half_cheetah", "HalfCheetah-v4"]:
 
