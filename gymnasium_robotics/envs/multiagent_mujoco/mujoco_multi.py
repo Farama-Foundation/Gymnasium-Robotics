@@ -7,7 +7,6 @@ from .manyagent_ant import ManyAgentAntEnv
 from .manyagent_swimmer import ManyAgentSwimmerEnv
 from .obsk import build_obs, get_joints_at_kdist, get_parts_and_edges
 
-# from obsk import get_joints_at_kdist, get_parts_and_edges, build_obs
 
 _MUJOCO_GYM_ENVIROMENTS = [
     "Ant-v4",
@@ -176,7 +175,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
             ) = get_parts_and_edges(scenario, agent_conf)
         else:
             self.agent_action_partitions = {
-                'single agent': [
+                "single agent": [
                     "action" + str(action_id)
                     for action_id in range(self.env.action_space.shape[0])
                 ]
@@ -187,39 +186,23 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         ]
         self.agents = self.possible_agents
 
-        if self.agent_obsk is not None:
-            if scenario in ["Ant-v4", "manyagent_ant"]:
-                k_categories_label = "qpos,qvel,cfrc_ext|qpos"
-            elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
-                k_categories_label = "qpos,qvel,cfrc_ext,cvel,cinert,qfrc_actuator|qpos"
-            elif scenario in ["Reacher-v4"]:
-                k_categories_label = "qpos,qvel,fingertip_dist|qpos"
-            elif scenario in ["coupled_half_cheetah"]:
-                k_categories_label = "qpos,qvel,ten_J,ten_length,ten_velocity|"
-            else:
-                k_categories_label = "qpos,qvel|qpos"
-
-            k_split = k_categories_label.split("|")
-            self.k_categories = [
-                k_split[k if k < len(k_split) else -1].split(",")
-                for k in range(self.agent_obsk + 1)
-            ]
+        self.k_categories = self._generate_categories(scenario)
 
         if self.agent_obsk is not None:
             self.k_dicts = [
                 get_joints_at_kdist(
-                    agent_id,
-                    self.agent_action_partitions,
+                    self.agent_action_partitions[agent_id],
                     mujoco_edges,
                     k=self.agent_obsk,
-                    kagents=False,
                 )
                 for agent_id in range(self.num_agents)
             ]
 
         if self.agent_obsk is None:
             self.action_spaces = {self.possible_agents[0]: self.env.action_space}
-            self.observation_spaces = {self.possible_agents[0]: self.env.observation_space}
+            self.observation_spaces = {
+                self.possible_agents[0]: self.env.observation_space
+            }
         else:
             self.observation_spaces, self.action_spaces = {}, {}
             for agent_id, partition in enumerate(self.agent_action_partitions):
@@ -245,7 +228,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         dict[str, numpy.array],
         dict[str, numpy.array],
         dict[str, numpy.array],
-        dict[str, str]
+        dict[str, str],
     ]:
         _, reward_n, is_terminal_n, is_truncated_n, info_n = self.env.step(
             self.map_local_actions_to_global_action(actions)
@@ -264,7 +247,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
         return observations, rewards, terminations, truncations, info
 
-    def map_local_actions_to_global_action(self, actions: dict[str, numpy.array]) -> numpy.array:
+    def map_local_actions_to_global_action(
+        self, actions: dict[str, numpy.array]
+    ) -> numpy.array:
         """
         Maps actions back into MuJoCo action space
         Returns:
@@ -286,7 +271,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         ).any(), "FATAL: At least one env action is undefined!"
         return env_actions
 
-    def map_global_action_to_local_actions(self, action: numpy.ndarray) -> dict[str, numpy.ndarray]:
+    def map_global_action_to_local_actions(
+        self, action: numpy.ndarray
+    ) -> dict[str, numpy.ndarray]:
         """
         Arguments:
             action: An array representing the actions of the single agent for this domain
@@ -294,12 +281,27 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
             A dictionary of actions to be performed by each agent
         """
         if self.agent_obsk is None:
-            return {self.possible_agents[0], action}
+            return {self.possible_agents[0]: action}
 
         local_actions = {}
         for agent_id, partition in enumerate(self.agent_action_partitions):
-            local_actions[self.possible_agents[agent_id]] = numpy.array([action[node.act_ids] for node in partition])
+            local_actions[self.possible_agents[agent_id]] = numpy.array(
+                [action[node.act_ids] for node in partition]
+            )
+
+        # assert sizes
+        assert len(local_actions) == len(self.action_spaces)
+        for agent in self.possible_agents:
+            assert len(local_actions[agent]) == self.action_spaces[agent_id].shape[0]
+
         return local_actions
+
+    def map_global_state_to_local_observations(
+        self, global_state: numpy.ndarray
+    ) -> dict[str, numpy.ndarray]:
+        # self.env.unwrapped
+        # breakpoint()
+        pass
 
     def observation_space(self, agent: str) -> gymnasium.spaces.Box:
         return self.observation_spaces[str(agent)]
@@ -349,3 +351,24 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
     def seed(self, seed: int = None):
         raise NotImplementedError
+
+    def _generate_categories(self, scenario: str):
+        if self.agent_obsk is None:
+            return None
+
+        if scenario in ["Ant-v4", "manyagent_ant"]:
+            k_split = ["qpos,qvel,cfrc_ext", "qpos"]
+        elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
+            k_split = ["qpos,qvel,cfrc_ext,cvel,cinert,qfrc_actuator", "qpos"]
+        elif scenario in ["Reacher-v4"]:
+            k_split = ["qpos,qvel,fingertip_dist", "qpos"]
+        elif scenario in ["coupled_half_cheetah-v4"]:
+            k_split = ["qpos,qvel,ten_J,ten_length,ten_velocity", ""]
+        else:
+            k_split = ["qpos,qvel", "qpos"]
+
+        categories = [
+            k_split[k if k < len(k_split) else -1].split(",")
+            for k in range(self.agent_obsk + 1)
+        ]
+        return categories
