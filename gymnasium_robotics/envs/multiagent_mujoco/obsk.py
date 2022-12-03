@@ -2,6 +2,7 @@ import itertools
 from copy import deepcopy
 
 import numpy as np
+import numpy
 
 
 class Node:
@@ -16,6 +17,9 @@ class Node:
         extra_obs=None,
         tendons=None,
     ):
+        """
+        A node of the mujoco graph for single action, and it's corrisponding observetions
+        """
         self.label = label
         self.qpos_ids = qpos_ids
         self.qvel_ids = qvel_ids
@@ -34,7 +38,7 @@ class Node:
 
 
 class HyperEdge:
-    def __init__(self, *edges):
+    def __init__(self, *edges: Node):
         self.edges = set(edges)
 
     def __contains__(self, item):
@@ -48,27 +52,20 @@ class HyperEdge:
 
 
 def get_joints_at_kdist(
-    agent_id,
-    agent_partitions,
-    hyperedges,
-    k=0,
-    kagents=False,
-):
+    agent_partition: list[tuple[Node, ...]],
+    hyperedges: list[HyperEdge],
+    k: int = 0,
+) -> dict[int : list[Node]]:
     """Identify all joints at distance <= k from agent agent_id
 
-    :param agent_id: id of agent to be considered
-    :param agent_partitions: list of joint tuples in order of agentids
-    :param edges: list of tuples (joint1, joint2)
-    :param k: kth degree
-    :param kagents: True (observe all joints of an agent if a single one is) or False (individual joint granularity)
+    :param agent_partition: tuples of nodes of an agent
+    :param hyperedges: hyperedges of the graph
+    :param k: kth degree (number of nearest joints to observe)
     :return:
         dict with k as key, and list of joints at that distance
     """
-    assert not kagents, "kagents not implemented!"
 
-    agent_joints = agent_partitions[agent_id]
-
-    def _adjacent(lst, kagents=False):
+    def _adjacent(lst):
         # return all sets adjacent to any element in lst
         ret = set()
         for element in lst:
@@ -85,21 +82,20 @@ def get_joints_at_kdist(
             )
         return ret
 
-    seen = set()
-    new = set()
-    k_dict = {}
-    for _k in range(k + 1):
-        if not _k:
-            new = set(agent_joints)
-        else:
-            # print(hyperedges)
-            new = _adjacent(new) - seen
-        seen = seen.union(new)
-        k_dict[_k] = sorted(list(new), key=lambda x: x.label)
+    explored_nodes = set(agent_partition)
+    new_nodes = explored_nodes
+    k_dict = {0: sorted(list(new_nodes), key=lambda x: x.label)}
+    for key in range(1, k + 1):
+        new_nodes = _adjacent(new_nodes) - explored_nodes
+        explored_nodes = explored_nodes.union(new_nodes)
+        k_dict[key] = sorted(list(new_nodes), key=lambda x: x.label)
+    # TODO assert that the nodes are mutally exclusive
     return k_dict
 
 
-def build_obs(env, k_dict, k_categories, global_dict, global_categories):
+def build_obs(
+    env, k_dict, k_categories, global_dict, global_categories
+) -> numpy.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
     :param k_dict: k_dict
@@ -118,10 +114,10 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
     obs_lst = []
     # Add parts attributes
     for k in sorted(list(k_dict.keys())):
-        for _t in k_dict[k]:
+        for node in k_dict[k]:
             for category in k_categories[k]:
-                if category in _t.extra_obs:
-                    items = _t.extra_obs[category](env).tolist()
+                if category in node.extra_obs:
+                    items = node.extra_obs[category](env).tolist()
                     obs_lst.extend(items if isinstance(items, list) else [items])
                 else:
                     if category in [
@@ -129,12 +125,12 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
                         "qpos",
                     ]:  # this is a "joint position/velocity" item
                         items = getattr(env.unwrapped.data, category)[
-                            getattr(_t, "{}_ids".format(category))
+                            getattr(node, "{}_ids".format(category))
                         ]
                         obs_lst.extend(items if isinstance(items, list) else [items])
                     elif category in ["qfrc_actuator"]:  # this is a "vel position" item
                         items = getattr(env.unwrapped.data, category)[
-                            getattr(_t, "{}_ids".format("qvel"))
+                            getattr(node, "{}_ids".format("qvel"))
                         ]
                         obs_lst.extend(items if isinstance(items, list) else [items])
                     elif category in [
@@ -142,15 +138,15 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
                         "cinert",
                         "cfrc_ext",
                     ]:  # this is a "body position" item
-                        if _t.bodies is not None:
-                            for b in _t.bodies:
+                        if node.bodies is not None:
+                            for b in node.bodies:
                                 if category not in body_set_dict:
                                     body_set_dict[category] = set()
                                 if b not in body_set_dict[category]:
                                     items = getattr(env.unwrapped.data, category)[
                                         b
                                     ].tolist()
-                                    items = getattr(_t, "body_fn", lambda _id, x: x)(
+                                    items = getattr(node, "body_fn", lambda _id, x: x)(
                                         b, items
                                     )
                                     obs_lst.extend(
@@ -178,7 +174,9 @@ def build_obs(env, k_dict, k_categories, global_dict, global_categories):
     return np.array(obs_lst)
 
 
-def get_parts_and_edges(label, partitioning):
+def get_parts_and_edges(
+    label: str, partitioning: str
+) -> tuple[list[tuple[Node, ...]], list[HyperEdge], dict[str : list[Node]]]:
     if label in ["half_cheetah", "HalfCheetah-v4"]:
 
         # define Mujoco graph
