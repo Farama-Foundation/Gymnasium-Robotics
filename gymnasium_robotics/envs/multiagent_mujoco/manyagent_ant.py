@@ -118,19 +118,19 @@ class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         contact_cost = (
             0.5 * 1e-3 * np.sum(np.square(np.clip(self.unwrapped.data.cfrc_ext, -1, 1)))
         )
-        survive_reward = 1.0
+        survive_reward = 1.0  # TODO define
         reward = forward_reward - ctrl_cost - contact_cost + survive_reward
         state = self.state_vector()
         notdone = np.isfinite(state).all() and state[2] >= 0.2 and state[2] <= 1.0
-        done = not notdone
+        terminated = not notdone
         ob = self._get_obs()
         if self.render_mode == "human":
             self.render()
         return (
             ob,
             reward,
+            terminated,
             False,
-            done,
             dict(
                 reward_forward=forward_reward,
                 reward_ctrl=-ctrl_cost,
