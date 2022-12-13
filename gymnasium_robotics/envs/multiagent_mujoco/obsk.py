@@ -1,9 +1,9 @@
 import itertools
+import typing
 from copy import deepcopy
 
-import numpy as np
 import numpy
-import typing
+import numpy as np
 
 
 class Node:
@@ -183,7 +183,7 @@ def get_parts_and_edges(
     label: str, partitioning: str
 ) -> list[tuple[Node, ...], list[HyperEdge], dict[str : list[Node]]]:
     """
-    :param label: the mujoco task to partion
+    :param label: the mujoco task to partition
     :param partitioning: the partioneing scheme
     :return:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
@@ -912,9 +912,9 @@ def get_parts_and_edges(
         return parts, edges, globals
     else:
         if partitioning is None:
-            print("Warning: using single agent on unknown MuJoCo Enviroment: " + label)
+            print("Warning: using single agent on unknown MuJoCo Environment: " + label)
             return tuple([tuple("0")]), None, None
-        raise Exception("UNKNOWN label enviroment: {}".format(label))
+        raise Exception("UNKNOWN label environment: {}".format(label))
 
 
 def observation_structure(scenario: str) -> dict[str:int]:
@@ -924,7 +924,7 @@ def observation_structure(scenario: str) -> dict[str:int]:
         a dictionary keyied by observation type with values indicating the number of observations for that type
     """
     ret = {
-        "skipped_qpos": 0,  # Position data what is exluded/skip
+        "skipped_qpos": 0,  # Position data what is excluded/skip
         "qpos": 0,  # Position
         "qvel": 0,  # Velocity
         "cinert": 0,  # com inertia
