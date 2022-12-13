@@ -5,12 +5,8 @@ import pettingzoo
 from .coupled_half_cheetah import CoupledHalfCheetah
 from .manyagent_ant import ManyAgentAntEnv
 from .manyagent_swimmer import ManyAgentSwimmerEnv
-from .obsk import (
-    build_obs,
-    get_joints_at_kdist,
-    get_parts_and_edges,
-    observation_structure,
-)
+from .obsk import (build_obs, get_joints_at_kdist, get_parts_and_edges,
+                   observation_structure)
 
 # TODO for v1?
 # color the renderer
@@ -23,7 +19,7 @@ _MUJOCO_GYM_ENVIROMENTS = [
     "Humanoid-v4",
     "Reacher-v4",
     "Swimmer-v4",
-    # "Pusher-v4", Pusher was not documentented during the developement of MaMuJoCo and therefore is not supported
+    # "Pusher-v4", Pusher was not documentented during the development of MaMuJoCo and therefore is not supported
     "Walker2d-v4",
     "InvertedPendulum-v4",
     "InvertedDoublePendulum-v4",
@@ -191,7 +187,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
     ```
     finally package the partitions and create our environment
     ```python
-    my_agent_factorization = {"partion": partioned_nodes, "edges": edges, "globals": global_nodes}
+    my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
     gym_env = MaMuJoCo('Ant', '8x1', agent_factorization=my_agent_factorization)
     ```
     """
@@ -216,7 +212,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
     ):
         """
         Arguments:
-            scenario: The Task/Enviroment, valid values:
+            scenario: The Task/Environment, valid values:
                 "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
             agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
@@ -226,7 +222,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
                 if set to 2 it observes local state + 2 joints over,
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
                 The Default value is: 1
-            agent_factorization: A custom factorization of the MuJoCo enviroment (overwrites agent_conf),
+            agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](link).
             local_categories: The categories of local observations for each observation depth,
                 The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
@@ -237,7 +233,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         """
         scenario += "-v4"
 
-        # load the underlying single agent Gymansium MuJoCo Enviroment in `self.gym_env`
+        # load the underlying single agent Gymansium MuJoCo Environment in `self.gym_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.gym_env = gymnasium.make(scenario, render_mode=render_mode)
         elif scenario in ["manyagent_ant-v4"]:
@@ -269,7 +265,7 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
                     self.mujoco_globals,
                 ) = get_parts_and_edges(scenario, agent_conf)
             else:
-                self.agent_action_partitions = agent_factorization["partion"]
+                self.agent_action_partitions = agent_factorization["partition"]
                 mujoco_edges = agent_factorization["edges"]
                 self.mujoco_globals = agent_factorization["globals"]
         else:
@@ -472,9 +468,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         Arguments:
             local_obserations: the local observation of each agents (generated from MaMuJoCo.step())
         Returns:
-            the global observations that corrispond to a single agent (what you would get with MaMuJoCo.state())
+            the global observations that correspond to a single agent (what you would get with MaMuJoCo.state())
         """
-        # Dev notes for anyone who attemps to implement it:
+        # Dev notes for anyone who attempts to implement it:
         # - Depending on the factorization the local observations may not observe the total global observable space, you will need to handle that
         raise NotImplementedError
 
