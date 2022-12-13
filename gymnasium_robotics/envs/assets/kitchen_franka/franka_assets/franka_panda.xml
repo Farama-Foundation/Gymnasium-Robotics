@@ -28,7 +28,7 @@
     <include file="basic_scene.xml"/>
     <include file="franka_assets.xml"/>
     <include file="gripper_assets.xml"/>
-    <compiler meshdir="../"/>
+    <compiler meshdir="../" autolimits="true"/>
 
     <worldbody>
         <include file="chain.xml"/>

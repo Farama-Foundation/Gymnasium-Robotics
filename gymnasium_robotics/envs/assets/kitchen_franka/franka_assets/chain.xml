@@ -8,7 +8,6 @@
 ====================================================== -->
 
 <!-- Robot limits pulled from https://frankaemika.github.io/docs/control_parameters.html#constants -->
-    <site name="reference" pos="0 0 .25"/>
     <body name="panda0_link0" childclass="panda" >
         <geom class="panda_viz" mesh="link0_viz"/>
         <geom class="panda_col" mesh="link0_col" mass="2.91242"/>
@@ -50,10 +49,10 @@
                                     <geom class="panda_grey_viz" mesh="link7_dark_viz" pos="0 0 -.0008"/>
                                     <geom class="panda_col" mesh="link7_col" mass="0.2"/>
                                     <camera name="Franka_wrist_cam" pos=".050 -.050 0.15" euler="2.95 0.2 -.787"/>
-                                    <site name='end_effector' pos='0 0 .210' size='0.01' euler='0 0 -0.785398'/>
 
                                     <!-- End Effector -->
                                     <body name="panda0_gripper">
+                                        <site name="EEF" pos="0 0 0.1654" quat="0.92388 0 0 -0.382683"/>
                                         <geom pos="0 0 0.107" quat="0.92388 0 0 -0.382683" class="panda_viz" mesh="hand_viz"/>
                                         <geom pos="0 0 0.107" quat="0.92388 0 0 -0.382683" class="panda_col" mesh="hand_col" mass="0.81909"/>
                                         
