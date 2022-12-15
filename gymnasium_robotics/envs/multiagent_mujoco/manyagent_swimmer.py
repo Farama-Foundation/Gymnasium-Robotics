@@ -3,12 +3,12 @@ import os
 import gymnasium
 import numpy
 import numpy as np
-from gymnasium import utils
 from gymnasium.envs.mujoco import mujoco_env
+from gymnasium.utils.ezpickle import EzPickle
 from jinja2 import Template
 
 
-class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
     def __init__(self, agent_conf, render_mode: str = None):
         self.metadata = {
             "render_modes": [
@@ -31,12 +31,7 @@ class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 n_agents, n_segs_per_agents
             ),
         )
-        # if not os.path.exists(asset_path):
-        # print("Auto-Generating Manyagent Swimmer asset with {} segments at {}.".format(n_segs, asset_path))
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
-
-        # asset_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets',git p
-        #                          'manyagent_swimmer.xml')
 
         observation_space = gymnasium.spaces.Box(
             low=-numpy.inf, high=numpy.inf, shape=(n_segs * 2 + 4,), dtype=numpy.float32
@@ -48,7 +43,8 @@ class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             observation_space=observation_space,
             render_mode=render_mode,
         )
-        utils.EzPickle.__init__(self)
+        EzPickle.__init__(self)
+        os.remove(asset_path)
 
     def _generate_asset(self, n_segs, asset_path):
         template_path = os.path.join(

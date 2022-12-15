@@ -3,12 +3,12 @@ import os
 import gymnasium
 import numpy
 import numpy as np
-from gymnasium import utils
 from gymnasium.envs.mujoco import mujoco_env
+from gymnasium.utils.ezpickle import EzPickle
 from jinja2 import Template
 
 
-class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
+class ManyAgentAntEnv(mujoco_env.MujocoEnv, EzPickle):
     def __init__(self, agent_conf, render_mode: str = None):
         self.metadata = {
             "render_modes": [
@@ -31,12 +31,7 @@ class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
                 n_agents, n_segs_per_agents
             ),
         )
-        # if not os.path.exists(asset_path):
-        # print("Auto-Generating Manyagent Ant asset with {} segments at {}.".format(n_segs, asset_path))
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
-
-        # asset_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets',git p
-        #                          'manyagent_swimmer.xml')
 
         observation_space = gymnasium.spaces.Box(
             low=-numpy.inf,
@@ -51,7 +46,8 @@ class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             observation_space=observation_space,
             render_mode=render_mode,
         )
-        utils.EzPickle.__init__(self)
+        EzPickle.__init__(self)
+        os.remove(asset_path)
 
     def _generate_asset(self, n_segs, asset_path):
         template_path = os.path.join(
@@ -118,7 +114,8 @@ class ManyAgentAntEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         contact_cost = (
             0.5 * 1e-3 * np.sum(np.square(np.clip(self.unwrapped.data.cfrc_ext, -1, 1)))
         )
-        survive_reward = 1.0  # TODO define
+        contact_cost = 0  # In Gymnasium.MuJoCo-v4 contanct costs are ignored
+        survive_reward = 1.0
         reward = forward_reward - ctrl_cost - contact_cost + survive_reward
         state = self.state_vector()
         notdone = np.isfinite(state).all() and state[2] >= 0.2 and state[2] <= 1.0

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 import typing
 from copy import deepcopy
@@ -15,14 +17,19 @@ class Node:
         act_ids: int,
         body_fn=None,
         bodies: list[int] = None,
-        extra_obs: dict[str : typing.Callable] = None,
+        extra_obs: dict[str, typing.Callable] = None,
         tendons=None,
     ):
         """
         A node of the mujoco graph representing a single body part and it's corresponding single action & observetions
-        :param act_ids: the action assicaiated with that node
-        :param extra_obs: an optional overwrite of observation types keyied by categories
-        :param bodies: is used to index ["cvel", "cinert", "cfrc_ext"] categories
+
+        Args:
+            act_ids:
+                the action assicaiated with that node
+            extra_obs:
+                an optional overwrite of observation types keyied by categories
+            bodies:
+                is used to index ["cvel", "cinert", "cfrc_ext"] categories
         """
         self.label = label
         self.qpos_ids = qpos_ids
@@ -42,6 +49,14 @@ class Node:
 
 
 class HyperEdge:
+    """
+    A collection of nodes, that are fully connected (with edges)
+
+    If a Hyper consists of 2 Nodes then it is simply an Edge of this Nodes
+
+    More at: https://en.wikipedia.org/wiki/Hypergraph
+    """
+
     def __init__(self, *edges: Node):
         self.edges = set(edges)
 
@@ -49,23 +64,28 @@ class HyperEdge:
         return item in self.edges
 
     def __str__(self):
-        return "HyperEdge({})".format(self.edges)
+        return f"HyperEdge({self.edges})"
 
     def __repr__(self):
-        return "HyperEdge({})".format(self.edges)
+        return f"HyperEdge({self.edges})"
 
 
 def get_joints_at_kdist(
     agent_partition: list[tuple[Node, ...]],
     hyperedges: list[HyperEdge],
     k: int = 0,
-) -> dict[int : list[Node]]:
-    """Identify all joints at distance <= k from agent agent_id
+) -> dict[int, list[Node]]:
+    """
+    Identify all joints at distance <= k from agent agent_id
 
-    :param agent_partition: tuples of nodes of an agent
-    :param hyperedges: hyperedges of the graph
-    :param k: kth degree (number of nearest joints to observe)
-    :return:
+    Args:
+    agent_partition:
+        tuples of nodes of an agent
+    hyperedges:
+        hyperedges of the graph
+    k:
+        kth degree (number of nearest joints to observe)
+    Returns:
         dict with k as key, and list of joints/nodes at that distance
     """
 
@@ -106,19 +126,26 @@ def get_joints_at_kdist(
 
 def build_obs(
     data,
-    k_dict: dict[int : list[Node]],
+    k_dict: dict[int, list[Node]],
     k_categories: list[list[str]],
-    global_dict: dict[int : list[Node]],
-    global_categories: list[list[str]],
+    global_dict: dict[int, list[Node]],
+    global_categories: list[str],
 ) -> numpy.ndarray:
-    """Given a k_dict from get_joints_at_kdist, extract observation vector.
+    """
+    Given a k_dict from get_joints_at_kdist, extract observation vector.
 
-    :param data: a structure containing the global state of the agent
-    :param k_dict: the k_dict of an agent
-    :param k_categories: the categories at every depth level
-    :param global_dict: Not implemented for now
-    :param global_categories: Not implemented for now
-    :return:
+    Args:
+        data:
+            a structure containing the global state of the agent
+        k_dict:
+            the k_dict of an agent
+        k_categories:
+            the categories at every depth level
+        global_dict:
+            The MuJoCo global godes
+        global_categories:
+            The observation Categories for the global MuJoCo nodes
+    Returns:
         observation for the agent (indicated by K_dict)
     """
 
@@ -164,9 +191,7 @@ def build_obs(
                 elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
                     obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
                 else:
-                    items = getattr(data, category)[
-                        getattr(joint, "{}_ids".format(category))
-                    ]
+                    items = getattr(data, category)[getattr(joint, f"{category}_ids")]
                     obs_lst.extend(items if isinstance(items, list) else [items])
         else:
             for body in global_dict.get("bodies", []):
@@ -181,11 +206,14 @@ def build_obs(
 
 def get_parts_and_edges(
     label: str, partitioning: str
-) -> list[tuple[Node, ...], list[HyperEdge], dict[str : list[Node]]]:
+) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
     """
-    :param label: the mujoco task to partition
-    :param partitioning: the partioneing scheme
-    :return:
+    Args:
+    label:
+        the mujoco task to partition
+    partitioning:
+        the partioneing scheme
+    Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
     if label in ["HalfCheetah-v4"]:
@@ -220,7 +248,7 @@ def get_parts_and_edges(
         elif partitioning == "6x1":
             parts = [(bfoot,), (bshin,), (bthigh,), (ffoot,), (fshin,), (fthigh,)]
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -328,7 +356,7 @@ def get_parts_and_edges(
         globals = {"joints": [torso]}
 
         if partitioning is None:
-            parts = [(hip1, ankle1, hip2, ankle2, hip3, ankle3, hip4, ankle4)]
+            parts = [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]
         elif partitioning == "2x4":  # neighbouring legs together
             parts = [(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]
         elif partitioning == "2x4d":  # diagonal legs together
@@ -336,7 +364,7 @@ def get_parts_and_edges(
         elif partitioning == "4x2":
             parts = [(hip1, ankle1), (hip2, ankle2), (hip3, ankle3), (hip4, ankle4)]
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -411,11 +439,12 @@ def get_parts_and_edges(
             parts = [(thigh_joint,), (leg_joint,), (foot_joint,)]
 
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
-    elif label in ["Humanoid-v4", "HumanoidStandup-v4"]:  # TODO
+    elif label in ["Humanoid-v4", "HumanoidStandup-v4"]:
+        # TODO waiting for https://github.com/Farama-Foundation/Gymnasium/issues/204
         # bodies
         torso = 0
         lwaist = 1
@@ -534,7 +563,7 @@ def get_parts_and_edges(
             # TODO: There could be tons of decompositions here
 
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -606,7 +635,7 @@ def get_parts_and_edges(
             # TODO: There could be tons of decompositions here
 
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -645,7 +674,7 @@ def get_parts_and_edges(
         elif partitioning == "2x1":
             parts = [(joint0,), (joint1,)]
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -696,7 +725,7 @@ def get_parts_and_edges(
             # TODO: There could be tons of decompositions here
 
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -789,7 +818,7 @@ def get_parts_and_edges(
                 (bfoot2, bshin2, bthigh2, ffoot2, fshin2, fthigh2),
             ]
         else:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         return parts, edges, globals
 
@@ -800,14 +829,13 @@ def get_parts_and_edges(
             n_segs_per_agents = int(partitioning.split("x")[1])
             n_segs = n_agents * n_segs_per_agents
         except Exception:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         # Note: Default Swimmer corresponds to n_segs = 3
 
         # define Mujoco-Graph
         joints = [
-            Node("rot{:d}".format(i), -n_segs + i, -n_segs + i, i)
-            for i in range(0, n_segs)
+            Node(f"rot{i:d}", -n_segs + i, -n_segs + i, i) for i in range(0, n_segs)
         ]
         edges = [HyperEdge(joints[i], joints[i + 1]) for i in range(n_segs - 1)]
         globals = {}
@@ -824,7 +852,7 @@ def get_parts_and_edges(
             n_segs_per_agents = int(partitioning.split("x")[1])
             n_segs = n_agents * n_segs_per_agents
         except Exception:
-            raise Exception("UNKNOWN partitioning config: {}".format(partitioning))
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
         edges = []
         joints = []
@@ -841,7 +869,7 @@ def get_parts_and_edges(
 
             off = -4 * (n_segs - 1 - segment)
             hip1n = Node(
-                "hip1_{:d}".format(segment),
+                f"hip1_{segment:d}",
                 -4 - off,
                 -4 - off,
                 2 + 4 * segment,
@@ -849,7 +877,7 @@ def get_parts_and_edges(
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             ankle1n = Node(
-                "ankle1_{:d}".format(segment),
+                f"ankle1_{segment:d}",
                 -3 - off,
                 -3 - off,
                 3 + 4 * segment,
@@ -857,7 +885,7 @@ def get_parts_and_edges(
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             hip2n = Node(
-                "hip2_{:d}".format(segment),
+                f"hip2_{segment:d}",
                 -2 - off,
                 -2 - off,
                 0 + 4 * segment,
@@ -865,7 +893,7 @@ def get_parts_and_edges(
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             ankle2n = Node(
-                "ankle2_{:d}".format(segment),
+                f"ankle2_{segment:d}",
                 -1 - off,
                 -1 - off,
                 1 + 4 * segment,
@@ -914,13 +942,14 @@ def get_parts_and_edges(
         if partitioning is None:
             print("Warning: using single agent on unknown MuJoCo Environment: " + label)
             return tuple([tuple("0")]), None, None
-        raise Exception("UNKNOWN label environment: {}".format(label))
+        raise Exception(f"UNKNOWN label environment: {label}")
 
 
-def observation_structure(scenario: str) -> dict[str:int]:
+def observation_structure(scenario: str) -> dict[str, int]:
     """
-    :param scenario: the mujoco scenartio
-    :return:
+    Args:
+        scenario: the mujoco scenartio
+    Returns:
         a dictionary keyied by observation type with values indicating the number of observations for that type
     """
     ret = {

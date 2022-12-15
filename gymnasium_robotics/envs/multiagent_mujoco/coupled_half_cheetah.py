@@ -3,11 +3,11 @@ import os
 import gymnasium
 import numpy
 import numpy as np
-from gymnasium import utils
 from gymnasium.envs.mujoco import mujoco_env
+from gymnasium.utils.ezpickle import EzPickle
 
 
-class CoupledHalfCheetah(mujoco_env.MujocoEnv, utils.EzPickle):
+class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
     def __init__(self, agent_conf, render_mode: str = None):
         self.metadata = {
             "render_modes": [
@@ -31,7 +31,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, utils.EzPickle):
             observation_space=observation_space,
             render_mode=render_mode,
         )
-        utils.EzPickle.__init__(self)
+        EzPickle.__init__(self)
 
     def step(self, action):
         xposbefore1 = self.unwrapped.data.qpos[0]

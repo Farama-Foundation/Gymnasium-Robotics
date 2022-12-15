@@ -1,12 +1,18 @@
+from __future__ import annotations
+
 import gymnasium
 import numpy
 import pettingzoo
-
-from .coupled_half_cheetah import CoupledHalfCheetah
-from .manyagent_ant import ManyAgentAntEnv
-from .manyagent_swimmer import ManyAgentSwimmerEnv
-from .obsk import (build_obs, get_joints_at_kdist, get_parts_and_edges,
-                   observation_structure)
+from gymnasium.wrappers.time_limit import TimeLimit
+from multiagent_mujoco.coupled_half_cheetah import CoupledHalfCheetah
+from multiagent_mujoco.manyagent_ant import ManyAgentAntEnv
+from multiagent_mujoco.manyagent_swimmer import ManyAgentSwimmerEnv
+from multiagent_mujoco.obsk import (
+    build_obs,
+    get_joints_at_kdist,
+    get_parts_and_edges,
+    observation_structure,
+)
 
 # TODO for v1?
 # color the renderer
@@ -26,7 +32,7 @@ _MUJOCO_GYM_ENVIROMENTS = [
 ]
 
 
-class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
+class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     """
     # MaMuJoCo (Multi-Agent MuJoCo)
 
@@ -205,31 +211,41 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         scenario: str,
         agent_conf: str,
         agent_obsk: int = 1,
-        agent_factorization: dict[str:list] = None,
+        agent_factorization: dict[str, any] = None,
         local_categories: list[list[str]] = None,
         global_categories: list[str] = None,
         render_mode: str = None,
     ):
         """
-        Arguments:
-            scenario: The Task/Environment, valid values:
+        Args:
+            scenario:
+                The Task/Environment, valid values:
                 "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
-            agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
+            agent_conf:
+                '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
-            agent_obsk: Number of nearest joints to observe,
+            agent_obsk:
+                Number of nearest joints to observe,
                 if set to 0 it only observes local state,
                 if set to 1 it observes local state + 1 joint over,
                 if set to 2 it observes local state + 2 joints over,
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
                 The Default value is: 1
-            agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
+            agent_factorization:
+                A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](link).
-            local_categories: The categories of local observations for each observation depth,
+            local_categories:
+                The categories of local observations for each observation depth,
                 The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
-            global_categories: The categories of observation for global observations,
+            global_categories:
+                The categories of observation for global observations,
                 The default is; local_categories[0]
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
+
+            Raises:
+                NotImplementedError:
+                    When the scenario is not supported (not part of of the valid values)
         """
         scenario += "-v4"
 
@@ -237,15 +253,15 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.gym_env = gymnasium.make(scenario, render_mode=render_mode)
         elif scenario in ["manyagent_ant-v4"]:
-            self.gym_env = gymnasium.wrappers.TimeLimit(
+            self.gym_env = TimeLimit(
                 ManyAgentAntEnv(agent_conf, render_mode), max_episode_steps=1000
             )
         elif scenario in ["manyagent_swimmer-v4"]:
-            self.gym_env = gymnasium.wrappers.TimeLimit(
+            self.gym_env = TimeLimit(
                 ManyAgentSwimmerEnv(agent_conf, render_mode), max_episode_steps=1000
             )
         elif scenario in ["coupled_half_cheetah-v4"]:
-            self.gym_env = gymnasium.wrappers.TimeLimit(
+            self.gym_env = TimeLimit(
                 CoupledHalfCheetah(agent_conf, render_mode), max_episode_steps=1000
             )
         else:
@@ -269,8 +285,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
                 mujoco_edges = agent_factorization["edges"]
                 self.mujoco_globals = agent_factorization["globals"]
         else:
+            assert self.gym_env.action_space.shape is not None
             self.agent_action_partitions = [
-                tuple([None for _ in range(self.gym_env.action_space.shape[0])])
+                tuple(None for i in range(self.gym_env.action_space.shape[0]))
             ]
             mujoco_edges = None
 
@@ -329,8 +346,11 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
     ]:
         """
         Note: if step is called after the agents have terminated/truncated the envrioment will continue to work as normal
-        :param actions: the actions of all agents
-        :return: see pettingzoo.utils.env.ParallelEnv.step() doc
+        Args:
+            actions:
+                the actions of all agents
+        Returns:
+            see pettingzoo.utils.env.ParallelEnv.step() doc
         """
         _, reward_n, is_terminal_n, is_truncated_n, info_n = self.gym_env.step(
             self.map_local_actions_to_global_action(actions)
@@ -354,14 +374,18 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
     ) -> numpy.array:
         """
         Maps actions back into MuJoCo action space
-        Arguments:
+        Args:
             action: An dict representing the action of each agent
         Returns:
             The action of the whole domain (is what eqivilent single agent action would be)
+        Raises:
+            AssertionError:
+                If the Agent action factorization is badly defined (if an action is double defined or not defined at all)
         """
         if self.agent_obsk is None:
             return actions[self.possible_agents[0]]
 
+        assert self.gym_env.action_space.shape is not None
         global_action = numpy.zeros((self.gym_env.action_space.shape[0],)) + numpy.nan
         for agent_id, partition in enumerate(self.agent_action_partitions):
             for act_index, body_part in enumerate(partition):
@@ -381,10 +405,14 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         self, action: numpy.ndarray
     ) -> dict[str, numpy.ndarray]:
         """
-        Arguments:
-            action: An array representing the actions of the single agent for this domain
+        Args:
+            action:
+                An array representing the actions of the single agent for this domain
         Returns:
             A dictionary of actions to be performed by each agent
+        Raises:
+            AssertionError:
+                If the Agent action factorization sizes are badly defined
         """
         if self.agent_obsk is None:
             return {self.possible_agents[0]: action}
@@ -406,8 +434,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         self, global_state: numpy.ndarray
     ) -> dict[str, numpy.ndarray]:
         """
-        Arguments:
-            global_state: the global_state (generated from MaMuJoCo.state())
+        Args:
+            global_state:
+                the global_state (generated from MaMuJoCo.state())
         Returns:
             A dictionary of states that would be observed by each agent given the 'global_state'
         """
@@ -465,8 +494,9 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
     ) -> numpy.ndarray:
         """
         NOT IMPLEMENTED, try using MaMuJoCo.state() instead
-        Arguments:
-            local_obserations: the local observation of each agents (generated from MaMuJoCo.step())
+        Args:
+            local_obserations:
+                the local observation of each agents (generated from MaMuJoCo.step())
         Returns:
             the global observations that correspond to a single agent (what you would get with MaMuJoCo.state())
         """
@@ -484,13 +514,22 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         return self.gym_env.unwrapped._get_obs()
 
     def _get_obs(self) -> dict[str, numpy.array]:
-        "Returns all agent observations in a dict[str, ActionType]"
+        """Returns: all agent observations in a dict[str, ActionType]"""
         observations = {}
         for agent_id, agent in enumerate(self.possible_agents):
             observations[agent] = self._get_obs_agent(agent_id)
         return observations
 
     def _get_obs_agent(self, agent_id: int, data=None) -> numpy.array:
+        """
+        Args:
+            agent_id:
+                The id in self.possible_agents.values()
+            data:
+                An optional overwrite of the MuJoCo data, defaults to the data at the current time step
+        Returns:
+            The observation of the agent given the data
+        """
         if self.agent_obsk is None:
             return self.gym_env.unwrapped._get_obs()
         if data is None:
@@ -505,7 +544,17 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
         )
 
     def reset(self, seed=None, return_info=False, options=None):
-        """Returns initial observations and states"""
+        """
+        Args:
+            seed:
+                see pettingzoo.utils.env.ParallelEnv.reset() doc
+            return_info:
+                see pettingzoo.utils.env.ParallelEnv.reset() doc
+            options:
+                Ignored arguments
+        Returns:
+            Initial observations and info
+        """
         _, info_n = self.gym_env.reset(seed=seed)
         info = {}
         for agent in self.possible_agents:
@@ -517,6 +566,12 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
             return self._get_obs(), info
 
     def render(self):
+        """
+        Renders the MuJoCo using the mechanism of the single agent Gymnasium.MuJoCo
+        Returns:
+            The same return value as the single agent Gymnasium.MuJoCo
+            see https://gymnasium.farama.org/environments/mujoco/
+        """
         return self.gym_env.render()
 
     def close(self):
@@ -527,8 +582,10 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
     def _generate_local_categories(self, scenario: str) -> list[list[str]]:
         """
-        :param scenario: the mujoco task
-        :return:
+        Args:
+            scenario:
+                the mujoco task
+        Returns:
             a list of observetion types per observation depth
         """
         if self.agent_obsk is None:
@@ -557,7 +614,12 @@ class MaMuJoCo(pettingzoo.utils.env.ParallelEnv):
 
     def _generate_global_categories(self, scenario: str) -> list[str]:
         """
-        Generated the default global categories of observations
+        Generates the default global categories of observations
+        Args:
+            scenario:
+                The name of the MuJoCo Task
+        Returns:
+            The default Global Categories for the scenario (a list of all observable types for that domain)
         """
         if self.agent_obsk is None:
             return []
