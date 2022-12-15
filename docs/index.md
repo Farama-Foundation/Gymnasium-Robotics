@@ -18,6 +18,7 @@ content/multi-goal_api
 envs/fetch/index
 envs/hand/index
 envs/hand_touch/index
+envs/MaMuJoCo/index
 ```
 
 ```{toctree}
