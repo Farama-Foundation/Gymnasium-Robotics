@@ -42,5 +42,13 @@ repos:
         additional_dependencies: ["pyright"]
         args:
           - --project=pyproject.toml
-
-
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.1.1
+    hooks:
+      - id: pydocstyle
+        exclude: ^(tests)
+        args:
+          - --source
+          - --explain
+          - --convention=google
+        additional_dependencies: ["toml"]
