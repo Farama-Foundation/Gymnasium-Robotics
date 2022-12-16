@@ -2,7 +2,6 @@ import copy
 import os
 from typing import Optional, Union
 
-import gymnasium as gym
 import numpy as np
 from gymnasium import error, logger, spaces
 
@@ -202,12 +201,6 @@ class BaseRobotEnv(GoalEnv):
         """
         pass
 
-    def _viewer_setup(self):
-        """Initial configuration of the viewer. Can be used to set the camera position,
-        for example.
-        """
-        pass
-
     def _render_callback(self):
         """A custom callback that is called before rendering. Can be used
         to implement custom visualizations.
@@ -222,7 +215,7 @@ class BaseRobotEnv(GoalEnv):
 
 
 class MujocoRobotEnv(BaseRobotEnv):
-    def __init__(self, **kwargs):
+    def __init__(self, default_camera_config: Optional[dict] = None, **kwargs):
         if MUJOCO_IMPORT_ERROR is not None:
             raise error.DependencyNotInstalled(
                 f"{MUJOCO_IMPORT_ERROR}. (HINT: you need to install mujoco)"
@@ -232,6 +225,12 @@ class MujocoRobotEnv(BaseRobotEnv):
         self._utils = mujoco_utils
 
         super().__init__(**kwargs)
+
+        from gymnasium.envs.mujoco.mujoco_rendering import MujocoRenderer
+
+        self.mujoco_renderer = MujocoRenderer(
+            self.model, self.data, default_camera_config
+        )
 
     def _initialize_simulation(self):
         self.model = self._mujoco.MjModel.from_xml_path(self.fullpath)
@@ -258,35 +257,11 @@ class MujocoRobotEnv(BaseRobotEnv):
 
     def render(self):
         self._render_callback()
-        if self.render_mode == "rgb_array":
-            self._get_viewer(self.render_mode).render()
-            data = self._get_viewer(self.render_mode).read_pixels(depth=False)
-            # original image is upside-down, so flip it
-            return data[::-1, :, :]
-        elif self.render_mode == "human":
-            self._get_viewer(self.render_mode).render()
+        return self.mujoco_renderer.render(self.render_mode)
 
-    def _get_viewer(
-        self, mode
-    ) -> Union["gym.envs.mujoco.Viewer", "gym.envs.mujoco.RenderContextOffscreen"]:
-        self.viewer = self._viewers.get(mode)
-        if self.viewer is None:
-            if mode == "human":
-                from gymnasium.envs.mujoco.mujoco_rendering import Viewer
-
-                self.viewer = Viewer(self.model, self.data)
-            elif mode in {
-                "rgb_array",
-                "rgb_array_list",
-            }:
-                from gymnasium.envs.mujoco.mujoco_rendering import (
-                    RenderContextOffscreen,
-                )
-
-                self.viewer = RenderContextOffscreen(model=self.model, data=self.data)
-            self._viewer_setup()
-            self._viewers[mode] = self.viewer
-        return self.viewer
+    def close(self):
+        if self.mujoco_renderer is not None:
+            self.mujoco_renderer.close()
 
     @property
     def dt(self):
@@ -346,6 +321,11 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         elif self.render_mode == "human":
             self._get_viewer(self.render_mode).render()
 
+    def close(self):
+        if self.viewer is not None:
+            self.viewer = None
+            self._viewers = {}
+
     def _get_viewer(
         self, mode
     ) -> Union["mujoco_py.MjViewer", "mujoco_py.MjRenderContextOffscreen"]:
@@ -369,3 +349,9 @@ class MujocoPyRobotEnv(BaseRobotEnv):
 
     def _mujoco_step(self, action):
         self.sim.step()
+
+    def _viewer_setup(self):
+        """Initial configuration of the viewer. Can be used to set the camera position,
+        for example.
+        """
+        pass
