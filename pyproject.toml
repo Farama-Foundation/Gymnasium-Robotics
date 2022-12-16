@@ -1,8 +1,13 @@
+[tool.pydocstyle]
+inherit = false
+ignore = ['D100','D203','D405']
+
 [tool.pyright]
 include = [
     "gymnasium_robotics/**",
     "tests/**"
 ]
+
 
 exclude = [
     "**/node_modules",
