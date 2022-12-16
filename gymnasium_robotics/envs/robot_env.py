@@ -35,7 +35,6 @@ class BaseRobotEnv(GoalEnv):
         "render_modes": [
             "human",
             "rgb_array",
-            "rgb_array_list",
         ],
         "render_fps": 25,
     }
@@ -309,7 +308,6 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         self._render_callback()
         if self.render_mode in {
             "rgb_array",
-            "rgb_array_list",
         }:
             self._get_viewer(self.render_mode).render(width, height)
             # window size used for old mujoco-py:
@@ -336,7 +334,6 @@ class MujocoPyRobotEnv(BaseRobotEnv):
 
             elif mode in {
                 "rgb_array",
-                "rgb_array_list",
             }:
                 self.viewer = self._mujoco_py.MjRenderContextOffscreen(self.sim, -1)
             self._viewer_setup()
