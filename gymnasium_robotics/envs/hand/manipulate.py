@@ -24,9 +24,7 @@ MANIPULATE_PEN_XML = os.path.join("hand", "manipulate_pen.xml")
 
 
 def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
-    """Factory function that returns a BaseManipulateEnv class that inherits
-    from MujocoPyHandEnv or MujocoHandEnv depending on the mujoco python bindings.
-    """
+    """Factory function that returns a BaseManipulateEnv class that inherits from MujocoPyHandEnv or MujocoHandEnv depending on the mujoco python bindings."""
 
     class BaseManipulateEnv(HandEnvClass):
         def __init__(
@@ -490,8 +488,8 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
 
 
 class MujocoHandBlockEnv(MujocoManipulateEnv):
-    """
-    ## Description
+    # noqa: D415
+    """## Description
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
@@ -722,6 +720,7 @@ class MujocoPyHandBlockEnv(MujocoPyManipulateEnv, EzPickle):
 
 
 class MujocoHandEggEnv(MujocoManipulateEnv, EzPickle):
+    # noqa: D415
     """
     ## Description
 
@@ -957,6 +956,7 @@ class MujocoPyHandEggEnv(MujocoPyManipulateEnv, EzPickle):
 
 
 class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
+    # noqa: D415
     """
     ## Description
 
