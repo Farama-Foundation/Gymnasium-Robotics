@@ -29,10 +29,12 @@ non_mujoco_py_env_specs = [
 def test_env(spec):
     # Capture warnings
     env = spec.make(disable_env_checker=True).unwrapped
+    
     warnings.simplefilter("always")
     # Test if env adheres to Gym API
     with warnings.catch_warnings(record=True) as w:
-        check_env(env)
+        check_env(env, skip_render_check=True)
+        env.close()
     for warning in w:
         if warning.message.args[0] not in CHECK_ENV_IGNORE_WARNINGS:
             raise Error(f"Unexpected warning: {warning.message}")
