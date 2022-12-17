@@ -29,7 +29,7 @@ non_mujoco_py_env_specs = [
 def test_env(spec):
     # Capture warnings
     env = spec.make(disable_env_checker=True).unwrapped
-    
+
     warnings.simplefilter("always")
     # Test if env adheres to Gym API
     with warnings.catch_warnings(record=True) as w:
