@@ -1,46 +1,54 @@
 import os
 
 import gymnasium
-import numpy
 import numpy as np
 from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
 from jinja2 import Template
 
 
-class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
-    def __init__(self, agent_conf, render_mode: str = None):
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            "render_fps": 50,
-        }
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 4.0,
+}
 
-        n_agents = int(agent_conf.split("x")[0])
-        n_segs_per_agents = int(agent_conf.split("x")[1])
-        n_segs = n_agents * n_segs_per_agents
+
+class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+        "render_fps": 50,
+    }
+
+    def __init__(self, n_segs: int, render_mode: str = None):
+        """
+            Args:
+                n_segs: the number of segments of the swimmer (3 segments is the same as Gymansium's swimmer)
+        """
+        self._forward_reward_weight = 1.0
+        self._ctrl_cost_weight = 1e-4
 
         # Check whether asset file exists already, otherwise create it
         asset_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
-            "manyagent_swimmer_{}_agents_each_{}_segments.auto.xml".format(
-                n_agents, n_segs_per_agents
+            "many_segment_swimmer_{}_segments.auto.xml".format(
+                n_segs
             ),
         )
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
 
         observation_space = gymnasium.spaces.Box(
-            low=-numpy.inf, high=numpy.inf, shape=(n_segs * 2 + 4,), dtype=numpy.float32
+            low=-np.inf, high=np.inf, shape=(n_segs * 2 + 4,), dtype=np.float32
         )
         mujoco_env.MujocoEnv.__init__(
             self,
             asset_path,
             4,
             observation_space=observation_space,
+            default_camera_config=DEFAULT_CAMERA_CONFIG,
             render_mode=render_mode,
         )
         EzPickle.__init__(self)
@@ -50,10 +58,10 @@ class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
         template_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
-            "manyagent_swimmer.xml.template",
+            "many_segment_swimmer.xml.template",
         )
-        with open(template_path) as f:
-            t = Template(f.read())
+        with open(template_path) as file:
+            template = Template(file.read())
         body_str_template = """
         <body name="mid{:d}" pos="-1 0 0">
           <geom density="1000" fromto="0 0 0 -1 0 0" size="0.1" type="capsule"/>
@@ -80,33 +88,44 @@ class ManyAgentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
         for i in range(n_segs):
             actuator_str += actuator_str_template.format(i)
 
-        rt = t.render(body=body_str, actuators=actuator_str)
-        with open(asset_path, "w") as f:
-            f.write(rt)
+        rt = template.render(body=body_str, actuators=actuator_str)
+        with open(asset_path, "w") as file:
+            file.write(rt)
         pass
 
-    def step(self, a):
-        ctrl_cost_coeff = 0.0001
-        xposbefore = self.unwrapped.data.qpos[0]
-        self.do_simulation(a, self.frame_skip)
-        xposafter = self.unwrapped.data.qpos[0]
-        reward_fwd = (xposafter - xposbefore) / self.dt
-        reward_ctrl = -ctrl_cost_coeff * np.square(a).sum()
-        reward = reward_fwd + reward_ctrl
-        ob = self._get_obs()
+    def step(self, action):
+        x_position_before = self.data.qpos[0]
+        self.do_simulation(action, self.frame_skip)
+        x_position_after = self.data.qpos[0]
+
+        x_velocity = (x_position_after - x_position_before) / self.dt
+
+        forward_reward = self._forward_reward_weight * x_velocity
+
+        ctrl_cost = self._ctrl_cost_weight * np.square(action).sum()
+
+        observation = self._get_obs()
+        reward = forward_reward - ctrl_cost
+        terminal = False
+        truncated = False
+        info = {
+            "reward_fwd": forward_reward,
+            "reward_ctrl": -ctrl_cost,
+            "x_position": x_position_after,
+            # "y_position": xy_position_after[1],
+            # "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
+            "x_velocity": x_velocity,
+            # "y_velocity": y_velocity,
+            "forward_reward": forward_reward,
+        }
+
         if self.render_mode == "human":
             self.render()
-        return (
-            ob,
-            reward,
-            False,
-            False,
-            dict(reward_fwd=reward_fwd, reward_ctrl=reward_ctrl),
-        )
+        return observation, reward, terminal, truncated, info
 
     def _get_obs(self):
-        qpos = self.unwrapped.data.qpos
-        qvel = self.unwrapped.data.qvel
+        qpos = self.data.qpos
+        qvel = self.data.qvel
         return np.concatenate([qpos.flat[2:], qvel.flat])
 
     def reset_model(self):

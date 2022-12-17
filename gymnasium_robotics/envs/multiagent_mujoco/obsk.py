@@ -4,7 +4,6 @@ import itertools
 import typing
 from copy import deepcopy
 
-import numpy
 import numpy as np
 
 
@@ -16,7 +15,7 @@ class Node:
         qvel_ids: int,
         act_ids: int,
         body_fn=None,
-        bodies: list[int] = None,
+        bodies: list[int] = [],
         extra_obs: dict[str, typing.Callable] = None,
         tendons=None,
     ):
@@ -73,7 +72,7 @@ class HyperEdge:
 def get_joints_at_kdist(
     agent_partition: list[tuple[Node, ...]],
     hyperedges: list[HyperEdge],
-    k: int = 0,
+    k: int,
 ) -> dict[int, list[Node]]:
     """
     Identify all joints at distance <= k from agent agent_id
@@ -128,9 +127,9 @@ def build_obs(
     data,
     k_dict: dict[int, list[Node]],
     k_categories: list[list[str]],
-    global_dict: dict[int, list[Node]],
+    global_nodes: list[Node],
     global_categories: list[str],
-) -> numpy.ndarray:
+) -> np.ndarray:
     """
     Given a k_dict from get_joints_at_kdist, extract observation vector.
 
@@ -166,40 +165,41 @@ def build_obs(
                     obs_lst.extend([data.qfrc_actuator[node.qvel_ids]])
                 elif category in ["cvel", "cinert", "cfrc_ext"]:
                     # this is a "body position" item
-                    if node.bodies is not None:
-                        for body in node.bodies:
-                            if category not in body_set_dict:
-                                body_set_dict[category] = set()
-                            if body not in body_set_dict[category]:
-                                items = getattr(data, category)[body].tolist()
-                                items = getattr(node, "body_fn", lambda _id, x: x)(
-                                    body, items
-                                )
-                                obs_lst.extend(
-                                    items if isinstance(items, list) else [items]
-                                )
-                                body_set_dict[category].add(body)
+                    for body in node.bodies:
+                        if category not in body_set_dict:
+                            body_set_dict[category] = set()
+                        if body not in body_set_dict[category]:
+                            items = getattr(data, category)[body].tolist()
+                            if node.body_fn is not None:
+                                items = node.body_fn(body, items)
+                            obs_lst.extend(
+                                items if isinstance(items, list) else [items]
+                            )
+                            body_set_dict[category].add(body)
 
     # Add global observations
     body_set_dict = {}
     for category in global_categories:
-        if category in ["qvel", "qpos", "qfrc_actuator"]:
-            for joint in global_dict.get("joints", []):
-                if category in joint.extra_obs:
-                    items = joint.extra_obs[category](data).tolist()
-                    obs_lst.extend(items if isinstance(items, list) else [items])
-                elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
-                    obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
-                else:
-                    items = getattr(data, category)[getattr(joint, f"{category}_ids")]
-                    obs_lst.extend(items if isinstance(items, list) else [items])
-        else:
-            for body in global_dict.get("bodies", []):
-                if category not in body_set_dict:
-                    body_set_dict[category] = set()
-                if body not in body_set_dict[category]:
-                    obs_lst.extend(getattr(data, category)[body].tolist())
-                    body_set_dict[category].add(body)
+        # for joint in global_dict.get("joints", []):
+        for joint in global_nodes:
+            if category in joint.extra_obs:
+                items = joint.extra_obs[category](data).tolist()
+                obs_lst.extend(items if isinstance(items, list) else [items])
+            elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
+                obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
+            elif category in ["qvel", "qpos"]:
+                items = getattr(data, category)[getattr(joint, f"{category}_ids")]
+                obs_lst.extend(items if isinstance(items, list) else [items])
+            else:
+                for body in joint.bodies:
+                    if category not in body_set_dict:
+                        body_set_dict[category] = set()
+                    if body not in body_set_dict[category]:
+                        items = getattr(data, category)[body].tolist()
+                        if joint.body_fn is not None:
+                            items = joint.body_fn(body, items)
+                        obs_lst.extend(items if isinstance(items, list) else [items])
+                        body_set_dict[category].add(body)
 
     return np.array(obs_lst)
 
@@ -239,7 +239,7 @@ def get_parts_and_edges(
         )
         root_z = Node("root_z", 1, 1, None)
         root_y = Node("root_y", 2, 2, None)
-        globals = {"joints": [root_x, root_y, root_z]}
+        globals = [root_x, root_y, root_z]
 
         if partitioning is None:
             parts = [(bfoot, bshin, bthigh, ffoot, fshin, fthigh)]
@@ -353,7 +353,7 @@ def get_parts_and_edges(
                 "cfrc_ext": lambda data: np.clip(data.cfrc_ext[0:1], -1, 1),
             },
         )
-        globals = {"joints": [torso]}
+        globals = [torso]
 
         if partitioning is None:
             parts = [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]
@@ -425,7 +425,7 @@ def get_parts_and_edges(
             None,
             extra_obs={"qvel": lambda data: np.clip(np.array([data.qvel[2]]), -10, 10)},
         )
-        globals = {"joints": [root_x, root_y, root_z]}
+        globals = [root_x, root_y, root_z]
 
         if partitioning is None:
             parts = [
@@ -444,40 +444,58 @@ def get_parts_and_edges(
         return parts, edges, globals
 
     elif label in ["Humanoid-v4", "HumanoidStandup-v4"]:
-        # TODO waiting for https://github.com/Farama-Foundation/Gymnasium/issues/204
         # bodies
-        torso = 0
-        lwaist = 1
-        pelvis = 2
-        right_thigh = 3
-        right_sin = 4
-        right_foot = 5
-        left_thigh = 6
-        left_sin = 7
-        left_foot = 8
-        right_upper_arm = 9
-        right_lower_arm = 10
-        left_upper_arm = 11
-        left_lower_arm = 12
+        # worldbody = 0
+        torso = 1
+        lwaist = 2
+        pelvis = 3
+        right_thigh = 4
+        right_sin = 5
+        right_foot = 6
+        left_thigh = 7
+        left_sin = 8
+        left_foot = 9
+        right_upper_arm = 10
+        right_lower_arm = 11
+        left_upper_arm = 12
+        left_lower_arm = 13
 
         # define Mujoco-Graph
-        abdomen_y = Node("abdomen_y", -16, -16, 0)
-        abdomen_z = Node("abdomen_z", -17, -17, 1)
-        abdomen_x = Node("abdomen_x", -15, -15, 2)
-        right_hip_x = Node("right_hip_x", -14, -14, 3)
-        right_hip_z = Node("right_hip_z", -13, -13, 4)
-        right_hip_y = Node("right_hip_y", -12, -12, 5)
-        right_knee = Node("right_knee", -11, -11, 6)
-        left_hip_x = Node("left_hip_x", -10, -10, 7)
-        left_hip_z = Node("left_hip_z", -9, -9, 8)
-        left_hip_y = Node("left_hip_y", -8, -8, 9)
-        left_knee = Node("left_knee", -7, -7, 10)
-        right_shoulder1 = Node("right_shoulder1", -6, -6, 11)
-        right_shoulder2 = Node("right_shoulder2", -5, -5, 12)
-        right_elbow = Node("right_elbow", -4, -4, 13)
-        left_shoulder1 = Node("left_shoulder1", -3, -3, 14)
-        left_shoulder2 = Node("left_shoulder2", -2, -2, 15)
-        left_elbow = Node("left_elbow", -1, -1, 16)
+        abdomen_y = Node("abdomen_y", -16, -16, 0, bodies=[torso, lwaist, pelvis])
+        abdomen_z = Node("abdomen_z", -17, -17, 1, bodies=[torso, lwaist, pelvis])
+        abdomen_x = Node(
+            "abdomen_x", -15, -15, 2, bodies=[pelvis, right_thigh, left_thigh]
+        )
+        right_hip_x = Node("right_hip_x", -14, -14, 3, bodies=[right_thigh, right_sin])
+        right_hip_z = Node("right_hip_z", -13, -13, 4, bodies=[right_thigh, right_sin])
+        right_hip_y = Node("right_hip_y", -12, -12, 5, bodies=[right_thigh, right_sin])
+        right_knee = Node("right_knee", -11, -11, 6, bodies=[right_sin, right_foot])
+        left_hip_x = Node("left_hip_x", -10, -10, 7, bodies=[left_thigh, left_sin])
+        left_hip_z = Node("left_hip_z", -9, -9, 8, bodies=[left_thigh, left_sin])
+        left_hip_y = Node("left_hip_y", -8, -8, 9, bodies=[left_thigh, left_sin])
+        left_knee = Node("left_knee", -7, -7, 10, bodies=[left_sin, left_foot])
+        right_shoulder1 = Node(
+            "right_shoulder1",
+            -6,
+            -6,
+            11,
+            bodies=[torso, right_upper_arm, right_lower_arm],
+        )
+        right_shoulder2 = Node(
+            "right_shoulder2",
+            -5,
+            -5,
+            12,
+            bodies=[torso, right_upper_arm, right_lower_arm],
+        )
+        right_elbow = Node("right_elbow", -4, -4, 13, bodies=[right_lower_arm])
+        left_shoulder1 = Node(
+            "left_shoulder1", -3, -3, 14, bodies=[torso, left_upper_arm, left_lower_arm]
+        )
+        left_shoulder2 = Node(
+            "left_shoulder2", -2, -2, 15, bodies=[torso, left_upper_arm, left_lower_arm]
+        )
+        left_elbow = Node("left_elbow", -1, -1, 16, bodies=[left_lower_arm])
 
         edges = [
             HyperEdge(abdomen_x, abdomen_y, abdomen_z),
@@ -511,7 +529,7 @@ def get_parts_and_edges(
                 # "cfrc_ext": lambda data: np.clip(data.cfrc_ext[0:1], -1, 1),
             },
         )
-        globals = {"joints": [root]}
+        globals = [root]
 
         if partitioning is None:
             parts = [
@@ -568,11 +586,12 @@ def get_parts_and_edges(
         return parts, edges, globals
 
     elif label in ["Reacher-v4"]:
-
         # define Mujoco-Graph
+        # worldbody = 0
         body0 = 1
         body1 = 2
         fingertip = 3
+        # target = 4
         joint0 = Node(
             "joint0",
             -4,
@@ -612,15 +631,13 @@ def get_parts_and_edges(
         )
         edges = [HyperEdge(joint0, joint1)]
 
-        worldbody = 0
-        target = 4
         target_x = Node(
             "target_x", -2, -2, None, extra_obs={"qvel": (lambda data: np.array([]))}
         )
         target_y = Node(
             "target_y", -1, -1, None, extra_obs={"qvel": (lambda data: np.array([]))}
         )
-        globals = {"bodies": [worldbody, target], "joints": [target_x, target_y]}
+        globals = [target_x, target_y]
 
         if partitioning is None:
             parts = [
@@ -639,6 +656,86 @@ def get_parts_and_edges(
 
         return parts, edges, globals
 
+    elif label in ["Pusher-v4"]:
+        # define Mujoco-Graph
+        r_shoulder_pan_joint = Node("r_wrist_roll_joint", 0, 0, 0)
+        r_shoulder_lift_joint = Node("r_wrist_roll_joint", 1, 1, 1)
+        r_upper_arm_roll_joint = Node("r_upper_arm_roll_joint", 2, 2, 2)
+        r_elbow_flex_joint = Node("r_elbow_flex_joint", 3, 3, 3)
+        r_forearm_roll_joint = Node("r_forearm_roll_joint", 4, 4, 4)
+        r_wrist_flex_joint = Node("r_wrist_flex_joint", 5, 5, 5)
+        r_wrist_roll_joint = Node("r_wrist_roll_joint", 6, 6, 6)
+
+        edges = [
+            HyperEdge(r_shoulder_pan_joint, r_shoulder_lift_joint),
+            HyperEdge(r_shoulder_lift_joint, r_upper_arm_roll_joint),
+            HyperEdge(r_upper_arm_roll_joint, r_elbow_flex_joint),
+            HyperEdge(r_elbow_flex_joint, r_forearm_roll_joint),
+            HyperEdge(r_forearm_roll_joint, r_wrist_flex_joint),
+            HyperEdge(r_wrist_flex_joint, r_wrist_roll_joint),
+        ]
+
+        tips_arm_com = Node(
+            "tips_arm",
+            None,
+            None,
+            None,
+            extra_obs={
+                "qpos": (lambda data: np.array(data.body("tips_arm").xpos)),
+                "qvel": (lambda data: np.array([])),
+            },
+        )
+        object_com = Node(
+            "object",
+            None,
+            None,
+            None,
+            extra_obs={
+                "qpos": (lambda data: np.array(data.body("object").xpos)),
+                "qvel": (lambda data: np.array([])),
+            },
+        )
+        goal_com = Node(
+            "goal",
+            None,
+            None,
+            None,
+            extra_obs={
+                "qpos": (lambda data: np.array(data.body("goal").xpos)),
+                "qvel": (lambda data: np.array([])),
+            },
+        )
+
+        globals = [tips_arm_com, object_com, goal_com]
+
+        if partitioning is None:
+            parts = [
+                (
+                    r_shoulder_pan_joint,
+                    r_shoulder_lift_joint,
+                    r_upper_arm_roll_joint,
+                    r_elbow_flex_joint,
+                    r_forearm_roll_joint,
+                    r_wrist_flex_joint,
+                    r_wrist_roll_joint,
+                )
+            ]
+        if partitioning == "3p":
+            parts = [
+                (
+                    r_shoulder_pan_joint,
+                    r_shoulder_lift_joint,
+                    r_upper_arm_roll_joint,
+                ),  # Shoulder
+                (r_elbow_flex_joint,),  # Elbow
+                (r_forearm_roll_joint, r_wrist_flex_joint, r_wrist_roll_joint),  # Wrist
+            ]
+            # TODO: There could be tons of decompositions here
+        else:
+            raise Exception(f"UNKNOWN partitioning config: {partitioning}")
+
+        return parts, edges, globals
+
     elif label in ["Swimmer-v4"]:
         # define Mujoco-Graph
         joint0 = Node(
@@ -646,23 +743,19 @@ def get_parts_and_edges(
             -2,
             -2,
             0,
-            extra_obs={
-                "qvel": (lambda data: numpy.array([data.qvel[0], data.qvel[3]]))
-            },
+            extra_obs={"qvel": (lambda data: np.array([data.qvel[0], data.qvel[3]]))},
         )
         joint1 = Node(
             "rot3",
             -1,
             -1,
             1,
-            extra_obs={
-                "qvel": (lambda data: numpy.array([data.qvel[1], data.qvel[4]]))
-            },
+            extra_obs={"qvel": (lambda data: np.array([data.qvel[1], data.qvel[4]]))},
         )
 
         edges = [HyperEdge(joint0, joint1)]
         free_body_rot = Node("free_body_rot", 2, 2, None)
-        globals = {"joints": [free_body_rot]}
+        globals = [free_body_rot]
 
         if partitioning is None:
             parts = [
@@ -699,7 +792,7 @@ def get_parts_and_edges(
         )
         root_z = Node("root_z", 1, 1, None)
         root_y = Node("root_y", 2, 2, None)
-        globals = {"joints": [root_x, root_x, root_z]}
+        globals = [root_x, root_x, root_z]
 
         if partitioning is None:
             parts = [
@@ -793,7 +886,7 @@ def get_parts_and_edges(
         )
         root_z1 = Node("root_z1", 10, 10, None)
         root_y1 = Node("root_y1", 11, 11, None)
-        globals = {"joints": [root_x0, root_y0, root_z0, root_x1, root_y1, root_z1]}
+        globals = [root_x0, root_y0, root_z0, root_x1, root_y1, root_z1]
 
         if partitioning is None:
             parts = [
@@ -838,7 +931,7 @@ def get_parts_and_edges(
             Node(f"rot{i:d}", -n_segs + i, -n_segs + i, i) for i in range(0, n_segs)
         ]
         edges = [HyperEdge(joints[i], joints[i + 1]) for i in range(n_segs - 1)]
-        globals = {}
+        globals = []
 
         parts = [
             tuple(joints[i * n_segs_per_agents : (i + 1) * n_segs_per_agents])
@@ -924,7 +1017,7 @@ def get_parts_and_edges(
                 "cfrc_ext": lambda data: np.clip(data.cfrc_ext[0:1], -1, 1),
             },
         )
-        globals = {"joints": [free_joint]}
+        globals = [free_joint]
 
         parts = [
             [
