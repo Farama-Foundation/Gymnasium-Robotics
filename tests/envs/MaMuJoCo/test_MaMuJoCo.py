@@ -148,21 +148,21 @@ def test_k_dict():
     )
     assert (
         str(test_env.k_dicts)
-        == "[{0: [ankle1, ankle3, hip1, hip3]}, {0: [ankle2, ankle4, hip2, hip4]}]"
+        == "[{0: [ankle1, ankle4, hip1, hip4]}, {0: [ankle2, ankle3, hip2, hip3]}]"
     ), "wrong k_dicts: " + str(test_env.k_dicts)
     test_env = MultiAgentMujocoEnv(
         scenario=scenario, agent_conf=agent_conf, agent_obsk=1
     )
     assert (
         str(test_env.k_dicts)
-        == "[{0: [ankle1, ankle3, hip1, hip3], 1: [hip2, hip4]}, {0: [ankle2, ankle4, hip2, hip4], 1: [hip1, hip3]}]"
+        == "[{0: [ankle1, ankle4, hip1, hip4], 1: [hip2, hip3]}, {0: [ankle2, ankle3, hip2, hip3], 1: [hip1, hip4]}]"
     ), "wrong k_dicts: " + str(test_env.k_dicts)
     test_env = MultiAgentMujocoEnv(
         scenario=scenario, agent_conf=agent_conf, agent_obsk=2
     )
     assert (
         str(test_env.k_dicts)
-        == "[{0: [ankle1, ankle3, hip1, hip3], 1: [hip2, hip4], 2: [ankle2, ankle4]}, {0: [ankle2, ankle4, hip2, hip4], 1: [hip1, hip3], 2: [ankle1, ankle3]}]"
+        == "[{0: [ankle1, ankle4, hip1, hip4], 1: [hip2, hip3], 2: [ankle2, ankle3]}, {0: [ankle2, ankle3, hip2, hip3], 1: [hip1, hip4], 2: [ankle1, ankle4]}]"
     ), "wrong k_dicts: " + str(test_env.k_dicts)
 
     scenario = "Ant"
