@@ -4,6 +4,13 @@ import numpy as np
 
 from gymnasium_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 0.5,
+    "azimuth": 55.0,
+    "elevation": -25.0,
+    "lookat": np.array([1, 0.96, 0.14]),
+}
+
 
 def get_base_hand_env(
     RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
@@ -21,24 +28,19 @@ def get_base_hand_env(
 
         # RobotEnv methods
         # ----------------------------
-        def _get_palm_xpos(self):
-            raise NotImplementedError
 
         def _set_action(self, action):
             assert action.shape == (20,)
-
-        def _viewer_setup(self):
-            lookat = self._get_palm_xpos()
-            for idx, value in enumerate(lookat):
-                self.viewer.cam.lookat[idx] = value
-            self.viewer.cam.distance = 0.5
-            self.viewer.cam.azimuth = 55.0
-            self.viewer.cam.elevation = -25.0
 
     return BaseHandEnv
 
 
 class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
+    def __init__(
+        self, default_camera_config: dict = DEFAULT_CAMERA_CONFIG, **kwargs
+    ) -> None:
+        super().__init__(default_camera_config=default_camera_config, **kwargs)
+
     def _set_action(self, action):
         super()._set_action(action)
         ctrlrange = self.model.actuator_ctrlrange
@@ -59,10 +61,6 @@ class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
             actuation_center = (ctrlrange[:, 1] + ctrlrange[:, 0]) / 2.0
         self.data.ctrl[:] = actuation_center + action * actuation_range
         self.data.ctrl[:] = np.clip(self.data.ctrl, ctrlrange[:, 0], ctrlrange[:, 1])
-
-    def _get_palm_xpos(self):
-        body_id = self._model_names.body_name2id["robot0:palm"]
-        return self.data.xpos[body_id]
 
 
 class MujocoPyHandEnv(get_base_hand_env(MujocoPyRobotEnv)):
@@ -92,3 +90,11 @@ class MujocoPyHandEnv(get_base_hand_env(MujocoPyRobotEnv)):
     def _get_palm_xpos(self):
         body_id = self.sim.model.body_name2id("robot0:palm")
         return self.sim.data.body_xpos[body_id]
+
+    def _viewer_setup(self):
+        lookat = self._get_palm_xpos()
+        for idx, value in enumerate(lookat):
+            self.viewer.cam.lookat[idx] = value
+        self.viewer.cam.distance = 0.5
+        self.viewer.cam.azimuth = 55.0
+        self.viewer.cam.elevation = -25.0
