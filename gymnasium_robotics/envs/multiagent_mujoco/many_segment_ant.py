@@ -6,7 +6,6 @@ from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
 from jinja2 import Template
 
-
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
@@ -31,9 +30,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         asset_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
-            "many_segment_ant_{}_segments.auto.xml".format(
-                n_segs
-            ),
+            f"many_segment_ant_{n_segs}_segments.auto.xml",
         )
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
 
@@ -120,8 +117,8 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         healthy_reward = self.healthy_reward
 
         ctrl_cost = self._ctrl_cost_weight * np.square(action).sum()
-        contact_cost = (
-            self._contact_cost_weight * np.sum(np.square(np.clip(self.data.cfrc_ext, -1, 1)))
+        contact_cost = self._contact_cost_weight * np.sum(
+            np.square(np.clip(self.data.cfrc_ext, -1, 1))
         )
         contact_cost = 0  # In Gymnasium.MuJoCo-v4 contanct costs are ignored
 
