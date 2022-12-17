@@ -5,6 +5,13 @@ import numpy as np
 from gymnasium_robotics.envs.robot_env import MujocoPyRobotEnv, MujocoRobotEnv
 from gymnasium_robotics.utils import rotations
 
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 2.5,
+    "azimuth": 132.0,
+    "elevation": -14.0,
+    "lookat": np.array([1.3, 0.75, 0.55]),
+}
+
 
 def goal_distance(goal_a, goal_b):
     assert goal_a.shape == goal_b.shape
@@ -143,14 +150,6 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
 
             raise NotImplementedError
 
-        def _viewer_setup(self):
-            lookat = self.get_gripper_xpos()
-            for idx, value in enumerate(lookat):
-                self.viewer.cam.lookat[idx] = value
-            self.viewer.cam.distance = 2.5
-            self.viewer.cam.azimuth = 132.0
-            self.viewer.cam.elevation = -14.0
-
         def _sample_goal(self):
             if self.has_object:
                 goal = self.initial_gripper_xpos[:3] + self.np_random.uniform(
@@ -238,6 +237,17 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
         self.sim.model.site_pos[site_id] = self.goal - sites_offset[0]
         self.sim.forward()
 
+    def _viewer_setup(self):
+        lookat = self.get_gripper_xpos()
+        for idx, value in enumerate(lookat):
+            self.viewer.cam.lookat[idx] = value
+        assert self.viewer is not None
+        for key, value in DEFAULT_CAMERA_CONFIG.items():
+            if isinstance(value, np.ndarray):
+                getattr(self.viewer.cam, key)[:] = value
+            else:
+                setattr(self.viewer.cam, key, value)
+
     def _reset_sim(self):
         self.sim.set_state(self.initial_state)
 
@@ -279,6 +289,9 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
 
 
 class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
+    def __init__(self, default_camera_config: dict = DEFAULT_CAMERA_CONFIG, **kwargs):
+        super().__init__(default_camera_config=default_camera_config, **kwargs)
+
     def _step_callback(self):
         if self.block_gripper:
             self._utils.set_joint_qpos(
