@@ -4,7 +4,7 @@ import numpy as np
 
 all_testing_env_specs = [
     env_spec
-    for env_spec in gym.envs.registry.values()
+    for env_spec in gym.registry.values()
     if env_spec.entry_point.startswith("gymnasium_robotics.envs")
 ]
 
