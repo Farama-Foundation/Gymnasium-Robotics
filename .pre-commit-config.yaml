@@ -46,9 +46,8 @@ repos:
     rev: 6.1.1
     hooks:
       - id: pydocstyle
-        exclude: ^(tests)
+        exclude: ^(tests)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)
         args:
-          - --source
-          - --explain
           - --convention=google
+          - --add-ignore=D100
         additional_dependencies: ["toml"]

@@ -1,9 +1,12 @@
+# noqa: D104
 from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
 
 
 def register_robotics_envs():
+    """Register all environment ID's to Gymnasium."""
+
     def _merge(a, b):
         a.update(b)
         return a

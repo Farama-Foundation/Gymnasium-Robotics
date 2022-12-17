@@ -66,9 +66,6 @@ class BaseRobotEnv(GoalEnv):
         self.height = height
         self._initialize_simulation()
 
-        self.viewer = None
-        self._viewers = {}
-
         self.goal = np.zeros(0)
         obs = self._get_obs()
 
@@ -151,21 +148,18 @@ class BaseRobotEnv(GoalEnv):
 
         return obs, {}
 
-    def close(self):
-        if self.viewer is not None:
-            self.viewer = None
-            self._viewers = {}
-
     # Extension methods
     # ----------------------------
     def _mujoco_step(self, action):
-        """Advance the mujoco simulation. Override depending on the python binginds,
-        either mujoco or mujoco_py
+        """Advance the mujoco simulation.
+
+        Override depending on the python binginds, either mujoco or mujoco_py
         """
         raise NotImplementedError
 
     def _reset_sim(self):
         """Resets a simulation and indicates whether or not it was successful.
+
         If a reset was unsuccessful (e.g. if a randomized state caused an error in the
         simulation), this method should indicate such a failure by returning False.
         In such a case, this method will be called again to attempt a the reset again.
@@ -173,9 +167,7 @@ class BaseRobotEnv(GoalEnv):
         return True
 
     def _initialize_simulation(self):
-        """
-        Initialize MuJoCo simulation data structures mjModel and mjData.
-        """
+        """Initialize MuJoCo simulation data structures mjModel and mjData."""
         raise NotImplementedError
 
     def _get_obs(self):
@@ -195,20 +187,23 @@ class BaseRobotEnv(GoalEnv):
         raise NotImplementedError()
 
     def _env_setup(self, initial_qpos):
-        """Initial configuration of the environment. Can be used to configure initial state
-        and extract information from the simulation.
+        """Initial configuration of the environment.
+
+        Can be used to configure initial state and extract information from the simulation.
         """
         pass
 
     def _render_callback(self):
-        """A custom callback that is called before rendering. Can be used
-        to implement custom visualizations.
+        """A custom callback that is called before rendering.
+
+        Can be used to implement custom visualizations.
         """
         pass
 
     def _step_callback(self):
-        """A custom callback that is called after stepping the simulation. Can be used
-        to enforce additional constraints on the simulation state.
+        """A custom callback that is called after stepping the simulation.
+
+        Can be used to enforce additional constraints on the simulation state.
         """
         pass
 
@@ -255,15 +250,25 @@ class MujocoRobotEnv(BaseRobotEnv):
         return super()._reset_sim()
 
     def render(self):
+        """Render a frame of the MuJoCo simulation.
+
+        Returns:
+            rgb image (np.ndarray): if render_mode is "rgb_array", return a 3D image array.
+        """
         self._render_callback()
         return self.mujoco_renderer.render(self.render_mode)
 
     def close(self):
+        """Close contains the code necessary to "clean up" the environment.
+
+        Terminates any existing WindowViewer instances in the Gymnaisum MujocoRenderer.
+        """
         if self.mujoco_renderer is not None:
             self.mujoco_renderer.close()
 
     @property
     def dt(self):
+        """Return the timestep of each Gymanisum step."""
         return self.model.opt.timestep * self.n_substeps
 
     def _mujoco_step(self, action):
@@ -278,6 +283,9 @@ class MujocoPyRobotEnv(BaseRobotEnv):
             )
         self._mujoco_py = mujoco_py
         self._utils = mujoco_py_utils
+
+        self.viewer = None
+        self._viewers = {}
 
         logger.warn(
             "This version of the mujoco environments depends "
@@ -303,6 +311,11 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         return super()._reset_sim()
 
     def render(self):
+        """Render a frame of the MuJoCo simulation.
+
+        Returns:
+            rgb image (np.ndarray): if render_mode is "rgb_array", return a 3D image array.
+        """
         width, height = self.width, self.height
         assert self.render_mode in self.metadata["render_modes"]
         self._render_callback()
@@ -320,6 +333,10 @@ class MujocoPyRobotEnv(BaseRobotEnv):
             self._get_viewer(self.render_mode).render()
 
     def close(self):
+        """Close contains the code necessary to "clean up" the environment.
+
+        Terminates any existing mujoco_py rendering windows, MjViewer or MjRenderContextOffscreen.
+        """
         if self.viewer is not None:
             self.viewer = None
             self._viewers = {}
@@ -342,13 +359,12 @@ class MujocoPyRobotEnv(BaseRobotEnv):
 
     @property
     def dt(self):
+        """Return the timestep of each Gymanisum step."""
         return self.sim.model.opt.timestep * self.sim.nsubsteps
 
     def _mujoco_step(self, action):
         self.sim.step()
 
     def _viewer_setup(self):
-        """Initial configuration of the viewer. Can be used to set the camera position,
-        for example.
-        """
+        """Initial configuration of the viewer. Can be used to set the camera position, for example."""
         pass
