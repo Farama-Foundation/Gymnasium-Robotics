@@ -269,7 +269,7 @@ def get_parts_and_edges(
         aux_4 = 12
         ankle_4 = 13
 
-        hip1 = Node(
+        hip1 = Node(  # front left leg
             "hip1",
             -8,
             -8,
@@ -285,7 +285,7 @@ def get_parts_and_edges(
             bodies=[front_left_leg, aux_1, ankle_1],
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
-        hip2 = Node(
+        hip2 = Node(  # front right leg
             "hip2",
             -6,
             -6,
@@ -301,7 +301,7 @@ def get_parts_and_edges(
             bodies=[front_right_leg, aux_2, ankle_2],
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
-        hip3 = Node(
+        hip3 = Node(  # back left leg
             "hip3",
             -4,
             -4,
@@ -317,7 +317,7 @@ def get_parts_and_edges(
             bodies=[back_leg, aux_3, ankle_3],
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
-        hip4 = Node(
+        hip4 = Node(  # back right leg
             "hip4",
             -2,
             -2,
@@ -357,10 +357,10 @@ def get_parts_and_edges(
 
         if partitioning is None:
             parts = [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]
-        elif partitioning == "2x4":  # neighbouring legs together
+        elif partitioning == "2x4":  # neighbouring legs together (front and back)
             parts = [(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]
         elif partitioning == "2x4d":  # diagonal legs together
-            parts = [(hip1, ankle1, hip3, ankle3), (hip2, ankle2, hip4, ankle4)]
+            parts = [(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]
         elif partitioning == "4x2":
             parts = [(hip1, ankle1), (hip2, ankle2), (hip3, ankle3), (hip4, ankle4)]
         else:
