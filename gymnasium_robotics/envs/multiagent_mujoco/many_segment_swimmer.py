@@ -6,7 +6,6 @@ from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
 from jinja2 import Template
 
-
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
@@ -24,8 +23,8 @@ class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
 
     def __init__(self, n_segs: int, render_mode: str = None):
         """
-            Args:
-                n_segs: the number of segments of the swimmer (3 segments is the same as Gymansium's swimmer)
+        Args:
+            n_segs: the number of segments of the swimmer (3 segments is the same as Gymansium's swimmer)
         """
         self._forward_reward_weight = 1.0
         self._ctrl_cost_weight = 1e-4
@@ -34,9 +33,7 @@ class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
         asset_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
-            "many_segment_swimmer_{}_segments.auto.xml".format(
-                n_segs
-            ),
+            f"many_segment_swimmer_{n_segs}_segments.auto.xml",
         )
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
 
