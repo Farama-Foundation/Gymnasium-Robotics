@@ -50,4 +50,3 @@ repos:
         args:
           - --convention=google
           - --add-ignore=D100
-        additional_dependencies: ["toml"]
