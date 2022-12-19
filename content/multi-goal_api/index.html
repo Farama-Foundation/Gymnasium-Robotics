@@ -240,8 +240,39 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../envs/hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/">Hand Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#special-case-we-want-to-ignore-the-z-component-of-the-rotation">Special case: We want to ignore the Z component of the rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#this-code-here-assumes-euler-angles-with-xyz-convention-we-first-transform">This code here assumes Euler angles with xyz convention. We first transform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#to-euler-then-set-the-z-component-to-be-equal-between-the-two-and-finally">to euler, then set the Z component to be equal between the two, and finally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#transform-back-into-quaternions">transform back into quaternions.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#subtract-quaternions-and-extract-angle-between-them">Subtract quaternions and extract angle between them.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#goalenv-methods">GoalEnv methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id1">—————————-</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#we-weigh-the-difference-in-position-to-avoid-that-d-pos-in-meters-is-completely">We weigh the difference in position to avoid that <code class="docutils literal notranslate"><span class="pre">d_pos</span></code> (in meters) is completely</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#dominated-by-d-rot-in-radians">dominated by <code class="docutils literal notranslate"><span class="pre">d_rot</span></code> (in radians).</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#robotenv-methods">RobotEnv methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id2">—————————-</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#randomization-initial-rotation">Randomization initial rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#randomize-initial-position">Randomize initial position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#run-the-simulation-for-a-bunch-of-timesteps-to-let-everything-settle-in">Run the simulation for a bunch of timesteps to let everything settle in.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#select-a-goal-for-the-object-position">Select a goal for the object position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#select-a-goal-for-the-object-rotation">Select a goal for the object rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#assign-current-state-to-target-object-but-offset-a-bit-so-that-the-actual-object">Assign current state to target object but offset a bit so that the actual object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#is-not-obscured">is not obscured.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#move-the-object-to-the-side-since-we-do-not-care-about-it-s-position">Move the object to the side since we do not care about it’s position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#object-position-and-rotation">Object position and rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id3">Randomization initial rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id4">Randomize initial position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id5">Run the simulation for a bunch of timesteps to let everything settle in.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id6">Select a goal for the object position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id7">Select a goal for the object rotation.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id8">Assign current state to target object but offset a bit so that the actual object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id9">is not obscured.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#id10">Move the object to the side since we do not care about it’s position.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandBlock/#noqa-d415">noqa: D415</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandEgg/">Hand Egg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandEgg/#noqa-d415">noqa: D415</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandPen/">Hand Pen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandPen/#noqa-d415">noqa: D415</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../envs/hand/HandReach/">Hand Reach</a></li>
 </ul>
 </li>
@@ -338,12 +369,11 @@ goal, e.g. state derived from the simulation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.</span></span><span class="sig-name descname"><span class="pre">GoalEnv</span></span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv" title="Permalink to this definition">#</a></dt>
-<dd><p>A goal-based environment. It functions just as any regular Gymnasium environment but it
-imposes a required structure on the observation_space. More concretely, the observation
-space is required to contain at least three elements, namely <cite>observation</cite>, <cite>desired_goal</cite>, and
-<cite>achieved_goal</cite>. Here, <cite>desired_goal</cite> specifies the goal that the agent should attempt to achieve.
-<cite>achieved_goal</cite> is the goal that it currently achieved instead. <cite>observation</cite> contains the
-actual observations of the environment as per usual.</p>
+<dd><p>A goal-based environment.</p>
+<p>It functions just as any regular Gymnasium environment but it imposes a required structure on the observation_space. More concretely,
+the observation space is required to contain at least three elements, namely <cite>observation</cite>, <cite>desired_goal</cite>, and <cite>achieved_goal</cite>.
+Here, <cite>desired_goal</cite> specifies the goal that the agent should attempt to achieve. <cite>achieved_goal</cite> is the goal that it currently achieved instead.
+<cite>observation</cite> contains the actual observations of the environment as per usual.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#gymnasium_robotics.core.GoalEnv.compute_reward" title="gymnasium_robotics.core.GoalEnv.compute_reward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_reward()</span></code></a> - Externalizes the reward function by taking the achieved and desired goal, as well as extra information. Returns reward.</p></li>
 <li><p><a class="reference internal" href="#gymnasium_robotics.core.GoalEnv.compute_terminated" title="gymnasium_robotics.core.GoalEnv.compute_terminated"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compute_terminated()</span></code></a> - Returns boolean termination depending on the achieved and desired goal, as well as extra information.</p></li>
@@ -356,9 +386,8 @@ actual observations of the environment as per usual.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_reward">
 <span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_reward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_reward" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the step reward. This externalizes the reward function and makes
-it dependent on a desired goal and the one that was achieved. If you wish to include
-additional rewards that are independent of the goal, you can include the necessary values
+<dd><p>Compute the step reward. This externalizes the reward function and makes it dependent on a desired goal and the one that was achieved.</p>
+<p>If you wish to include additional rewards that are independent of the goal, you can include the necessary values
 to derive it in ‘info’ and compute it accordingly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -381,11 +410,11 @@ assert reward == env.compute_reward(ob[‘achieved_goal’], ob[‘desired_goal�
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_terminated">
 <span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_terminated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_terminated" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the step termination. Allows to customize the termination states depending on the
-desired and the achieved goal. If you wish to determine termination states independent of the goal,
-you can include necessary values to derive it in ‘info’ and compute it accordingly. The envirtonment reaches
-a termination state when this state leads to an episode ending in an episodic task thus breaking .
-More information can be found in: <a class="reference external" href="https://farama.org/New-Step-API#theory">https://farama.org/New-Step-API#theory</a></p>
+<dd><p>Compute the step termination. Allows to customize the termination states depending on the desired and the achieved goal.</p>
+<p>If you wish to determine termination states independent of the goal, you can include necessary values to derive it in ‘info’
+and compute it accordingly. The envirtonment reaches a termination state when this state leads to an episode ending in an episodic
+task thus breaking .</p>
+<p>More information can be found in: <a class="reference external" href="https://farama.org/New-Step-API#theory">https://farama.org/New-Step-API#theory</a></p>
 <p>Termination states are</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -408,11 +437,11 @@ assert terminated == env.compute_terminated(ob[‘achieved_goal’], ob[‘desir
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_truncated">
 <span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_truncated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_truncated" title="Permalink to this definition">#</a></dt>
-<dd><p>Compute the step truncation. Allows to customize the truncated states depending on the
-desired and the achieved goal. If you wish to determine truncated states independent of the goal,
-you can include necessary values to derive it in ‘info’ and compute it accordingly. Truncated states
-are those that are out of the scope of the Markov Decision Process (MDP) such as time constraints in a
-continuing task. More information can be found in: <a class="reference external" href="https://farama.org/New-Step-API#theory">https://farama.org/New-Step-API#theory</a></p>
+<dd><p>Compute the step truncation. Allows to customize the truncated states depending on the desired and the achieved goal.</p>
+<p>If you wish to determine truncated states independent of the goal, you can include necessary values to derive it in ‘info’
+and compute it accordingly. Truncated states are those that are out of the scope of the Markov Decision Process (MDP) such
+as time constraints in a continuing task.</p>
+<p>More information can be found in: <a class="reference external" href="https://farama.org/New-Step-API#theory">https://farama.org/New-Step-API#theory</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
