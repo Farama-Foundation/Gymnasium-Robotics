@@ -17,10 +17,7 @@ These environments are based on the [Shadow Dexterous Hand](https://www.shadowro
 ```
 
 ```{toctree}
+:glob:
 :hidden:
-HandReach
-HandBlock
-HandEgg
-HandPen
-
+./*
 ```
