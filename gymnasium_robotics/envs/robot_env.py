@@ -29,7 +29,7 @@ DEFAULT_SIZE = 480
 
 
 class BaseRobotEnv(GoalEnv):
-    """Superclass for all MuJoCo robotic environments."""
+    """Superclass for all MuJoCo fetch and hand robotic environments."""
 
     metadata = {
         "render_modes": [
@@ -49,6 +49,17 @@ class BaseRobotEnv(GoalEnv):
         width: int = DEFAULT_SIZE,
         height: int = DEFAULT_SIZE,
     ):
+        """Initialize the hand and fetch robot superclass.
+
+        Args:
+            model_path (string): the path to the mjcf MuJoCo model.
+            initial_qpos (np.ndarray): initial position value of the joints in the MuJoCo simulation.
+            n_actions (integer): size of the action space.
+            n_substeps (integer): number of MuJoCo simulation timesteps per Gymnasium step.
+            render_mode (optional string): type of rendering mode, "human" for window rendeirng and "rgb_array" for offscreen. Defaults to None.
+            width (optional integer): width of each rendered frame. Defaults to DEFAULT_SIZE.
+            height (optional integer): height of each rendered frame . Defaults to DEFAULT_SIZE.
+        """
         if model_path.startswith("/"):
             self.fullpath = model_path
         else:
@@ -155,8 +166,8 @@ class BaseRobotEnv(GoalEnv):
         configuration.
 
         Args:
-            seed (optional int): The seed that is used to initialize the environment's PRNG (`np_random`). Defaults to None.
-            options (optional dict): Can be used when `reset` is override for additional information to specify how the environment is reset.
+            seed (optional integer): The seed that is used to initialize the environment's PRNG (`np_random`). Defaults to None.
+            options (optional dictionary): Can be used when `reset` is override for additional information to specify how the environment is reset.
 
         Returns:
             observation (dictionary) : Observation of the initial state. It should satisfy the `GoalEnv` :attr:`observation_space`.
@@ -235,7 +246,29 @@ class BaseRobotEnv(GoalEnv):
 
 
 class MujocoRobotEnv(BaseRobotEnv):
+    """Robot base class for fetch and hand environment versions that depend on new mujoco bindings from Deepmind."""
+
     def __init__(self, default_camera_config: Optional[dict] = None, **kwargs):
+        """Initialize mujoco environment.
+
+        The Deepmind mujoco bindings are initialized alongside the respective mujoco_utils.
+
+        Args:
+            default_camera_config (optional dictionary): dictionary of default mujoco camera parameters for human rendering. Defaults to None.
+            The keys for this dictionary can be found in the mujoco mjvCamera struct:
+            https://mujoco.readthedocs.io/en/latest/APIreference.html?highlight=azimuth#mjvcamera.
+
+                - "type" (integer): camera type (mjtCamera)
+                - "fixedcamid" (integer): fixed camera id
+                - "trackbodyid": body id to track
+                - "lookat" (np.ndarray): cartesian (x, y, z) lookat point
+                - "distance" (float): distance to lookat point or tracked body
+                - "azimuth" (float): camera azimuth (deg)
+                - "elevation" (float): camera elevation (deg)
+
+        Raises:
+            error.DependencyNotInstalled: if mujoco bindings are not installed. Install with `pip install mujoco`
+        """
         if MUJOCO_IMPORT_ERROR is not None:
             raise error.DependencyNotInstalled(
                 f"{MUJOCO_IMPORT_ERROR}. (HINT: you need to install mujoco)"
@@ -302,7 +335,19 @@ class MujocoRobotEnv(BaseRobotEnv):
 
 
 class MujocoPyRobotEnv(BaseRobotEnv):
+    """Robot base class for fetch and hand environment versions that depend on mujoco_py bindings."""
+
     def __init__(self, **kwargs):
+        """Initialize mujoco_py environment.
+
+        The mujoco_py bindings are initialized along the respective mujoco_py_utils.
+
+        Note: Environments that depend on mujoco_py are no longer maintained, thus a warning is created to notify the user to
+        bump the environment to the latest version
+
+        Raises:
+            error.DependencyNotInstalled: if mujoco_py bindings are not installed. Install with `pip install gymnasium-robotics[mujoco-py]`
+        """
         if MUJOCO_PY_IMPORT_ERROR is not None:
             raise error.DependencyNotInstalled(
                 f"{MUJOCO_PY_IMPORT_ERROR}. (HINT: you need to install mujoco_py, and also perform the setup instructions here: https://github.com/openai/mujoco-py/.)"
