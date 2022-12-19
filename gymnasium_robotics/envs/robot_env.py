@@ -101,6 +101,20 @@ class BaseRobotEnv(GoalEnv):
         return False
 
     def step(self, action):
+        """Run one timestep of the environment's dynamics using the agent actions.
+
+        Args:
+            action (np.ndarray): Control action to be applied to the agent and update the simulation. Should be of shape :attr:`action_space`.
+
+        Returns:
+            observation (dictionary): Next observation due to the agent actions .It should satisfy the `GoalEnv` :attr:`observation_space`.
+            reward (integer): The reward as a result of taking the action. This is calculated by :meth:`compute_reward` of `GoalEnv`.
+            terminated (boolean): Whether the agent reaches the terminal state. This is calculated by :meth:`compute_terminated` of `GoalEnv`.
+            truncated (boolean): Whether the truncation condition outside the scope of the MDP is satisfied. Timically, due to a timelimit, but
+            it is also calculated in :meth:`compute_truncated` of `GoalEnv`.
+            info (dictionary): Contains auxiliary diagnostic information (helpful for debugging, learning, and logging). In this case there is a single
+            key `is_success` with a boolean value, True if the `achieved_goal` is the same as the `desired_goal`.
+        """
         if np.array(action).shape != self.action_space.shape:
             raise ValueError("Action dimension mismatch")
 
@@ -132,11 +146,23 @@ class BaseRobotEnv(GoalEnv):
         seed: Optional[int] = None,
         options: Optional[dict] = None,
     ):
-        # Attempt to reset the simulator. Since we randomize initial conditions, it
-        # is possible to get into a state with numerical issues (e.g. due to penetration or
-        # Gimbel lock) or we may not achieve an initial condition (e.g. an object is within the hand).
-        # In this case, we just keep randomizing until we eventually achieve a valid initial
-        # configuration.
+        """Reset MuJoCo simulation to initial state.
+
+        Note: Attempt to reset the simulator. Since we randomize initial conditions, it
+        is possible to get into a state with numerical issues (e.g. due to penetration or
+        Gimbel lock) or we may not achieve an initial condition (e.g. an object is within the hand).
+        In this case, we just keep randomizing until we eventually achieve a valid initial
+        configuration.
+
+        Args:
+            seed (optional int): The seed that is used to initialize the environment's PRNG (`np_random`). Defaults to None.
+            options (optional dict): Can be used when `reset` is override for additional information to specify how the environment is reset.
+
+        Returns:
+            observation (dictionary) : Observation of the initial state. It should satisfy the `GoalEnv` :attr:`observation_space`.
+            info (dictionary): This dictionary contains auxiliary information complementing ``observation``. It should be analogous to
+                the ``info`` returned by :meth:`step`.
+        """
         super().reset(seed=seed)
         did_reset_sim = False
         while not did_reset_sim:
