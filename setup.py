@@ -54,7 +54,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords=["Reinforcement Learning", "Gymnasium", "RL", "AI", "Robotics"],
-    python_requires=">=3.7, <=3.11",
+    python_requires=">=3.7",
     packages=[
         package
         for package in find_packages()
