@@ -13,6 +13,10 @@ RUN mkdir /root/.mujoco \
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 
+RUN git clone https://github.com/openai/mujoco-py.git\
+    && cd mujoco-py \
+    && pip install -e .
+
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
 
