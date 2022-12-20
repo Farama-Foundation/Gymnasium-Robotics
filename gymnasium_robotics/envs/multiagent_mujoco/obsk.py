@@ -8,27 +8,30 @@ import numpy as np
 
 
 class Node:
+    """A node of the mujoco graph representing a single body part and it's corresponding single action & observetions."""
+
     def __init__(
         self,
-        label,
+        label: str,
         qpos_ids: int,
         qvel_ids: int,
         act_ids: int,
-        body_fn=None,
+        body_fn: typing.Callable = None,
         bodies: list[int] = [],
         extra_obs: dict[str, typing.Callable] = None,
-        tendons=None,
+        tendons: list[int] = [],
     ):
-        """
-        A node of the mujoco graph representing a single body part and it's corresponding single action & observetions
+        """Init.
 
         Args:
-            act_ids:
-                the action assicaiated with that node
-            extra_obs:
-                an optional overwrite of observation types keyied by categories
-            bodies:
-                is used to index ["cvel", "cinert", "cfrc_ext"] categories
+            label: the name of the node
+            qpos_ids: the corresponding corresponding ID,
+            qvel_ids: the corresponding  velocity ID,
+            act_ids: the action's ID assicaiated with that node
+            body_fn: an optional overwrite of the bodies's functions
+            bodies: is used to index ["cvel", "cinert", "cfrc_ext"] categories
+            extra_obs: an optional overwrite of observation types keyied by categories
+            tendons: the of list of tendon IDs
         """
         self.label = label
         self.qpos_ids = qpos_ids
@@ -38,35 +41,43 @@ class Node:
         self.extra_obs = {} if extra_obs is None else extra_obs
         self.body_fn = body_fn
         self.tendons = tendons
-        pass
 
     def __str__(self):
+        """Returns a string of the node using the provided label."""
         return self.label
 
     def __repr__(self):
+        """Returns a string of the node using the provided label."""
         return self.label
 
 
 class HyperEdge:
-    """
-    A collection of nodes, that are fully connected (with edges)
+    """A collection of nodes, that are fully connected (with edges).
 
-    If a Hyper consists of 2 Nodes then it is simply an Edge of this Nodes
+    If a HyperEdge consists of 2 Nodes, then it is simply an Edge of those Nodes.
 
     More at: https://en.wikipedia.org/wiki/Hypergraph
     """
 
-    def __init__(self, *edges: Node):
-        self.edges = set(edges)
+    def __init__(self, *nodes: Node):
+        """Init.
 
-    def __contains__(self, item):
-        return item in self.edges
+        Args:
+            nodes: the nodes that are fully connected
+        """
+        self.nodes = set(nodes)
+
+    def __contains__(self, item: Node):
+        """Checks if Item is in the edge."""
+        return item in self.nodes
 
     def __str__(self):
-        return f"HyperEdge({self.edges})"
+        """Returns a string of the HyperEdge showing all the nodes in it."""
+        return f"HyperEdge({self.nodes})"
 
     def __repr__(self):
-        return f"HyperEdge({self.edges})"
+        """Returns a string of the HyperEdge showing all the nodes in it."""
+        return f"HyperEdge({self.nodes})"
 
 
 def get_joints_at_kdist(
@@ -74,20 +85,19 @@ def get_joints_at_kdist(
     hyperedges: list[HyperEdge],
     k: int,
 ) -> dict[int, list[Node]]:
-    """
-    Identify all joints at distance <= k from agent agent_id
+    """Identify all joints at distance <= k from agent.
 
     Args:
-    agent_partition:
-        tuples of nodes of an agent
-    hyperedges:
-        hyperedges of the graph
-    k:
-        kth degree (number of nearest joints to observe)
+        agent_partition:
+            tuples of nodes of an agent
+        hyperedges:
+            hyperedges of the graph
+        k:
+            kth degree (number of nearest joints to observe)
+
     Returns:
         dict with k as key, and list of joints/nodes at that distance
     """
-
     if k is None:
         return None
 
@@ -99,7 +109,7 @@ def get_joints_at_kdist(
                 set(
                     itertools.chain(
                         *[
-                            e.edges.difference({element})
+                            e.nodes.difference({element})
                             for e in hyperedges
                             if element in e
                         ]
@@ -130,24 +140,17 @@ def build_obs(
     global_nodes: list[Node],
     global_categories: list[str],
 ) -> np.ndarray:
-    """
-    Given a k_dict from get_joints_at_kdist, extract observation vector.
+    """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
     Args:
-        data:
-            a structure containing the global state of the agent
-        k_dict:
-            the k_dict of an agent
-        k_categories:
-            the categories at every depth level
-        global_dict:
-            The MuJoCo global godes
-        global_categories:
-            The observation Categories for the global MuJoCo nodes
+        data: a structure containing the global state of the agent
+        k_dict: the k_dict of an agent
+        k_categories: the categories at every depth level
+        global_nodes: The MuJoCo global godes
+        global_categories: The observation Categories for the global MuJoCo nodes
     Returns:
         observation for the agent (indicated by K_dict)
     """
-
     body_set_dict = {}
     obs_lst = []
     # Add local observations
@@ -205,14 +208,13 @@ def build_obs(
 
 
 def get_parts_and_edges(
-    label: str, partitioning: str
+    label: str, partitioning: None | str
 ) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
-    """
+    """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
+
     Args:
-    label:
-        the mujoco task to partition
-    partitioning:
-        the partioneing scheme
+        label: the mujoco task to partition
+        partitioning: the partioneing scheme
     Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
@@ -1038,8 +1040,9 @@ def get_parts_and_edges(
         raise Exception(f"UNKNOWN label environment: {label}")
 
 
-def observation_structure(scenario: str) -> dict[str, int]:
-    """
+def _observation_structure(scenario: str) -> dict[str, int]:
+    """Get the types of observations for each Gymnasium.MuJoCo environment.
+
     Args:
         scenario: the mujoco scenartio
     Returns:

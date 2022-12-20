@@ -12,6 +12,8 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
+    """Is a vartion of the Ant environment, but with ants coupled together (each segment has a torso + 4 legs)."""
+
     metadata = {
         "render_modes": [
             "human",
@@ -22,9 +24,16 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
     }
 
     def __init__(self, n_segs: int, render_mode: str = None):
+        """Init.
+
+        Args:
+            n_segs: the number of segments of the ant (1 segment is the same as Gymansium's ant)
+            render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
+        """
         self.healthy_reward = 1
         self._ctrl_cost_weight = 0.5
         self._contact_cost_weight = 5e-4
+        self._reset_noise_scale = 0.1
 
         # Check whether asset file exists already, otherwise create it
         asset_path = os.path.join(
@@ -51,7 +60,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         EzPickle.__init__(self)
         os.remove(asset_path)
 
-    def _generate_asset(self, n_segs, asset_path):
+    def _generate_asset(self, n_segs: int, asset_path: str):
         template_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
@@ -106,7 +115,12 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         with open(asset_path, "w") as file:
             file.write(rt)
 
-    def step(self, action):
+    def step(self, action: np.ndarray):
+        """Performs a single step given the `action`.
+
+        Reward has same structure as ant
+        Does terminate when the front torso is unhealthy (in the same way as the ant)
+        """
         x_position_before = self.get_body_com("torso_0")[0]
         self.do_simulation(action, self.frame_skip)
         x_position_after = self.get_body_com("torso_0")[0]
@@ -156,10 +170,15 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         )
 
     def reset_model(self):
+        """Resets the model in same way as the Swimmer."""
         qpos = self.init_qpos + self.np_random.uniform(
-            size=self.model.nq, low=-0.1, high=0.1
+            size=self.model.nq,
+            low=-self._reset_noise_scale,
+            high=self._reset_noise_scale,
         )
-        qvel = self.init_qvel + self.np_random.random(self.model.nv) * 0.1
-        # qvel = self.init_qvel + self.np_random.randn(self.model.nv) * .1
+        qvel = (
+            self.init_qvel
+            + self.np_random.standard_normal(self.model.nv) * self._reset_noise_scale
+        )
         self.set_state(qpos, qvel)
         return self._get_obs()

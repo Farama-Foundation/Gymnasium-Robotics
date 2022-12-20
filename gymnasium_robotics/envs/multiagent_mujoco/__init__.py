@@ -1,3 +1,5 @@
+"""See the [Doc Page](https://robotics.farama.org/envs/fetch/MaMuJoCo)."""
+
 import multiagent_mujoco.mamujoco_v0  # noqa: F401
 
 from .coupled_half_cheetah import CoupledHalfCheetah  # noqa: F401

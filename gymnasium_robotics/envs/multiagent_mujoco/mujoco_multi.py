@@ -8,14 +8,15 @@ from multiagent_mujoco.coupled_half_cheetah import CoupledHalfCheetah
 from multiagent_mujoco.many_segment_ant import ManySegmentAntEnv
 from multiagent_mujoco.many_segment_swimmer import ManySegmentSwimmerEnv
 from multiagent_mujoco.obsk import (
+    _observation_structure,
     build_obs,
     get_joints_at_kdist,
     get_parts_and_edges,
-    observation_structure,
 )
 
-# TODO for v1?
+# TODO for future revisions v1?
 # color the renderer
+# support other Gymnasium-Robotics MuJoCo environments
 
 _MUJOCO_GYM_ENVIROMENTS = [
     "Ant-v4",
@@ -33,7 +34,8 @@ _MUJOCO_GYM_ENVIROMENTS = [
 
 
 class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
-    """
+    """Class for multi agent factorizing mujoco environments.
+
     # MaMuJoCo (Multi-Agent MuJoCo)
 
     These environments were introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709)
@@ -216,36 +218,29 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         global_categories: list[str] = None,
         render_mode: str = None,
     ):
-        """
+        """Init.
+
         Args:
-            scenario:
-                The Task/Environment, valid values:
+            scenario: The Task/Environment, valid values:
                 "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
-            agent_conf:
-                '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
+            agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
-            agent_obsk:
-                Number of nearest joints to observe,
+            agent_obsk: Number of nearest joints to observe,
                 if set to 0 it only observes local state,
                 if set to 1 it observes local state + 1 joint over,
                 if set to 2 it observes local state + 2 joints over,
                 if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
                 The Default value is: 1
-            agent_factorization:
-                A custom factorization of the MuJoCo environment (overwrites agent_conf),
+            agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](link).
-            local_categories:
-                The categories of local observations for each observation depth,
+            local_categories: The categories of local observations for each observation depth,
                 The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
-            global_categories:
-                The categories of observation for global observations,
+            global_categories: The categories of observation for global observations,
                 The default is; local_categories[0]
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
 
-            Raises:
-                NotImplementedError:
-                    When the scenario is not supported (not part of of the valid values)
+            Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values)
         """
         scenario += "-v4"
 
@@ -352,7 +347,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         dict[str, np.ndarray],
         dict[str, str],
     ]:
-        """
+        """Runs one timestep of the environment using the agents's actions.
+
         Note: if step is called after the agents have terminated/truncated the envrioment will continue to work as normal
         Args:
             actions:
@@ -380,12 +376,13 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     def map_local_actions_to_global_action(
         self, actions: dict[str, np.ndarray]
     ) -> np.ndarray:
-        """
-        Maps actions back into MuJoCo action space
+        """Maps multi agent actions into single agent action space.
+
         Args:
             action: An dict representing the action of each agent
         Returns:
             The action of the whole domain (is what eqivilent single agent action would be)
+
         Raises:
             AssertionError:
                 If the Agent action factorization is badly defined (if an action is double defined or not defined at all)
@@ -414,10 +411,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     def map_global_action_to_local_actions(
         self, action: np.ndarray
     ) -> dict[str, np.ndarray]:
-        """
+        """Maps single agent action into multi agent action spaces.
+
         Args:
-            action:
-                An array representing the actions of the single agent for this domain
+            action: An array representing the actions of the single agent for this domain
         Returns:
             A dictionary of actions to be performed by each agent
         Raises:
@@ -443,10 +440,12 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     def map_global_state_to_local_observations(
         self, global_state: np.ndarray
     ) -> dict[str, np.ndarray]:
-        """
+        """Maps single agent observation into multi agent observation spaces.
+
         Args:
             global_state:
                 the global_state (generated from MaMuJoCo.state())
+
         Returns:
             A dictionary of states that would be observed by each agent given the 'global_state'
         """
@@ -463,7 +462,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 self.cfrc_ext = cfrc_ext
                 pass
 
-        obs_struct = observation_structure(self.single_agent_env.spec.id)
+        obs_struct = _observation_structure(self.single_agent_env.spec.id)
         qpos_end_index = obs_struct["qpos"]
         qvel_end_index = qpos_end_index + obs_struct["qvel"]
         cinert_end_index = qvel_end_index + obs_struct["cinert"]
@@ -513,11 +512,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     def map_local_observation_to_global_state(
         self, local_observations: dict[str, np.ndarray]
     ) -> np.ndarray:
-        """
+        """Maps multi agent observations into single agent observation space.
+
         NOT IMPLEMENTED, try using MaMuJoCo.state() instead
+
         Args:
             local_obserations:
                 the local observation of each agents (generated from MaMuJoCo.step())
+
         Returns:
             the global observations that correspond to a single agent (what you would get with MaMuJoCo.state())
         """
@@ -526,16 +528,19 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         raise NotImplementedError
 
     def observation_space(self, agent: str) -> gymnasium.spaces.Box:
+        """See [pettingzoo.utils.env.ParallelEnv.observation_space](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.observation_space)."""
         return self.observation_spaces[agent]
 
     def action_space(self, agent: str) -> gymnasium.spaces.Box:
+        """See [pettingzoo.utils.env.ParallelEnv.action_space](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.action_space)."""
         return self.action_spaces[agent]
 
     def state(self) -> np.ndarray:
+        """See [pettingzoo.utils.env.ParallelEnv.state](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.state)."""
         return self.single_agent_env.unwrapped._get_obs()
 
     def _get_obs(self) -> dict[str, np.ndarray]:
-        """Returns: all agent observations in a dict[str, ActionType]"""
+        """Returns: all agent's observations in a dict[str, ActionType]."""
         # dev NOTE: ignores `self.single_agent_env._get_obs()` and builds observations using obsk.build_obs()
         observations = {}
         for agent_id, agent in enumerate(self.possible_agents):
@@ -543,12 +548,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return observations
 
     def _get_obs_agent(self, agent_id: int, data=None) -> np.array:
-        """
+        """Get the observation of single agent.
+
         Args:
-            agent_id:
-                The id in self.possible_agents.values()
-            data:
-                An optional overwrite of the MuJoCo data, defaults to the data at the current time step
+            agent_id: The id in self.possible_agents.values()
+            data: An optional overwrite of the MuJoCo data, defaults to the data at the current time step
         Returns:
             The observation of the agent given the data
         """
@@ -566,14 +570,12 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         )
 
     def reset(self, seed=None, return_info=False, options=None):
-        """
+        """Resets the the `single_agent_env`.
+
         Args:
-            seed:
-                see pettingzoo.utils.env.ParallelEnv.reset() doc
-            return_info:
-                see pettingzoo.utils.env.ParallelEnv.reset() doc
-            options:
-                Ignored arguments
+            seed: see pettingzoo.utils.env.ParallelEnv.reset() doc
+            return_info: see pettingzoo.utils.env.ParallelEnv.reset() doc
+            options: Ignored arguments
         Returns:
             Initial observations and info
         """
@@ -588,8 +590,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             return self._get_obs(), info
 
     def render(self):
-        """
-        Renders the MuJoCo using the mechanism of the single agent Gymnasium.MuJoCo
+        """Renders the MuJoCo environment using the mechanism of the single agent Gymnasium-MuJoCo.
+
         Returns:
             The same return value as the single agent Gymnasium.MuJoCo
             see https://gymnasium.farama.org/environments/mujoco/
@@ -597,16 +599,18 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return self.single_agent_env.render()
 
     def close(self):
+        """See [pettingzoo.utils.env.ParallelEnv.close](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.close)."""
         self.single_agent_env.close()
 
     def seed(self, seed: int = None):
-        raise NotImplementedError
+        """Not implemented use env.reset(seed=...) instead."""
+        raise NotImplementedError("use env.reset(seed=...) instead")
 
     def _generate_local_categories(self, scenario: str) -> list[list[str]]:
-        """
+        """Generated the default observation categories for each observation depth.
+
         Args:
-            scenario:
-                the mujoco task
+            scenario: the mujoco task
         Returns:
             a list of observetion types per observation depth
         """
@@ -621,10 +625,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 "qpos,qvel,cinert,cvel,qfrc_actuator,cfrc_ext",
                 "qpos",
             ]
-        elif scenario in ["Reacher-v4"]:
-            k_split = ["qpos,qvel,fingertip_dist", "qpos"]
         elif scenario in ["coupled_half_cheetah-v4"]:
-            k_split = ["qpos,qvel,ten_J,ten_length,ten_velocity", ""]
+            k_split = ["qpos,qvel,ten_J,ten_length,ten_velocity", "qpos"]
         else:
             k_split = ["qpos,qvel", "qpos"]
 
@@ -635,11 +637,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return categories
 
     def _generate_global_categories(self, scenario: str) -> list[str]:
-        """
-        Generates the default global categories of observations
+        """Generates the default global categories of observations.
+
         Args:
-            scenario:
-                The name of the MuJoCo Task
+            scenario: The name of the MuJoCo Task
         Returns:
             The default Global Categories for the scenario (a list of all observable types for that domain)
         """
@@ -650,8 +651,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             return ["qpos", "qvel"]
         elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
             return ["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"]
-        elif scenario in ["Reacher-v4"]:
-            return ["qpos", "qvel"]
         elif scenario in ["coupled_half_cheetah-v4"]:
             return ["qpos", "qvel"]
         else:
