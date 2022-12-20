@@ -11,6 +11,8 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
+    """This environment consists of 2 half cheetahs coupled by an elastic tendon."""
+
     metadata = {
         "render_modes": [
             "human",
@@ -21,12 +23,17 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
     }
 
     def __init__(self, render_mode: str = None):
+        """Init.
+
+        Args:
+            render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
+        """
         self._forward_reward_weight = 1
         self._ctrl_cost_weight = 0.1
         self._reset_noise_scale = 0.1
 
         observation_space = gymnasium.spaces.Box(
-            low=-np.inf, high=np.inf, shape=(35,), dtype=np.float32
+            low=-np.inf, high=np.inf, shape=(34,), dtype=np.float32
         )
 
         mujoco_env.MujocoEnv.__init__(
@@ -43,7 +50,12 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
         )
         EzPickle.__init__(self)
 
-    def step(self, action):
+    def step(self, action: np.ndarray):
+        """Performs a single step given the `action`.
+
+        Reward is the average reward of both half cheetahs (in the same structure as the single half Cheetah)
+        Does never terminate (like Swimmer)
+        """
         xposbefore1 = self.data.qpos[0]
         xposbefore2 = self.data.qpos[len(self.data.qpos) // 2]
         self.do_simulation(action, self.frame_skip)
@@ -83,12 +95,14 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
         # NOTE: does not return tendon data
         return np.concatenate(
             [
-                self.data.qpos.flat[1:],
+                self.data.qpos.flat[1:9],  # exclude rootx
+                self.data.qpos.flat[10:18],  # exclude rootx
                 self.data.qvel.flat,
             ]
         )
 
     def reset_model(self):
+        """Resets the model in same way as the single half cheetah."""
         qpos = self.init_qpos + self.np_random.uniform(
             low=-self._reset_noise_scale,
             high=self._reset_noise_scale,
@@ -96,7 +110,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
         )
         qvel = (
             self.init_qvel
-            + self.np_random.random(self.model.nv) * self._reset_noise_scale
+            + self.np_random.standard_normal(self.model.nv) * self._reset_noise_scale
         )
         self.set_state(qpos, qvel)
         return self._get_obs()
