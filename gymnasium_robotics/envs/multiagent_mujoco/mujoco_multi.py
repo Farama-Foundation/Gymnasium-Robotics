@@ -460,7 +460,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 self.cvel = cvel
                 self.qfrc_actuator = qfrc_actuator
                 self.cfrc_ext = cfrc_ext
-                pass
 
         obs_struct = _observation_structure(self.single_agent_env.spec.id)
         qpos_end_index = obs_struct["qpos"]

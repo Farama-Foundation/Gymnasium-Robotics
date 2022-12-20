@@ -50,6 +50,7 @@ observation_depths = [None, 0, 1, 2]
 def assert_dict_numpy_are_equal(
     dict_a: dict[any, np.ndarray], dict_b: dict[any, np.ndarray]
 ) -> None:
+    """Asserts that 2 dictionaries have the key/value pairs (given that the values are `np.ndarray`)."""
     assert dict_a.keys() == dict_b.keys()
     for key in dict_a.keys():
         assert len(dict_a[key]) == len(dict_b[key])
@@ -58,7 +59,8 @@ def assert_dict_numpy_are_equal(
 
 @pytest.mark.parametrize("observation_depth", observation_depths)
 @pytest.mark.parametrize("task", pre_defined_factorizations + sample_configurations)
-def test_general(observation_depth, task):
+def test_general(observation_depth, task) -> None:
+    """Asserts that the environments are compliant with `pettingzoo.utils.env.ParallelEnv` API."""
     parallel_api_test(
         MultiAgentMujocoEnv(task.scenario, task.conf, agent_obsk=observation_depth),
         num_cycles=1_000_000,
@@ -68,9 +70,7 @@ def test_general(observation_depth, task):
 @pytest.mark.parametrize("observation_depth", observation_depths)
 @pytest.mark.parametrize("task", pre_defined_factorizations)
 def test_action_and_observation_mapping(observation_depth, task):
-    """
-    assert that converting local <-> global <-> local obervations/actions results in the same observation/actions
-    """
+    """Assert that converting local <-> global <-> local obervations/actions results in the same observation/actions."""
     test_env = MultiAgentMujocoEnv(
         task.scenario, task.conf, agent_obsk=observation_depth
     )
@@ -101,9 +101,7 @@ def test_action_and_observation_mapping(observation_depth, task):
 @pytest.mark.parametrize("task", sample_configurations)
 def test_action_mapping(observation_depth, task):
     # observation mapping not implemented non-Gymansium mujoco environments
-    """
-    assert that converting local <-> global <-> local actions results in the same actions
-    """
+    """Assert that converting local <-> global <-> local actions results in the same actions."""
     test_env = MultiAgentMujocoEnv(
         task.scenario, task.conf, agent_obsk=observation_depth
     )
@@ -117,8 +115,8 @@ def test_action_mapping(observation_depth, task):
 
 
 def test_k_dict():
-    """
-    asserts that `obsk.get_joints_at_kdist()` generates the correct observation factorization
+    """Asserts that `obsk.get_joints_at_kdist()` generates the correct observation factorization.
+
     The outputs have been hand written
     If this test fails it means either the factorization in `obsk.get_parts_and_edges()` are wrong or that `obsk.get_joints_at_kdist()`
     """
