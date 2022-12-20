@@ -21,9 +21,7 @@ MJ_OBJ_TYPES = [
 
 
 def robot_get_obs(model, data, joint_names):
-    """Returns all joint positions and velocities associated with
-    a robot.
-    """
+    """Returns all joint positions and velocities associated with a robot."""
     if data.qpos is not None and joint_names:
         names = [n for n in joint_names if n.startswith("robot")]
         return (
@@ -35,6 +33,7 @@ def robot_get_obs(model, data, joint_names):
 
 def ctrl_set_action(model, data, action):
     """For torque actuators it copies the action into mujoco ctrl field.
+
     For position actuators it sets the target relative to the current qpos.
     """
     if model.nmocap > 0:
@@ -50,7 +49,9 @@ def ctrl_set_action(model, data, action):
 
 
 def mocap_set_action(model, data, action):
-    """The action controls the robot using mocaps. Specifically, bodies
+    """Update the position of the mocap body with the desired action.
+
+    The action controls the robot using mocaps. Specifically, bodies
     on the robot (for example the gripper wrist) is controlled with
     mocap bodies. In this case the action is the desired difference
     in position and orientation (quaternion), in world coordinates,

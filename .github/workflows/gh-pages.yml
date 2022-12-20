@@ -14,11 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
+        with:
+            python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install docs requirements
         run: pip install -r docs/requirements.txt
 
-      - name: Register Envs
+      - name: Install requirements and Gymnasium-Robotics
         run: pip install -r requirements.txt && pip install -e .
 
       - name: Build Envs Docs

@@ -42,5 +42,11 @@ repos:
         additional_dependencies: ["pyright"]
         args:
           - --project=pyproject.toml
-
-
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.1.1
+    hooks:
+      - id: pydocstyle
+        exclude: ^(tests)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)
+        args:
+          - --convention=google
+          - --add-ignore=D100
