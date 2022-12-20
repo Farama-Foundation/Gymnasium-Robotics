@@ -54,7 +54,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     keywords=["Reinforcement Learning", "Gymnasium", "RL", "AI", "Robotics"],
-    python_requires=">=3.7, <3.11",
+    python_requires=">=3.7",
     packages=[
         package
         for package in find_packages()
@@ -62,7 +62,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        "mujoco==2.2.2",
+        "mujoco>=2.3.1.post1",
         "numpy>=1.21.0,<1.24.0",
         "gymnasium>=0.26",
     ],
@@ -88,6 +88,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     zip_safe=False,
     tests_require=extras["testing"],
