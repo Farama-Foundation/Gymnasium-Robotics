@@ -17,10 +17,7 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 ```
 
 ```{toctree}
+:glob:
 :hidden:
-FetchReach
-FetchSlide
-FetchPickAndPlace
-FetchPush
-
+./*
 ```

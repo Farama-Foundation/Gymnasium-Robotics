@@ -15,9 +15,7 @@ DEFAULT_CAMERA_CONFIG = {
 def get_base_hand_env(
     RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
 ) -> Union[MujocoPyRobotEnv, MujocoRobotEnv]:
-    """Factory function that returns a BaseHandEnv class that inherits
-    from MujocoPyRobotEnv or MujocoRobotEnv depending on the mujoco python bindings.
-    """
+    """Factory function that returns a BaseHandEnv class that inherits from MujocoPyRobotEnv or MujocoRobotEnv depending on the mujoco python bindings."""
 
     class BaseHandEnv(RobotEnvClass):
         """Base class for all robotic hand environments."""
@@ -64,6 +62,8 @@ class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
 
 
 class MujocoPyHandEnv(get_base_hand_env(MujocoPyRobotEnv)):
+    """Base class for all Hand environments that use mujoco-py as the python bindings."""
+
     def _set_action(self, action):
         super()._set_action(action)
 

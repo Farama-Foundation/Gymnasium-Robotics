@@ -146,7 +146,7 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
 
             raise NotImplementedError
 
-        def get_gripper_xpos(self):
+        def _get_gripper_xpos(self):
 
             raise NotImplementedError
 
@@ -226,7 +226,7 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
             gripper_vel,
         )
 
-    def get_gripper_xpos(self):
+    def _get_gripper_xpos(self):
         body_id = self.sim.model.body_name2id("robot0:gripper_link")
         return self.sim.data.body_xpos[body_id]
 
@@ -359,7 +359,7 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
             gripper_vel,
         )
 
-    def get_gripper_xpos(self):
+    def _get_gripper_xpos(self):
         body_id = self._model_names.body_name2id["robot0:gripper_link"]
         return self.data.xpos[body_id]
 

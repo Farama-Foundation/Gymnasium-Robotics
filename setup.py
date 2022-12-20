@@ -63,7 +63,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "mujoco==2.2.2",
-        "numpy>=1.18.0",
+        "numpy>=1.21.0,<1.24.0",
         "gymnasium>=0.26",
     ],
     package_data={
