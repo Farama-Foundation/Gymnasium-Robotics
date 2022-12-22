@@ -213,10 +213,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         scenario: str,
         agent_conf: str,
         agent_obsk: int = 1,
-        agent_factorization: dict[str, any] = None,
-        local_categories: list[list[str]] = None,
-        global_categories: list[str] = None,
-        render_mode: str = None,
+        agent_factorization: dict[str, any] | None = None,
+        local_categories: list[list[str]] | None = None,
+        global_categories: tuple[str, ...] | None = None,
+        render_mode: str | None = None,
     ):
         """Init.
 
@@ -297,7 +297,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             mujoco_edges = None
 
         self.possible_agents = [
-            str(agent_id) for agent_id in range(len(self.agent_action_partitions))
+            "agent_" + str(agent_id)
+            for agent_id in range(len(self.agent_action_partitions))
         ]
         self.agents = self.possible_agents
 
@@ -353,6 +354,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         Args:
             actions:
                 the actions of all agents
+
         Returns:
             see pettingzoo.utils.env.ParallelEnv.step() doc
         """
@@ -380,6 +382,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         Args:
             action: An dict representing the action of each agent
+
         Returns:
             The action of the whole domain (is what eqivilent single agent action would be)
 
@@ -415,8 +418,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         Args:
             action: An array representing the actions of the single agent for this domain
+
         Returns:
             A dictionary of actions to be performed by each agent
+
         Raises:
             AssertionError:
                 If the Agent action factorization sizes are badly defined
@@ -452,6 +457,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return {self.possible_agents[0]: global_state}
 
+        # data_struct = collections.namedtuple('data_struct', 'qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext')
+
         class data_struct:
             def __init__(self, qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext):
                 self.qpos = qpos
@@ -471,7 +478,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         assert len(global_state) == cfrc_ext_end_index
 
-        data = data_struct(
+        mujoco_data = data_struct(
             qpos=np.concatenate(
                 (
                     np.zeros(obs_struct["skipped_qpos"]),
@@ -487,25 +494,29 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             cfrc_ext=np.array(global_state[qfrc_actuator_end_index:cfrc_ext_end_index]),
         )
 
-        if len(data.cinert) != 0:
-            data.cinert = np.reshape(
-                data.cinert, self.single_agent_env.unwrapped.data.cinert.shape
+        if len(mujoco_data.cinert) != 0:
+            mujoco_data.cinert = np.reshape(
+                mujoco_data.cinert, self.single_agent_env.data.cinert.shape
             )
-        if len(data.cvel) != 0:
-            data.cvel = np.reshape(
-                data.cvel, self.single_agent_env.unwrapped.data.cvel.shape
+        if len(mujoco_data.cvel) != 0:
+            mujoco_data.cvel = np.reshape(
+                mujoco_data.cvel, self.single_agent_env.data.cvel.shape
             )
-        if len(data.cfrc_ext) != 0:
-            data.cfrc_ext = np.reshape(
-                data.cfrc_ext, self.single_agent_env.unwrapped.data.cfrc_ext.shape
+        if len(mujoco_data.cfrc_ext) != 0:
+            mujoco_data.cfrc_ext = np.reshape(
+                mujoco_data.cfrc_ext, self.single_agent_env.data.cfrc_ext.shape
             )
 
-        assert len(self.single_agent_env.unwrapped.data.qpos.flat) == len(data.qpos)
-        assert len(self.single_agent_env.unwrapped.data.qvel.flat) == len(data.qvel)
+        assert len(self.single_agent_env.unwrapped.data.qpos.flat) == len(
+            mujoco_data.qpos
+        )
+        assert len(self.single_agent_env.unwrapped.data.qvel.flat) == len(
+            mujoco_data.qvel
+        )
 
         observations = {}
         for agent_id, agent in enumerate(self.possible_agents):
-            observations[agent] = self._get_obs_agent(agent_id, data)
+            observations[agent] = self._get_obs_agent(agent_id, mujoco_data)
         return observations
 
     def map_local_observation_to_global_state(
@@ -546,19 +557,20 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             observations[agent] = self._get_obs_agent(agent_id)
         return observations
 
-    def _get_obs_agent(self, agent_id: int, data=None) -> np.array:
+    def _get_obs_agent(self, agent_id: int, data=None) -> np.ndarray:
         """Get the observation of single agent.
 
         Args:
             agent_id: The id in self.possible_agents.values()
             data: An optional overwrite of the MuJoCo data, defaults to the data at the current time step
+
         Returns:
             The observation of the agent given the data
         """
         if self.agent_obsk is None:
             return self.single_agent_env.unwrapped._get_obs()
         if data is None:
-            data = self.single_agent_env.unwrapped.data
+            data = self.single_agent_env.data
 
         return build_obs(
             data,
@@ -568,13 +580,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.global_categories,
         )
 
-    def reset(self, seed=None, return_info=False, options=None):
+    def reset(self, seed: int | None = None, return_info=False, options=None):
         """Resets the the `single_agent_env`.
 
         Args:
             seed: see pettingzoo.utils.env.ParallelEnv.reset() doc
             return_info: see pettingzoo.utils.env.ParallelEnv.reset() doc
             options: Ignored arguments
+
         Returns:
             Initial observations and info
         """
@@ -610,6 +623,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         Args:
             scenario: the mujoco task
+
         Returns:
             a list of observetion types per observation depth
         """
@@ -635,22 +649,52 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         ]
         return categories
 
-    def _generate_global_categories(self, scenario: str) -> list[str]:
+    def _generate_global_categories(self, scenario: str) -> tuple[str, ...]:
         """Generates the default global categories of observations.
 
         Args:
             scenario: The name of the MuJoCo Task
+
         Returns:
             The default Global Categories for the scenario (a list of all observable types for that domain)
         """
         if self.agent_obsk is None:
-            return []
+            return ()
 
         if scenario in ["Ant-v4", "manyagent_ant"]:
-            return ["qpos", "qvel"]
+            return ("qpos", "qvel")
         elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
-            return ["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"]
+            return ("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")
         elif scenario in ["coupled_half_cheetah-v4"]:
-            return ["qpos", "qvel"]
+            return ("qpos", "qvel")
         else:
-            return ["qpos", "qvel"]
+            return ("qpos", "qvel")
+
+
+# dev NOTE: make a PR in pettingzoo for this after it has been tested
+def aec_wrapper_fn(par_env_fn):
+    """Converts class(pettingzoo.utils.env.ParallelEnv) -> class(pettingzoo.utils.env.AECEnv).
+
+    Args:
+        par_env_fn: The class to be wrapped.
+
+    Example:
+        class my_par_class(pettingzoo.utils.env.ParallelEnv):
+            ...
+
+        my_aec_class = aec_wrapper_fn(my_par_class)
+
+    Note: applies the `OrderEnforcingWrapper` wrapper
+    """
+
+    def aec_fn(**kwargs):
+        par_env = par_env_fn(**kwargs)
+        aec_env = pettingzoo.utils.parallel_to_aec(par_env)
+        return aec_env
+
+    return aec_fn
+
+
+env = aec_wrapper_fn(MultiAgentMujocoEnv)
+parallel_env = MultiAgentMujocoEnv
+raw_env = MultiAgentMujocoEnv

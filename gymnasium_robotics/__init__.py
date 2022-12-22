@@ -833,4 +833,8 @@ def register_robotics_envs():
         )
 
 
+# from gymnasium_robotics.envs.multiagent_mujuco import mamujoco_v0  # noqa F401
+# from gymnasium_robotics.multiagent_mujuco import mamujoco_v0  # noqa F401
+
+
 __version__ = "1.1.0"
