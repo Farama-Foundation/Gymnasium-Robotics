@@ -46,7 +46,7 @@ repos:
     rev: 6.1.1
     hooks:
       - id: pydocstyle
-        exclude: ^(tests)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)
+        exclude: ^(tests/envs/hand)|(tests/envs/__init__.py)|(tests/__init__.py)|(tests/test_envs.py)|(tests/utils.py)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)
         args:
           - --convention=google
           - --add-ignore=D100

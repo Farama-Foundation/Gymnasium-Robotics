@@ -1,4 +1,5 @@
 import os
+import typing
 
 import gymnasium
 import numpy as np
@@ -22,7 +23,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
         "render_fps": 20,
     }
 
-    def __init__(self, render_mode: str = None):
+    def __init__(self, render_mode: typing.Optional[str] = None):
         """Init.
 
         Args:
@@ -48,7 +49,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             render_mode=render_mode,
         )
-        EzPickle.__init__(self)
+        EzPickle.__init__(self, render_mode=render_mode)
 
     def step(self, action: np.ndarray):
         """Performs a single step given the `action`.

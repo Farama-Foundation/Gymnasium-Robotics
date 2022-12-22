@@ -37,6 +37,10 @@ extras = {
         "mujoco_py<2.2,>=2.1",
     ],
     "mujoco_py": ["mujoco_py<2.2,>=2.1"],
+    "mamujoco": [
+        "PettingZoo>=1.22.2",
+        "Jinja2>=3.0.3",
+    ],
 }
 
 version = get_version()

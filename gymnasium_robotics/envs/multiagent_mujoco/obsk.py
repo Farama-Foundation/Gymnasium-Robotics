@@ -16,10 +16,10 @@ class Node:
         qpos_ids: int,
         qvel_ids: int,
         act_ids: int,
-        body_fn: typing.Callable = None,
-        bodies: list[int] = [],
-        extra_obs: dict[str, typing.Callable] = None,
-        tendons: list[int] = [],
+        body_fn: typing.Callable | None = None,
+        bodies: tuple[int, ...] = (),
+        extra_obs: dict[str, typing.Callable] | None = None,
+        tendons: tuple[int, ...] = (),
     ):
         """Init.
 
@@ -138,7 +138,7 @@ def build_obs(
     k_dict: dict[int, list[Node]],
     k_categories: list[list[str]],
     global_nodes: list[Node],
-    global_categories: list[str],
+    global_categories: tuple[str, ...],
 ) -> np.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
@@ -148,6 +148,7 @@ def build_obs(
         k_categories: the categories at every depth level
         global_nodes: The MuJoCo global godes
         global_categories: The observation Categories for the global MuJoCo nodes
+
     Returns:
         observation for the agent (indicated by K_dict)
     """
@@ -208,13 +209,14 @@ def build_obs(
 
 
 def get_parts_and_edges(
-    label: str, partitioning: None | str
+    label: str, partitioning: str | None
 ) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
     """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
 
     Args:
         label: the mujoco task to partition
         partitioning: the partioneing scheme
+
     Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
@@ -276,7 +278,7 @@ def get_parts_and_edges(
             -8,
             -8,
             2,
-            bodies=[torso, front_left_leg],
+            bodies=(torso, front_left_leg),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         ankle1 = Node(
@@ -284,7 +286,7 @@ def get_parts_and_edges(
             -7,
             -7,
             3,
-            bodies=[front_left_leg, aux_1, ankle_1],
+            bodies=(front_left_leg, aux_1, ankle_1),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         hip2 = Node(  # front right leg
@@ -292,7 +294,7 @@ def get_parts_and_edges(
             -6,
             -6,
             4,
-            bodies=[torso, front_right_leg],
+            bodies=(torso, front_right_leg),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         ankle2 = Node(
@@ -300,7 +302,7 @@ def get_parts_and_edges(
             -5,
             -5,
             5,
-            bodies=[front_right_leg, aux_2, ankle_2],
+            bodies=(front_right_leg, aux_2, ankle_2),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         hip3 = Node(  # back left leg
@@ -308,7 +310,7 @@ def get_parts_and_edges(
             -4,
             -4,
             6,
-            bodies=[torso, back_leg],
+            bodies=(torso, back_leg),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         ankle3 = Node(
@@ -316,7 +318,7 @@ def get_parts_and_edges(
             -3,
             -3,
             7,
-            bodies=[back_leg, aux_3, ankle_3],
+            bodies=(back_leg, aux_3, ankle_3),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         hip4 = Node(  # back right leg
@@ -324,7 +326,7 @@ def get_parts_and_edges(
             -2,
             -2,
             0,
-            bodies=[torso, right_back_leg],
+            bodies=(torso, right_back_leg),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
         ankle4 = Node(
@@ -332,7 +334,7 @@ def get_parts_and_edges(
             -1,
             -1,
             1,
-            bodies=[right_back_leg, aux_4, ankle_4],
+            bodies=(right_back_leg, aux_4, ankle_4),
             body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
         )
 
@@ -463,41 +465,41 @@ def get_parts_and_edges(
         left_lower_arm = 13
 
         # define Mujoco-Graph
-        abdomen_y = Node("abdomen_y", -16, -16, 0, bodies=[torso, lwaist, pelvis])
-        abdomen_z = Node("abdomen_z", -17, -17, 1, bodies=[torso, lwaist, pelvis])
+        abdomen_y = Node("abdomen_y", -16, -16, 0, bodies=(torso, lwaist, pelvis))
+        abdomen_z = Node("abdomen_z", -17, -17, 1, bodies=(torso, lwaist, pelvis))
         abdomen_x = Node(
-            "abdomen_x", -15, -15, 2, bodies=[pelvis, right_thigh, left_thigh]
+            "abdomen_x", -15, -15, 2, bodies=(pelvis, right_thigh, left_thigh)
         )
-        right_hip_x = Node("right_hip_x", -14, -14, 3, bodies=[right_thigh, right_sin])
-        right_hip_z = Node("right_hip_z", -13, -13, 4, bodies=[right_thigh, right_sin])
-        right_hip_y = Node("right_hip_y", -12, -12, 5, bodies=[right_thigh, right_sin])
-        right_knee = Node("right_knee", -11, -11, 6, bodies=[right_sin, right_foot])
-        left_hip_x = Node("left_hip_x", -10, -10, 7, bodies=[left_thigh, left_sin])
-        left_hip_z = Node("left_hip_z", -9, -9, 8, bodies=[left_thigh, left_sin])
-        left_hip_y = Node("left_hip_y", -8, -8, 9, bodies=[left_thigh, left_sin])
-        left_knee = Node("left_knee", -7, -7, 10, bodies=[left_sin, left_foot])
+        right_hip_x = Node("right_hip_x", -14, -14, 3, bodies=(right_thigh, right_sin))
+        right_hip_z = Node("right_hip_z", -13, -13, 4, bodies=(right_thigh, right_sin))
+        right_hip_y = Node("right_hip_y", -12, -12, 5, bodies=(right_thigh, right_sin))
+        right_knee = Node("right_knee", -11, -11, 6, bodies=(right_sin, right_foot))
+        left_hip_x = Node("left_hip_x", -10, -10, 7, bodies=(left_thigh, left_sin))
+        left_hip_z = Node("left_hip_z", -9, -9, 8, bodies=(left_thigh, left_sin))
+        left_hip_y = Node("left_hip_y", -8, -8, 9, bodies=(left_thigh, left_sin))
+        left_knee = Node("left_knee", -7, -7, 10, bodies=(left_sin, left_foot))
         right_shoulder1 = Node(
             "right_shoulder1",
             -6,
             -6,
             11,
-            bodies=[torso, right_upper_arm, right_lower_arm],
+            bodies=(torso, right_upper_arm, right_lower_arm),
         )
         right_shoulder2 = Node(
             "right_shoulder2",
             -5,
             -5,
             12,
-            bodies=[torso, right_upper_arm, right_lower_arm],
+            bodies=(torso, right_upper_arm, right_lower_arm),
         )
-        right_elbow = Node("right_elbow", -4, -4, 13, bodies=[right_lower_arm])
+        right_elbow = Node("right_elbow", -4, -4, 13, bodies=(right_lower_arm,))
         left_shoulder1 = Node(
-            "left_shoulder1", -3, -3, 14, bodies=[torso, left_upper_arm, left_lower_arm]
+            "left_shoulder1", -3, -3, 14, bodies=(torso, left_upper_arm, left_lower_arm)
         )
         left_shoulder2 = Node(
-            "left_shoulder2", -2, -2, 15, bodies=[torso, left_upper_arm, left_lower_arm]
+            "left_shoulder2", -2, -2, 15, bodies=(torso, left_upper_arm, left_lower_arm)
         )
-        left_elbow = Node("left_elbow", -1, -1, 16, bodies=[left_lower_arm])
+        left_elbow = Node("left_elbow", -1, -1, 16, bodies=(left_lower_arm,))
 
         edges = [
             HyperEdge(abdomen_x, abdomen_y, abdomen_z),
@@ -599,7 +601,7 @@ def get_parts_and_edges(
             -4,
             -4,
             0,
-            bodies=[body0, body1],
+            bodies=(body0, body1),
             extra_obs={
                 "qpos": (
                     lambda data: np.array(
@@ -616,7 +618,7 @@ def get_parts_and_edges(
             -3,
             -3,
             1,
-            bodies=[body1, fingertip],
+            bodies=(body1, fingertip),
             extra_obs={
                 "fingertip_dist": (
                     lambda data: data.body("fingertip").xpos - data.body("target").xpos
@@ -834,7 +836,7 @@ def get_parts_and_edges(
             -6,
             -6,
             0,
-            tendons=[tendon],
+            tendons=(tendon),
             extra_obs={
                 "ten_J": lambda data: data.ten_J[tendon],
                 "ten_length": lambda data: data.ten_length,
@@ -852,7 +854,7 @@ def get_parts_and_edges(
             -6,
             -6,
             6,
-            tendons=[tendon],
+            tendons=(tendon),
             extra_obs={
                 "ten_J": lambda data: data.ten_J[tendon],
                 "ten_length": lambda data: data.ten_length,
@@ -968,7 +970,7 @@ def get_parts_and_edges(
                 -4 - off,
                 -4 - off,
                 2 + 4 * segment,
-                bodies=[torso, front_right_leg],
+                bodies=(torso, front_right_leg),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             ankle1n = Node(
@@ -976,7 +978,7 @@ def get_parts_and_edges(
                 -3 - off,
                 -3 - off,
                 3 + 4 * segment,
-                bodies=[front_right_leg, aux1, ankle1],
+                bodies=(front_right_leg, aux1, ankle1),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             hip2n = Node(
@@ -984,7 +986,7 @@ def get_parts_and_edges(
                 -2 - off,
                 -2 - off,
                 0 + 4 * segment,
-                bodies=[torso, back_leg],
+                bodies=(torso, back_leg),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
             ankle2n = Node(
@@ -992,7 +994,7 @@ def get_parts_and_edges(
                 -1 - off,
                 -1 - off,
                 1 + 4 * segment,
-                bodies=[back_leg, aux2, ankle2],
+                bodies=(back_leg, aux2, ankle2),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
 
@@ -1045,6 +1047,7 @@ def _observation_structure(scenario: str) -> dict[str, int]:
 
     Args:
         scenario: the mujoco scenartio
+
     Returns:
         a dictionary keyied by observation type with values indicating the number of observations for that type
     """
