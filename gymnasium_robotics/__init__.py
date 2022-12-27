@@ -1,6 +1,6 @@
 # noqa: D104
 from gymnasium.envs.registration import register
-
+from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v0, MultiAgentMujocoEnv
 from gymnasium_robotics.core import GoalEnv
 
 
