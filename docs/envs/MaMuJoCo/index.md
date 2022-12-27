@@ -20,19 +20,21 @@ pip install gymnasium-robotics[mamujoco]
 
 ## API
 
+MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/parallel/), but also supports a few extra functions
 
 ```{eval-rst}
-.. autoclass:: gymnasium_robotics.envs.multiagent_mujoco.MultiAgentMujocoEnv
-   :members:
+.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action
 ```
 
-
-
-MaMuJoCo uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/parallel/), but also supports a few extra functions
-- MaMuJoCo.map_local_actions_to_global_action
-- MaMuJoCo.map_global_action_to_local_actions
-- MaMuJoCo.map_global_state_to_local_observations
-- MaMuJoCo.map_local_observation_to_global_state (NOT IMPLEMENTED)
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_global_action_to_local_actions
+```
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_global_state_to_local_observations
+```
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state
+```
 - obsk.get_parts_and_edges
 
 MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api/aec/) but does not expose extra functions.

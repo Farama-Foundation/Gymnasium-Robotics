@@ -2,7 +2,7 @@
 from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
-from gymnasium_robotics.envs.multiagent_mujoco import MultiAgentMujocoEnv, mamujoco_v0
+from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v0
 
 
 def register_robotics_envs():
@@ -832,10 +832,6 @@ def register_robotics_envs():
             ),
             max_episode_steps=100,
         )
-
-
-# from gymnasium_robotics.envs.multiagent_mujuco import mamujoco_v0  # noqa F401
-# from gymnasium_robotics.multiagent_mujuco import mamujoco_v0  # noqa F401
 
 
 __version__ = "1.1.0"
