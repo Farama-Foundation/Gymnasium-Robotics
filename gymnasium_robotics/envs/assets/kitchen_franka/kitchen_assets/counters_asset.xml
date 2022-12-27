@@ -2,11 +2,11 @@
     <compiler inertiafromgeom="auto" inertiagrouprange="4 4" angle="radian"/>
 
     <asset>
-        <mesh file="meshes/cabinetdrawer.stl" name="cabinetdrawer"/>
-        <mesh file="meshes/cabinethandle.stl" name="cabinethandle"/>
-        <mesh file="meshes/cabinetbase.stl" name="cabinetbase"/>
-        <mesh file="meshes/countertop.stl" name="countertop"/>
-        <mesh file="meshes/faucet.stl" name="faucet"/>
+        <mesh file="cabinetdrawer.stl" name="cabinetdrawer"/>
+        <mesh file="cabinethandle.stl" name="cabinethandle"/>
+        <mesh file="cabinetbase.stl" name="cabinetbase"/>
+        <mesh file="countertop.stl" name="countertop"/>
+        <mesh file="faucet.stl" name="faucet"/>
 
         <texture name="T_counter_metal" type="cube" height="1" width="1" file="textures/metal1.png" />
         <texture name="T_counter_marble" type="cube" height="1" width="1" file="textures/marble1.png" />

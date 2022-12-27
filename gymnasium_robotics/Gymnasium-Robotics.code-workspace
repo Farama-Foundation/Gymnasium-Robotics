@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../FR3Env"
+		},
+		{
+			"path": "../../D4RL"
+		}
+	],
+	"settings": {}
+}

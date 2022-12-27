@@ -1,5 +1,13 @@
-from kitchen_env import FrankaRobot
+from kitchen_env import FrankaRobot, KitchenEnv
+import numpy as np
 
-env = FrankaRobot()
+
+env = KitchenEnv(render_mode="human")
+
 env.reset()
-env.ik_controller.get_params()
+
+action = np.array([0.0, 0.0, 0.0, 0, 0, 0,0,0])
+
+while True:
+    env.step(action)
+

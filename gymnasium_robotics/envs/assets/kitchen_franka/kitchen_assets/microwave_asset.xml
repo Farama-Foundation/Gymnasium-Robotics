@@ -3,12 +3,12 @@
     <compiler inertiafromgeom="auto" inertiagrouprange="4 4" angle="radian"/>
 
     <asset>
-        <mesh file="meshes/micro.stl" name="micro"/>
-        <mesh file="meshes/microdoor.stl" name="microdoor"/>
-        <mesh file="meshes/microbutton.stl" name="microbutton"/>
-        <mesh file="meshes/microfeet.stl" name="microfeet"/>
-        <mesh file="meshes/microhandle.stl" name="microhandle"/>
-        <mesh file="meshes/microwindow.stl" name="microwindow"/>
+        <mesh file="micro.stl" name="micro"/>
+        <mesh file="microdoor.stl" name="microdoor"/>
+        <mesh file="microbutton.stl" name="microbutton"/>
+        <mesh file="microfeet.stl" name="microfeet"/>
+        <mesh file="microhandle.stl" name="microhandle"/>
+        <mesh file="microwindow.stl" name="microwindow"/>
 
         <texture name="T_micro_metal" type="cube" height="1" width="1" file="textures/metal1.png"/>
 

@@ -35,8 +35,8 @@ class IKController:
         # Translation error
         err_pos[:] = target_pos - eef_xpos
         
-        print('ERROR POS')
-        print(err_pos)
+        # print('ERROR POS')
+        # print(err_pos)
 
         # Rotation error
         mujoco.mju_mat2Quat(eef_xquat, eef_xmat)
@@ -54,7 +54,7 @@ class IKController:
         return qpos_increase
             
         
-def null_space_method(jac_joints, delta, regularization_strength=0.03):
+def null_space_method(jac_joints, delta, regularization_strength=0.3):
     hess_approx = jac_joints.T.dot(jac_joints)
     hess_approx += np.eye(hess_approx.shape[0]) * regularization_strength
     joint_delta = jac_joints.T.dot(delta)
