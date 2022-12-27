@@ -61,7 +61,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
         EzPickle.__init__(self, n_segs=n_segs, render_mode=render_mode)
         os.remove(asset_path)
 
-    def _generate_asset(self, n_segs: int, asset_path: str):
+    def _generate_asset(self, n_segs: int, asset_path: str) -> None:
         template_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
@@ -161,7 +161,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
             self.render()
         return (observation, reward, terminated, truncated, info)
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         return np.concatenate(
             [
                 self.data.qpos.flat[2:],
@@ -170,7 +170,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
             ]
         )
 
-    def reset_model(self):
+    def reset_model(self) -> np.ndarray:
         """Resets the model in same way as the Swimmer."""
         qpos = self.init_qpos + self.np_random.uniform(
             size=self.model.nq,

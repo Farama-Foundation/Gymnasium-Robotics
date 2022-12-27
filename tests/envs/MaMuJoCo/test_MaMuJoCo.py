@@ -107,6 +107,7 @@ def test_action_mapping(observation_depth, task):
     ).all()
 
 
+# The black formatter was disabled because it results in `k_dicts_tasks` being an unreadable mess
 # fmt: off
 pre_computed_k_dict = collections.namedtuple("pre_computed_k_dict", "scenario, conf, list_k_dicts")
 k_dicts_tasks = [
