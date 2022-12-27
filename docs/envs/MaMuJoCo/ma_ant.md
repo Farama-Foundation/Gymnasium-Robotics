@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| {'0' : Box(-1, 1, (8,), float32)}`			|
 | Part partition	| [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]	|
 
-If partioning is None then the enviroment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/)
+If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/)
 
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -78,7 +78,7 @@ back legs
 | Action Spaces		| {'0' : Box(-1, 1, (4,), float32), '1' : Box(-1, 1, (4,), float32)}`|
 | Part partition	| [(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]	|
 
-The enviroment is partioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
+The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
 #### Agent 0 action space
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -140,13 +140,13 @@ right back leg
 ## Observation Space
 
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the ant's torso.
-see more at the [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
+See more at the [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
 
 
 
 ## Rewards
 
-All agents recieve the same [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space) reward.
+All agents receive the same [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space) reward.
 
 
 
