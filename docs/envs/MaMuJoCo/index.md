@@ -6,7 +6,11 @@ lastpage:
 
 # MaMuJoCo (Multi-Agent MuJoCo)
 
-These environments were introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709)
+```{figure} mamujoco.png
+    :name: mamujoco
+```
+
+MaMuJoCo was introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709)
 
 There are 2 types of Environments, included (1) multi-agent factorizations of [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms
 
@@ -17,6 +21,7 @@ The unique dependencies for this set of environments can be installed via:
 ```sh
 pip install gymnasium-robotics[mamujoco]
 ```
+
 
 ## API
 
@@ -35,14 +40,13 @@ MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/
 ```{eval-rst}
 .. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state
 ```
-- obsk.get_parts_and_edges
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.envs.multiagent_mujoco.obsk.get_parts_and_edge
+.. autofunction:: gymnasium_robotics.mamujoco_v0.get_parts_and_edges
 ```
 
 MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api/aec/) but does not expose extra functions.
 
-### make function
+### Arguments
 ```{eval-rst}
 .. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.__init__
 ```
@@ -55,9 +59,8 @@ MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api
 In this example, we will create an agent factorization not present in MaMuJoCo the "Ant"/'8x1', where each agent controls a single joint/action (first implemented by [safe-MaMuJoCo](https://github.com/chauncygu/Safe-Multi-Agent-Mujoco))
 
 first we will load the graph of MaMuJoCo
-TODO fix imoprt
 ```python
->>> from multiagent_mujoco.obsk import get_parts_and_edges 
+>>> from gymnasium_robotics.mamujoco_v0 import get_parts_and_edges
 >>> unpartioned_nodes, edges, global_nodes = get_parts_and_edges('Ant-v4', None)
 ```
 the `unpartioned_nodes` contain the nodes of the MaMuJoCo graph
@@ -78,6 +81,10 @@ finally package the partitions and create our environment
 >>> my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
 >>> gym_env = mamujoco_v0('Ant', '8x1', agent_factorization=my_agent_factorization)
 ```
+
+## Version History
+v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+
 ```{toctree}
 :hidden:
 ma_ant.md

@@ -13,7 +13,10 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
-    """Is a vartion of the Swimmer environment, but with many segments."""
+    """Is a vartion of the Swimmer environment, but with many segments.
+
+    This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709)
+    """
 
     metadata = {
         "render_modes": [
