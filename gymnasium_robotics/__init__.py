@@ -2,6 +2,7 @@
 from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
+from gymnasium_robotics.envs.multiagent_mujoco import MultiAgentMujocoEnv, mamujoco_v0
 
 
 def register_robotics_envs():
