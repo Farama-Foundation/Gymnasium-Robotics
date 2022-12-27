@@ -5,7 +5,7 @@ from typing import Optional, Union
 import numpy as np
 from gymnasium import error, logger, spaces
 
-from gymnasium_robotics import GoalEnv
+from gymnasium_robotics.core import GoalEnv
 
 try:
     import mujoco_py
