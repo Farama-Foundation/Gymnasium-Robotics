@@ -57,7 +57,7 @@ class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
         EzPickle.__init__(self, n_segs=n_segs, render_mode=render_mode)
         os.remove(asset_path)
 
-    def _generate_asset(self, n_segs: int, asset_path: str):
+    def _generate_asset(self, n_segs: int, asset_path: str) -> None:
         template_path = os.path.join(
             os.path.dirname(os.path.abspath(__file__)),
             "assets",
@@ -130,12 +130,12 @@ class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
             self.render()
         return observation, reward, terminal, truncated, info
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         qpos = self.data.qpos
         qvel = self.data.qvel
         return np.concatenate([qpos.flat[2:], qvel.flat])
 
-    def reset_model(self):
+    def reset_model(self) -> np.ndarray:
         """Resets the model in same way as the Swimmer."""
         self.set_state(
             self.init_qpos

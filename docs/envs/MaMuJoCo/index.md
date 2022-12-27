@@ -38,6 +38,36 @@ MaMuJoCo uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/par
 MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api/aec/) but does not expose extra functions.
 
 
+
+## How to create new agent factorizations 
+### example 'Ant-v4', '8x1'
+
+In this example, we will create an agent factorization not present in MaMuJoCo the "Ant"/'8x1', where each agent controls a single joint/action (first implemented by [safe-MaMuJoCo](https://github.com/chauncygu/Safe-Multi-Agent-Mujoco))
+
+first we will load the graph of MaMuJoCo
+TODO fix imoprt
+```python
+>>> from multiagent_mujoco.obsk import get_parts_and_edges 
+>>> unpartioned_nodes, edges, global_nodes = get_parts_and_edges('Ant-v4', None)
+```
+the `unpartioned_nodes` contain the nodes of the MaMuJoCo graph
+the `edges` well, contain the edges of the graph
+and the `global_nodes` a set of observations for all agents
+
+To create our '8x1' partition we will need to partition the `unpartioned_nodes`
+
+```python
+>>> unpartioned_nodes
+[(hip1, ankle1, hip2, ankle2, hip3, ankle3, hip4, ankle4)]
+>>> partioned_nodes = [(unpartioned_nodes[0][0],), (unpartioned_nodes[0][1],), (unpartioned_nodes[0][2],), (unpartioned_nodes[0][3],), (unpartioned_nodes[0][4],), (unpartioned_nodes[0][5],), (unpartioned_nodes[0][6],), (unpartioned_nodes[0][7],)]>>> partioned_nodes
+>>> partioned_nodes
+[(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]
+```
+finally package the partitions and create our environment
+```python
+my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
+gym_env = MaMuJoCo('Ant', '8x1', agent_factorization=my_agent_factorization)
+```
 ```{toctree}
 :hidden:
 ma_ant.md
