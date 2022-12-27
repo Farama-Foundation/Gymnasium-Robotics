@@ -35,7 +35,7 @@ extras = {
     "testing": [
         "pytest==7.0.1",
         "mujoco_py<2.2,>=2.1",
-        "pettingzoo>=1.22.2",
+        "pettingzoo",  # >= 12.2
         "Jinja2>=3.0.3",
     ],
     "mujoco_py": ["mujoco_py<2.2,>=2.1"],
