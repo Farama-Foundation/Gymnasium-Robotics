@@ -90,90 +90,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         truncates all agents at 1000 steps, and never terminates based on same condition as "Ant"
     For coupled_half_cheetah
         truncates all agents at 1000 steps, and never terminates
-
-
-    # Valid pre-made Configurations
-
-    ### 2-Agent Ant
-
-    scenario="Ant-v2"
-    agent_conf="2x4"
-
-    ### 2-Agent Ant Diag
-
-    scenario="Ant-v2"
-    agent_conf="2x4d"
-
-    ### 4-Agent Ant
-
-    scenario="Ant-v2"
-    agent_conf="4x2"
-
-    ### 2-Agent HalfCheetah
-
-    scenario="HalfCheetah-v2"
-    agent_conf="2x3"
-
-    ### 6-Agent HalfCheetah
-
-    scenario="HalfCheetah-v2"
-    agent_conf="6x1"
-
-    ### 3-Agent Hopper
-
-    scenario="Hopper-v2"
-    agent_conf="3x1"
-
-    ### 2-Agent Humanoid
-
-    scenario="Humanoid-v2"
-    agent_conf="9|8"
-
-    ### 2-Agent HumanoidStandup
-
-    scenario="HumanoidStandup-v2"
-    agent_conf="9|8"
-
-    ### 2-Agent Reacher
-
-    scenario="Reacher-v2"
-    agent_conf="2x1"
-
-    ### 2-Agent Swimmer
-
-    scenario="Swimmer-v2"
-    agent_conf="2x1"
-
-    ### 2-Agent Walker
-
-    scenario="Walker2d-v2"
-    agent_conf="2x3"
-
-    ### 1-Agent InvertedPendulum (for debugging algorithms)
-    scenario="InvertedPendulum"
-    agent_conf=None
-
-    ### Manyagent Swimmer
-
-    scenario="manyagent_swimmer"
-    agent_conf="10x2"
-
-    scenario="manyagent_swimmer"
-    agent_conf="$Xx$Y" # where $X, $Y any positive integers e,g, "42x6", "10x2", "2x3"
-
-
-    ### Manyagent Ant
-
-    scenario="manyagent_ant"
-    agent_conf="2x3"
-
-    scenario="manyagent_ant"
-    agent_conf="$Xx$Y" # where $X, $Y any positive integers e,g, "42x6", "10x2", "2x3"
-
-    ### Coupled HalfCheetah
-
-    scenario="coupled_half_cheetah"
-    agent_conf="1p1"
     """
 
     metadata = {
@@ -674,4 +590,4 @@ def aec_wrapper_fn(par_env_fn):
 # These are the export functions (for `PettingZoo` style exportations)
 env = aec_wrapper_fn(MultiAgentMujocoEnv)
 parallel_env = MultiAgentMujocoEnv
-raw_env = MultiAgentMujocoEnv
+raw_parallel_env = MultiAgentMujocoEnv
