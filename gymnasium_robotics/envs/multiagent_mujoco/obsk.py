@@ -18,16 +18,16 @@ class Node:
         act_ids: int,
         body_fn: typing.Callable | None = None,
         bodies: tuple[int, ...] = (),
-        extra_obs: dict[str, typing.Callable] | None = None,
+        extra_obs: dict[str, typing.Callable] = {},
         tendons: tuple[int, ...] = (),
     ):
         """Init.
 
         Args:
             label: the name of the node
-            qpos_ids: the corresponding corresponding ID,
-            qvel_ids: the corresponding  velocity ID,
-            act_ids: the action's ID assicaiated with that node
+            qpos_ids: the corresponding position ID,
+            qvel_ids: the corresponding velocity ID,
+            act_ids: the action's ID associated with that node
             body_fn: an optional overwrite of the bodies's functions
             bodies: is used to index ["cvel", "cinert", "cfrc_ext"] categories
             extra_obs: an optional overwrite of observation types keyied by categories
@@ -38,7 +38,7 @@ class Node:
         self.qvel_ids = qvel_ids
         self.act_ids = act_ids
         self.bodies = bodies
-        self.extra_obs = {} if extra_obs is None else extra_obs
+        self.extra_obs = extra_obs
         self.body_fn = body_fn
         self.tendons = tendons
 
@@ -101,8 +101,7 @@ def get_joints_at_kdist(
     if k is None:
         return None
 
-    def _adjacent(lst):
-        # return all sets adjacent to any element in lst
+    def _adjacent(lst):  # return all sets adjacent to any element in lst
         ret = set()
         for element in lst:
             ret = ret.union(
@@ -184,16 +183,15 @@ def build_obs(
     # Add global observations
     body_set_dict = {}
     for category in global_categories:
-        # for joint in global_dict.get("joints", []):
         for joint in global_nodes:
             if category in joint.extra_obs:
                 items = joint.extra_obs[category](data).tolist()
                 obs_lst.extend(items if isinstance(items, list) else [items])
-            elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
-                obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
             elif category in ["qvel", "qpos"]:
                 items = getattr(data, category)[getattr(joint, f"{category}_ids")]
                 obs_lst.extend(items if isinstance(items, list) else [items])
+            elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
+                obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
             else:
                 for body in joint.bodies:
                     if category not in body_set_dict:
@@ -208,7 +206,7 @@ def build_obs(
     return np.array(obs_lst)
 
 
-def get_parts_and_edges(
+def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
 ) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
     """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
