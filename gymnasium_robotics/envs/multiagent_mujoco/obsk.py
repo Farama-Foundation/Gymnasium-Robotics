@@ -208,7 +208,7 @@ def build_obs(
     return np.array(obs_lst)
 
 
-def get_parts_and_edges(
+def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
 ) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
     """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
