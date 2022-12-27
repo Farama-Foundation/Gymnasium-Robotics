@@ -4,8 +4,9 @@ import collections
 
 import pytest
 from gymnasium.utils.env_checker import data_equivalence
-from multiagent_mujoco import mamujoco_v0
 from pettingzoo.test import parallel_api_test
+
+from gymnasium_robotics import mamujoco_v0
 
 scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf")
 
