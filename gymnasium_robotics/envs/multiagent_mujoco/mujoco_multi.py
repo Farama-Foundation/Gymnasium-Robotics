@@ -165,39 +165,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     scenario="manyagent_ant"
     agent_conf="$Xx$Y" # where $X, $Y any positive integers e,g, "42x6", "10x2", "2x3"
 
-    ### Coupled HalfCheetah (NEW!)
+    ### Coupled HalfCheetah
 
     scenario="coupled_half_cheetah"
     agent_conf="1p1"
-
-
-    # How to create new agent factorizations (example 'Ant-v4', '8x1')
-
-    In this example, we will create an agent factorization not present in MaMuJoCo the '8x1', where each agent controls a single action (first implemented by [safe-MaMuJoCo](https://github.com/chauncygu/Safe-Multi-Agent-Mujoco))
-
-    first we will load the graph of MaMuJoCo
-    ```python
-    >>> from multiagent_mujoco.obsk import get_parts_and_edges
-    >>> unpartioned_nodes, edges, global_nodes = get_parts_and_edges('Ant-v4', None)
-    ```
-    the `unpartioned_nodes` contain the nodes of the MaMuJoCo graph
-    the `edges` well, contain the edges of the graph
-    and the `global_nodes` a set of observations for all agents
-
-    To create our '8x1' partition we will need to partition the `unpartioned_nodes`
-
-    ```python
-    >>> unpartioned_nodes
-    [(hip1, ankle1, hip2, ankle2, hip3, ankle3, hip4, ankle4)]
-    >>> partioned_nodes = [(unpartioned_nodes[0][0],), (unpartioned_nodes[0][1],), (unpartioned_nodes[0][2],), (unpartioned_nodes[0][3],), (unpartioned_nodes[0][4],), (unpartioned_nodes[0][5],), (unpartioned_nodes[0][6],), (unpartioned_nodes[0][7],)]>>> partioned_nodes
-    >>> partioned_nodes
-    [(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]
-    ```
-    finally package the partitions and create our environment
-    ```python
-    my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
-    gym_env = MaMuJoCo('Ant', '8x1', agent_factorization=my_agent_factorization)
-    ```
     """
 
     metadata = {
@@ -211,8 +182,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     def __init__(
         self,
         scenario: str,
-        agent_conf: str,
-        agent_obsk: int = 1,
+        agent_conf: str | None,
+        agent_obsk: int | None = 1,
         agent_factorization: dict[str, any] | None = None,
         local_categories: list[list[str]] | None = None,
         global_categories: tuple[str, ...] | None = None,
@@ -222,14 +193,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         Args:
             scenario: The Task/Environment, valid values:
-                "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
+                "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Pusher", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
             agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
-                if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
+                If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
             agent_obsk: Number of nearest joints to observe,
-                if set to 0 it only observes local state,
-                if set to 1 it observes local state + 1 joint over,
-                if set to 2 it observes local state + 2 joints over,
-                if it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
+                If set to 0 it only observes local state,
+                If set to 1 it observes local state + 1 joint over,
+                If set to 2 it observes local state + 2 joints over,
+                If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
                 The Default value is: 1
             agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](link).
@@ -296,6 +267,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             ]
             mujoco_edges = None
 
+        # Create agent lists
         self.possible_agents = [
             "agent_" + str(agent_id)
             for agent_id in range(len(self.agent_action_partitions))
@@ -322,6 +294,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             for agent_id in range(self.num_agents)
         ]
 
+        # Create observation and action spaces
         self.observation_spaces, self.action_spaces = {}, {}
         for agent_id, partition in enumerate(self.agent_action_partitions):
             self.action_spaces[self.possible_agents[agent_id]] = gymnasium.spaces.Box(
@@ -457,8 +430,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return {self.possible_agents[0]: global_state}
 
-        # data_struct = collections.namedtuple('data_struct', 'qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext')
-
         class data_struct:
             def __init__(self, qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext):
                 self.qpos = qpos
@@ -584,8 +555,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """Resets the the `single_agent_env`.
 
         Args:
-            seed: see pettingzoo.utils.env.ParallelEnv.reset() doc
-            return_info: see pettingzoo.utils.env.ParallelEnv.reset() doc
+            seed: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc
+            return_info: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc
             options: Ignored arguments
 
         Returns:
@@ -695,6 +666,7 @@ def aec_wrapper_fn(par_env_fn):
     return aec_fn
 
 
+# These are the export functions (for `PettingZoo` style exportations)
 env = aec_wrapper_fn(MultiAgentMujocoEnv)
 parallel_env = MultiAgentMujocoEnv
 raw_env = MultiAgentMujocoEnv

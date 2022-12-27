@@ -92,7 +92,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
             self.render()
         return observation, reward, terminal, truncated, info
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         # NOTE: does not return tendon data
         return np.concatenate(
             [
@@ -102,7 +102,7 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
             ]
         )
 
-    def reset_model(self):
+    def reset_model(self) -> np.ndarray:
         """Resets the model in same way as the single half cheetah."""
         qpos = self.init_qpos + self.np_random.uniform(
             low=-self._reset_noise_scale,
