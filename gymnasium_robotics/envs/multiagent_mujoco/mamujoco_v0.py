@@ -1,5 +1,4 @@
-import gymnasium_robotics.envs.multiagent_mujoco.obsk.get_parts_and_edges
-from gymnasium_robotics.envs.multiagent_mujoco.mujoco_multi import (  # noqa : F401;
+from gymnasium_robotics.envs.multiagent_mujoco.mujoco_multi import (  # noqa : F401
     env,
     parallel_env,
     raw_parallel_env,

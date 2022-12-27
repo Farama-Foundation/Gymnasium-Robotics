@@ -124,7 +124,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
                 The Default value is: 1
             agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
-                see DOC [how to create new agent factorizations](link).
+                see DOC [how to create new agent factorizations](https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations).
             local_categories: The categories of local observations for each observation depth,
                 The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
             global_categories: The categories of observation for global observations,

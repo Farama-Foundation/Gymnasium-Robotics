@@ -10,7 +10,7 @@ These environments were introduced in ["FACMAC: Factored Multi-Agent Centralised
 
 There are 2 types of Environments, included (1) multi-agent factorizations of [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms
 
-This Represents the first, easy to use Framework for research of agent factorization
+Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization
 
 The unique dependencies for this set of environments can be installed via:
 
@@ -36,8 +36,16 @@ MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/
 .. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state
 ```
 - obsk.get_parts_and_edges
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.envs.multiagent_mujoco.obsk.get_parts_and_edge
+```
 
 MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api/aec/) but does not expose extra functions.
+
+### make function
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.__init__
+```
 
 
 
@@ -67,8 +75,8 @@ To create our '8x1' partition we will need to partition the `unpartioned_nodes`
 ```
 finally package the partitions and create our environment
 ```python
-my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
-gym_env = MaMuJoCo('Ant', '8x1', agent_factorization=my_agent_factorization)
+>>> my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
+>>> gym_env = mamujoco_v0('Ant', '8x1', agent_factorization=my_agent_factorization)
 ```
 ```{toctree}
 :hidden:
