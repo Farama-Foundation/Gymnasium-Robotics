@@ -13,7 +13,10 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
-    """Is a vartion of the Ant environment, but with ants coupled together (each segment has a torso + 4 legs)."""
+    """Is a vartion of the Ant environment, but with ants coupled together (each segment has a torso + 4 legs).
+
+    This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709).
+    """
 
     metadata = {
         "render_modes": [
@@ -48,7 +51,7 @@ class ManySegmentAntEnv(mujoco_env.MujocoEnv, EzPickle):
             low=-np.inf,
             high=np.inf,
             shape=(n_segs * 50 + 17,),
-            dtype=np.float32,
+            dtype=np.float64,
         )
         mujoco_env.MujocoEnv.__init__(
             self,

@@ -15,7 +15,7 @@ DEFAULT_CAMERA_CONFIG = {
 class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
     """Is a vartion of the Swimmer environment, but with many segments.
 
-    This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709)
+    This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709).
     """
 
     metadata = {
@@ -47,7 +47,7 @@ class ManySegmentSwimmerEnv(mujoco_env.MujocoEnv, EzPickle):
         self._generate_asset(n_segs=n_segs, asset_path=asset_path)
 
         observation_space = gymnasium.spaces.Box(
-            low=-np.inf, high=np.inf, shape=(n_segs * 2 + 4,), dtype=np.float32
+            low=-np.inf, high=np.inf, shape=(n_segs * 2 + 4,), dtype=np.float64
         )
         mujoco_env.MujocoEnv.__init__(
             self,
