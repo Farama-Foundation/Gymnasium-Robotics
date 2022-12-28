@@ -124,7 +124,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         # load the underlying single agent Gymansium MuJoCo Environment in `self.gym_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.single_agent_env = gymnasium.make(scenario, render_mode=render_mode)
-        elif scenario in ["manyagent_ant-v4"]:
+        elif scenario in ["ManySegmentAnt-v4"]:
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
             except Exception:
@@ -133,7 +133,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.single_agent_env = TimeLimit(
                 ManySegmentAntEnv(n_segs, render_mode), max_episode_steps=1000
             )
-        elif scenario in ["manyagent_swimmer-v4"]:
+        elif scenario in ["ManySegmentSwimmer-v4"]:
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
             except Exception:
@@ -142,7 +142,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.single_agent_env = TimeLimit(
                 ManySegmentSwimmerEnv(n_segs, render_mode), max_episode_steps=1000
             )
-        elif scenario in ["coupled_half_cheetah-v4"]:
+        elif scenario in ["CoupledHalfCheetah-v4"]:
             self.single_agent_env = TimeLimit(
                 CoupledHalfCheetah(render_mode), max_episode_steps=1000
             )
@@ -527,6 +527,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return categories
 
     def _generate_global_categories(self, scenario: str) -> tuple[str, ...]:
+        # TODO disable qvel
         """Generates the default global categories of observations.
 
         Args:
