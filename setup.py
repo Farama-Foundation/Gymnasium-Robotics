@@ -70,8 +70,10 @@ setup(
     package_data={
         "gymnasium_robotics": [
             "envs/assets/LICENSE.md",
+            "envs/assets/adroit_hand/*.xml",
             "envs/assets/fetch/*.xml",
             "envs/assets/hand/*.xml",
+            "envs/assets/point/*.xml",
             "envs/assets/stls/fetch/*.stl",
             "envs/assets/stls/hand/*.stl",
             "envs/assets/textures/*.png",
