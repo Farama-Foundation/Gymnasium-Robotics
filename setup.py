@@ -71,7 +71,8 @@ setup(
         "gymnasium_robotics": [
             "envs/assets/LICENSE.md",
             "envs/assets/adroit_hand/*.xml",
-            "envs/assets/adroit_hand/resources/*",
+            "envs/assets/adroit_hand/resources/meshes/*.stl",
+            "envs/assets/adroit_hand/resources/textures/*.png",
             "envs/assets/fetch/*.xml",
             "envs/assets/hand/*.xml",
             "envs/assets/point/*.xml",
