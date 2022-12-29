@@ -18,7 +18,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, sparse_reward=False, **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             "../assets/adroit_hand/adroit_relocate.xml",
@@ -35,6 +35,9 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
+
+        # whether to have sparse rewards
+        self.sparse_reward = sparse_reward
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -90,20 +93,25 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
         target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
 
-        reward = -0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
-        if obj_pos[2] > 0.04:  # if object off the table
-            reward += 1.0  # bonus for lifting the object
-            reward += -0.5 * np.linalg.norm(
-                palm_pos - target_pos
-            )  # make hand go to target
-            reward += -0.5 * np.linalg.norm(
-                obj_pos - target_pos
-            )  # make object go to target
+        reward = 0.0
+        if not self.sparse_reward:
+            reward -= 0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
+            if obj_pos[2] > 0.04:  # if object off the table
+                reward += 1.0  # bonus for lifting the object
+                reward += -0.5 * np.linalg.norm(
+                    palm_pos - target_pos
+                )  # make hand go to target
+                reward += -0.5 * np.linalg.norm(
+                    obj_pos - target_pos
+                )  # make object go to target
 
+        # bonus for object close to target
         if np.linalg.norm(obj_pos - target_pos) < 0.1:
-            reward += 10.0  # bonus for object close to target
+            reward += 10.0
+
+        # bonus for object "very" close to target
         if np.linalg.norm(obj_pos - target_pos) < 0.05:
-            reward += 20.0  # bonus for object "very" close to target
+            reward += 20.0
 
         goal_achieved = True if np.linalg.norm(obj_pos - target_pos) < 0.1 else False
 

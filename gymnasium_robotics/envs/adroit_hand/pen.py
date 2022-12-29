@@ -19,7 +19,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, sparse_reward=False, **kwargs):
         self.pen_length = 1.0
         self.tar_length = 1.0
 
@@ -38,6 +38,9 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
+
+        # whether to have sparse rewards
+        self.sparse_reward = sparse_reward
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -110,10 +113,10 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
         # pos cost
         dist = np.linalg.norm(obj_pos - desired_loc)
-        reward = -dist
+        reward = -dist * (not self.sparse_reward)
         # orien cost
         orien_similarity = np.dot(obj_orien, desired_orien)
-        reward += orien_similarity
+        reward += orien_similarity * (not self.sparse_reward)
 
         # bonus for being close to desired orientation
         if dist < 0.075 and orien_similarity > 0.9:

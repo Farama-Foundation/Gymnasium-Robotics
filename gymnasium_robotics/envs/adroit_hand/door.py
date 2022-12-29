@@ -18,7 +18,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, sparse_reward=False, **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             "../assets/adroit_hand/adroit_door.xml",
@@ -35,6 +35,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
+
+        # whether to have sparse rewards
+        self.sparse_reward = sparse_reward
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -95,18 +98,22 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
         door_pos = self.data.qpos[self.door_hinge_addrs]
 
-        # get to handle
-        reward = -0.1 * np.linalg.norm(palm_pos - handle_pos)
-        # open door
-        reward += -0.1 * (door_pos - 1.57) * (door_pos - 1.57)
-        # velocity cost
-        reward += -1e-5 * np.sum(self.data.qvel**2)
+        reward = 0.0
+        if not self.sparse_reward:
+            # get to handle
+            reward -= 0.1 * np.linalg.norm(palm_pos - handle_pos)
+            # open door
+            reward += -0.1 * (door_pos - 1.57) * (door_pos - 1.57)
+            # velocity cost
+            reward += -1e-5 * np.sum(self.data.qvel**2)
 
-        # Bonus reward
-        if door_pos > 0.2:
-            reward += 2
-        if door_pos > 1.0:
-            reward += 8
+            # Bonus reward
+            if door_pos > 0.2:
+                reward += 2
+            if door_pos > 1.0:
+                reward += 8
+
+        # environment completed
         if door_pos > 1.35:
             reward += 10
 
