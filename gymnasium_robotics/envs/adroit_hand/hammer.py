@@ -19,7 +19,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, sparse_reward=False, **kwargs):
+    def __init__(self, reward_type: str = "dense", **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             "../assets/adroit_hand/adroit_hammer.xml",
@@ -38,7 +38,12 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         self._model_names = MujocoModelNames(self.model)
 
         # whether to have sparse rewards
-        self.sparse_reward = sparse_reward
+        if reward_type.lower() == "dense":
+            self.sparse_reward = False
+        elif reward_type.lower() == "sparse"
+            self.sparse_reward = True
+        else:
+            raise ValueError(f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}")
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
