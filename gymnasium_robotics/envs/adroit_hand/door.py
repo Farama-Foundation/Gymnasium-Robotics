@@ -32,17 +32,19 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             model_path=xml_file_path,
             frame_skip=5,
             observation_space=observation_space,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
 
         # whether to have sparse rewards
         if reward_type.lower() == "dense":
             self.sparse_reward = False
-        elif reward_type.lower() == "sparse"
+        elif reward_type.lower() == "sparse":
             self.sparse_reward = True
         else:
-            raise ValueError(f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}")
+            raise ValueError(
+                f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}"
+            )
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(

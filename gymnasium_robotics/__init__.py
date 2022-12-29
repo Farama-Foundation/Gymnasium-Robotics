@@ -1077,7 +1077,6 @@ def register_robotics_envs():
             max_episode_steps=800,
         )
 
-
     for reward_type in ["sparse", "dense"]:
         suffix = "Sparse" if reward_type == "sparse" else ""
         kwargs = {
@@ -1111,5 +1110,6 @@ def register_robotics_envs():
             max_episode_steps=200,
             kwargs=kwargs,
         )
+
 
 __version__ = "1.1.0"
