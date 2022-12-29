@@ -29,9 +29,9 @@
 # They have mostly been modified to support batched operations.
 
 import itertools
+import math
 
 import numpy as np
-import math
 
 """
 Rotations
@@ -406,6 +406,7 @@ def get_parallel_rotations():
             parallel_rotations += [canonical]
     assert len(parallel_rotations) == 24
     return parallel_rotations
+
 
 def unit_vector(data, axis=None, out=None):
     """

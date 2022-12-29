@@ -11,7 +11,7 @@
         <geom class="micro_collision" pos="-0.08 -0.008 0.024" size="0.207 0.168 0.024" type="box" mass=".5"/>
         <geom class="micro_collision" pos="0.26 -0.197 0.187" size="0.085 0.024 0.187" type="box" mass=".5"/>
         <body name="microdoorroot" pos="-0.345 -0.176 0.192">
-            <joint axis="0 0 1" limited="true" name="microjoint" range="-2.094 0"/>
+            <joint axis="0 0 1" limited="true" name="microwave" range="-2.094 0"/>
             <geom mesh="microdoor" pos="0.345 0.176 -0.192"/>
             <geom material="micro_window" mesh="microwindow" pos="0.345 0.176 -0.192"/>
             <geom material="micro_metal" pos="0.475 -0.108 0" size="0.02 0.13" type="capsule"/>

@@ -44,7 +44,7 @@
         </body>
         <body name="Burner 1" pos="0.206 -0.119 0.61">
             <inertial pos="0 0 0" mass=".01" diaginertia="0.001 0.001 0.001"/>
-            <joint name="burner_Joint_1" axis="0 0 -1" type="slide" limited="true" range="-.009 0"/>
+            <joint name="bottom_right_burner" axis="0 0 -1" type="slide" limited="true" range="-.009 0"/>
             <geom material="oven_burner" size="0.1 0.01" type="cylinder"/>
         </body>
         <body name="knob 2" euler="1.57 0 0" pos="-0.271 0.22 1.243">
@@ -59,7 +59,7 @@
         </body>
         <body name="Burner 2" pos="-0.24 -0.119 0.61">
             <inertial pos="0 0 0" mass=".01" diaginertia="0.001 0.001 0.001"/>
-            <joint name="burner_Joint_2" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
+            <joint name="bottom_left_burner" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
             <geom material="oven_burner" size="0.1 0.01" type="cylinder" group="1"/>
         </body>
         <body name="knob 3" euler="1.57 0 0" pos="-0.148 0.22 1.357">
@@ -74,7 +74,7 @@
         </body>
         <body name="Burner 3" pos="0.204 0.322 0.61">
             <inertial pos="0 0 0" mass=".01" diaginertia="0.001 0.001 0.001"/>
-            <joint name="burner_Joint_3" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
+            <joint name="top_right_burner" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
             <geom material="oven_burner" size="0.1 0.01" type="cylinder" group="1"/>
         </body>
         <body name="knob 4" euler="1.57 0 0" pos="-0.271 0.22 1.357">
@@ -89,7 +89,7 @@
         </body>
         <body name="Burner 4" pos="-0.237 0.322 0.61">
             <inertial pos="0 0 0" mass=".01" diaginertia="0.001 0.001 0.001"/>
-            <joint name="burner_Joint_4" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
+            <joint name="top_left_burner" axis="0 0 -1" type="slide" limited="true" stiffness="1" range="-.009 0"/>
             <geom material="oven_burner" size="0.1 0.01" type="cylinder" group="1"/>
         </body>
     </body>
@@ -100,7 +100,7 @@
             <geom mesh="lightswitchbase" pos="0 -0.0123 0" euler="-1.57 0 0"/>
             <body name="lightswitchroot">
                 <inertial pos="-0.0046 0.35 0.0131" mass=".1" diaginertia="0.001 0.001 0.001"/>
-                <joint axis="0 0 1" limited="true" name="lightswitch_joint" frictionloss="1" range="-.7 0"/>
+                <joint axis="0 0 1" limited="true" name="light_switch" frictionloss="1" range="-.7 0"/>
                 <geom pos="0.0252 -0.06 0" euler="-1.57 -.4 0" size="0.02 0.035" type="capsule"/>
                 <geom class="oven_collision" euler="-1.57 -.4 0" pos="0.0263 -0.065 0" size="0.021 0.03" type="capsule" mass=".01"/>
                 <site type="sphere" name="light_site" pos="0.0315 -0.075 0" size=".01" group="3" rgba="1 0 0 1"/>

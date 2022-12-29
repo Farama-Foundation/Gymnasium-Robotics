@@ -38,11 +38,11 @@
     </default>
 
     <equality>
-        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_1" joint2="burner_Joint_1"/>
-        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_2" joint2="burner_Joint_2"/>
-        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_3" joint2="burner_Joint_3"/>
-        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_4" joint2="burner_Joint_4"/>
-        <joint polycoef="0 14 0 0 0" joint1="lightswitch_joint" joint2="light_joint"/>
+        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_1" joint2="bottom_right_burner"/>
+        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_2" joint2="bottom_left_burner"/>
+        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_3" joint2="top_right_burner"/>
+        <joint polycoef="0 174 0 0 0" joint1="knob_Joint_4" joint2="top_left_burner"/>
+        <joint polycoef="0 14 0 0 0" joint1="light_switch" joint2="light_joint"/>
     </equality>
 
         <equality>
