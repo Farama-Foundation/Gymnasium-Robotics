@@ -231,7 +231,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
         self.render_mode = render_mode
-        self._render_initialized = True
 
         EzPickle.__init__(
             self,
@@ -283,10 +282,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     def render(self):
         self.ant_env.render()
-        # Set the viewer parameters at initialization of the renderer
-        if self._render_initialized:
-            self.ant_env.viewer.cam.distance = self.ant_env.model.stat.extent
-            self._render_initialized = False
 
     def close(self):
         super().close()
