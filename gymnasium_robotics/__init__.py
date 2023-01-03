@@ -997,21 +997,6 @@ def register_robotics_envs():
         )
 
         register(
-<<<<<<< HEAD
-=======
-            id=f"PointMaze_Open{suffix}-v3",
-            entry_point="gymnasium_robotics.envs:PointMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN,
-                },
-                kwargs,
-            ),
-            max_episode_steps=300,
-        )
-
-        register(
->>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
             id=f"PointMaze_Medium{suffix}-v3",
             entry_point="gymnasium_robotics.envs:PointMazeEnv",
             kwargs=_merge(
@@ -1083,7 +1068,6 @@ def register_robotics_envs():
             max_episode_steps=800,
         )
 
-<<<<<<< HEAD
     for reward_type in ["sparse", "dense"]:
         suffix = "Sparse" if reward_type == "sparse" else ""
         version = "v1"
@@ -1111,15 +1095,24 @@ def register_robotics_envs():
             max_episode_steps=200,
             kwargs=kwargs,
         )
+    register(
+        id="AdroitHandRelocate-v1",
+        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
+        max_episode_steps=200,
+    )
+    
+    register(
+        id="FrankaKitchen-v0",
+        entry_point="gymnasium_robotics.envs:KitchenEnv",
+        max_episode_steps=400,
+    )
 
-        register(
-            id=f"AdroitHandRelocate{suffix}-{version}",
-            entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
-            max_episode_steps=200,
-            kwargs=kwargs,
-        )
+    register(
+        id=f"AdroitHandRelocate{suffix}-{version}",
+        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
+        max_episode_steps=200,
+        kwargs=kwargs,
+    )
 
-=======
->>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
 
 __version__ = "1.1.0"

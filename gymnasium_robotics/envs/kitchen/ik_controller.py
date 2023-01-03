@@ -1,9 +1,5 @@
-import collections
-
 import mujoco
 import numpy as np
-
-IKResult = collections.namedtuple("IKResult", ["qpos", "err_norm", "steps", "success"])
 
 
 class IKController:
@@ -34,9 +30,6 @@ class IKController:
         # Translation error
         err_pos[:] = target_pos - eef_xpos
 
-        # print('ERROR POS')
-        # print(err_pos)
-
         # Rotation error
         mujoco.mju_mat2Quat(eef_xquat, eef_xmat)
         mujoco.mju_negQuat(neg_eef_xquat, eef_xquat)
@@ -46,9 +39,6 @@ class IKController:
         mujoco.mj_jacSite(self.model, self.data, jac_pos, jac_rot, self.eef_id)
         jac = np.concatenate((jac_pos, jac_rot), axis=0)
         qpos_increase = null_space_method(jac, err)
-
-        print("ERRPR NORM")
-        print(np.linalg.norm(err))
 
         return qpos_increase
 
