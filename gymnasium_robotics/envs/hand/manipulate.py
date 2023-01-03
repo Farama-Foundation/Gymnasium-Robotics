@@ -487,7 +487,6 @@ class MujocoPyManipulateEnv(get_base_manipulate_env(MujocoPyHandEnv)):
         }
 
 
-
 class MujocoHandBlockEnv(MujocoManipulateEnv, EzPickle):
     # noqa: D415
     """
