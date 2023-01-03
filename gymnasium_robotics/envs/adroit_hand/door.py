@@ -7,6 +7,11 @@ from gymnasium.utils.ezpickle import EzPickle
 
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 1.5,
+    "azimuth": 90.0,
+}
+
 
 class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     metadata = {
@@ -32,6 +37,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             model_path=xml_file_path,
             frame_skip=5,
             observation_space=observation_space,
+            default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
@@ -165,8 +171,3 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         qvel = self.data.qvel.ravel().copy()
         door_body_pos = self.model.body_pos[self.door_body_id].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, door_body_pos=door_body_pos)
-
-    def viewer_setup(self):
-        assert self.viewer is not None
-        self.viewer.cam.azimuth = 90
-        self.viewer.cam.distance = 1.5

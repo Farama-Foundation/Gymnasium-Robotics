@@ -62,7 +62,3 @@ class PointEnv(MujocoEnv):
         force actuated and the velocity can grow unbounded."""
         qvel = np.clip(self.data.qvel, -5.0, 5.0)
         self.set_state(self.data.qpos, qvel)
-
-    def viewer_setup(self):
-        assert self.viewer is not None
-        self.viewer.cam.distance = self.model.stat.extent
