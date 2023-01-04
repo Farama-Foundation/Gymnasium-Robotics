@@ -47,8 +47,9 @@ Documentation = "https://robotics.farama.org"
 "Bug Report" = "https://github.com/Farama-Foundation/Gymnasium-Robotics/issues"
 
 [project.entry-points]
-gymnasium_envs =
-    __root__ = "gymnasium_robotics:__init__.register_robotics_envs"
+gymnasium.envs = {
+  __root__ = "minigrid:__init__.register_minigrid_envs"
+}
 
 [tool.setuptools]
 include-package-data = true
