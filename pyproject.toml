@@ -1,3 +1,80 @@
+# Package ######################################################################
+
+[build-system]
+requires = ["setuptools >= 61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gymnasium-robotics"
+description = "Robotics environments for the Gymnasium repo."
+readme = "README.md"
+requires-python = ">= 3.7"
+authors = [{ name = "Farama Foundation", email = "contact@farama.org" }]
+license = { text = "MIT License" }
+keywords = ["Reinforcement Learning", "Gymnasium", "RL", "AI", "Robotics"]
+classifiers = [
+    "Development Status :: 4 - Beta",  # change to `5 - Production/Stable` when ready
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    'Intended Audience :: Science/Research',
+    'Topic :: Scientific/Engineering :: Artificial Intelligence',
+]
+
+dependencies = [
+    "mujoco>=2.3.1.post1",
+    "numpy>=1.21.0,<1.24.0",
+    "gymnasium>=0.26",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+# Update dependencies in `all` if any are added or removed
+testing = ["pytest==7.0.1", "mujoco_py<2.2,>=2.1"]
+mujoco_py = ["mujoco_py<2.2,>=2.1"]
+all = [
+    "mujoco_py<2.2,>=2.1",
+]
+
+[project.urls]
+Homepage = "https://farama.org"
+Repository = "https://github.com/Farama-Foundation/Gymnasium-Robotics"
+Documentation = "https://robotics.farama.org"
+"Bug Report" = "https://github.com/Farama-Foundation/Gymnasium-Robotics/issues"
+
+[project.entry-points."gymnasium.envs"]
+__root__ = "gymnasium_robotics.__init__:register_robotics_envs"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["robotics", "robotics.*"]
+
+[tool.setuptools.package-data]
+gymnasium_robotics = [
+    "envs/assets/LICENSE.md",
+    "envs/assets/fetch/*.xml",
+    "envs/assets/hand/*.xml",
+    "envs/assets/stls/fetch/*.stl",
+    "envs/assets/stls/hand/*.stl",
+    "envs/assets/textures/*.png",
+]
+
+# Linters and Test tools #######################################################
+
+[tool.black]
+safe = true
+
+[tool.isort]
+atomic = true
+profile = "black"
+src_paths = ["gymnasium_robotics", "tests"]
+
 [tool.pyright]
 include = [
     "gymnasium_robotics/**",
@@ -11,9 +88,7 @@ exclude = [
 ]
 
 
-strict = [
-
-]
+strict = []
 
 # This is required as the CI pre-commit does not download the module (i.e. numpy)
 #   Therefore, we have to ignore missing imports
@@ -27,7 +102,3 @@ enableTypeIgnoreComments = true
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 # reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
 reportOptionalMemberAccess = "none" # -> raise _version.py error
-
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
