@@ -18,4 +18,4 @@ def get_version():
     raise RuntimeError("bad version data in __init__.py")
 
 
-setup(name="gymnasium_robotics", version=get_version())
+setup(name="gymnasium-robotics", version=get_version())
