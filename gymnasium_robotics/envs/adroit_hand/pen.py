@@ -135,7 +135,8 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
-    The episode is never `terminated` since the task is continuing with infinite horizon.
+    The episode will be `terminated` when the Euclidean distancd to the target is less than `0.075`, and the dot product of the pen's and target orientatin
+    is greater than `0.95`.
 
     ## Arguments
 
@@ -291,8 +292,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             self.data.site_xpos[self.tar_t_site_id]
             - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
-        print(desired_pos)
-        breakpoint()
+
         return np.concatenate(
             [
                 qpos[:-6],
