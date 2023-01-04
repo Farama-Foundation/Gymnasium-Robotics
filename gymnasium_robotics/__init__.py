@@ -1069,25 +1069,25 @@ def register_robotics_envs():
         )
 
     register(
-        id="AdroitHandDoor-v0",
+        id="AdroitHandDoor-v1",
         entry_point="gymnasium_robotics.envs:AdroitHandDoorEnv",
         max_episode_steps=200,
     )
 
     register(
-        id="AdroitHandHammer-v0",
+        id="AdroitHandHammer-v1",
         entry_point="gymnasium_robotics.envs:AdroitHandHammerEnv",
         max_episode_steps=200,
     )
 
     register(
-        id="AdroitHandPen-v0",
+        id="AdroitHandPen-v1",
         entry_point="gymnasium_robotics.envs:AdroitHandPenEnv",
         max_episode_steps=200,
     )
 
     register(
-        id="AdroitHandRelocate-v0",
+        id="AdroitHandRelocate-v1",
         entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
         max_episode_steps=200,
     )
