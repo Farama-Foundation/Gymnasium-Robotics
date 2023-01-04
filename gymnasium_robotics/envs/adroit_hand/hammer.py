@@ -22,7 +22,8 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     by Aravind Rajeswaran, Vikash Kumar, Abhishek Gupta, Giulia Vezzani, John Schulman, Emanuel Todorov, and Sergey Levine.
 
     The environment is based on the [Adroit manipulation platform](https://github.com/vikashplus/Adroit), a 28 degree of freedom system which consists of a 24 degrees of freedom
-    ShadowHand and a 4 degree of freedom arm. The task to be completed consists on picking up a hammer with and drive a nail into a board.
+    ShadowHand and a 4 degree of freedom arm. The task to be completed consists on picking up a hammer with and drive a nail into a board. The nail position is randomized and has
+    dry friction capable of absorbing up to 15N force. Task is successful when the entire length of the nail is inside the board.
 
     ## Action Space
 
@@ -63,8 +64,6 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     The observation space is of the type `Box(-inf, inf, (46,), float64)`. It contains information about the angular position of the finger joints, the pose of the palm of the hand, the pose of the hammer and nail, and external forces on the nail.
 
-    {0: 'ARRx', 1: 'ARRy', 2: 'WRJ1', 3: 'WRJ0', 4: 'FFJ3', 5: 'FFJ2', 6: 'FFJ1', 7: 'FFJ0', 8: 'MFJ3', 9: 'MFJ2', 10: 'MFJ1', 11: 'MFJ0', 12: 'RFJ3', 13: 'RFJ2', 14: 'RFJ1', 15: 'RFJ0', 16: 'LFJ4', 17: 'LFJ3', 18: 'LFJ2', 19: 'LFJ1', 20: 'LFJ0', 21: 'THJ4', 22: 'THJ3', 23: 'THJ2', 24: 'THJ1', 25: 'THJ0', 26: 'nail_dir', 27: 'OBJTx', 28: 'OBJTy', 29: 'OBJTz', 30: 'OBJRx', 31: 'OBJRy', 32: 'OBJRz'}
-
     | Num | Observation                                                                 | Min    | Max    | Joint Name (in corresponding XML file) | Site Name (in corresponding XML file) | Joint Type| Unit                     |
     |-----|-----------------------------------------------------------------------------|--------|--------|----------------------------------------|---------------------------------------|-----------|------------------------- |
     | 0   | Angular position of the vertical arm joint                                  | -Inf   | Inf    | ARRx                                   | -                                     | hinge     | angle (rad)              |
@@ -93,16 +92,16 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     | 23  | Horizontal angular position of the MCP joint of the thumb finger            | -Inf   | Inf    | THJ2                                   | -                                     | hinge     | angle (rad)              |
     | 24  | Vertical angular position of the MCP joint of the thumb finger              | -Inf   | Inf    | THJ1                                   | -                                     | hinge     | angle (rad)              |
     | 25  | Angular position of the IP joint of the thumb finger                        | -Inf   | Inf    | THJ0                                   | -                                     | hinge     | angle (rad)              |
-    | 26  | Insertion displacement of nail                                              | -Inf   | Inf    | nail_dir                               | -                                     | hinge     | angle (rad)              |
-    | 27  | Linear velocity of the hammer in the x direction                            | -Inf   | Inf    | OBJTx                                  | -                                     | hinge     | velocity (m/s)           |
-    | 28  | Linear velocity of the hammer in the y direction                            | -Inf   | Inf    | OBJTy                                  | -                                     | hinge     | velocity (m/s)           |
-    | 29  | Linear velocity of the hammer in the z direction                            | -Inf   | Inf    | OBJTz                                  | -                                     | hinge     | velocity (m/s)           |
-    | 30  | Angular velocity of the hammer around x axis                                | -Inf   | Inf    | OBJRx                                  | -                                     | hinge     | angular velocity (rad/s) |
-    | 31  | Angular velocity of the hammer around y axis                                | -Inf   | Inf    | OBJTy                                  | -                                     | hinge     | angular velocity (rad/s) |
-    | 32  | Angular velocity of the hammer around z axis                                | -Inf   | Inf    | OBJTz                                  | -                                     | hinge     | angular velocity (rad/s) |
-    | 33  | Position of the center of the palm in the x direction                        | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
-    | 34  | Position of the center of the palm in the y direction                        | -Inf   | Inf    | -                                      | S_grasp                               | -         | positiony (m)            |
-    | 35  | Position of the center of the palm in the z direction                        | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
+    | 26  | Insertion displacement of nail                                              | -Inf   | Inf    | nail_dir                               | -                                     | slide     | position (m)             |
+    | 27  | Linear velocity of the hammer in the x direction                            | -1     | 1      | OBJTx                                  | -                                     | hinge     | velocity (m/s)           |
+    | 28  | Linear velocity of the hammer in the y direction                            | -1     | 1      | OBJTy                                  | -                                     | hinge     | velocity (m/s)           |
+    | 29  | Linear velocity of the hammer in the z direction                            | -1     | 1      | OBJTz                                  | -                                     | hinge     | velocity (m/s)           |
+    | 30  | Angular velocity of the hammer around x axis                                | -1     | 1      | OBJRx                                  | -                                     | hinge     | angular velocity (rad/s) |
+    | 31  | Angular velocity of the hammer around y axis                                | -1     | 1      | OBJTy                                  | -                                     | hinge     | angular velocity (rad/s) |
+    | 32  | Angular velocity of the hammer around z axis                                | -1     | 1      | OBJTz                                  | -                                     | hinge     | angular velocity (rad/s) |
+    | 33  | Position of the center of the palm in the x direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
+    | 34  | Position of the center of the palm in the y direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
+    | 35  | Position of the center of the palm in the z direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
     | 36  | Position of the hammer's center of mass in the x direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
     | 37  | Position of the hammer's center of mass in the y direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
     | 38  | Position of the hammer's center of mass in the z direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
@@ -112,7 +111,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     | 42  | Position of the nail in the x direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
     | 43  | Position of the nail in the y direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
     | 44  | Position of the nail in the z direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
-    | 45  | Linear force exerted on the head of the nail                                | -Inf   | Inf    | -                                      | S_target                              | -         | Newton (N)               |
+    | 45  | Linear force exerted on the head of the nail                                | -1     | 1      | -                                      | S_target                              | -         | Newton (N)               |
 
     ## Rewards
 
@@ -121,10 +120,12 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `take_hammer_head_to_nail`: increasing negative reward the further away the head of the hammer if from the head of the nail. This reward is also computed as the 3 dimensional Euclidean
         distance between both body frames
-    - `make_nail_go_inside`: Minor velocity penalty for the full dynamics of the environments. Used to bound the velocity of the bodies in the environment. It equals the norm This penalty is scaled by a factor of `10` in the final reward.
-    - `velocity_penalty`: This penalty is scaled by a factor of `0.01` in the final reward.
-    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` in the z direction.
-    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` and `75` if it is less than `0.01`.
+    - `make_nail_go_inside`: negative cost equal to the 3 dimensional Euclidean distance from the head of the nail to the board.
+        This penalty is scaled by a factor of `10` in the final reward.
+    - `velocity_penalty`: Minor velocity penalty for the full dynamics of the environments. Used to bound the velocity of the bodies in the environment.
+        It equals the norm of all the joint velocities. This penalty is scaled by a factor of `0.01` in the final reward.
+    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
+    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     The full reward function equals the following:
 
@@ -153,8 +154,6 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     env = gym.make('AdroitHandHammer-v1', max_episode_steps=400)
     ```
-
-    The same applies for the other environment variations.
 
     ## Version History
 
