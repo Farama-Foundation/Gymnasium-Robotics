@@ -129,7 +129,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     To add stochasticity to the environment the `(x,y,z)` coordinates of the door are randomly sampled each time the environment is reset. The values are extracted from a uniform distribution
     with ranges `[-0.3,-0.2]` for the `x` coordinate, `[0.25,0.35]` for the `y` coordinate, and `[0.252,0.35]` for the `z` coordinate.
 
-    The joint values of the environment are deterministically initialized to a zero value.
+    The joint values of the environment are deterministically initialized to a zero.
 
     ## Episode End
 
