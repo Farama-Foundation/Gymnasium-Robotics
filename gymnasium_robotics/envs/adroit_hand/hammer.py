@@ -8,6 +8,11 @@ from gymnasium.utils.ezpickle import EzPickle
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 from gymnasium_robotics.utils.rotations import quat2euler
 
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 2.0,
+    "azimuth": 45.0,
+}
+
 
 class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     metadata = {
@@ -33,7 +38,8 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             model_path=xml_file_path,
             frame_skip=5,
             observation_space=observation_space,
-            **kwargs,
+            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
 
@@ -174,8 +180,3 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         board_pos = self.model.body_pos[self.model.body_name2id("nail_board")].copy()
         target_pos = self.data.site_xpos[self.target_obj_sid].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, board_pos=board_pos, target_pos=target_pos)
-
-    def viewer_setup(self):
-        assert self.viewer is not None
-        self.viewer.cam.azimuth = 45
-        self.viewer.cam.distance = 2.0

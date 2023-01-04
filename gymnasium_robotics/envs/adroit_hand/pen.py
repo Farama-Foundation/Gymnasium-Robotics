@@ -8,6 +8,11 @@ from gymnasium.utils.ezpickle import EzPickle
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 from gymnasium_robotics.utils.rotations import euler2quat
 
+DEFAULT_CAMERA_CONFIG = {
+    "distance": 1.0,
+    "azimuth": -45.0,
+}
+
 
 class AdroitHandPenEnv(MujocoEnv, EzPickle):
     metadata = {
@@ -35,7 +40,8 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             model_path=xml_file_path,
             frame_skip=5,
             observation_space=observation_space,
-            **kwargs,
+            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            **kwargs
         )
         self._model_names = MujocoModelNames(self.model)
 
@@ -198,7 +204,3 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         qv = self.data.qvel.ravel().copy()
         desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
-
-    def viewer_setup(self):
-        self.viewer.cam.azimuth = -45
-        self.viewer.cam.distance = 1.0

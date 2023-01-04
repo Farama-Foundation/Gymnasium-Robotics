@@ -286,8 +286,14 @@ class PointMazeEnv(MazeEnv, EzPickle):
             **kwargs,
         )
 
+        maze_length = len(maze_map)
+        default_camera_config = {"distance": 12.5 if maze_length > 8 else 8.8}
+
         self.point_env = PointEnv(
-            xml_file=self.tmp_xml_file_path, render_mode=render_mode, **kwargs
+            xml_file=self.tmp_xml_file_path,
+            render_mode=render_mode,
+            default_camera_config=default_camera_config,
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.point_env.model)
         self.target_site_id = self._model_names.site_name2id["target"]
