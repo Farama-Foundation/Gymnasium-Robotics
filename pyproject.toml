@@ -99,7 +99,3 @@ enableTypeIgnoreComments = true
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 # reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
 reportOptionalMemberAccess = "none" # -> raise _version.py error
-
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
