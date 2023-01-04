@@ -93,21 +93,21 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     | 24  | Vertical angular position of the MCP joint of the thumb finger              | -Inf   | Inf    | THJ1                                   | -                                     | hinge     | angle (rad)              |
     | 25  | Angular position of the IP joint of the thumb finger                        | -Inf   | Inf    | THJ0                                   | -                                     | hinge     | angle (rad)              |
     | 26  | Insertion displacement of nail                                              | -Inf   | Inf    | nail_dir                               | -                                     | slide     | position (m)             |
-    | 27  | Linear velocity of the hammer in the x direction                            | -1     | 1      | OBJTx                                  | -                                     | hinge     | velocity (m/s)           |
-    | 28  | Linear velocity of the hammer in the y direction                            | -1     | 1      | OBJTy                                  | -                                     | hinge     | velocity (m/s)           |
-    | 29  | Linear velocity of the hammer in the z direction                            | -1     | 1      | OBJTz                                  | -                                     | hinge     | velocity (m/s)           |
-    | 30  | Angular velocity of the hammer around x axis                                | -1     | 1      | OBJRx                                  | -                                     | hinge     | angular velocity (rad/s) |
-    | 31  | Angular velocity of the hammer around y axis                                | -1     | 1      | OBJTy                                  | -                                     | hinge     | angular velocity (rad/s) |
-    | 32  | Angular velocity of the hammer around z axis                                | -1     | 1      | OBJTz                                  | -                                     | hinge     | angular velocity (rad/s) |
+    | 27  | Linear velocity of the hammer in the x direction                            | -1     | 1      | OBJTx                                  | -                                     | free      | velocity (m/s)           |
+    | 28  | Linear velocity of the hammer in the y direction                            | -1     | 1      | OBJTy                                  | -                                     | free      | velocity (m/s)           |
+    | 29  | Linear velocity of the hammer in the z direction                            | -1     | 1      | OBJTz                                  | -                                     | free      | velocity (m/s)           |
+    | 30  | Angular velocity of the hammer around x axis                                | -1     | 1      | OBJRx                                  | -                                     | free      | angular velocity (rad/s) |
+    | 31  | Angular velocity of the hammer around y axis                                | -1     | 1      | OBJRy                                  | -                                     | free      | angular velocity (rad/s) |
+    | 32  | Angular velocity of the hammer around z axis                                | -1     | 1      | OBJRz                                  | -                                     | free      | angular velocity (rad/s) |
     | 33  | Position of the center of the palm in the x direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
     | 34  | Position of the center of the palm in the y direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
     | 35  | Position of the center of the palm in the z direction                       | -Inf   | Inf    | -                                      | S_grasp                               | -         | position (m)             |
     | 36  | Position of the hammer's center of mass in the x direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
     | 37  | Position of the hammer's center of mass in the y direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
     | 38  | Position of the hammer's center of mass in the z direction                  | -Inf   | Inf    | -                                      | Object                                | -         | position (m)             |
-    | 39  | Relative rotation of the hammer's center of mass with respect to the x axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad/s)            |
-    | 40  | Relative rotation of the hammer's center of mass with respect to the y axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad/s)            |
-    | 41  | Relative rotation of the hammer's center of mass with respect to the z axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad/s)            |
+    | 39  | Relative rotation of the hammer's center of mass with respect to the x axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad)              |
+    | 40  | Relative rotation of the hammer's center of mass with respect to the y axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad)              |
+    | 41  | Relative rotation of the hammer's center of mass with respect to the z axis | -Inf   | Inf    | -                                      | Object                                | -         | angle (rad)              |
     | 42  | Position of the nail in the x direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
     | 43  | Position of the nail in the y direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
     | 44  | Position of the nail in the z direction                                     | -Inf   | Inf    | -                                      | S_target                              | -         | position (m)             |
@@ -138,7 +138,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     To add stochasticity to the environment the z position of the board with the nail is randomly initialized each time the environment is reset. This height is sampled from
     a uninform distribution with range `[0.1,0.25]`.
 
-    The joint values of the environment are deterministically initialized to a zero value.
+    The joint values of the environment are deterministically initialized to a zero.
 
     ## Episode End
 
