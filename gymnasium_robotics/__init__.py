@@ -1068,29 +1068,40 @@ def register_robotics_envs():
             max_episode_steps=800,
         )
 
-    register(
-        id="AdroitHandDoor-v1",
-        entry_point="gymnasium_robotics.envs:AdroitHandDoorEnv",
-        max_episode_steps=200,
-    )
+    for reward_type in ["sparse", "dense"]:
+        suffix = "Sparse" if reward_type == "sparse" else ""
+        version = "v1"
+        kwargs = {
+            "reward_type": reward_type,
+        }
 
-    register(
-        id="AdroitHandHammer-v1",
-        entry_point="gymnasium_robotics.envs:AdroitHandHammerEnv",
-        max_episode_steps=200,
-    )
+        register(
+            id=f"AdroitHandDoor{suffix}-{version}",
+            entry_point="gymnasium_robotics.envs:AdroitHandDoorEnv",
+            max_episode_steps=200,
+            kwargs=kwargs,
+        )
 
-    register(
-        id="AdroitHandPen-v1",
-        entry_point="gymnasium_robotics.envs:AdroitHandPenEnv",
-        max_episode_steps=200,
-    )
+        register(
+            id=f"AdroitHandHammer{suffix}-{version}",
+            entry_point="gymnasium_robotics.envs:AdroitHandHammerEnv",
+            max_episode_steps=200,
+            kwargs=kwargs,
+        )
 
-    register(
-        id="AdroitHandRelocate-v1",
-        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
-        max_episode_steps=200,
-    )
+        register(
+            id=f"AdroitHandPen{suffix}-{version}",
+            entry_point="gymnasium_robotics.envs:AdroitHandPenEnv",
+            max_episode_steps=200,
+            kwargs=kwargs,
+        )
+
+        register(
+            id=f"AdroitHandRelocate{suffix}-{version}",
+            entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
+            max_episode_steps=200,
+            kwargs=kwargs,
+        )
 
 
 __version__ = "1.1.0"

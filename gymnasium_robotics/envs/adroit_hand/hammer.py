@@ -115,7 +115,9 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_hammer`: increasing negative reward the further away the palm of the hand is from the hammer. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `take_hammer_head_to_nail`: increasing negative reward the further away the head of the hammer if from the head of the nail. This reward is also computed as the 3 dimensional Euclidean
@@ -132,6 +134,11 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=lift_hammer+hammer_nail-0.1*get_to_hammer-take_hammer_head_to_nail-
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
+    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
+    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
+    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     ## Starting State
 
@@ -170,7 +177,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, reward_type: str = "dense", **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             "../assets/adroit_hand/adroit_hammer.xml",
@@ -185,9 +192,19 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
+
+        # whether to have sparse rewards
+        if reward_type.lower() == "dense":
+            self.sparse_reward = False
+        elif reward_type.lower() == "sparse":
+            self.sparse_reward = True
+        else:
+            raise ValueError(
+                f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}"
+            )
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -242,32 +259,34 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
         self.do_simulation(a, self.frame_skip)
         obs = self._get_obs()
-        obj_pos = self.data.xpos[self.obj_body_id].ravel()
+        hamm_pos = self.data.xpos[self.obj_body_id].ravel()
         palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
-        tool_pos = self.data.site_xpos[self.tool_site_id].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
+        head_pos = self.data.site_xpos[self.tool_site_id].ravel()
+        nail_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
         goal_pos = self.data.site_xpos[self.goal_site_id].ravel()
 
-        # get to hammer
-        reward = -0.1 * np.linalg.norm(palm_pos - obj_pos)
-        # take hammer head to nail
-        reward -= np.linalg.norm(tool_pos - target_pos)
-        # make nail go inside
-        reward -= 10 * np.linalg.norm(target_pos - goal_pos)
-        # velocity penalty
-        reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
+        reward = 0.0
+        if not self.sparse_reward:
+            # get the palm to the hammer handle
+            reward -= 0.1 * np.linalg.norm(palm_pos - hamm_pos)
+            # take hammer head to nail
+            reward -= np.linalg.norm(head_pos - nail_pos)
+            # make nail go inside
+            reward -= 10 * np.linalg.norm(nail_pos - goal_pos)
+            # velocity penalty
+            reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
 
         # bonus for lifting up the hammer
-        if obj_pos[2] > 0.04 and tool_pos[2] > 0.04:
+        if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
             reward += 2
 
         # bonus for hammering the nail
-        if np.linalg.norm(target_pos - goal_pos) < 0.020:
+        if np.linalg.norm(nail_pos - goal_pos) < 0.020:
             reward += 25
-        if np.linalg.norm(target_pos - goal_pos) < 0.010:
+        if np.linalg.norm(nail_pos - goal_pos) < 0.010:
             reward += 75
 
-        goal_achieved = True if np.linalg.norm(target_pos - goal_pos) < 0.010 else False
+        goal_achieved = True if np.linalg.norm(nail_pos - goal_pos) < 0.010 else False
 
         if self.render_mode == "human":
             self.render()

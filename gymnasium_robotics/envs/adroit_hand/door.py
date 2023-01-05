@@ -110,7 +110,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_handle`: increasing negative reward the further away the palm of the hand is from the door handle. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `open_door`: squared error of the current door hinge angular position and the open door state. The final reward is scaled by `0.1`.
@@ -123,6 +125,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=door_hinge_displacement-0.1*get_to_handle-0.1*open_door^2-0.00001*velocity_penalty
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v1')`.
+    In this variant, a reward of 10 is given once the door is opened more than `1.35` radians and zero otherwise.
 
     ## Starting State
 
@@ -161,7 +166,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         "render_fps": 100,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(self, reward_type: str = "dense", **kwargs):
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             "../assets/adroit_hand/adroit_door.xml",
@@ -176,9 +181,19 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
+
+        # whether to have sparse rewards
+        if reward_type.lower() == "dense":
+            self.sparse_reward = False
+        elif reward_type.lower() == "sparse":
+            self.sparse_reward = True
+        else:
+            raise ValueError(
+                f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}"
+            )
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -239,18 +254,22 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
         door_pos = self.data.qpos[self.door_hinge_addrs]
 
-        # get to handle
-        reward = -0.1 * np.linalg.norm(palm_pos - handle_pos)
-        # open door
-        reward -= 0.1 * (door_pos - 1.57) * (door_pos - 1.57)
-        # velocity penalty
-        reward -= 1e-5 * np.sum(self.data.qvel**2)
+        reward = 0.0
+        if not self.sparse_reward:
+            # get to handle
+            reward -= 0.1 * np.linalg.norm(palm_pos - handle_pos)
+            # open door
+            reward += -0.1 * (door_pos - 1.57) * (door_pos - 1.57)
+            # velocity cost
+            reward += -1e-5 * np.sum(self.data.qvel**2)
 
-        # Bonus reward
-        if door_pos > 0.2:
-            reward += 2
-        if door_pos > 1.0:
-            reward += 8
+            # Bonus reward
+            if door_pos > 0.2:
+                reward += 2
+            if door_pos > 1.0:
+                reward += 8
+
+        # environment completed
         if door_pos > 1.35:
             reward += 10
 
