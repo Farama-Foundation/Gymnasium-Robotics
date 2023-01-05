@@ -54,12 +54,26 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.terminate_on_tasks_completed = terminate_on_tasks_completed
         self.remove_task_when_completed = remove_task_when_completed
 
+        self.goal = {}
         self.tasks_to_complete = set(tasks_to_complete)
-        self.goal = {task: OBS_ELEMENT_GOALS[task] for task in tasks_to_complete}
+        # Validate list of tasks to complete
+        for task in tasks_to_complete:
+            if task not in OBS_ELEMENT_GOALS.keys():
+                raise ValueError(
+                    f"The task {task} cannot be found the the list of possible goals: {OBS_ELEMENT_GOALS.keys()}"
+                )
+            else:
+                self.goal[task] = OBS_ELEMENT_GOALS[task]
 
-        # Tasks completed in the current environment step
-        self.step_task_completions = []
-        self.object_noise_ratio = object_noise_ratio
+        self.step_task_completions = (
+            []
+        )  # Tasks completed in the current environment step
+        self.episode_task_completions = (
+            []
+        )  # Tasks completed that have been completed in the current episode
+        self.object_noise_ratio = (
+            object_noise_ratio  # stochastic noise added to the object observations
+        )
 
         robot_obs = self.robot_env._get_obs()
         obs = self._get_obs(robot_obs)
@@ -162,21 +176,28 @@ class KitchenEnv(GoalEnv, EzPickle):
             ]
 
         info["step_task_completions"] = self.step_task_completions
+        self.episode_task_completions + self.step_task_completions
+        info["episode_task_completions"] = self.episode_task_completions
         self.step_task_completions.clear()
 
         if self.terminate_on_tasks_completed:
             # terminate if there are no more tasks to complete
-            terminated = not self.tasks_to_complete
+            terminated = len(self.episode_task_completions) == len(self.goal.keys())
 
         return obs, reward, terminated, truncated, info
 
     def reset(self, *, seed: Optional[int] = None, **kwargs):
         super().reset(seed=seed, **kwargs)
+        self.episode_task_completions.clear()
         robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
         self.task_to_complete = self.goal.copy()
 
-        info = {"tasks_to_complete": self.task_to_complete, "step_task_completions": []}
+        info = {
+            "tasks_to_complete": self.task_to_complete,
+            "episode_task_completions": [],
+            "step_task_completions": [],
+        }
 
         return obs, info
 

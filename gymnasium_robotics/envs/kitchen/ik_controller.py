@@ -71,12 +71,12 @@ class IKController:
     def solve_DLS(self, jac_joints, error):
         """Computes the Least Mean Squares algorithm over the following equation.
 
-        Where `e` is the end-effector error, J is the joint space Jacobian, and
-        `Δθ` is the joint displacement to solve.
+        Where `e` is the end-effector error, J is the joint space Jacobian,
+        `Δθ` is the joint displacement to solve, and `τ` is the regularization factor.
 
         .. math::
 
-            J^{T}JΔθ=J^{T}e
+            J^{T}JΔθ=J^{T}e + Iτ
 
         Args:
             jac_joints (np.ndarray): system joint space Jacobian
