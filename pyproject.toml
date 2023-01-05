@@ -52,9 +52,6 @@ __root__ = "gymnasium_robotics.__init__:register_robotics_envs"
 [tool.setuptools]
 include-package-data = true
 
-[tool.setuptools.packages.find]
-include = ["robotics", "robotics.*"]
-
 [tool.setuptools.package-data]
 gymnasium_robotics = [
     "envs/assets/LICENSE.md",
