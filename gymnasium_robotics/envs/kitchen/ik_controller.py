@@ -14,7 +14,6 @@ class IKController:
         self.init_rot = self.data.site_xmat[self.eef_id].reshape(3, 3)
 
     def compute_qpos(self, target_pos, target_quat):
-
         jac_pos = np.zeros((3, self.model.nv))
         jac_rot = np.zeros((3, self.model.nv))
 
