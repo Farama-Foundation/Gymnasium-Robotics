@@ -9,7 +9,7 @@ repos:
       - id: codespell
         exclude: .svg
         args:
-          - --ignore-words-list=nd,reacher,thist,ths
+          - --ignore-words-list=nd,reacher,thist,ths, arry
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
     hooks:
@@ -46,7 +46,7 @@ repos:
     rev: 6.1.1
     hooks:
       - id: pydocstyle
-        exclude: ^(tests)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)
+        exclude: ^(tests)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/hand)|(gymnasium_robotics/envs/fetch)|(gymnasium_robotics/envs/point_maze/)|(gymnasium_robotics/envs/ant_maze)|(gymnasium_robotics/envs/point_maze/)|(gymnasium_robotics/envs/adroit_hand)
         args:
           - --convention=google
           - --add-ignore=D100
