@@ -111,7 +111,9 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_ball`: increasing negative reward the further away the palm of the hand is from the ball. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `ball_off_table`: add a positive reward of 1 if the ball is lifted from the table (`z` greater than `0.04` meters). If this condition is met two additional rewards are added:
@@ -124,6 +126,10 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=ball_off_table+ball_close_to_target-0.1*get_to_ball-0.5*make_hand_go_to_target-0.5*make_ball_go_to_target
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandReloateSparse-v*')`.
+    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
+    - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
 
     ## Starting State
 
@@ -177,7 +183,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
 

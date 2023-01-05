@@ -111,7 +111,9 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `target_distance`: increasing negative reward the further away the pen is from its target. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `orientation_similarity`: add the dot product between the target's and real pen orientation.
@@ -124,6 +126,12 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=close_to_target+orientation_similarity-target_distance-dropping_pen
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenSparse-v*')`.
+    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
+    - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add anegative reward of `5`.
+    - `close_to_target`: bonus reward for the pen being close to the target orientation. If the dot product between both ortientations is greater than `0.9` and the Euclidean
+        distance less than `0.075` add a `10` reward, if the same distance holds and the orientation dot product is greater than `0.95` add `50`.
 
     ## Starting State
 
@@ -180,7 +188,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
 

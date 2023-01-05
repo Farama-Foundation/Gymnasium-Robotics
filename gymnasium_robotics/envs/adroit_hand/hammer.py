@@ -115,7 +115,9 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_hammer`: increasing negative reward the further away the palm of the hand is from the hammer. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `take_hammer_head_to_nail`: increasing negative reward the further away the head of the hammer if from the head of the nail. This reward is also computed as the 3 dimensional Euclidean
@@ -132,6 +134,11 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=lift_hammer+hammer_nail-0.1*get_to_hammer-take_hammer_head_to_nail-
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v*')`.
+    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
+    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
+    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     ## Starting State
 
@@ -185,7 +192,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
 

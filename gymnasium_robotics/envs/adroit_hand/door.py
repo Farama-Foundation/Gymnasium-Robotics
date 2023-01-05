@@ -110,7 +110,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment returns a `dense` reward function that consists of the following parts:
+    The environment can be initialized in either a `dense` or `sparse` reward variant.
+
+    In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_handle`: increasing negative reward the further away the palm of the hand is from the door handle. This is computed as the 3 dimensional Euclidean distance between both body frames.
         This penalty is scaled by a factor of `0.1` in the final reward.
     - `open_door`: squared error of the current door hinge angular position and the open door state. The final reward is scaled by `0.1`.
@@ -123,6 +125,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     .. math::
 
        reward=door_hinge_displacement-0.1*get_to_handle-0.1*open_door^2-0.00001*velocity_penalty
+
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v*')`.
+    In this variant, a reward of 10 is given once the door is opened more than `1.35` radians and zero otherwise.
 
     ## Starting State
 
@@ -176,7 +181,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             frame_skip=5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
         self._model_names = MujocoModelNames(self.model)
 
