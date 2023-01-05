@@ -99,6 +99,15 @@ class KitchenEnv(GoalEnv, EzPickle):
             )
         )
 
+        EzPickle.__init__(
+            self,
+            tasks_to_complete,
+            terminate_on_tasks_completed,
+            remove_task_when_completed,
+            object_noise_ratio,
+            **kwargs,
+        )
+
     def compute_reward(
         self,
         achieved_goal: "dict[str, np.ndarray]",
