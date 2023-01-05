@@ -126,7 +126,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
        reward=door_hinge_displacement-0.1*get_to_handle-0.1*open_door^2-0.00001*velocity_penalty
 
-    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v*')`.
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v1')`.
     In this variant, a reward of 10 is given once the door is opened more than `1.35` radians and zero otherwise.
 
     ## Starting State
