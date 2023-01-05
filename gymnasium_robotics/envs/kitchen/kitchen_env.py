@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -161,8 +161,9 @@ class KitchenEnv(GoalEnv, EzPickle):
 
         return obs, reward, terminated, truncated, info
 
-    def reset(self):
-        robot_obs, _ = self.robot_env.reset()
+    def reset(self, *, seed: Optional[int] = None, **kwargs):
+        super().reset(seed=seed, **kwargs)
+        robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
         self.task_to_complete = self.goal.copy()
 

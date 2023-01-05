@@ -1100,11 +1100,11 @@ def register_robotics_envs():
         entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
         max_episode_steps=200,
     )
-    
+
     register(
-        id="FrankaKitchen-v0",
+        id="FrankaKitchen-v1",
         entry_point="gymnasium_robotics.envs:KitchenEnv",
-        max_episode_steps=400,
+        max_episode_steps=280,
     )
 
     register(
