@@ -1095,23 +1095,18 @@ def register_robotics_envs():
             max_episode_steps=200,
             kwargs=kwargs,
         )
-    register(
-        id="AdroitHandRelocate-v1",
-        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
-        max_episode_steps=200,
-    )
+
+        register(
+            id=f"AdroitHandRelocate{suffix}-{version}",
+            entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
+            max_episode_steps=200,
+            kwargs=kwargs,
+        )
 
     register(
         id="FrankaKitchen-v1",
         entry_point="gymnasium_robotics.envs:KitchenEnv",
         max_episode_steps=280,
-    )
-
-    register(
-        id=f"AdroitHandRelocate{suffix}-{version}",
-        entry_point="gymnasium_robotics.envs:AdroitHandRelocateEnv",
-        max_episode_steps=200,
-        kwargs=kwargs,
     )
 
 

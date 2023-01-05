@@ -231,10 +231,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
         self.render_mode = render_mode
-<<<<<<< HEAD
-=======
-        self._render_initialized = True
->>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
 
         EzPickle.__init__(
             self,
@@ -286,13 +282,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     def render(self):
         self.ant_env.render()
-<<<<<<< HEAD
-=======
-        # Set the viewer parameters at initialization of the renderer
-        if self._render_initialized:
-            self.ant_env.viewer.cam.distance = self.ant_env.model.stat.extent
-            self._render_initialized = False
->>>>>>> 2f164bb (Refactor D4RL Ant maze and Point Maze (#42))
 
     def close(self):
         super().close()
