@@ -38,7 +38,7 @@ class FrankaRobot(MujocoEnv):
             low=-np.inf, high=np.inf, shape=(9,), dtype=np.float32
         ),
         ik_controller: bool = True,
-        control_step=5,
+        control_steps=5,
         robot_noise_ratio: float = 0.01,
         default_camera_config: dict = DEFAULT_CAMERA_CONFIG,
         **kwargs,
@@ -49,7 +49,7 @@ class FrankaRobot(MujocoEnv):
             model_path,
         )
 
-        self.control_step = control_step
+        self.control_steps = control_steps
         self.robot_noise_ratio = robot_noise_ratio
 
         super().__init__(
@@ -108,7 +108,7 @@ class FrankaRobot(MujocoEnv):
                 self.actuation_center[-1] + action[-1] * self.actuation_range[-1]
             )
 
-            for _ in range(self.control_step):
+            for _ in range(self.control_steps):
                 delta_qpos = self.controller.compute_qpos_delta(
                     target_eef_pose, target_orientation
                 )
