@@ -61,10 +61,23 @@ class FrankaRobot(MujocoEnv):
         )
 
         self.init_ctrl = np.array([0, 0, 0, -1.57079, 0, 1.57079, 0, 255])
+
         if ik_controller:
             self.controller = IKController(self.model, self.data)
+            action_size = 7  # 3 translation + 3 rotation + 1 gripper
+
         else:
             self.controller = None
+            action_size = 8  # 7 joint positions + 1 gripper
+
+        self.action_space = spaces.Box(
+            low=-1.0, high=1.0, dtype=np.float32, shape=(action_size,)
+        )
+
+        # Actuator ranges
+        ctrlrange = self.model.actuator_ctrlrange
+        self.actuation_range = (ctrlrange[:, 1] - ctrlrange[:, 0]) / 2.0
+        self.actuation_center = (ctrlrange[:, 1] + ctrlrange[:, 0]) / 2.0
 
         self.model_names = MujocoModelNames(self.model)
 
@@ -87,22 +100,31 @@ class FrankaRobot(MujocoEnv):
                 self.data.site_xmat[self.model_names.site_name2id["EEF"]].copy(),
             )
             mujoco.mju_mulQuat(target_orientation, quat_rot, current_eef_quat)
+
             ctrl_action = np.zeros(8)
+
+            # Denormalize gripper action
+            ctrl_action[-1] = (
+                self.actuation_center[-1] + action[-1] * self.actuation_range[-1]
+            )
+
             for _ in range(self.control_step):
                 delta_qpos = self.controller.compute_qpos(
                     target_eef_pose, target_orientation
                 )
                 ctrl_action[:7] = self.data.ctrl.copy()[:7] + delta_qpos[:7]
-                self.do_simulation(ctrl_action, self.frame_skip)
+
+                # Do not use `do_simulation`` method from MujocoEnv: value error due to discrepancy between
+                # the action space and the simulation control input when using IK control.
+                # TODO: eliminate error check in MujocoEnv (action space can be different from simulaton control input).
+                self.data.ctrl[:] = ctrl_action
+                mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
 
                 if self.render_mode == "human":
                     self.render()
         else:
             # Denormalize the input action from [-1, 1] range to the each actuators control range
-            ctrlrange = self.model.actuator_ctrlrange
-            actuation_range = (ctrlrange[:, 1] - ctrlrange[:, 0]) / 2.0
-            actuation_center = (ctrlrange[:, 1] + ctrlrange[:, 0]) / 2.0
-            self.data.ctrl[:] = actuation_center + action * actuation_range
+            self.data.ctrl[:] = self.actuation_center + action * self.actuation_range
 
             if self.render_mode == "human":
                 self.render()
