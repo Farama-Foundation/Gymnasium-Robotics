@@ -109,7 +109,7 @@ class FrankaRobot(MujocoEnv):
             )
 
             for _ in range(self.control_step):
-                delta_qpos = self.controller.compute_qpos(
+                delta_qpos = self.controller.compute_qpos_delta(
                     target_eef_pose, target_orientation
                 )
                 ctrl_action[:7] = self.data.ctrl.copy()[:7] + delta_qpos[:7]
