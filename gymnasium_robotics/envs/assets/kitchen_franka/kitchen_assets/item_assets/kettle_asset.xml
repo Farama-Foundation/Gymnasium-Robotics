@@ -2,11 +2,11 @@
     <compiler inertiafromgeom="auto" inertiagrouprange="4 4" angle="radian"/>
 
     <asset>
-        <mesh file="kettle.stl" name="kettle"/>
-        <mesh file="kettlehandle.stl" name="kettlehandle"/>
+        <mesh file="../../kitchen_assets/meshes/kettle.stl" name="kettle"/>
+        <mesh file="../../kitchen_assets/meshes/kettlehandle.stl" name="kettlehandle"/>
 
-        <texture name="T_kettle_metal" type="cube" height="1" width="1" file="textures/metal1.png" />
-        <texture name="T_kettle_wood" type="cube" height="1" width="1" file="textures/wood1.png" />
+        <texture name="T_kettle_metal" type="cube" height="1" width="1" file="metal1.png" />
+        <texture name="T_kettle_wood" type="cube" height="1" width="1" file="wood1.png" />
 
         <material name="kettle_wood" rgba="1 1 1 1" texture="T_kettle_wood" texrepeat="3 3" reflectance="1" shininess="1" texuniform="false" />
         <material name="kettle_metal" rgba="1 1 1 1" texture="T_kettle_metal" texrepeat="3 3" reflectance="1" shininess="1" texuniform="false" />

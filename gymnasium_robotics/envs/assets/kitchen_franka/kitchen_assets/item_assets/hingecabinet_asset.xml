@@ -3,8 +3,8 @@
     <compiler inertiafromgeom="auto" inertiagrouprange="4 4" angle="radian"/>
 
     <asset>
-        <texture name="T_hinge_wood" type="cube" height="1" width="1" file="textures/wood1.png"/>
-        <texture name="T_hinge_metal" type="cube" height="1" width="1" file="textures/metal1.png"/>
+        <texture name="T_hinge_wood" type="cube" height="1" width="1" file="wood1.png"/>
+        <texture name="T_hinge_metal" type="cube" height="1" width="1" file="metal1.png"/>
 
         <material name="M_hinge_wood" texture="T_hinge_wood" texrepeat="3 3" reflectance="0.7" shininess=".4" texuniform="false"/>
         <material name="M_hinge_metal" texture="T_hinge_metal" texrepeat="3 3" reflectance="0.7" shininess=".4" texuniform="false"/>

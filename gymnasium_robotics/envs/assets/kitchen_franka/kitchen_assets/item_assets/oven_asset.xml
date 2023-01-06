@@ -3,19 +3,19 @@
     <compiler inertiafromgeom="auto" inertiagrouprange="4 4" angle="radian"/>
 
     <asset>
-        <mesh file="hood.stl" name="hood"/>
-        <mesh file="lightswitch.stl" name="lightswitch"/>
-        <mesh file="lightswitchbase.stl" name="lightswitchbase"/>
-        <mesh file="knob.stl" name="knob"/>
-        <mesh file="stoverim.stl" name="stoverim"/>
-        <mesh file="burnerplate.stl" name="burnerplate"/>
-        <mesh file="ovenhandle.stl" name="ovenhandle"/>
-        <mesh file="oven.stl" name="oven"/>
-        <mesh file="oventop.stl" name="oventop"/>
-        <mesh file="ovenwindow.stl" name="ovenwindow"/>
+        <mesh file="../../kitchen_assets/meshes/hood.stl" name="hood"/>
+        <mesh file="../../kitchen_assets/meshes/lightswitch.stl" name="lightswitch"/>
+        <mesh file="../../kitchen_assets/meshes/lightswitchbase.stl" name="lightswitchbase"/>
+        <mesh file="../../kitchen_assets/meshes/knob.stl" name="knob"/>
+        <mesh file="../../kitchen_assets/meshes/stoverim.stl" name="stoverim"/>
+        <mesh file="../../kitchen_assets/meshes/burnerplate.stl" name="burnerplate"/>
+        <mesh file="../../kitchen_assets/meshes/ovenhandle.stl" name="ovenhandle"/>
+        <mesh file="../../kitchen_assets/meshes/oven.stl" name="oven"/>
+        <mesh file="../../kitchen_assets/meshes/oventop.stl" name="oventop"/>
+        <mesh file="../../kitchen_assets/meshes/ovenwindow.stl" name="ovenwindow"/>
 
-        <texture name="T_oven_wood" type="cube" height="1" width="1" file="textures/wood1.png"/>
-        <texture name="T_oven_metal" type="cube" height="1" width="1" file="textures/metal1.png"/>
+        <texture name="T_oven_wood" type="cube" height="1" width="1" file="wood1.png"/>
+        <texture name="T_oven_metal" type="cube" height="1" width="1" file="metal1.png"/>
 
         <material name="oven_wood" texture="T_oven_wood" texrepeat="3 3" reflectance="0.7" shininess=".4" texuniform="false"/>
         <material name="oven_metal" rgba="1 1 1 1" texture="T_oven_metal" texrepeat="3 3" reflectance="1" shininess="1" texuniform="false"/>

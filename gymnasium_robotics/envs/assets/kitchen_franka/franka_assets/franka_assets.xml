@@ -1,5 +1,5 @@
 <mujocoinclude>
-  <compiler angle="radian" meshdir="meshes" autolimits="true"/>
+  <compiler angle="radian" meshdir="franka_assets/meshes" autolimits="true"/>
   <option integrator="implicit"/>
 
   <default>

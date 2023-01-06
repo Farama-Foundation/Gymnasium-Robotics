@@ -23,7 +23,6 @@
         forcerange="-12 12" ctrlrange="-0.0175 3.7525"/>
     <general class="panda" name="actuator7" joint="robot:joint7" gainprm="2000" biasprm="0 -2000 -200"
         forcerange="-12 12"/>
-    <!-- Remap original ctrlrange (0, 0.04) to (0, 255): 0.04 * 100 / 255 = 0.01568627451 -->
     <general class="panda" name="actuator8" tendon="split" forcerange="-100 100" ctrlrange="0 255"
         gainprm="0.01568627451 0 0" biasprm="0 -100 -10"/>
   </actuator>
