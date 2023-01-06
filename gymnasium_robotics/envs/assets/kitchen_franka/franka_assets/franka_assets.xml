@@ -1,0 +1,116 @@
+<mujocoinclude>
+  <compiler angle="radian" meshdir="franka_assets/meshes" autolimits="true"/>
+  <option integrator="implicit"/>
+
+  <default>
+    <default class="panda">
+      <material specular="0.5" shininess="0.25"/>
+      <joint armature="0.1" damping="1" axis="0 0 1" range="-2.8973 2.8973"/>
+      <general dyntype="none" biastype="affine" ctrlrange="-2.8973 2.8973" forcerange="-87 87"/>
+      <default class="finger">
+        <joint axis="0 1 0" type="slide" range="0 0.04"/>
+      </default>
+
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+      </default>
+      <default class="collision">
+        <geom type="mesh" group="3"/>
+        <default class="fingertip_pad_collision_1">
+          <geom type="box" size="0.0085 0.004 0.0085" pos="0 0.0055 0.0445"/>
+        </default>
+        <default class="fingertip_pad_collision_2">
+          <geom type="box" size="0.003 0.002 0.003" pos="0.0055 0.002 0.05"/>
+        </default>
+        <default class="fingertip_pad_collision_3">
+          <geom type="box" size="0.003 0.002 0.003" pos="-0.0055 0.002 0.05"/>
+        </default>
+        <default class="fingertip_pad_collision_4">
+          <geom type="box" size="0.003 0.002 0.0035" pos="0.0055 0.002 0.0395"/>
+        </default>
+        <default class="fingertip_pad_collision_5">
+          <geom type="box" size="0.003 0.002 0.0035" pos="-0.0055 0.002 0.0395"/>
+        </default>
+      </default>
+    </default>
+  </default>
+
+  <asset>
+    <material class="panda" name="white" rgba="1 1 1 1"/>
+    <material class="panda" name="off_white" rgba="0.901961 0.921569 0.929412 1"/>
+    <material class="panda" name="black" rgba="0.25 0.25 0.25 1"/>
+    <material class="panda" name="green" rgba="0 1 0 1"/>
+    <material class="panda" name="light_blue" rgba="0.039216 0.541176 0.780392 1"/>
+
+    <!-- Collision meshes -->
+    <mesh name="link0_c" file="link0.stl"/>
+    <mesh name="link1_c" file="link1.stl"/>
+    <mesh name="link2_c" file="link2.stl"/>
+    <mesh name="link3_c" file="link3.stl"/>
+    <mesh name="link4_c" file="link4.stl"/>
+    <mesh name="link5_c0" file="link5_collision_0.obj"/>
+    <mesh name="link5_c1" file="link5_collision_1.obj"/>
+    <mesh name="link5_c2" file="link5_collision_2.obj"/>
+    <mesh name="link6_c" file="link6.stl"/>
+    <mesh name="link7_c" file="link7.stl"/>
+    <mesh name="hand_c" file="hand.stl"/>
+
+    <!-- Visual meshes -->
+    <mesh file="link0_0.obj"/>
+    <mesh file="link0_1.obj"/>
+    <mesh file="link0_2.obj"/>
+    <mesh file="link0_3.obj"/>
+    <mesh file="link0_4.obj"/>
+    <mesh file="link0_5.obj"/>
+    <mesh file="link0_7.obj"/>
+    <mesh file="link0_8.obj"/>
+    <mesh file="link0_9.obj"/>
+    <mesh file="link0_10.obj"/>
+    <mesh file="link0_11.obj"/>
+    <mesh file="link1.obj"/>
+    <mesh file="link2.obj"/>
+    <mesh file="link3_0.obj"/>
+    <mesh file="link3_1.obj"/>
+    <mesh file="link3_2.obj"/>
+    <mesh file="link3_3.obj"/>
+    <mesh file="link4_0.obj"/>
+    <mesh file="link4_1.obj"/>
+    <mesh file="link4_2.obj"/>
+    <mesh file="link4_3.obj"/>
+    <mesh file="link5_0.obj"/>
+    <mesh file="link5_1.obj"/>
+    <mesh file="link5_2.obj"/>
+    <mesh file="link6_0.obj"/>
+    <mesh file="link6_1.obj"/>
+    <mesh file="link6_2.obj"/>
+    <mesh file="link6_3.obj"/>
+    <mesh file="link6_4.obj"/>
+    <mesh file="link6_5.obj"/>
+    <mesh file="link6_6.obj"/>
+    <mesh file="link6_7.obj"/>
+    <mesh file="link6_8.obj"/>
+    <mesh file="link6_9.obj"/>
+    <mesh file="link6_10.obj"/>
+    <mesh file="link6_11.obj"/>
+    <mesh file="link6_12.obj"/>
+    <mesh file="link6_13.obj"/>
+    <mesh file="link6_14.obj"/>
+    <mesh file="link6_15.obj"/>
+    <mesh file="link6_16.obj"/>
+    <mesh file="link7_0.obj"/>
+    <mesh file="link7_1.obj"/>
+    <mesh file="link7_2.obj"/>
+    <mesh file="link7_3.obj"/>
+    <mesh file="link7_4.obj"/>
+    <mesh file="link7_5.obj"/>
+    <mesh file="link7_6.obj"/>
+    <mesh file="link7_7.obj"/>
+    <mesh file="hand_0.obj"/>
+    <mesh file="hand_1.obj"/>
+    <mesh file="hand_2.obj"/>
+    <mesh file="hand_3.obj"/>
+    <mesh file="hand_4.obj"/>
+    <mesh file="finger_0.obj"/>
+    <mesh file="finger_1.obj"/>
+  </asset>
+</mujocoinclude>

@@ -1103,5 +1103,11 @@ def register_robotics_envs():
             kwargs=kwargs,
         )
 
+    register(
+        id="FrankaKitchen-v1",
+        entry_point="gymnasium_robotics.envs:KitchenEnv",
+        max_episode_steps=280,
+    )
+
 
 __version__ = "1.1.0"
