@@ -40,6 +40,29 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     ## Goal
 
+    The goal has a multitask configuration. The multiple tasks to be completed in an episode can be set by passing a list of tasks to the argument`tasks_to_complete`. For example, to open
+    the microwave door and move the kettle create the environment as follows:
+
+    ```python
+    import gymnasium as gym
+    env = gym.make('FrankaKitchen-v1', tasks_to_complete=['microwave', 'kettle'])
+    ```
+
+    The following is a table with all the possible tasks and their respective joint goal values:
+
+    | Task (Joint Name in XML) | Description                                                    | Joint Type | Goal                                       |
+    | ------------------------ | -------------------------------------------------------------- | ---------- | ------------------------------------------ |
+    | "bottom_right_burner"    | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
+    | "bottom_left_burner"     | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
+    | "top_right_burner"       | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
+    | "top_left_burner"        | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
+    | light_switch"            | Turn on the light switch                                       | hinge      | -0.7                                       |
+    | "slide_cabinet"          | Open the slide cabinet                                         | hinge      | 0.37                                       |
+    | "left_hinge_cabinet"     | Open the left hinge cabinet                                    | hinge      | -1.45                                      |
+    | "right_hinge_cabinet"    | Open the right hinge cabinet                                   | hinge      | 1.45                                       |
+    | "microwave"              | Open the microwave door                                        | hinge      | -0.75                                      |
+    | "kettle"                 | Move the kettle to the top left burner                         | free       | [-0.23, 0.75, 1.62, 0.99, 0.0, 0.0, -0.06] |
+
 
     ## Action Space
 
@@ -68,7 +91,7 @@ class KitchenEnv(GoalEnv, EzPickle):
     directly to the model. The space is a `Box(-1.0, 1.0, (8,), float32)`, and it can be used by setting the argument `ik_controller` to `False`.
 
     | Num | Action                                              | Action Min  | Action Max  | Control Min  | Control Max | Name (in corresponding XML file) | Joint | Unit        |
-    | --- | ----------------------------------------------------| ----------- | ------------ | ----------  |--------------------------------- | ----- | ----------- |
+    | --- | ----------------------------------------------------| ----------- | ----------- | -----------  |-------------| ---------------------------------| ----- | ----------- |
     | 0   | `robot:joint1` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator1                        | hinge | angle (rad) |
     | 1   | `robot:joint2` angular position                     | -1          | 1           | -1.76 (rad)  | 1.76 (rad)  | actuator2                        | hinge | angle (rad) |
     | 2   | `robot:joint3` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator3                        | hinge | angle (rad) |
@@ -80,59 +103,102 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     ## Observation Space
 
-    The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's end effector state and goal. The kinematics observations are derived from Mujoco bodies known as [sites](https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site) attached to the body of interest such as the block or the end effector.
-    Only the observations from the gripper fingers are derived from joints. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:
-    `observation`: its value is an `ndarray` of shape `(25,)`. It consists of kinematic information of the block object and gripper. The elements of the array correspond to the following:
-        | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|----------------------------------------|----------|--------------------------|
-        | 0   | End effector x position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-        | 1   | End effector y position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-        | 2   | End effector z position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-        | 3   | Block x position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 4   | Block y position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 5   | Block z position in global coordinates                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 6   | Relative block x position with respect to gripper x position in globla coordinates. Equals to x<sub>gripper</sub> - x<sub>block</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 7   | Relative block y position with respect to gripper y position in globla coordinates. Equals to y<sub>gripper</sub> - y<sub>block</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 8   | Relative block z position with respect to gripper z position in globla coordinates. Equals to z<sub>gripper</sub> - z<sub>block</sub> | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-        | 9   | Joint displacement of the right gripper finger                                                                                        | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | position (m)             |
-        | 10  | Joint displacement of the left gripper finger                                                                                         | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | position (m)             |
-        | 11  | Global x rotation of the block in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-        | 12  | Global y rotation of the block in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-        | 13  | Global z rotation of the block in a XYZ Euler frame rotation                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-        | 14  | Relative block linear velocity in x direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-        | 15  | Relative block linear velocity in y direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-        | 16  | Relative block linear velocity in z direction                                                                                         | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-        | 17  | Block angular velocity along the x axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-        | 18  | Block angular velocity along the y axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-        | 19  | Block angular velocity along the z axis                                                                                               | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-        | 20  | End effector linear velocity x direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-        | 21  | End effector linear velocity y direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-        | 22  | End effector linear velocity z direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-        | 23  | Right gripper finger linear velocity                                                                                                  | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | velocity (m/s)           |
-        | 24  | Left gripper finger linear velocity                                                                                                   | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | velocity (m/s)           |
+    The observation is a `goal-aware observation space`. The observation space contains the following keys:
 
-    desired_goal`: this key represents the final goal to be achieved. In this environment it is a 3-dimensional `ndarray`, `(3,)`, that consists of the three cartesian coordinates of the desired final block position `[x,y,z]`. In order for the robot to perform a pick and place trajectory, the goal position can be elevated over the table or on top of the table. The elements of the array are the following:
-        | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|--------------|
-        | 0   | Final goal block position in the x coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
-        | 1   | Final goal block position in the y coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
-        | 2   | Final goal block position in the z coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
+    `observation`: this is a `Box(-inf, inf, shape=(59,), dtype="float64")` space and it is formed by the robot's joint positions and velocities, as well as
+    the pose and velocities of the kitchen items. An additional uniform noise of ranfe `[-1,1]` is added to the observations. The noise is also scaled by a factor
+    of `robot_noise_ratio` and `object_noise_ratio` given in the environment arguments. The elements of the `observation` array are the following:
 
-    `achieved_goal`: this key represents the current state of the block, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER). The value is an `ndarray` with shape `(3,)`. The elements of the array are the following:
-        | Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|---------------------------------------|--------------|
-        | 0   | Current block position in the x coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
-        | 1   | Current block position in the y coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
-        | 2   | Current block position in the z coordinate                                                                                            | -Inf   | Inf    | object0                               | position (m) |
+        | Num | Observation                                         | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
+        |-----|-----------------------------------------------------|--------|--------|----------------------------------------|----------|--------------------------|
+        | 0   | `robot:joint1` hinge joint angle value              | -Inf   | Inf    | robot:joint1                           | hinge    | angle (rad)              |
+        | 1   | `robot:joint2` hinge joint angle value              | -Inf   | Inf    | robot:joint2                           | hinge    | angle (rad)              |
+        | 2   | `robot:joint3` hinge joint angle value              | -Inf   | Inf    | robot:joint3                           | hinge    | angle (rad)              |
+        | 3   | `robot:joint4` hinge joint angle value              | -Inf   | Inf    | robot:joint4                           | hinge    | angle (rad)              |
+        | 4   | `robot:joint5` hinge joint angle value              | -Inf   | Inf    | robot:joint5                           | hinge    | angle (rad)              |
+        | 5   | `robot:joint6` hinge joint angle value              | -Inf   | Inf    | robot:joint6                           | hinge    | angle (rad)              |
+        | 6   | `robot:joint7` hinge joint angle value              | -Inf   | Inf    | robot:joint7                           | hinge    | angle (rad)              |
+        | 7   | `robot:finger_joint1` slide joint translation value | -Inf   | Inf    | robot:finger_joint1                    | slide    | position (m)             |
+        | 8   | `robot:finger_joint2` slide joint translation value | -Inf   | Inf    | robot:finger_joint2                    | slide    | position (m)             |
+        | 9   | `robot:joint1` hinge joint angular velocity         | -Inf   | Inf    | robot:joint1                           | hinge    | angular velocity (rad/s) |
+        | 10  | `robot:joint2` hinge joint angular velocity         | -Inf   | Inf    | robot:joint2                           | hinge    | angular velocity (rad/s) |
+        | 11  | `robot:joint3` hinge joint angular velocity         | -Inf   | Inf    | robot:joint3                           | hinge    | angular velocity (rad/s) |
+        | 12  | `robot:joint4` hinge joint angular velocity         | -Inf   | Inf    | robot:joint4                           | hinge    | angular velocity (rad/s) |
+        | 13  | `robot:joint5` hinge joint angular velocity         | -Inf   | Inf    | robot:joint5                           | hinge    | angular velocity (rad/s) |
+        | 14  | `robot:joint6` hinge joint angular velocity         | -Inf   | Inf    | robot:joint6                           | hinge    | angular velocity (rad/s) |
+        | 15  | `robot:joint7` hinge joint angular velocity         | -Inf   | Inf    | robot:joint7                           | hinge    | angle (rad)              |
+        | 16  | `robot:finger_joint1` slide joint linear velocity   | -Inf   | Inf    | robot:finger_joint1                    | slide    | linear velocity (m/s)    |
+        | 17  | `robot:finger_joint2` slide joint linear velocity   | -Inf   | Inf    | robot:finger_joint2                    | slide    | linear velocity (m/s)    |
+        | 18  | Rotation of the knob for the bottom right burner    | -Inf   | Inf    | knob_Joint_1                           | hinge    | angle (rad)              |
+        | 19  | Joint opening of the bottom right burner            | -Inf   | Inf    | bottom_right_burner                    | slide    | position (m)             |
+        | 20  | Rotation of the knob for the bottom left burner     | -Inf   | Inf    | knob_Joint_2                           | hinge    | angle (rad)              |
+        | 21  | Joint opening of the bottom left burner             | -Inf   | Inf    | bottom_left_burner                     | slide    | position (m)             |
+        | 22  | Rotation of the knob for the top right burner       | -Inf   | Inf    | knob_Joint_3                           | hinge    | angle (rad)              |
+        | 23  | Joint opening of the top right burner               | -Inf   | Inf    | top_right_burner                       | slide    | position (m)             |
+        | 24  | Rotation of the knob for the top left burner        | -Inf   | Inf    | knob_Joint_4                           | hinge    | angle (rad)              |
+        | 25  | Joint opening of the top left burner                | -Inf   | Inf    | top_left_burner                        | slide    | position (m)             |
+        | 26  | Joint angle value of the overhead light switch      | -Inf   | Inf    | light_switch                           | slide    | position (m)             |
+        | 27  | Opening of the overhead light joint                 | -Inf   | Inf    | light_joint                            | hinge    | angle (rad)              |
+        | 28  | Translation of the slide cabinet joint              | -Inf   | Inf    | slide_cabinet                          | slide    | position (m)             |
+        | 29  | Rotation of the joint in the left hinge cabinet     | -Inf   | Inf    | left_hinge_cabinet                     | hinge    | angle (rad)              |
+        | 30  | Rotation of the joint in the right hinge cabinet    | -Inf   | Inf    | right_hinge_cabinet                    | hinge    | angle (rad)              |
+        | 31  | Rotation of the joint in the microwave door         | -Inf   | Inf    | microwave                              | hinge    | angle (rad)              |
+        | 32  | Kettle's x coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
+        | 33  | Kettle's y coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
+        | 34  | Kettle's z coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
+        | 35  | Kettle's x quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
+        | 36  | Kettle's y quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
+        | 37  | Kettle's z quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
+        | 38  | Kettle's w quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
+        | 39  | Bottom right burner knob angular velocity           | -Inf   | Inf    | knob_Joint_1                           | hinge    | angular velocity (rad/s) |
+        | 40  | Opening linear velocity  of the bottom right burner | -Inf   | Inf    | bottom_right_burner                    | slide    | velocity (m/s)           |
+        | 41  | Bottom left burner knob angular velocity            | -Inf   | Inf    | knob_Joint_2                           | hinge    | angular velocity (rad/s) |
+        | 42  | Opening linear velocity of the bottom left burner   | -Inf   | Inf    | bottom_left_burner                     | slide    | velocity (m/s)           |
+        | 43  | Top right burner knob angular velocity              | -Inf   | Inf    | knob_Joint_3                           | hinge    | angular velocity (rad/s) |
+        | 44  | Opening linear velocity of the top right burner     | -Inf   | Inf    | top_right_burner                       | slide    | velocity (m/s)           |
+        | 45  | Top left burner knob angular velocity               | -Inf   | Inf    | knob_Joint_4                           | hinge    | angular velocity (rad/s) |
+        | 46  | Opening linear velocity of the top left burner      | -Inf   | Inf    | top_left_burner                        | slide    | velocity (m/s)           |
+        | 47  | Angular velocity of the overhead light switch       | -Inf   | Inf    | light_switch                           | slide    | velocity (m/s)           |
+        | 48  | Opening linear velocity of the overhead light       | -Inf   | Inf    | light_joint                            | hinge    | angular velocity (rad/s) |
+        | 49  | Linear velocity of the slide cabinet joint          | -Inf   | Inf    | slide_cabinet                          | slide    | velocity (m/s)           |
+        | 50  | Angular velocity of the left hinge cabinet joint    | -Inf   | Inf    | left_hinge_cabinet                     | hinge    | angular velocity (rad/s) |
+        | 51  | Angular velocity of the right hinge cabinet joint   | -Inf   | Inf    | right_hinge_cabinet                    | hinge    | angular velocity (rad/s) |
+        | 52  | Anular velocity of the microwave door joint         | -Inf   | Inf    | microwave                              | hinge    | angular velocity (rad/s) |
+        | 53  | Kettle's x linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
+        | 54  | Kettle's y linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
+        | 55  | Kettle's z linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
+        | 56  | Kettle's x axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
+        | 57  | Kettle's y axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
+        | 58  | Kettle's z axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
+
+    `desired_goal`: this key represents the final goal to be achieved. The value is another `Dict` space with keys the tasks to be completed in the episode and values the joint
+    goal configuration of each joint in the task as specified in the `Goal` section.
+
+    `achieved_goal`: this key represents the current state of the tasks. The value is another `Dict` space with keys the tasks to be completed in the episode and values the
+    current joint configuration of each joint in the task.
+
+    ## Info
+
+    The environment also returns an `info` dictionary in each Gymnasium step. The keys are:
+
+    - `tasks_to_complete` (list[str]): list of tasks that haven't yet been completed in the current episode.
+    - `step_task_completions` (list[str]): list of tasks completed in the step taken.
+    - `episode_task_completions` (list[str]): list of tasks completed during the episode uptil the current step.
 
     ## Rewards
 
-    The environment's reward is `sparser`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If not task is completed the returned reward will be zero.
+    The environment's reward is `sparser`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
+    The tasks are considered completed when their joint configuration is within a norm threshold of `0.3` with respect to the goal configuration specified in the `Goal` section.
 
     ## Starting State
 
     The simulation starts with all of the joint position actuators of the Franka robot set to zero. The doors of the microwave and cabinets are closed, the burners turned off, and the light switch also off. The kettle
     will be placed in the bottom left burner.
+
+    ## Episode End
+
+    The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 280 timesteps.
+    The episode is `terminated` when all the tasks have been completed unless the `terminate_on_tasks_completed` argument is set to `False`.
 
     ## Arguments
 
@@ -287,7 +353,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         obs = {
             "observation": np.concatenate((robot_obs, obj_qpos, obj_qvel)),
             "achieved_goal": achieved_goal,
-            "desired_goal": self.goal.copy(),
+            "desired_goal": self.goal,
         }
 
         return obs
@@ -307,7 +373,7 @@ class KitchenEnv(GoalEnv, EzPickle):
             ]
 
         info["step_task_completions"] = self.step_task_completions
-        self.episode_task_completions + self.step_task_completions
+        self.episode_task_completions += self.step_task_completions
         info["episode_task_completions"] = self.episode_task_completions
         self.step_task_completions.clear()
 

@@ -115,7 +115,7 @@ class FrankaRobot(MujocoEnv):
                 ctrl_action[:7] = self.data.ctrl.copy()[:7] + delta_qpos[:7]
 
                 # Do not use `do_simulation`` method from MujocoEnv: value error due to discrepancy between
-                # the action space and the simulation control input when using IK control.
+                # the action space and the simulation control input when using IK controller.
                 # TODO: eliminate error check in MujocoEnv (action space can be different from simulaton control input).
                 self.data.ctrl[:] = ctrl_action
                 mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
