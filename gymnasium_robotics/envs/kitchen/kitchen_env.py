@@ -239,7 +239,8 @@ class KitchenEnv(GoalEnv, EzPickle):
         **kwargs,
     ):
         self.robot_env = FrankaRobot(
-            model_path="../assets/kitchen_franka/kitchen_env_model.xml", **kwargs
+            model_path="../assets/kitchen_franka/kitchen_assets/kitchen_env_model.xml",
+            **kwargs,
         )
 
         self.robot_env.init_qpos[:7] = np.array(
