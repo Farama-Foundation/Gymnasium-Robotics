@@ -60,6 +60,15 @@ gymnasium_robotics = [
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
+    "envs/assets/kitchen_franka/franka_assets/*.xml",
+    "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
+    "envs/assets/kitchen_franka/franka_assets/meshes/*.obj",
+    "envs/assets/kitchen_franka/franka_assets/meshes/*.stl",
+    "envs/assets/kitchen_franka/kitchen_assets/*.xml",
+    "envs/assets/kitchen_franka/kitchen_assets/LICENSE.md",
+    "envs/assets/kitchen_franka/kitchen_assets/item_assets/*.xml",
+    "envs/assets/kitchen_franka/kitchen_assets/meshes/*.stl",
+    "envs/assets/kitchen_franka/kitchen_assets/textures/*.png",
 ]
 
 # Linters and Test tools #######################################################

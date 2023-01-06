@@ -1,0 +1,79 @@
+<!--Copyright 2020 Google LLC-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+    <!--https://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<mujoco model="franka_kitchen">
+
+    <size njmax='1000' nconmax='1000'/>
+
+    <include file="basic_scene.xml"/>
+    <include file="../franka_assets/franka_assets.xml"/>
+    <include file="item_assets/oven_asset.xml"/>
+    <include file="item_assets/counters_asset.xml"/>
+    <include file="item_assets/backwall_asset.xml"/>
+    <include file="item_assets/slidecabinet_asset.xml"/>
+    <include file="item_assets/hingecabinet_asset.xml"/>
+    <include file="item_assets/microwave_asset.xml"/>
+    <include file="item_assets/kettle_asset.xml"/>
+
+    <visual>
+    <global offwidth="2560" offheight="1920" />
+    <quality shadowsize="4096" offsamples="8" />
+    <map force="0.1" fogend="5" />
+    </visual>
+
+    <compiler inertiafromgeom='auto' inertiagrouprange='3 5' angle="radian" texturedir="textures" meshdir="../franka_assets/meshes"/>
+    <worldbody>
+        <camera name='left_cap' pos='-1.2 -0.5 1.8' quat='0.78 0.49 -0.22 -0.32' />
+        <camera name='right_cap' pos='1.2 -0.5 1.8' quat='0.76 0.5 0.21 0.35'/>
+
+        <!-- Robot -->
+        <body pos='0. 0 1.8' euler='0 0 1.57'>
+            <geom type='cylinder' size='.120 .90' pos='-.04 0 -0.90'/>
+            <include file="../franka_assets/chain.xml"/>
+        </body>
+        
+        <body name='desk' pos='-0.1 0.75 0'>
+
+            <body name="counters1" pos="0 0 0" >
+                <include file="item_assets/counters_chain.xml"/>
+            </body>
+            <body name="oven" pos="0 0 0" >
+                <include file="item_assets/oven_chain.xml"/>
+            </body>
+            <body name="backwall" pos="0 0 0" >
+                <include file="item_assets/backwall_chain.xml"/>
+            </body>
+            <body name="slidecabinet" pos="0.4 0.3 2.6" >
+                <include file="item_assets/slidecabinet_chain.xml"/>
+            </body>
+            <body name="hingecabinet" pos="-0.504 0.28 2.6" >
+                <include file="item_assets/hingecabinet_chain.xml"/>
+            </body>
+            <body name="microwave" pos="-0.750 -0.025 1.6" euler="0 0 0.3">
+                <include file="item_assets/microwave_chain.xml"/>
+            </body>
+        </body>
+        <body name="kettle" pos="-0.269 0.35 1.626">
+            <freejoint name="kettle"/>
+            <include file="item_assets/kettle_chain.xml"/>
+        </body>
+
+    </worldbody>
+    <include file="../franka_assets/actuator.xml"/>
+
+    <keyframe>
+        <key name="home" ctrl="0.16 -1.76 1.84 -2.51 0.36 0.79 1.55 255"/>
+    </keyframe>
+
+</mujoco>
