@@ -34,16 +34,12 @@ class FrankaRobot(MujocoEnv):
         self,
         model_path="../assets/kitchen_franka/franka_assets/franka_panda.xml",
         frame_skip=50,
-        observation_space=spaces.Box(
-            low=-np.inf, high=np.inf, shape=(9,), dtype=np.float32
-        ),
         ik_controller: bool = True,
         control_steps=5,
         robot_noise_ratio: float = 0.01,
         default_camera_config: dict = DEFAULT_CAMERA_CONFIG,
         **kwargs,
     ):
-
         xml_file_path = path.join(
             path.dirname(path.realpath(__file__)),
             model_path,
@@ -51,6 +47,10 @@ class FrankaRobot(MujocoEnv):
 
         self.control_steps = control_steps
         self.robot_noise_ratio = robot_noise_ratio
+
+        observation_space = (
+            spaces.Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float32),
+        )
 
         super().__init__(
             xml_file_path,
