@@ -1,3 +1,16 @@
+"""A maze environment with the Gymnasium Ant agent (https://github.com/Farama-Foundation/Gymnasium/blob/main/gymnasium/envs/mujoco/ant_v4.py).
+
+The code is inspired by the D4RL repository hosted on GitHub (https://github.com/Farama-Foundation/D4RL), published in the paper
+'D4RL: Datasets for Deep Data-Driven Reinforcement Learning' by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, Sergey Levine.
+
+Original Author of the code: Justin Fu
+
+The modifications made involve reusing the code in Gymnasium for the Ant environment and in `point_maze/maze_env.py`.
+The new code also follows the Gymnasium API and Multi-goal API
+
+This project is covered by the Apache 2.0 License.
+"""
+
 import sys
 from os import path
 from typing import Dict, List, Optional, Union
