@@ -21,17 +21,21 @@ We support and test for Python 3.7, 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. 
 
 ## Environments
 
-Gymnasium-Robotics includes the following groups of environments:
+`Gymnasium-Robotics` includes the following groups of environments:
 
 * [Fetch](https://robotics.farama.org/envs/#fetch-environments) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
 * [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
 * [Shadow Dexterous Hand with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
 
-The environments found in the [D4RL](https://github.com/Farama-Foundation/D4RL) repository will also be included in the near future. Currently, the following D4RL environments are present in Gymnasium-Robotics:
+The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the
+same action/observation spaces as the original, please read their documentation:
 
-* [Point Maze]() - These environments consist of a 2-DoF force-controlled ball (x and y direction) that has to reach a target position in a closed maze. The environment can be initialized with a variety of mazes with increasing levels of difficulty. 
-* [Ant Maze]() - These environments use the same mazes as the `Point Maze` environments. However, the given task is now solved by a quadruped ant which needs to learn how to walk in addition of reaching the goal. The ant agent is re-used from the [Gymnasium Ant environment](https://gymnasium.farama.org/environments/mujoco/ant/).
+* [Maze Environments]() - An agent has to navigate through a maze to reach certain goal position. Two different agents can be used: a 2-DoF force-controlled ball, or the classic `Ant` agent from the [Gymnasium MuJoCo environments](https://gymnasium.farama.org/environments/mujoco/ant/). The environment can be initialized with a variety of maze shapes with increasing levels of difficulty.
+* [Adroit Arm]() - A collection of environments that use the Shadow Dexterous Hand with additional degrees of freedom for the arm movement.
+The different tasks involve hammering a nail, opening a door, twirling a pen, or picking up and moving a ball.
+* [Franka Kitchen]() - Multitask environment in which a 9-DoF Franka robot is placed in a kitchen containing several common household items. The goal of each task is to interact with the items in order to reach a desired goal configuration.
 
+**WIP**: generate new `D4RL` environment datasets with [Minari](https://github.com/Farama-Foundation/Minari).
 ## Multi-goal API
 
 The robotic environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/envs/#) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
