@@ -360,7 +360,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
         }
 
     def render(self):
-        self.point_env.render()
+        return self.point_env.render()
 
     def close(self):
         super().close()
