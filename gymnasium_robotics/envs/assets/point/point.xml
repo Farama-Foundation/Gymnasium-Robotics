@@ -26,7 +26,7 @@
     </body>
   </worldbody>
   <actuator>
-    <!-- Those are just dummy actuators for providing ranges -->
+    <!-- These are just dummy actuators for providing ranges -->
     <motor name="motor_x" joint="ball_x" ctrlrange="-1.0 1.0" ctrllimited="true" gear= "100"/>
     <motor name="motor_y" joint="ball_y" ctrlrange="-1.0 1.0" ctrllimited="true" gear="100"/>
   </actuator>

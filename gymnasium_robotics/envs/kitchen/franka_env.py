@@ -1,3 +1,20 @@
+"""Environment using Gymnasium API for Franka robot.
+
+The code is inspired by the D4RL repository hosted on GitHub (https://github.com/Farama-Foundation/D4RL), published in the paper
+'D4RL: Datasets for Deep Data-Driven Reinforcement Learning' by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, Sergey Levine.
+
+This code was also implemented over the repository relay-policy-learning on GitHub (https://github.com/google-research/relay-policy-learning),
+published in Relay Policy Learning: Solving Long-Horizon Tasks via Imitation and Reinforcement Learning, by
+Abhishek Gupta, Vikash Kumar, Corey Lynch, Sergey Levine, Karol Hausman
+
+Original Author of the code: Abhishek Gupta & Justin Fu
+
+The modifications made involve separatin the Kitchen environment from the Franka environment and addint support for compatibility with
+the Gymnasium and Multi-goal API's
+
+This project is covered by the Apache 2.0 License.
+"""
+
 from os import path
 
 import mujoco

@@ -1,3 +1,15 @@
+"""An Adroit arm environment with ball relocation task using the Gymnasium API.
+
+The code is inspired by the D4RL repository hosted on GitHub (https://github.com/Farama-Foundation/D4RL), published in the paper
+'D4RL: Datasets for Deep Data-Driven Reinforcement Learning' by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, Sergey Levine.
+
+Original Author of the code: Justin Fu
+
+The modifications made involve organizing the code into different files adding support for the Gymnasium API.
+
+This project is covered by the Apache 2.0 License.
+"""
+
 from os import path
 
 import numpy as np
