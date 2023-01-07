@@ -401,3 +401,6 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     def render(self):
         return self.robot_env.render()
+
+    def close(self):
+        self.robot_env.close()
