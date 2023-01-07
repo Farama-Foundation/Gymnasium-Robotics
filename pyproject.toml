@@ -96,15 +96,17 @@ exclude = [
 
 strict = []
 
-# This is required as the CI pre-commit does not download the module (i.e. numpy)
-#   Therefore, we have to ignore missing imports
-reportMissingImports = "none"
 typeCheckingMode = "basic"
 pythonVersion = "3.7"
+pythonPlatform = "All"
 typeshedPath = "typeshed"
 enableTypeIgnoreComments = true
 
+# This is required as the CI pre-commit does not download the module (i.e. numpy)
+#   Therefore, we have to ignore missing imports
 
+reportMissingImports = "none"
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 # reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
 reportOptionalMemberAccess = "none" # -> raise _version.py error
+
