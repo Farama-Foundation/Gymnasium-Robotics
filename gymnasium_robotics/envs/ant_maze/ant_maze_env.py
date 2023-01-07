@@ -281,7 +281,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
     def render(self):
-        self.ant_env.render()
+        return self.ant_env.render()
 
     def close(self):
         super().close()
