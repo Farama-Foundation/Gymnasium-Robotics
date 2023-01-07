@@ -252,46 +252,51 @@ class MazeEnv(GoalEnv):
         self,
         *,
         seed: Optional[int] = None,
-        options: Dict[str, Optional[np.ndarray]] = {
-            "goal_cell": None,
-            "reset_cell": None,
-        },
+        options: Dict[str, Optional[np.ndarray]] | None = None,
     ):
         super().reset(seed=seed)
 
-        if "goal_cell" in options and options["goal_cell"] is not None:
-            # assert that goal cell is valid
-            assert self.maze.map_length > options["goal_cell"][1]
-            assert self.maze.map_width > options["goal_cell"][0]
-            assert (
-                self.maze.maze_map[options["goal_cell"][1], options["goal_cell"][0]]
-                != 1
-            ), f"Goal can't be placed in a wall cell, {options['goal_cell']}"
-
-            goal = self.maze.cell_rowcol_to_xy(options["goal_cell"])
-
-        else:
+        if options is None:
             goal = self.generate_target_goal()
-
-        # Add noise to goal position
-        self.goal = self.add_xy_position_noise(goal)
-
-        # Update the position of the target site for visualization
-        self.update_target_site_pos()
-
-        if "reset_cell" in options and options["reset_cell"] is not None:
-            # assert that goal cell is valid
-            assert self.maze.map_length > options["reset_cell"][1]
-            assert self.maze.map_width > options["reset_cell"][0]
-            assert (
-                self.maze.maze_map[options["reset_cell"][1], options["reset_cell"][0]]
-                != 1
-            ), f"Reset can't be placed in a wall cell, {options['reset_cell']}"
-
-            reset_pos = self.maze.cell_rowcol_to_xy(options["reset_cell"])
-
-        else:
+            # Add noise to goal position
+            self.goal = self.add_xy_position_noise(goal)
             reset_pos = self.generate_reset_pos()
+        else:
+            if "goal_cell" in options and options["goal_cell"] is not None:
+                # assert that goal cell is valid
+                assert self.maze.map_length > options["goal_cell"][1]
+                assert self.maze.map_width > options["goal_cell"][0]
+                assert (
+                    self.maze.maze_map[options["goal_cell"][1], options["goal_cell"][0]]
+                    != 1
+                ), f"Goal can't be placed in a wall cell, {options['goal_cell']}"
+
+                goal = self.maze.cell_rowcol_to_xy(options["goal_cell"])
+
+            else:
+                goal = self.generate_target_goal()
+
+            # Add noise to goal position
+            self.goal = self.add_xy_position_noise(goal)
+
+            # Update the position of the target site for visualization
+            self.update_target_site_pos()
+
+            if "reset_cell" in options and options["reset_cell"] is not None:
+                # assert that goal cell is valid
+                assert self.maze.map_length > options["reset_cell"][1]
+                assert self.maze.map_width > options["reset_cell"][0]
+                assert (
+                    self.maze.maze_map[
+                        options["reset_cell"][1], options["reset_cell"][0]
+                    ]
+                    != 1
+                ), f"Reset can't be placed in a wall cell, {options['reset_cell']}"
+
+                reset_pos = self.maze.cell_rowcol_to_xy(options["reset_cell"])
+
+            else:
+                reset_pos = self.generate_reset_pos()
 
         # Add noise to reset position
         self.reset_pos = self.add_xy_position_noise(reset_pos)

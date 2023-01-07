@@ -248,6 +248,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         )
         self.model = self.robot_env.model
         self.data = self.robot_env.data
+        self.render_mode = self.robot_env.render_mode
 
         self.terminate_on_tasks_completed = terminate_on_tasks_completed
         self.remove_task_when_completed = remove_task_when_completed
@@ -377,7 +378,6 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.episode_task_completions += self.step_task_completions
         info["episode_task_completions"] = self.episode_task_completions
         self.step_task_completions.clear()
-
         if self.terminate_on_tasks_completed:
             # terminate if there are no more tasks to complete
             terminated = len(self.episode_task_completions) == len(self.goal.keys())
