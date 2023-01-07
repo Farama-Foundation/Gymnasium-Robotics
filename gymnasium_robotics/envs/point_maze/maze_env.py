@@ -252,7 +252,7 @@ class MazeEnv(GoalEnv):
         self,
         *,
         seed: Optional[int] = None,
-        options: Dict[str, Optional[np.ndarray]] | None = None,
+        options: Optional[Dict[str, Optional[np.ndarray]]] = None,
     ):
         super().reset(seed=seed)
 
