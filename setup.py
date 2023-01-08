@@ -33,5 +33,6 @@ def get_description():
     return long_description
 
 
-setup(name="gymnasium-robotics", version=get_version(), long_description=get_description())
-
+setup(
+    name="gymnasium-robotics", version=get_version(), long_description=get_description()
+)
