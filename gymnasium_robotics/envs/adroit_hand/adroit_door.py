@@ -132,12 +132,6 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         It equals the norm of all the joint velocities. This penalty is scaled by a factor of `0.00001` in the final reward.
     - `door_hinge_displacement`: adds a positive reward of `2` if the door hinge is opened more than `0.2` radians, `8` if more than `1.0` randians, and `10` if more than `1.35` radians.
 
-    The full reward function equals the following:
-
-    .. math::
-
-       reward=door_hinge_displacement-0.1*get_to_handle-0.1*open_door^2-0.00001*velocity_penalty
-
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v1')`.
     In this variant, a reward of 10 is given once the door is opened more than `1.35` radians and zero otherwise.
 

@@ -133,12 +133,6 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         -` make_ball_go_to_target`: negative reward equal to the 3 dimensional Euclidean distance from the ball to its target position. This reward is also scaled by a factor of `0.5`.
     - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
 
-    The full reward function equals the following:
-
-    .. math::
-
-       reward=ball_off_table+ball_close_to_target-0.1*get_to_ball-0.5*make_hand_go_to_target-0.5*make_ball_go_to_target
-
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandReloateSparse-v1')`.
     In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
     - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.

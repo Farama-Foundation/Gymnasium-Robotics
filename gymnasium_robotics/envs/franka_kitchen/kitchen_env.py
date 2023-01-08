@@ -122,76 +122,77 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     The observation is a `goal-aware observation space`. The observation space contains the following keys:
 
-    `observation`: this is a `Box(-inf, inf, shape=(59,), dtype="float64")` space and it is formed by the robot's joint positions and velocities, as well as
-    the pose and velocities of the kitchen items. An additional uniform noise of ranfe `[-1,1]` is added to the observations. The noise is also scaled by a factor
-    of `robot_noise_ratio` and `object_noise_ratio` given in the environment arguments. The elements of the `observation` array are the following:
+    * `observation`: this is a `Box(-inf, inf, shape=(59,), dtype="float64")` space and it is formed by the robot's joint positions and velocities, as well as
+        the pose and velocities of the kitchen items. An additional uniform noise of ranfe `[-1,1]` is added to the observations. The noise is also scaled by a factor
+        of `robot_noise_ratio` and `object_noise_ratio` given in the environment arguments. The elements of the `observation` array are the following:
 
-        | Num | Observation                                         | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
-        |-----|-----------------------------------------------------|--------|--------|----------------------------------------|----------|--------------------------|
-        | 0   | `robot:joint1` hinge joint angle value              | -Inf   | Inf    | robot:joint1                           | hinge    | angle (rad)              |
-        | 1   | `robot:joint2` hinge joint angle value              | -Inf   | Inf    | robot:joint2                           | hinge    | angle (rad)              |
-        | 2   | `robot:joint3` hinge joint angle value              | -Inf   | Inf    | robot:joint3                           | hinge    | angle (rad)              |
-        | 3   | `robot:joint4` hinge joint angle value              | -Inf   | Inf    | robot:joint4                           | hinge    | angle (rad)              |
-        | 4   | `robot:joint5` hinge joint angle value              | -Inf   | Inf    | robot:joint5                           | hinge    | angle (rad)              |
-        | 5   | `robot:joint6` hinge joint angle value              | -Inf   | Inf    | robot:joint6                           | hinge    | angle (rad)              |
-        | 6   | `robot:joint7` hinge joint angle value              | -Inf   | Inf    | robot:joint7                           | hinge    | angle (rad)              |
-        | 7   | `robot:finger_joint1` slide joint translation value | -Inf   | Inf    | robot:finger_joint1                    | slide    | position (m)             |
-        | 8   | `robot:finger_joint2` slide joint translation value | -Inf   | Inf    | robot:finger_joint2                    | slide    | position (m)             |
-        | 9   | `robot:joint1` hinge joint angular velocity         | -Inf   | Inf    | robot:joint1                           | hinge    | angular velocity (rad/s) |
-        | 10  | `robot:joint2` hinge joint angular velocity         | -Inf   | Inf    | robot:joint2                           | hinge    | angular velocity (rad/s) |
-        | 11  | `robot:joint3` hinge joint angular velocity         | -Inf   | Inf    | robot:joint3                           | hinge    | angular velocity (rad/s) |
-        | 12  | `robot:joint4` hinge joint angular velocity         | -Inf   | Inf    | robot:joint4                           | hinge    | angular velocity (rad/s) |
-        | 13  | `robot:joint5` hinge joint angular velocity         | -Inf   | Inf    | robot:joint5                           | hinge    | angular velocity (rad/s) |
-        | 14  | `robot:joint6` hinge joint angular velocity         | -Inf   | Inf    | robot:joint6                           | hinge    | angular velocity (rad/s) |
-        | 15  | `robot:joint7` hinge joint angular velocity         | -Inf   | Inf    | robot:joint7                           | hinge    | angle (rad)              |
-        | 16  | `robot:finger_joint1` slide joint linear velocity   | -Inf   | Inf    | robot:finger_joint1                    | slide    | linear velocity (m/s)    |
-        | 17  | `robot:finger_joint2` slide joint linear velocity   | -Inf   | Inf    | robot:finger_joint2                    | slide    | linear velocity (m/s)    |
-        | 18  | Rotation of the knob for the bottom right burner    | -Inf   | Inf    | knob_Joint_1                           | hinge    | angle (rad)              |
-        | 19  | Joint opening of the bottom right burner            | -Inf   | Inf    | bottom_right_burner                    | slide    | position (m)             |
-        | 20  | Rotation of the knob for the bottom left burner     | -Inf   | Inf    | knob_Joint_2                           | hinge    | angle (rad)              |
-        | 21  | Joint opening of the bottom left burner             | -Inf   | Inf    | bottom_left_burner                     | slide    | position (m)             |
-        | 22  | Rotation of the knob for the top right burner       | -Inf   | Inf    | knob_Joint_3                           | hinge    | angle (rad)              |
-        | 23  | Joint opening of the top right burner               | -Inf   | Inf    | top_right_burner                       | slide    | position (m)             |
-        | 24  | Rotation of the knob for the top left burner        | -Inf   | Inf    | knob_Joint_4                           | hinge    | angle (rad)              |
-        | 25  | Joint opening of the top left burner                | -Inf   | Inf    | top_left_burner                        | slide    | position (m)             |
-        | 26  | Joint angle value of the overhead light switch      | -Inf   | Inf    | light_switch                           | slide    | position (m)             |
-        | 27  | Opening of the overhead light joint                 | -Inf   | Inf    | light_joint                            | hinge    | angle (rad)              |
-        | 28  | Translation of the slide cabinet joint              | -Inf   | Inf    | slide_cabinet                          | slide    | position (m)             |
-        | 29  | Rotation of the joint in the left hinge cabinet     | -Inf   | Inf    | left_hinge_cabinet                     | hinge    | angle (rad)              |
-        | 30  | Rotation of the joint in the right hinge cabinet    | -Inf   | Inf    | right_hinge_cabinet                    | hinge    | angle (rad)              |
-        | 31  | Rotation of the joint in the microwave door         | -Inf   | Inf    | microwave                              | hinge    | angle (rad)              |
-        | 32  | Kettle's x coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
-        | 33  | Kettle's y coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
-        | 34  | Kettle's z coordinate                               | -Inf   | Inf    | kettle                                 | free     | position (m)             |
-        | 35  | Kettle's x quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
-        | 36  | Kettle's y quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
-        | 37  | Kettle's z quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
-        | 38  | Kettle's w quaternion rotation                      | -Inf   | Inf    | kettle                                 | free     | -                        |
-        | 39  | Bottom right burner knob angular velocity           | -Inf   | Inf    | knob_Joint_1                           | hinge    | angular velocity (rad/s) |
-        | 40  | Opening linear velocity  of the bottom right burner | -Inf   | Inf    | bottom_right_burner                    | slide    | velocity (m/s)           |
-        | 41  | Bottom left burner knob angular velocity            | -Inf   | Inf    | knob_Joint_2                           | hinge    | angular velocity (rad/s) |
-        | 42  | Opening linear velocity of the bottom left burner   | -Inf   | Inf    | bottom_left_burner                     | slide    | velocity (m/s)           |
-        | 43  | Top right burner knob angular velocity              | -Inf   | Inf    | knob_Joint_3                           | hinge    | angular velocity (rad/s) |
-        | 44  | Opening linear velocity of the top right burner     | -Inf   | Inf    | top_right_burner                       | slide    | velocity (m/s)           |
-        | 45  | Top left burner knob angular velocity               | -Inf   | Inf    | knob_Joint_4                           | hinge    | angular velocity (rad/s) |
-        | 46  | Opening linear velocity of the top left burner      | -Inf   | Inf    | top_left_burner                        | slide    | velocity (m/s)           |
-        | 47  | Angular velocity of the overhead light switch       | -Inf   | Inf    | light_switch                           | slide    | velocity (m/s)           |
-        | 48  | Opening linear velocity of the overhead light       | -Inf   | Inf    | light_joint                            | hinge    | angular velocity (rad/s) |
-        | 49  | Linear velocity of the slide cabinet joint          | -Inf   | Inf    | slide_cabinet                          | slide    | velocity (m/s)           |
-        | 50  | Angular velocity of the left hinge cabinet joint    | -Inf   | Inf    | left_hinge_cabinet                     | hinge    | angular velocity (rad/s) |
-        | 51  | Angular velocity of the right hinge cabinet joint   | -Inf   | Inf    | right_hinge_cabinet                    | hinge    | angular velocity (rad/s) |
-        | 52  | Anular velocity of the microwave door joint         | -Inf   | Inf    | microwave                              | hinge    | angular velocity (rad/s) |
-        | 53  | Kettle's x linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
-        | 54  | Kettle's y linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
-        | 55  | Kettle's z linear velocity                          | -Inf   | Inf    | kettle                                 | free     | linear velocity (m/s)    |
-        | 56  | Kettle's x axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
-        | 57  | Kettle's y axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
-        | 58  | Kettle's z axis angular rotation                    | -Inf   | Inf    | kettle                                 | free     | angular velocity(rad/s)  |
 
-    `desired_goal`: this key represents the final goal to be achieved. The value is another `Dict` space with keys the tasks to be completed in the episode and values the joint
+    | Num   | Observation                                           | Min      | Max      | Joint Name (in corresponding XML file)   | Joint Type | Unit                       |
+    | ----- | ----------------------------------------------------- | -------- | -------- | ---------------------------------------- | ---------- | -------------------------- |
+    | 0     | `robot:joint1` hinge joint angle value                | -Inf     | Inf      | robot:joint1                             | hinge      | angle (rad)                |
+    | 1     | `robot:joint2` hinge joint angle value                | -Inf     | Inf      | robot:joint2                             | hinge      | angle (rad)                |
+    | 2     | `robot:joint3` hinge joint angle value                | -Inf     | Inf      | robot:joint3                             | hinge      | angle (rad)                |
+    | 3     | `robot:joint4` hinge joint angle value                | -Inf     | Inf      | robot:joint4                             | hinge      | angle (rad)                |
+    | 4     | `robot:joint5` hinge joint angle value                | -Inf     | Inf      | robot:joint5                             | hinge      | angle (rad)                |
+    | 5     | `robot:joint6` hinge joint angle value                | -Inf     | Inf      | robot:joint6                             | hinge      | angle (rad)                |
+    | 6     | `robot:joint7` hinge joint angle value                | -Inf     | Inf      | robot:joint7                             | hinge      | angle (rad)                |
+    | 7     | `robot:finger_joint1` slide joint translation value   | -Inf     | Inf      | robot:finger_joint1                      | slide      | position (m)               |
+    | 8     | `robot:finger_joint2` slide joint translation value   | -Inf     | Inf      | robot:finger_joint2                      | slide      | position (m)               |
+    | 9     | `robot:joint1` hinge joint angular velocity           | -Inf     | Inf      | robot:joint1                             | hinge      | angular velocity (rad/s)   |
+    | 10    | `robot:joint2` hinge joint angular velocity           | -Inf     | Inf      | robot:joint2                             | hinge      | angular velocity (rad/s)   |
+    | 11    | `robot:joint3` hinge joint angular velocity           | -Inf     | Inf      | robot:joint3                             | hinge      | angular velocity (rad/s)   |
+    | 12    | `robot:joint4` hinge joint angular velocity           | -Inf     | Inf      | robot:joint4                             | hinge      | angular velocity (rad/s)   |
+    | 13    | `robot:joint5` hinge joint angular velocity           | -Inf     | Inf      | robot:joint5                             | hinge      | angular velocity (rad/s)   |
+    | 14    | `robot:joint6` hinge joint angular velocity           | -Inf     | Inf      | robot:joint6                             | hinge      | angular velocity (rad/s)   |
+    | 15    | `robot:joint7` hinge joint angular velocity           | -Inf     | Inf      | robot:joint7                             | hinge      | angle (rad)                |
+    | 16    | `robot:finger_joint1` slide joint linear velocity     | -Inf     | Inf      | robot:finger_joint1                      | slide      | linear velocity (m/s)      |
+    | 17    | `robot:finger_joint2` slide joint linear velocity     | -Inf     | Inf      | robot:finger_joint2                      | slide      | linear velocity (m/s)      |
+    | 18    | Rotation of the knob for the bottom right burner      | -Inf     | Inf      | knob_Joint_1                             | hinge      | angle (rad)                |
+    | 19    | Joint opening of the bottom right burner              | -Inf     | Inf      | bottom_right_burner                      | slide      | position (m)               |
+    | 20    | Rotation of the knob for the bottom left burner       | -Inf     | Inf      | knob_Joint_2                             | hinge      | angle (rad)                |
+    | 21    | Joint opening of the bottom left burner               | -Inf     | Inf      | bottom_left_burner                       | slide      | position (m)               |
+    | 22    | Rotation of the knob for the top right burner         | -Inf     | Inf      | knob_Joint_3                             | hinge      | angle (rad)                |
+    | 23    | Joint opening of the top right burner                 | -Inf     | Inf      | top_right_burner                         | slide      | position (m)               |
+    | 24    | Rotation of the knob for the top left burner          | -Inf     | Inf      | knob_Joint_4                             | hinge      | angle (rad)                |
+    | 25    | Joint opening of the top left burner                  | -Inf     | Inf      | top_left_burner                          | slide      | position (m)               |
+    | 26    | Joint angle value of the overhead light switch        | -Inf     | Inf      | light_switch                             | slide      | position (m)               |
+    | 27    | Opening of the overhead light joint                   | -Inf     | Inf      | light_joint                              | hinge      | angle (rad)                |
+    | 28    | Translation of the slide cabinet joint                | -Inf     | Inf      | slide_cabinet                            | slide      | position (m)               |
+    | 29    | Rotation of the joint in the left hinge cabinet       | -Inf     | Inf      | left_hinge_cabinet                       | hinge      | angle (rad)                |
+    | 30    | Rotation of the joint in the right hinge cabinet      | -Inf     | Inf      | right_hinge_cabinet                      | hinge      | angle (rad)                |
+    | 31    | Rotation of the joint in the microwave door           | -Inf     | Inf      | microwave                                | hinge      | angle (rad)                |
+    | 32    | Kettle's x coordinate                                 | -Inf     | Inf      | kettle                                   | free       | position (m)               |
+    | 33    | Kettle's y coordinate                                 | -Inf     | Inf      | kettle                                   | free       | position (m)               |
+    | 34    | Kettle's z coordinate                                 | -Inf     | Inf      | kettle                                   | free       | position (m)               |
+    | 35    | Kettle's x quaternion rotation                        | -Inf     | Inf      | kettle                                   | free       | -                          |
+    | 36    | Kettle's y quaternion rotation                        | -Inf     | Inf      | kettle                                   | free       | -                          |
+    | 37    | Kettle's z quaternion rotation                        | -Inf     | Inf      | kettle                                   | free       | -                          |
+    | 38    | Kettle's w quaternion rotation                        | -Inf     | Inf      | kettle                                   | free       | -                          |
+    | 39    | Bottom right burner knob angular velocity             | -Inf     | Inf      | knob_Joint_1                             | hinge      | angular velocity (rad/s)   |
+    | 40    | Opening linear velocity  of the bottom right burner   | -Inf     | Inf      | bottom_right_burner                      | slide      | velocity (m/s)             |
+    | 41    | Bottom left burner knob angular velocity              | -Inf     | Inf      | knob_Joint_2                             | hinge      | angular velocity (rad/s)   |
+    | 42    | Opening linear velocity of the bottom left burner     | -Inf     | Inf      | bottom_left_burner                       | slide      | velocity (m/s)             |
+    | 43    | Top right burner knob angular velocity                | -Inf     | Inf      | knob_Joint_3                             | hinge      | angular velocity (rad/s)   |
+    | 44    | Opening linear velocity of the top right burner       | -Inf     | Inf      | top_right_burner                         | slide      | velocity (m/s)             |
+    | 45    | Top left burner knob angular velocity                 | -Inf     | Inf      | knob_Joint_4                             | hinge      | angular velocity (rad/s)   |
+    | 46    | Opening linear velocity of the top left burner        | -Inf     | Inf      | top_left_burner                          | slide      | velocity (m/s)             |
+    | 47    | Angular velocity of the overhead light switch         | -Inf     | Inf      | light_switch                             | slide      | velocity (m/s)             |
+    | 48    | Opening linear velocity of the overhead light         | -Inf     | Inf      | light_joint                              | hinge      | angular velocity (rad/s)   |
+    | 49    | Linear velocity of the slide cabinet joint            | -Inf     | Inf      | slide_cabinet                            | slide      | velocity (m/s)             |
+    | 50    | Angular velocity of the left hinge cabinet joint      | -Inf     | Inf      | left_hinge_cabinet                       | hinge      | angular velocity (rad/s)   |
+    | 51    | Angular velocity of the right hinge cabinet joint     | -Inf     | Inf      | right_hinge_cabinet                      | hinge      | angular velocity (rad/s)   |
+    | 52    | Anular velocity of the microwave door joint           | -Inf     | Inf      | microwave                                | hinge      | angular velocity (rad/s)   |
+    | 53    | Kettle's x linear velocity                            | -Inf     | Inf      | kettle                                   | free       | linear velocity (m/s)      |
+    | 54    | Kettle's y linear velocity                            | -Inf     | Inf      | kettle                                   | free       | linear velocity (m/s)      |
+    | 55    | Kettle's z linear velocity                            | -Inf     | Inf      | kettle                                   | free       | linear velocity (m/s)      |
+    | 56    | Kettle's x axis angular rotation                      | -Inf     | Inf      | kettle                                   | free       | angular velocity(rad/s)    |
+    | 57    | Kettle's y axis angular rotation                      | -Inf     | Inf      | kettle                                   | free       | angular velocity(rad/s)    |
+    | 58    | Kettle's z axis angular rotation                      | -Inf     | Inf      | kettle                                   | free       | angular velocity(rad/s)    |
+
+    * `desired_goal`: this key represents the final goal to be achieved. The value is another `Dict` space with keys the tasks to be completed in the episode and values the joint
     goal configuration of each joint in the task as specified in the `Goal` section.
 
-    `achieved_goal`: this key represents the current state of the tasks. The value is another `Dict` space with keys the tasks to be completed in the episode and values the
+    * `achieved_goal`: this key represents the current state of the tasks. The value is another `Dict` space with keys the tasks to be completed in the episode and values the
     current joint configuration of each joint in the task.
 
     ## Info
