@@ -1,4 +1,4 @@
-"""Setups up the Gymnasium Robotics module."""
+"""Setups the project."""
 
 import pathlib
 
@@ -34,3 +34,4 @@ def get_description():
 
 
 setup(name="gymnasium-robotics", version=get_version(), long_description=get_description())
+
