@@ -20,8 +20,8 @@ from gymnasium import spaces
 from gymnasium.envs.mujoco.ant_v4 import AntEnv
 from gymnasium.utils.ezpickle import EzPickle
 
-from gymnasium_robotics.envs.point_maze.maps import U_MAZE
-from gymnasium_robotics.envs.point_maze.maze_env import MazeEnv
+from gymnasium_robotics.envs.maze.maps import U_MAZE
+from gymnasium_robotics.envs.maze.maze import MazeEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
 

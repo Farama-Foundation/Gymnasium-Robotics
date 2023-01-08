@@ -22,7 +22,7 @@ from gymnasium import spaces
 from gymnasium.utils.ezpickle import EzPickle
 
 from gymnasium_robotics.core import GoalEnv
-from gymnasium_robotics.envs.kitchen.franka_env import FrankaRobot
+from gymnasium_robotics.envs.franka_kitchen.franka_env import FrankaRobot
 from gymnasium_robotics.utils.mujoco_utils import get_joint_qpos
 
 OBS_ELEMENT_GOALS = {

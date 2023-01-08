@@ -32,8 +32,8 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     This environment was introduced in ["Learning Complex Dexterous Manipulation with Deep Reinforcement Learning and Demonstrations"](https://arxiv.org/abs/1709.10087)
     by Aravind Rajeswaran, Vikash Kumar, Abhishek Gupta, Giulia Vezzani, John Schulman, Emanuel Todorov, and Sergey Levine.
 
-    The environment is based on the [Adroit manipulation platform](https://github.com/vikashplus/Adroit), a 28 degree of freedom system which consists of a 24 degrees of freedom
-    ShadowHand and a 4 degree of freedom arm. The task to be completed consists on moving the blue ball to the green target. The positions of the ball and target are randomized over the entire
+    The environment is based on the [Adroit manipulation platform](https://github.com/vikashplus/Adroit), a30 degree of freedom system which consists of a 24 degrees of freedom
+    ShadowHand and a 6 degree of freedom arm. The task to be completed consists on moving the blue ball to the green target. The positions of the ball and target are randomized over the entire
     workspace. The task will be considered successful when the object is within epsilon-ball of the target.
 
     ## Action Space
