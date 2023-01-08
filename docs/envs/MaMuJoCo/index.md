@@ -88,4 +88,14 @@ v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama
 ```{toctree}
 :hidden:
 ma_ant.md
+ma_coupled_half_cheetah.md
+ma_half_cheetah.md
+ma_hooper.md
+ma_humanoid_standup.md
+ma_humanoid.md
+ma_reacher.md
+ma_swimmer.md
+ma_pusher.md
+ma_walker2d.md
+ma_single.md
 ```

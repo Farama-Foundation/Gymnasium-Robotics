@@ -41,46 +41,46 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
     The action space is a `Box(-1, 1, (40,), float64)`.
     | Num | Observation                          | Min  | Max | Name (in corresponding XML file) | Joint  | Unit                     |
     | --- | ------------------------------------ | ---- | --- | -------------------------------- | ------ | ------------------------ |
-    | 0   | z-coordinate of the front tip        | -Inf | Inf | rootz0                           | slide  | position (m)             |
-    | 1   | angle of the front tip               | -Inf | Inf | rooty0                           | hinge  | angle (rad)              |
-    | 2   | angle of the second rotor            | -Inf | Inf | bthigh0                          | hinge  | angle (rad)              |
-    | 3   | angle of the second rotor            | -Inf | Inf | bshin0                           | hinge  | angle (rad)              |
-    | 4   | velocity of the tip along the x-axis | -Inf | Inf | bfoot0                           | hinge  | angle (rad)              |
-    | 5   | velocity of the tip along the y-axis | -Inf | Inf | fthigh0                          | hinge  | angle (rad)              |
-    | 6   | angular velocity of front tip        | -Inf | Inf | fshin0                           | hinge  | angle (rad)              |
-    | 7   | angular velocity of second rotor     | -Inf | Inf | ffoot0                           | hinge  | angle (rad)              |
-    | 8   | z-coordinate of the front tip        | -Inf | Inf | rootz1                           | slide  | position (m)             |
-    | 9   | angle of the front tip               | -Inf | Inf | rooty1                           | hinge  | angle (rad)              |
-    | 10  | angle of the second rotor            | -Inf | Inf | bthigh1                          | hinge  | angle (rad)              |
-    | 11  | angle of the second rotor            | -Inf | Inf | bshin1                           | hinge  | angle (rad)              |
-    | 12  | velocity of the tip along the x-axis | -Inf | Inf | bfoot1                           | hinge  | angle (rad)              |
-    | 13  | velocity of the tip along the y-axis | -Inf | Inf | fthigh1                          | hinge  | angle (rad)              |
-    | 14  | angular velocity of front tip        | -Inf | Inf | fshin1                           | hinge  | angle (rad)              |
-    | 15  | angular velocity of second rotor     | -Inf | Inf | ffoot1                           | hinge  | angle (rad)              |
-    | 16  | x-coordinate of the front tip        | -Inf | Inf | rootx0                           | slide  | velocity (m/s)           |
-    | 17  | y-coordinate of the front tip        | -Inf | Inf | rootz0                           | slide  | velocity (m/s)           |
-    | 18  | angle of the front tip               | -Inf | Inf | rooty0                           | hinge  | angular velocity (rad/s) |
-    | 19  | angle of the second rotor            | -Inf | Inf | bthigh0                          | hinge  | angular velocity (rad/s) |
-    | 20  | angle of the second rotor            | -Inf | Inf | bshin0                           | hinge  | angular velocity (rad/s) |
-    | 21  | velocity of the tip along the x-axis | -Inf | Inf | bfoot0                           | hinge  | angular velocity (rad/s) |
-    | 22  | velocity of the tip along the y-axis | -Inf | Inf | fthigh0                          | hinge  | angular velocity (rad/s) |
-    | 23  | angular velocity of front tip        | -Inf | Inf | fshin0                           | hinge  | angular velocity (rad/s) |
-    | 24  | angular velocity of second rotor     | -Inf | Inf | ffoot0                           | hinge  | angular velocity (rad/s) |
-    | 25  | x-coordinate of the front tip        | -Inf | Inf | rootx1                           | slide  | velocity (m/s)           |
-    | 26  | y-coordinate of the front tip        | -Inf | Inf | rootz1                           | slide  | velocity (m/s)           |
-    | 27  | angle of the front tip               | -Inf | Inf | rooty1                           | hinge  | angular velocity (rad/s) |
-    | 28  | angle of the second rotor            | -Inf | Inf | bthigh1                          | hinge  | angular velocity (rad/s) |
-    | 29  | angle of the second rotor            | -Inf | Inf | bshin1                           | hinge  | angular velocity (rad/s) |
-    | 30  | velocity of the tip along the x-axis | -Inf | Inf | bfoot1                           | hinge  | angular velocity (rad/s) |
-    | 31  | velocity of the tip along the y-axis | -Inf | Inf | fthigh1                          | hinge  | angular velocity (rad/s) |
-    | 32  | angular velocity of front tip        | -Inf | Inf | fshin1                           | hinge  | angular velocity (rad/s) |
-    | 33  | angular velocity of second rotor     | -Inf | Inf | ffoot1                           | hinge  | angular velocity (rad/s) |
-    | 34  | jacobian of tendon                   | -Inf | Inf | ten_J[0] (tendon0)               | tendon | |
-    | 35  | jacobian of tendon                   | -Inf | Inf | ten_J[1] (tendon0)               | tendon | |
-    | 36  | jacobian of tendon                   | -Inf | Inf | ten_J[9] (tendon0)               | tendon | |
-    | 37  | jacobian of tendon                   | -Inf | Inf | ten_J[10] (tendon0)              | tendon | |
-    | 38  | length of tendon                     | -Inf | Inf | ten_lenght (tendon0)             | tendon | distance (m)             |
-    | 39  | tendon veloocity                     | -Inf | Inf | ten_velocity (tendon0)           | tendon | rate of expansion (m/s)  |
+    | 0   | z-coordinate of the front tip of the first cheetah         | -Inf | Inf | rootz0                           | slide  | position (m)             |
+    | 1   | angle of the front tip of the first cheetah                | -Inf | Inf | rooty0                           | hinge  | angle (rad)              |
+    | 2   | angle of the second rotor of the first cheetah             | -Inf | Inf | bthigh0                          | hinge  | angle (rad)              |
+    | 3   | angle of the second rotor of the first cheetah             | -Inf | Inf | bshin0                           | hinge  | angle (rad)              |
+    | 4   | velocity of the tip along the x-axis of the first cheetah  | -Inf | Inf | bfoot0                           | hinge  | angle (rad)              |
+    | 5   | velocity of the tip along the y-axis of the first cheetah  | -Inf | Inf | fthigh0                          | hinge  | angle (rad)              |
+    | 6   | angular velocity of front tip of the first cheetah         | -Inf | Inf | fshin0                           | hinge  | angle (rad)              |
+    | 7   | angular velocity of second rotor of the first cheetah      | -Inf | Inf | ffoot0                           | hinge  | angle (rad)              |
+    | 8   | z-coordinate of the front tip of the second cheetah        | -Inf | Inf | rootz1                           | slide  | position (m)             |
+    | 9   | angle of the front tip of the second cheetah               | -Inf | Inf | rooty1                           | hinge  | angle (rad)              |
+    | 10  | angle of the second rotor of the second cheetah            | -Inf | Inf | bthigh1                          | hinge  | angle (rad)              |
+    | 11  | angle of the second rotor of the second cheetah            | -Inf | Inf | bshin1                           | hinge  | angle (rad)              |
+    | 12  | velocity of the tip along the x-axis of the second cheetah | -Inf | Inf | bfoot1                           | hinge  | angle (rad)              |
+    | 13  | velocity of the tip along the y-axis of the second cheetah | -Inf | Inf | fthigh1                          | hinge  | angle (rad)              |
+    | 14  | angular velocity of front tip  of the second cheetah       | -Inf | Inf | fshin1                           | hinge  | angle (rad)              |
+    | 15  | angular velocity of second rotor of the second cheetah     | -Inf | Inf | ffoot1                           | hinge  | angle (rad)              |
+    | 16  | x-coordinate of the front tip of the first cheetah         | -Inf | Inf | rootx0                           | slide  | velocity (m/s)           |
+    | 17  | y-coordinate of the front tip of the first cheetah         | -Inf | Inf | rootz0                           | slide  | velocity (m/s)           |
+    | 18  | angle of the front tip of the first cheetah                | -Inf | Inf | rooty0                           | hinge  | angular velocity (rad/s) |
+    | 19  | angle of the second rotor of the first cheetah             | -Inf | Inf | bthigh0                          | hinge  | angular velocity (rad/s) |
+    | 20  | angle of the second rotor of the first cheetah             | -Inf | Inf | bshin0                           | hinge  | angular velocity (rad/s) |
+    | 21  | velocity of the tip along the x-axis of the first cheetah  | -Inf | Inf | bfoot0                           | hinge  | angular velocity (rad/s) |
+    | 22  | velocity of the tip along the y-axis of the first cheetah  | -Inf | Inf | fthigh0                          | hinge  | angular velocity (rad/s) |
+    | 23  | angular velocity of front tip of the first cheetah         | -Inf | Inf | fshin0                           | hinge  | angular velocity (rad/s) |
+    | 24  | angular velocity of second rotor of the first cheetah      | -Inf | Inf | ffoot0                           | hinge  | angular velocity (rad/s) |
+    | 25  | x-coordinate of the front tip of the second cheetah        | -Inf | Inf | rootx1                           | slide  | velocity (m/s)           |
+    | 26  | y-coordinate of the front tip of the second cheetah        | -Inf | Inf | rootz1                           | slide  | velocity (m/s)           |
+    | 27  | angle of the front tip of the second cheetah               | -Inf | Inf | rooty1                           | hinge  | angular velocity (rad/s) |
+    | 28  | angle of the second rotor of the second cheetah            | -Inf | Inf | bthigh1                          | hinge  | angular velocity (rad/s) |
+    | 29  | angle of the second rotor of the second cheetah            | -Inf | Inf | bshin1                           | hinge  | angular velocity (rad/s) |
+    | 30  | velocity of the tip along the x-axis of the second cheetah | -Inf | Inf | bfoot1                           | hinge  | angular velocity (rad/s) |
+    | 31  | velocity of the tip along the y-axis of the second cheetah | -Inf | Inf | fthigh1                          | hinge  | angular velocity (rad/s) |
+    | 32  | angular velocity of front tip of the second cheetah        | -Inf | Inf | fshin1                           | hinge  | angular velocity (rad/s) |
+    | 33  | angular velocity of second rotor of the second cheetah     | -Inf | Inf | ffoot1                           | hinge  | angular velocity (rad/s) |
+    | 34  | jacobian of tendon                                         | -Inf | Inf | ten_J[0] (tendon0)               | tendon | |
+    | 35  | jacobian of tendon                                         | -Inf | Inf | ten_J[1] (tendon0)               | tendon | |
+    | 36  | jacobian of tendon                                         | -Inf | Inf | ten_J[9] (tendon0)               | tendon | |
+    | 37  | jacobian of tendon                                         | -Inf | Inf | ten_J[10] (tendon0)              | tendon | |
+    | 38  | length of tendon                                           | -Inf | Inf | ten_lenght (tendon0)             | tendon | distance (m)             |
+    | 39  | tendon veloocity                                           | -Inf | Inf | ten_velocity (tendon0)           | tendon | rate of expansion (m/s)  |
 
     ## Rewards
     The reward uses the same structure as the (single) HalfCheetah

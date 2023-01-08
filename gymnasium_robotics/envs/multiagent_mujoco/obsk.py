@@ -241,14 +241,14 @@ def get_parts_and_edges(  # noqa: C901
         )
         root_z = Node("root_z", 1, 1, None)
         root_y = Node("root_y", 2, 2, None)
-        globals = [root_x, root_y, root_z]
+        globals = [root_x, root_z, root_y]
 
         if partitioning is None:
-            parts = [(bfoot, bshin, bthigh, ffoot, fshin, fthigh)]
+            parts = [(bthigh, bshin, bfoot, fthigh, fshin, ffoot)]
         elif partitioning == "2x3":
-            parts = [(bfoot, bshin, bthigh), (ffoot, fshin, fthigh)]
+            parts = [(bthigh, bshin, bfoot), (fthigh, fshin, ffoot)]
         elif partitioning == "6x1":
-            parts = [(bfoot,), (bshin,), (bthigh,), (ffoot,), (fshin,), (fthigh,)]
+            parts = [(bthigh,), (bshin,), (bfoot,), (fthigh,), (fshin,), (ffoot,)]
         else:
             raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
@@ -427,7 +427,7 @@ def get_parts_and_edges(  # noqa: C901
             None,
             extra_obs={"qvel": lambda data: np.clip(np.array([data.qvel[2]]), -10, 10)},
         )
-        globals = [root_x, root_y, root_z]
+        globals = [root_x, root_z, root_y]
 
         if partitioning is None:
             parts = [
@@ -463,8 +463,8 @@ def get_parts_and_edges(  # noqa: C901
         left_lower_arm = 13
 
         # define Mujoco-Graph
-        abdomen_y = Node("abdomen_y", -16, -16, 0, bodies=(torso, lwaist, pelvis))
-        abdomen_z = Node("abdomen_z", -17, -17, 1, bodies=(torso, lwaist, pelvis))
+        abdomen_y = Node("abdomen_y", -17, -17, 0, bodies=(torso, lwaist, pelvis))
+        abdomen_z = Node("abdomen_z", -16, -16, 1, bodies=(torso, lwaist, pelvis))
         abdomen_x = Node(
             "abdomen_x", -15, -15, 2, bodies=(pelvis, right_thigh, left_thigh)
         )
@@ -536,47 +536,46 @@ def get_parts_and_edges(  # noqa: C901
         if partitioning is None:
             parts = [
                 (
-                    left_shoulder1,
-                    left_shoulder2,
                     abdomen_x,
                     abdomen_y,
                     abdomen_z,
-                    right_shoulder1,
-                    right_shoulder2,
-                    right_elbow,
-                    left_elbow,
-                    left_hip_x,
-                    left_hip_y,
-                    left_hip_z,
                     right_hip_x,
                     right_hip_y,
                     right_hip_z,
                     right_knee,
+                    left_hip_x,
+                    left_hip_y,
+                    left_hip_z,
                     left_knee,
+                    right_shoulder1,
+                    right_shoulder2,
+                    right_elbow,
+                    left_shoulder1,
+                    left_shoulder2,
+                    left_elbow,
                 ),
             ]
-        elif partitioning == "9|8":  # 17 in total
-            # isolate upper and lower body
+        elif partitioning == "9|8":  # isolate upper and lower body
             parts = [
-                (
-                    left_shoulder1,
-                    left_shoulder2,
+                (  # Upper Body
                     abdomen_x,
                     abdomen_y,
                     abdomen_z,
                     right_shoulder1,
                     right_shoulder2,
                     right_elbow,
+                    left_shoulder1,
+                    left_shoulder2,
                     left_elbow,
                 ),
-                (
-                    left_hip_x,
-                    left_hip_y,
-                    left_hip_z,
+                (  # Lower Body
                     right_hip_x,
                     right_hip_y,
                     right_hip_z,
                     right_knee,
+                    left_hip_x,
+                    left_hip_y,
+                    left_hip_z,
                     left_knee,
                 ),
             ]
@@ -807,8 +806,7 @@ def get_parts_and_edges(  # noqa: C901
                     thigh_left_joint,
                 ),
             ]
-        elif partitioning == "2x3":
-            # isolate upper and lower body
+        elif partitioning == "2x3":  # isolate right and left foot
             parts = [
                 (foot_joint, leg_joint, thigh_joint),
                 (
@@ -910,7 +908,7 @@ def get_parts_and_edges(  # noqa: C901
                     fthigh1,
                 ),
             ]
-        elif partitioning == "1p1":
+        elif partitioning == "1p1":  # isolate the cheetahs
             parts = [
                 (bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0),
                 (bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1),
@@ -921,7 +919,6 @@ def get_parts_and_edges(  # noqa: C901
         return parts, edges, globals
 
     elif label in ["ManySegmentSwimmer-v4"]:
-
         try:
             n_agents = int(partitioning.split("x")[0])
             n_segs_per_agents = int(partitioning.split("x")[1])

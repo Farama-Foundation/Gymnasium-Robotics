@@ -41,40 +41,7 @@ _MUJOCO_GYM_ENVIROMENTS = [
 class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     """Class for multi agent factorizing mujoco environments.
 
-    # MaMuJoCo (Multi-Agent MuJoCo)
-
-    # Action Spaces
-
-    For (1) the action space shape is the shape of the single agent domain divided by the number of agents
-
-    For (2) it Depends on the configuration
-
-    # State Spaces
-
-    Depends on the Environment
-
-    # Rewards
-
-    For (1) uses the same rewards of single agent gymnasium for each agent
-
-    For (2) used the same reward structure as the 'simpler' equivalent agents but scaled
-
-    # Starting State
-
-    For (1) uses the same starting state as the single agent gymnasium equivalent
-
-    For (2) used the same starting state structure as the 'simpler' equivalent agents
-
-    # Episode End
-
-    For (1) uses the same termination and truncation mechanism as the single agent gymnasium (Note: all the agents terminate and truncation at the same time)
-
-    For manyagent_swimmer
-        truncates all agents at 1000 steps, and never terminates
-    For manyagent_ant
-        truncates all agents at 1000 steps, and never terminates based on same condition as "Ant"
-    For coupled_half_cheetah
-        truncates all agents at 1000 steps, and never terminates
+    Doc can be found at (https://robotics.farama.org/envs/mamujoco/)
     """
 
     metadata = {
@@ -99,7 +66,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         Args:
             scenario: The Task/Environment, valid values:
-                "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Pusher", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "manyagent_swimmer", "manyagent_ant", "coupled_half_cheetah"
+                "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Pusher", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "ManySegmentSwimmer", "ManySegmentAnt", "CoupledHalfCheetah"
             agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
                 If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
             agent_obsk: Number of nearest joints to observe,
@@ -121,7 +88,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """
         scenario += "-v4"
 
-        # load the underlying single agent Gymansium MuJoCo Environment in `self.gym_env`
+        # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.single_agent_env = gymnasium.make(scenario, render_mode=render_mode)
         elif scenario in ["ManySegmentAnt-v4"]:
@@ -507,7 +474,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return None
 
-        if scenario in ["Ant-v4", "manyagent_ant"]:
+        if scenario in ["Ant-v4", "ManySegmentAnt"]:
             # k_split = ["qpos,qvel,cfrc_ext", "qpos"]  # Gymansium.MuJoCo.Ant-v4 has disabled cfrc_ext by default
             k_split = ["qpos,qvel", "qpos"]
         elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
@@ -515,8 +482,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 "qpos,qvel,cinert,cvel,qfrc_actuator,cfrc_ext",
                 "qpos",
             ]
-        elif scenario in ["coupled_half_cheetah-v4"]:
+        elif scenario in ["CoupledHalfCheetah-v4"]:
             k_split = ["qpos,qvel,ten_J,ten_length,ten_velocity", "qpos"]
+        elif scenario in ["Reacher-v4"]:
+            k_split = ["qpos,qvel,fingertip_dist", "qpos"]
         else:
             k_split = ["qpos,qvel", "qpos"]
 
@@ -527,7 +496,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return categories
 
     def _generate_global_categories(self, scenario: str) -> tuple[str, ...]:
-        # TODO disable qvel
         """Generates the default global categories of observations.
 
         Args:
@@ -539,11 +507,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return ()
 
-        if scenario in ["Ant-v4", "manyagent_ant"]:
+        if scenario in ["Ant-v4", "ManySegmentAnt"]:
             return ("qpos", "qvel")
         elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
             return ("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")
-        elif scenario in ["coupled_half_cheetah-v4"]:
+        elif scenario in ["CoupledHalfCheetah-v4"]:
             return ("qpos", "qvel")
         else:
             return ("qpos", "qvel")

@@ -25,8 +25,8 @@ The action spaces is depended on the partitioning
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
-| Action Spaces		| {'0' : Box(-1, 1, (8,), float32)}`			|
-| Part partition	| [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]	|
+| Action Spaces		| `{'agent_0' : Box(-1, 1, (8,), float32)}`			|
+| Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
 
 If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/)
 
@@ -46,8 +46,8 @@ If partitioning, is None then the environment contains a single agent with the s
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`					|
 | Number of Agents	| 2							|
-| Action Spaces		| {'0' : Box(-1, 1, (4,), float32), '1' : Box(-1, 1, (4,), float32)}`|
-| Part partition	| [(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]	|
+| Action Spaces		| `{'agent_0' : Box(-1, 1, (4,), float32), 'agent_1' : Box(-1, 1, (4,), float32)}`|
+| Part partition	| `[(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]`	|
 
 The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
 
@@ -75,8 +75,8 @@ back legs
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`					|
 | Number of Agents	| 2							|
-| Action Spaces		| {'0' : Box(-1, 1, (4,), float32), '1' : Box(-1, 1, (4,), float32)}`|
-| Part partition	| [(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]	|
+| Action Spaces		| `{'agent_0' : Box(-1, 1, (4,), float32), 'agent_1' : Box(-1, 1, (4,), float32)}`|
+| Part partition	| `[(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]`	|
 
 The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
 #### Agent 0 action space
@@ -99,8 +99,8 @@ The environment is partitioned in 2 parts, the front part (containing the front 
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1', 'agent_2', 'agent_3']`			|
 | Number of Agents	| 4							|
-| Action Spaces		| {'0' : Box(-1, 1, (2,), float32), '1' : Box(-1, 1, (2,), float32)}, '2' : Box(-1, 1, (2,), float32), '3' : Box(-1, 1, (2,), float32)},`|
-| Part partition	| [(hip1, ankle1), (hip2, ankle2), (hip3, ankle3), (hip4, ankle4)]	|
+| Action Spaces		| `{'agent_0' : Box(-1, 1, (2,), float32), 'agent_1' : Box(-1, 1, (2,), float32)}, 'agent_2' : Box(-1, 1, (2,), float32), 'agent_3' : Box(-1, 1, (2,), float32)},`|
+| Part partition	| `[(hip1, ankle1), (hip2, ankle2), (hip3, ankle3), (hip4, ankle4)]`	|
 
 The environment is partitioned in 4 parts, with each part corresponding to a leg of the ant
 #### Agent 0 action space
@@ -152,13 +152,13 @@ All agents receive the same [Gymnasium's Ant](https://gymnasium.farama.org/envir
 
 ## Starting state
 
-The starting state of the environment is the as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
+The starting state of the environment is the as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#starting-state).
 
 
 
 ## Episode End
 
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
+All agent terminate and truncate at same time given the same conditions as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#episode-end).
 
 
 ## Version History
