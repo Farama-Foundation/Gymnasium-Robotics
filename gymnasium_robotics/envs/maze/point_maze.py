@@ -53,120 +53,143 @@ class PointMazeEnv(MazeEnv, EzPickle):
     The maze data structure is discrete. However the observations are continuous and variance is added to the goal and the agent's initial pose by adding a sammpled noise from a uniform distribution
     to the cell cartesian coordinate center in the MuJoCo simulation.
 
-    There are three types of environment variations depending on the maze configuration:
+    #### Maze size
 
-    ```python
-    # ID: PointMaze_UMaze-v3
+    There are three types of environment variations depending on the maze size configuration:
 
-    U_MAZE = [[1, 1, 1, 1, 1],
-              [1, R, 0, 0, 1],
-              [1, 1, 1, 0, 1],
-              [1, G, 0, 0, 1],
-              [1, 1, 1, 1, 1]]
 
-    # ID: PointMaze_Open-v3
+    * `PointMaze_UMaze-v3`
 
-    OPEN = [[1, 1, 1, 1, 1, 1, 1],
-            [1, R, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 0, 0, 0, G, 1],
-            [1, 1, 1, 1, 1, 1, 1]]
+        ```python
+        U_MAZE = [[1, 1, 1, 1, 1],
+                [1, R, 0, 0, 1],
+                [1, 1, 1, 0, 1],
+                [1, G, 0, 0, 1],
+                [1, 1, 1, 1, 1]]
+        ```
 
-    # ID: PointMaze_Medium-v3
+    * `PointMaze_Open-v3`
 
-    MEDIUM_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1],
-                [1, R, 0, 1, 1, 0, 0, 1],
-                [1, 0, 0, 1, 0, 0, 0, 1],
-                [1, 1, 0, 0, 0, 1, 1, 1],
-                [1, 0, 0, 1, 0, 0, 0, 1],
-                [1, 0, 1, 0, 0, 1, 0, 1],
-                [1, 0, 0, 0, 1, G, 0, 1],
-                [1, 1, 1, 1, 1, 1, 1, 1]]
+        ```python
+        OPEN = [[1, 1, 1, 1, 1, 1, 1],
+                [1, R, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, G, 1],
+                [1, 1, 1, 1, 1, 1, 1]]
+        ```
+    * `PointMaze_Medium-v3`
 
-    # ID: PointMaze_Large-v3
+        ```python
+        MEDIUM_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1],
+                    [1, R, 0, 1, 1, 0, 0, 1],
+                    [1, 0, 0, 1, 0, 0, 0, 1],
+                    [1, 1, 0, 0, 0, 1, 1, 1],
+                    [1, 0, 0, 1, 0, 0, 0, 1],
+                    [1, 0, 1, 0, 0, 1, 0, 1],
+                    [1, 0, 0, 0, 1, G, 0, 1],
+                    [1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
+    * `PointMaze_Large-v3`
 
-    LARGE_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                    [1, R, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-                    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                    [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-                    [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-                    [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-                    [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-                    [1, 0, 0, 1, 0, 0, 0, 1, 0, G, 0, 1],
-                    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-    ```
+        ```python
+        LARGE_MAZE = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                        [1, R, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+                        [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                        [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+                        [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+                        [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+                        [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+                        [1, 0, 0, 1, 0, 0, 0, 1, 0, G, 0, 1],
+                        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
+
+    #### Diverse goal mazes
 
     Environment variations can also be found with multi-goal configurations, also referred to as `diverse`. Their `id` is the same as their
     default but adding the `_Diverse_G` string (`G` stands for Goal) to it:
 
-    ```python
-    # ID: PointMaze_Open_Diverse_G-v3
 
-    OPEN_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1],
-                      [1, R, G, G, G, G, 1],
-                      [1, G, G, G, G, G, 1],
-                      [1, G, G, G, G, G, 1],
-                      [1, 1, 1, 1, 1, 1, 1]]
+    * `PointMaze_Open_Diverse_G-v3`
 
-    # ID: PointMaze_Medium_Diverse_G-v3
+        ```python
+        OPEN_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1],
+                        [1, R, G, G, G, G, 1],
+                        [1, G, G, G, G, G, 1],
+                        [1, G, G, G, G, G, 1],
+                        [1, 1, 1, 1, 1, 1, 1]]
+        ```
 
-    MEDIUM_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1],
-                          [1, R, 0, 1, 1, 0, 0, 1],
-                          [1, 0, 0, 1, 0, 0, G, 1],
-                          [1, 1, 0, 0, 0, 1, 1, 1],
-                          [1, 0, 0, 1, 0, 0, 0, 1],
-                          [1, G, 1, 0, 0, 1, 0, 1],
-                          [1, 0, 0, 0, 1, G, 0, 1],
-                          [1, 1, 1, 1, 1, 1, 1, 1]]
+    * `PointMaze_Medium_Diverse_G-v3`
 
-    # ID: PointMaze_Large_Diverse_G-v3
+        ```python
+        MEDIUM_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1],
+                            [1, R, 0, 1, 1, 0, 0, 1],
+                            [1, 0, 0, 1, 0, 0, G, 1],
+                            [1, 1, 0, 0, 0, 1, 1, 1],
+                            [1, 0, 0, 1, 0, 0, 0, 1],
+                            [1, G, 1, 0, 0, 1, 0, 1],
+                            [1, 0, 0, 0, 1, G, 0, 1],
+                            [1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
 
-    LARGE_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                              [1, R, 0, 0, 0, 1, G, 0, 0, 0, 0, 1],
-                              [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                              [1, 0, 0, 0, 0, G, 0, 1, 0, 0, G, 1],
-                              [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-                              [1, 0, G, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-                              [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-                              [1, 0, 0, 1, G, 0, G, 1, 0, G, 0, 1],
-                              [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-    ```
+    * `PointMaze_Large_Diverse_G-v3`
+
+        ```python
+        LARGE_MAZE_DIVERSE_G = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                                [1, R, 0, 0, 0, 1, G, 0, 0, 0, 0, 1],
+                                [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                                [1, 0, 0, 0, 0, G, 0, 1, 0, 0, G, 1],
+                                [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+                                [1, 0, G, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+                                [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+                                [1, 0, 0, 1, G, 0, G, 1, 0, G, 0, 1],
+                                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
+
+    #### Diverse goal and reset mazes
 
     The last group of environment variations instantiates another type of `diverse` maze for which the goals and agent initialization locations are randomly selected at reset. The `id` of this environments is the same as their
     default but adding the `_Diverse_GR` string (`GR` stands for Goal and Reset) to it:
 
-    ```python
-    # ID: PointMaze_Open_Diverse_GR-v3
 
-    OPEN_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1],
-                       [1, C, C, C, C, C, 1],
-                       [1, C, C, C, C, C, 1],
-                       [1, C, C, C, C, C, 1],
-                       [1, 1, 1, 1, 1, 1, 1]]
+    * `PointMaze_Open_Diverse_GR-v3`
 
-    # ID: PointMaze_Medium_Diverse_GR-v3
+        ```python
+        OPEN_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1],
+                        [1, C, C, C, C, C, 1],
+                        [1, C, C, C, C, C, 1],
+                        [1, C, C, C, C, C, 1],
+                        [1, 1, 1, 1, 1, 1, 1]]
+        ```
 
-    MEDIUM_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1],
-                           [1, C, 0, 1, 1, 0, 0, 1],
-                           [1, 0, 0, 1, 0, 0, C, 1],
-                           [1, 1, 0, 0, 0, 1, 1, 1],
-                           [1, 0, 0, 1, 0, 0, 0, 1],
-                           [1, C, 1, 0, 0, 1, 0, 1],
-                           [1, 0, 0, 0, 1, C, 0, 1],
-                           [1, 1, 1, 1, 1, 1, 1, 1]]
+    * `PointMaze_Medium_Diverse_GR-v3`
 
-    # ID: PointMaze_Large_Diverse_GR-v3
+        ```python
+        MEDIUM_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1],
+                            [1, C, 0, 1, 1, 0, 0, 1],
+                            [1, 0, 0, 1, 0, 0, C, 1],
+                            [1, 1, 0, 0, 0, 1, 1, 1],
+                            [1, 0, 0, 1, 0, 0, 0, 1],
+                            [1, C, 1, 0, 0, 1, 0, 1],
+                            [1, 0, 0, 0, 1, C, 0, 1],
+                            [1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
 
-    LARGE_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-                               [1, C, 0, 0, 0, 1, C, 0, 0, 0, 0, 1],
-                               [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-                               [1, 0, 0, 0, 0, C, 0, 1, 0, 0, C, 1],
-                               [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-                               [1, 0, C, 1, 0, 1, 0, 0, 0, 0, 0, 1],
-                               [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
-                               [1, 0, 0, 1, C, 0, C, 1, 0, C, 0, 1],
-                               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-    ```
+    * `PointMaze_Large_Diverse_GR-v3`
+
+        ```python
+        LARGE_MAZE_DIVERSE_GR = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                                [1, C, 0, 0, 0, 1, C, 0, 0, 0, 0, 1],
+                                [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+                                [1, 0, 0, 0, 0, C, 0, 1, 0, 0, C, 1],
+                                [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+                                [1, 0, C, 1, 0, 1, 0, 0, 0, 0, 0, 1],
+                                [1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1],
+                                [1, 0, 0, 1, C, 0, C, 1, 0, C, 0, 1],
+                                [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
+        ```
+
+    #### Custom maze
 
     Finally, any `Point Maze` environment can be initialized with a custom maze map by setting the `maze_map` argument like follows:
 
@@ -193,7 +216,8 @@ class PointMazeEnv(MazeEnv, EzPickle):
     ### Observation Space
 
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's position and goal. The dictionary consists of the following 3 keys:
-    `observation`: its value is an `ndarray` of shape `(4,)`. It consists of kinematic information of the force-actuated ball. The elements of the array correspond to the following:
+
+    * `observation`: its value is an `ndarray` of shape `(4,)`. It consists of kinematic information of the force-actuated ball. The elements of the array correspond to the following:
 
         | Num | Observation                                              | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit          |
         |-----|--------------------------------------------------------- |--------|--------|----------------------------------------|----------|---------------|
@@ -202,15 +226,15 @@ class PointMazeEnv(MazeEnv, EzPickle):
         | 2   | Green ball linear velocity in the x direction            | -Inf   | Inf    | ball_x                                 | slide    | velocity (m/s)|
         | 3   | Green ball linear velocity in the y direction            | -Inf   | Inf    | ball_y                                 | slide    | velocity (m/s)|
 
-    desired_goal`: this key represents the final goal to be achieved. In this environment it is a 2-dimensional `ndarray`, `(2,)`, that consists of the two cartesian coordinates of the desired final ball position `[x,y]`. The elements of the array are the following:
+    * `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 2-dimensional `ndarray`, `(2,)`, that consists of the two cartesian coordinates of the desired final ball position `[x,y]`. The elements of the array are the following:
 
         | Num | Observation                                  | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
         |-----|----------------------------------------------|--------|--------|---------------------------------------|--------------|
         | 0   | Final goal ball position in the x coordinate | -Inf   | Inf    | target                                | position (m) |
         | 1   | Final goal ball position in the y coordinate | -Inf   | Inf    | target                                | position (m) |
 
-    `achieved_goal`: this key represents the current state of the green ball, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
-     The value is an `ndarray` with shape `(2,)`. The elements of the array are the following:
+    * `achieved_goal`: this key represents the current state of the green ball, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+       The value is an `ndarray` with shape `(2,)`. The elements of the array are the following:
 
         | Num | Observation                                    | Min    | Max    | Joint Name (in corresponding XML file) |Unit         |
         |-----|------------------------------------------------|--------|--------|---------------------------------------|--------------|
@@ -246,7 +270,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     ### Episode End
 
-    *`truncated` - The episode will be `truncated` when the duration reaches a total of `max_episode_steps`.
+    * `truncated` - The episode will be `truncated` when the duration reaches a total of `max_episode_steps`.
     * `terminated` - The task can be set to be continuing with the `continuing_task` argument. In this case the episode will never terminate, instead the goal location is randomly selected again. If the task is set not to be continuing the
     episode will be terminated when the Euclidean distance to the goal is less or equal to 0.5.
 
