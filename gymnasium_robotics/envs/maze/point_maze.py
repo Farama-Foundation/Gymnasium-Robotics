@@ -19,9 +19,9 @@ from gymnasium import spaces
 from gymnasium.utils.ezpickle import EzPickle
 
 # from gymnasium_robotics.envs.point_maze.point_env import PointEnv
-from gymnasium_robotics.envs.point_maze.maps import U_MAZE
-from gymnasium_robotics.envs.point_maze.maze_env import MazeEnv
-from gymnasium_robotics.envs.point_maze.point_env import PointEnv
+from gymnasium_robotics.envs.maze.maps import U_MAZE
+from gymnasium_robotics.envs.maze.maze import MazeEnv
+from gymnasium_robotics.envs.maze.point import PointEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
 

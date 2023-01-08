@@ -22,7 +22,7 @@ import numpy as np
 from gymnasium import spaces
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
 
-from gymnasium_robotics.envs.kitchen.ik_controller import IKController
+from gymnasium_robotics.envs.franka_kitchen.ik_controller import IKController
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames, robot_get_obs
 from gymnasium_robotics.utils.rotations import euler2quat
 
