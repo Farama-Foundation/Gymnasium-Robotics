@@ -60,7 +60,7 @@ gymnasium_robotics = [
     "envs/assets/point/*.xml",
     "envs/assets/adroit_hand/*.xml",
     "envs/assets/adroit_hand/resources/meshes/*.stl",
-    "envs/assets/adroit_hand/resources/meshes/*.png",
+    "envs/assets/adroit_hand/textures/meshes/*.png",
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
