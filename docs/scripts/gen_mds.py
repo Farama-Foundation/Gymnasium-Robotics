@@ -140,6 +140,7 @@ for (root, dirs, file) in tqdm(chain(os.walk(fetch_path), os.walk(hand_path))):
 
 # REWRITE: generate md's for new environments that don't belong to Fetch or Shadow Hand
 # TODO: use same format for Fetch and Shadow Hand
+# The environment entrypoints have the following standard: `gymnasium_robotics.envs.env_type.env_name:EnvName`
 all_envs = [
     env_spec
     for env_spec in gym.registry.values()

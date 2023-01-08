@@ -96,6 +96,7 @@ if __name__ == "__main__":
 
     # REWRITE: for new environments that don't include Fetch and Shadow Hand (D4RL)
     # TODO: use same format for Fetch and Shadow Hand
+    # The environment entrypoints have the following standard: `gymnasium_robotics.envs.env_type.env_name:EnvName`
     all_envs = [
         env_spec.entry_point
         for env_spec in gym.registry.values()

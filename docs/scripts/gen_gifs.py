@@ -6,8 +6,9 @@ from tqdm import tqdm
 
 # how many steps to record an env for
 LENGTH = 300
+
 # TODO: Add Fetch and Shadow Hand environments
-# iterate through all envspecs
+# The environment entrypoints have the following standard: `gymnasium_robotics.envs.env_type.env_name:EnvName`
 all_envs = [
     env_spec
     for env_spec in gym.registry.values()
