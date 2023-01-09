@@ -1,3 +1,15 @@
+"""File for CoupledHalfCheetahEnv.
+
+This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
+(https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/coupled_half_cheetah.py)
+Original Author: Schroeder de Witt
+
+ - General code cleanup, factorization, type hinting, adding documentation and comments
+- updated API to Gymnasium.MuJoCo v4
+- increase returned info
+- fixed `_get_obs()` (now also returns tendon related observations)
+- renamed CoupledHalfCheetah -> CoupledHalfCheetahEnv
+"""
 import os
 import typing
 
@@ -11,7 +23,7 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
+class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
     """Class for CoupledHalfCheetah mujoco environment.
 
     ## Description
@@ -38,7 +50,10 @@ class CoupledHalfCheetah(mujoco_env.MujocoEnv, EzPickle):
 
 
     ## Observation Space
-    The action space is a `Box(-1, 1, (40,), float64)`.
+    Observations consist of positional values of different body parts of the cheetahs, followed by the velocities of those individual parts (their derivatives) with all the positions ordered before all the velocities, followed by the jacobian of the tendon, the length of the tendon, and it's velocity (it's derivative).
+
+    The observation space is a `Box(-1, 1, (40,), float64)`.
+
     | Num | Observation                          | Min  | Max | Name (in corresponding XML file) | Joint  | Unit                     |
     | --- | ------------------------------------ | ---- | --- | -------------------------------- | ------ | ------------------------ |
     | 0   | z-coordinate of the front tip of the first cheetah         | -Inf | Inf | rootz0                           | slide  | position (m)             |

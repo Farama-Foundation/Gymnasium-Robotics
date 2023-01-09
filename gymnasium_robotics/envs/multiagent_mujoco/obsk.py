@@ -1,3 +1,27 @@
+"""file Containing utily functions for MaMuJoCo.
+
+This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
+(https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/obsk.py)
+Original Author: Schroeder de Witt
+
+Then Modified by @Kallinteris-Andreas for this project
+changes:
+ - General code cleanup, factorization, type hinting, adding documentation and comments
+ - `build_obs`: fixed global observations, fixed body observations (cvel, cinert, cfrc_ext), how uses mujoco.data, instead of gym.env
+ - `HalfCheetah`: fix action ordering
+ - `Ant`: Fix global observation, fix "2x4d" factorization how having diogonal observations
+ - `Humanoid`s: Added Body support, fixed abdomen observations, added/fixed missing global torso observations, fixed action ordering
+ - `Reacher`: Fixxed body mapping
+ - `Pusher`: Added support for `Pusher`
+ - `Swimmer`: Added Front tip to global observations
+ - `Walker2D`: Added missing Global Observations
+ - `CoupledHalfCheetah`: improved node naming, fixxed tendon facobian observations, fixed action mapping of the second cheetah, added missing global observations
+ - `ManySegmentAnt`: Fixed Global Observations
+ - added new functions: `_observation_structure`
+
+This project is covered by the Apache 2.0 License.
+"""
+
 from __future__ import annotations
 
 import itertools
@@ -894,24 +918,24 @@ def get_parts_and_edges(  # noqa: C901
         if partitioning is None:
             parts = [
                 (
-                    bfoot0,
-                    bshin0,
                     bthigh0,
-                    ffoot0,
-                    fshin0,
+                    bshin0,
+                    bfoot0,
                     fthigh0,
-                    bfoot1,
-                    bshin1,
+                    fshin0,
+                    ffoot0,
                     bthigh1,
-                    ffoot1,
-                    fshin1,
+                    bshin1,
+                    bfoot1,
                     fthigh1,
+                    fshin1,
+                    ffoot1,
                 ),
             ]
         elif partitioning == "1p1":  # isolate the cheetahs
             parts = [
-                (bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0),
-                (bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1),
+                (bthigh0, bshin0, bfoot0, fthigh0, fshin0, ffoot0),
+                (bthigh1, bshin1, bfoot1, fthigh1, fshin1, ffoot1),
             ]
         else:
             raise Exception(f"UNKNOWN partitioning config: {partitioning}")

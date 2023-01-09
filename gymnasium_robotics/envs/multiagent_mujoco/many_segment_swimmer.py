@@ -1,3 +1,16 @@
+"""File for ManySegmentSwimmerEnv.
+
+This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
+(https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/manyagent_swimmer.py)
+Original Author: Schroeder de Witt
+
+ - General code cleanup, factorization, type hinting, adding documentation and comments
+ - updated API to Gymnasium.MuJoCo v4
+ - increase returned info
+ - renamed ManyAgentSwimmerEnv -> ManySegmentSwimmerEnv (and changed the __init__ arguments accordingly)
+"""
+
+
 import os
 import typing
 
