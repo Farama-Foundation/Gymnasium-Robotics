@@ -30,6 +30,7 @@ from gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer import (
     ManySegmentSwimmerEnv,
 )
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
+    Node,
     _observation_structure,
     build_obs,
     get_joints_at_kdist,
@@ -74,7 +75,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         scenario: str,
         agent_conf: str | None,
         agent_obsk: int | None = 1,
-        agent_factorization: dict[str, any] | None = None,
+        agent_factorization: dict | None = None,
         local_categories: list[list[str]] | None = None,
         global_categories: tuple[str, ...] | None = None,
         render_mode: str | None = None,
@@ -111,6 +112,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 gymnasium.make(scenario, render_mode=render_mode)
             )
         elif scenario in ["ManySegmentAnt-v4"]:
+            assert isinstance(agent_conf, str)
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
             except Exception:
@@ -120,6 +122,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 ManySegmentAntEnv(n_segs, render_mode), max_episode_steps=1000
             )
         elif scenario in ["ManySegmentSwimmer-v4"]:
+            assert isinstance(agent_conf, str)
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
             except Exception:
@@ -154,9 +157,12 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 self.mujoco_globals = agent_factorization["globals"]
         else:
             assert self.single_agent_env.action_space.shape is not None
+            dummy_node = Node("dummy_node", None, None, None)
             self.agent_action_partitions = [
-                tuple(None for i in range(self.single_agent_env.action_space.shape[0]))
-                # tuple(None for i in range(self.single_agent_env.action_space.shape[0]))
+                tuple(
+                    dummy_node
+                    for i in range(self.single_agent_env.action_space.shape[0])
+                )
             ]
             mujoco_edges = []
 
