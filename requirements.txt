@@ -1,4 +1,0 @@
-cloudpickle>=1.2.0
-mujoco_py<2.2,>=2.1
-numpy>=1.21.0,<1.24.0
-gymnasium>=0.26
