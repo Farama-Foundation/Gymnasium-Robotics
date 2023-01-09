@@ -24,8 +24,7 @@ We support and test for Python 3.7, 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. 
 `Gymnasium-Robotics` includes the following groups of environments:
 
 * [Fetch](https://robotics.farama.org/envs/#fetch-environments) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
-* [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
-* [Shadow Dexterous Hand with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
+* [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen. There are variations of these environments that also include data from 92 touch sensors in the observation space.
 
 The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the
 same action/observation spaces as the original, please read their documentation:
