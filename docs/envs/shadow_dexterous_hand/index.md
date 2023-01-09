@@ -30,6 +30,32 @@ env = gym.make('HandManipulateEgg_BooleanTouchSensors-v1')
     :file: list.html
 ```
 
+## References
+
+If using the `Shadow Hand` environments, please cite:
+
+```bibtex
+@misc{1802.09464,
+  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
+  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
+  Year = {2018},
+  Eprint = {arXiv:1802.09464},
+}
+```
+
+To cite the `Shadow Dexterous Hand with Touch Sensors` environments, please use:
+
+```bibtex
+@article{melnik2021using,
+  title={Using tactile sensing to improve the sample efficiency and performance of deep deterministic policy gradients for simulated in-hand manipulation tasks},
+  author={Melnik, Andrew and Lach, Luca and Plappert, Matthias and Korthals, Timo and Haschke, Robert and Ritter, Helge},
+  journal={Frontiers in Robotics and AI},
+  pages={57},
+  year={2021},
+  publisher={Frontiers}
+}
+```
+
 ```{toctree}
 :glob:
 :hidden:
