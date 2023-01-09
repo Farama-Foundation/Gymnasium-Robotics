@@ -16,6 +16,19 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
     :file: list.html
 ```
 
+## Reference
+
+If using the `Fetch`, please cite:
+
+```bibtex
+@misc{1802.09464,
+  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
+  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
+  Year = {2018},
+  Eprint = {arXiv:1802.09464},
+}
+```
+
 ```{toctree}
 :glob:
 :hidden:
