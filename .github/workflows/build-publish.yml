@@ -47,7 +47,7 @@ jobs:
     - name: Build sdist and wheels
       run: python -m build
     - name: Store wheels
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v2
       with:
         path: dist
 
@@ -58,7 +58,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
     - name: Download dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v2
       with:
         name: artifact
         path: dist
