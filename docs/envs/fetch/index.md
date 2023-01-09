@@ -18,7 +18,7 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 
 ## Reference
 
-If using the `Fetch`, please cite:
+If using the `Fetch` environments, please cite:
 
 ```bibtex
 @misc{1802.09464,

@@ -16,8 +16,7 @@ content/multi-goal_api
 :hidden:
 :caption: Environments
 envs/fetch/index
-envs/hand/index
-envs/hand_touch/index
+envs/shadow_dexterous_hand/index
 envs/maze/index
 envs/adroit_hand/index
 envs/franka_kitchen/index
