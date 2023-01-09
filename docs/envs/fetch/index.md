@@ -3,7 +3,7 @@ firstpage:
 lastpage:
 ---
 
-## Fetch
+# Fetch
 
 The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following:
 

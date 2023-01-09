@@ -30,7 +30,7 @@ Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 # Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
 
 
-```{figure} _static/videos/fetch/FetchPickAndPlace.gif
+```{figure} _static/videos/fetch/pick_and_place.gif
    :alt: Fetch Pick And Place
    :width: 500
    :height: 500
