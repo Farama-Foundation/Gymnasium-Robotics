@@ -231,71 +231,27 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
 <ul class="current">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../fetch/">Fetch</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../fetch/FetchPickAndPlace/">Fetch Pick And Place</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fetch/FetchPush/">Fetch Push</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fetch/FetchReach/">Fetch Reach</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../fetch/FetchSlide/">Fetch Slide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../fetch/">Fetch</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../fetch/#reference">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/pick_and_place/">Pick And Place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/push/">Push</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/reach/">Reach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/slide/">Slide</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/">Hand Block</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#special-case-we-want-to-ignore-the-z-component-of-the-rotation">Special case: We want to ignore the Z component of the rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#this-code-here-assumes-euler-angles-with-xyz-convention-we-first-transform">This code here assumes Euler angles with xyz convention. We first transform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#to-euler-then-set-the-z-component-to-be-equal-between-the-two-and-finally">to euler, then set the Z component to be equal between the two, and finally</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#transform-back-into-quaternions">transform back into quaternions.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#subtract-quaternions-and-extract-angle-between-them">Subtract quaternions and extract angle between them.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#goalenv-methods">GoalEnv methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id1">—————————-</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#we-weigh-the-difference-in-position-to-avoid-that-d-pos-in-meters-is-completely">We weigh the difference in position to avoid that <code class="docutils literal notranslate"><span class="pre">d_pos</span></code> (in meters) is completely</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#dominated-by-d-rot-in-radians">dominated by <code class="docutils literal notranslate"><span class="pre">d_rot</span></code> (in radians).</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#robotenv-methods">RobotEnv methods</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id2">—————————-</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#randomization-initial-rotation">Randomization initial rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#randomize-initial-position">Randomize initial position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#run-the-simulation-for-a-bunch-of-timesteps-to-let-everything-settle-in">Run the simulation for a bunch of timesteps to let everything settle in.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#select-a-goal-for-the-object-position">Select a goal for the object position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#select-a-goal-for-the-object-rotation">Select a goal for the object rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#assign-current-state-to-target-object-but-offset-a-bit-so-that-the-actual-object">Assign current state to target object but offset a bit so that the actual object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#is-not-obscured">is not obscured.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#move-the-object-to-the-side-since-we-do-not-care-about-it-s-position">Move the object to the side since we do not care about it’s position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#object-position-and-rotation">Object position and rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id3">Randomization initial rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id4">Randomize initial position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id5">Run the simulation for a bunch of timesteps to let everything settle in.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id6">Select a goal for the object position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id7">Select a goal for the object rotation.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id8">Assign current state to target object but offset a bit so that the actual object</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id9">is not obscured.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#id10">Move the object to the side since we do not care about it’s position.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandBlock/#noqa-d415">noqa: D415</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandEgg/">Hand Egg</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandEgg/#noqa-d415">noqa: D415</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandPen/">Hand Pen</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandPen/#noqa-d415">noqa: D415</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand/HandReach/">Hand Reach</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../hand_touch/">Shadow Dexterous Hand with Touch Sensors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandBlockTouchSensors/">Hand Block Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandEggTouchSensors/">Hand Egg Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandPenTouchSensors/">Hand Pen Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/ManipulateTouchSensors/">Manipulate Touch Sensors</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../maze/">Maze</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../maze/">Maze</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../maze/ant_maze/">Ant Maze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../maze/point_maze/">Point Maze</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../adroit_hand/">Adroit Hand</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../adroit_hand/">Adroit Hand</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../adroit_hand/adroit_door/">Adroit Door</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../adroit_hand/adroit_hammer/">Adroit Hammer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../adroit_hand/adroit_pen/">Adroit Pen</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../adroit_hand/adroit_relocate/">Adroit Relocate</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Franka Kitchen</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Franka Kitchen</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Franka Kitchen</a></li>
 </ul>
 </li>
