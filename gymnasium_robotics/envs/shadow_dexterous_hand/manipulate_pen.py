@@ -61,99 +61,99 @@ class MujocoHandPenEnv(MujocoManipulateEnv, EzPickle):
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's joint and pen states, as well as information about the goal.
     The dictionary consists of the following 3 keys:
 
-    `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the pen and finger joints. The elements of the array correspond to the
+    * `observation`: its value is an `ndarray` of shape `(61,)`. It consists of kinematic information of the pen and finger joints. The elements of the array correspond to the
     following:
 
-        | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
-        |-----|-------------------------------------------------------------------|--------|--------|----------------------------------------|----------|------------------------- |
-        | 0   | Angular position of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angle (rad)              |
-        | 1   | Angular position of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angle (rad)              |
-        | 2   | Horizontal angular position of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angle (rad)              |
-        | 3   | Vertical angular position of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angle (rad)              |
-        | 4   | Angular position of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angle (rad)              |
-        | 5   | Angular position of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angle (rad)              |
-        | 6   | Horizontal angular position of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angle (rad)              |
-        | 7   | Vertical angular position of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angle (rad)              |
-        | 8   | Angular position of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angle (rad)              |
-        | 9   | Angular position of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angle (rad)              |
-        | 10  | Horizontal angular position of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angle (rad)              |
-        | 11  | Vertical angular position of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angle (rad)              |
-        | 12  | Angular position of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angle (rad)              |
-        | 13  | Angular position of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angle (rad)              |
-        | 14  | Angular position of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angle (rad)              |
-        | 15  | Horizontal angular position of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angle (rad)              |
-        | 16  | Vertical angular position of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angle (rad)              |
-        | 17  | Angular position of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angle (rad)              |
-        | 18  | Angular position of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angle (rad)              |
-        | 19  | Horizontal angular position of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angle (rad)              |
-        | 20  | Vertical Angular position of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angle (rad)              |
-        | 21  | Horizontal angular position of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angle (rad)              |
-        | 22  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angle (rad)              |
-        | 23  | Angular position of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angle (rad)              |
-        | 24  | Angular velocity of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angular velocity (rad/s) |
-        | 25  | Angular velocity of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angular velocity (rad/s) |
-        | 26  | Horizontal angular velocity of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angular velocity (rad/s) |
-        | 27  | Vertical angular velocity of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angular velocity (rad/s) |
-        | 28  | Angular velocity of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angular velocity (rad/s) |
-        | 29  | Angular velocity of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angular velocity (rad/s) |
-        | 30  | Horizontal angular velocity of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angular velocity (rad/s) |
-        | 31  | Vertical angular velocity of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angular velocity (rad/s) |
-        | 32  | Angular velocity of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angular velocity (rad/s) |
-        | 33  | Angular velocity of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angular velocity (rad/s) |
-        | 34  | Horizontal angular velocity of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angular velocity (rad/s) |
-        | 35  | Vertical angular velocity of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angular velocity (rad/s) |
-        | 36  | Angular velocity of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angular velocity (rad/s) |
-        | 37  | Angular velocity of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angular velocity (rad/s) |
-        | 38  | Angular velocity of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angular velocity (rad/s) |
-        | 39  | Horizontal angular velocity of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angular velocity (rad/s) |
-        | 40  | Vertical angular velocity of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angular velocity (rad/s) |
-        | 41  | Angular velocity of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angular velocity (rad/s) |
-        | 42  | Angular velocity of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angular velocity (rad/s) |
-        | 43  | Horizontal angular velocity of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angular velocity (rad/s) |
-        | 44  | Vertical Angular velocity of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angular velocity (rad/s) |
-        | 45  | Horizontal angular velocity of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angular velocity (rad/s) |
-        | 46  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angular velocity (rad/s) |
-        | 47  | Angular velocity of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angular velocity (rad/s) |
-        | 48  | Linear velocity of the pen in x direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-        | 49  | Linear velocity of the pen in y direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-        | 50  | Linear velocity of the pen in z direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-        | 51  | Angular velocity of the pen in x axis                             | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-        | 52  | Angular velocity of the pen in y axis                             | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-        | 53  | Angular velocity of the pen in z axis                             |  -Inf  | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-        | 54  | Position of the pen in the x coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-        | 55  | Position of the pen in the y coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-        | 56  | Position of the pen in the z coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-        | 57  | w component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
-        | 58  | x component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
-        | 59  | y component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
-        | 60  | z component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
+    | Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
+    |-----|-------------------------------------------------------------------|--------|--------|----------------------------------------|----------|------------------------- |
+    | 0   | Angular position of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angle (rad)              |
+    | 1   | Angular position of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angle (rad)              |
+    | 2   | Horizontal angular position of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angle (rad)              |
+    | 3   | Vertical angular position of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angle (rad)              |
+    | 4   | Angular position of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angle (rad)              |
+    | 5   | Angular position of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angle (rad)              |
+    | 6   | Horizontal angular position of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angle (rad)              |
+    | 7   | Vertical angular position of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angle (rad)              |
+    | 8   | Angular position of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angle (rad)              |
+    | 9   | Angular position of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angle (rad)              |
+    | 10  | Horizontal angular position of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angle (rad)              |
+    | 11  | Vertical angular position of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angle (rad)              |
+    | 12  | Angular position of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angle (rad)              |
+    | 13  | Angular position of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angle (rad)              |
+    | 14  | Angular position of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angle (rad)              |
+    | 15  | Horizontal angular position of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angle (rad)              |
+    | 16  | Vertical angular position of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angle (rad)              |
+    | 17  | Angular position of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angle (rad)              |
+    | 18  | Angular position of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angle (rad)              |
+    | 19  | Horizontal angular position of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angle (rad)              |
+    | 20  | Vertical Angular position of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angle (rad)              |
+    | 21  | Horizontal angular position of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angle (rad)              |
+    | 22  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angle (rad)              |
+    | 23  | Angular position of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angle (rad)              |
+    | 24  | Angular velocity of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angular velocity (rad/s) |
+    | 25  | Angular velocity of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angular velocity (rad/s) |
+    | 26  | Horizontal angular velocity of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angular velocity (rad/s) |
+    | 27  | Vertical angular velocity of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angular velocity (rad/s) |
+    | 28  | Angular velocity of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angular velocity (rad/s) |
+    | 29  | Angular velocity of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angular velocity (rad/s) |
+    | 30  | Horizontal angular velocity of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angular velocity (rad/s) |
+    | 31  | Vertical angular velocity of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angular velocity (rad/s) |
+    | 32  | Angular velocity of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angular velocity (rad/s) |
+    | 33  | Angular velocity of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angular velocity (rad/s) |
+    | 34  | Horizontal angular velocity of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angular velocity (rad/s) |
+    | 35  | Vertical angular velocity of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angular velocity (rad/s) |
+    | 36  | Angular velocity of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angular velocity (rad/s) |
+    | 37  | Angular velocity of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angular velocity (rad/s) |
+    | 38  | Angular velocity of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angular velocity (rad/s) |
+    | 39  | Horizontal angular velocity of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angular velocity (rad/s) |
+    | 40  | Vertical angular velocity of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angular velocity (rad/s) |
+    | 41  | Angular velocity of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angular velocity (rad/s) |
+    | 42  | Angular velocity of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angular velocity (rad/s) |
+    | 43  | Horizontal angular velocity of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angular velocity (rad/s) |
+    | 44  | Vertical Angular velocity of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angular velocity (rad/s) |
+    | 45  | Horizontal angular velocity of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angular velocity (rad/s) |
+    | 46  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angular velocity (rad/s) |
+    | 47  | Angular velocity of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angular velocity (rad/s) |
+    | 48  | Linear velocity of the pen in x direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
+    | 49  | Linear velocity of the pen in y direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
+    | 50  | Linear velocity of the pen in z direction                         | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
+    | 51  | Angular velocity of the pen in x axis                             | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
+    | 52  | Angular velocity of the pen in y axis                             | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
+    | 53  | Angular velocity of the pen in z axis                             |  -Inf  | Inf    | object:joint                           | free     | angular velocity (rad/s) |
+    | 54  | Position of the pen in the x coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
+    | 55  | Position of the pen in the y coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
+    | 56  | Position of the pen in the z coordinate                           | -Inf   | Inf    | object:joint                           | free     | position (m)             |
+    | 57  | w component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
+    | 58  | x component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
+    | 59  | y component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
+    | 60  | z component of the quaternion orientation of the pen              | -Inf   | Inf    | object:joint                           | free     | -                        |
 
-    `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the pen.
+    * `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 7-dimensional `ndarray`, `(7,)`, that consists of the pose information of the pen.
     The elements of the array are the following:
 
-        | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
-        | 0   | Target x coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
-        | 1   | Target y coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
-        | 2   | Target z coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
-        | 3   | Target w component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
-        | 4   | Target x component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
-        | 5   | Target y component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
-        | 6   | Target z component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
+    | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
+    |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
+    | 0   | Target x coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
+    | 1   | Target y coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
+    | 2   | Target z coordinate of the pen                                                                                                        | -Inf   | Inf    | target:joint                           | free       | position (m) |
+    | 3   | Target w component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
+    | 4   | Target x component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
+    | 5   | Target y component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
+    | 6   | Target z component of the quaternion orientation of the pen                                                                           | -Inf   | Inf    | target:joint                           | free       | -            |
 
 
-    `achieved_goal`: this key represents the current state of the pen, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
+    * `achieved_goal`: this key represents the current state of the pen, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use [Hindsight Experience Replay](https://arxiv.org/abs/1707.01495) (HER).
     The value is an `ndarray` with shape `(7,)`. The elements of the array are the following:
 
-        | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
-        |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
-        | 0   | Current x coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
-        | 1   | Current y coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
-        | 2   | Current z coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
-        | 3   | Current w component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
-        | 4   | Current x component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
-        | 5   | Current y component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
-        | 6   | Current z component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
+    | Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
+    |-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
+    | 0   | Current x coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
+    | 1   | Current y coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
+    | 2   | Current z coordinate of the pen                                                                                                       | -Inf   | Inf    | object:joint                           | free       | position (m) |
+    | 3   | Current w component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
+    | 4   | Current x component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
+    | 5   | Current y component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
+    | 6   | Current z component of the quaternion orientation of the pen                                                                          | -Inf   | Inf    | object:joint                           | free       | -            |
 
 
     ## Rewards
