@@ -1,5 +1,4 @@
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
@@ -34,6 +33,7 @@ The different tasks involve hammering a nail, opening a door, twirling a pen, or
 * [Franka Kitchen]() - Multitask environment in which a 9-DoF Franka robot is placed in a kitchen containing several common household items. The goal of each task is to interact with the items in order to reach a desired goal configuration.
 
 **WIP**: generate new `D4RL` environment datasets with [Minari](https://github.com/Farama-Foundation/Minari).
+
 ## Multi-goal API
 
 The robotic environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/envs/#) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
