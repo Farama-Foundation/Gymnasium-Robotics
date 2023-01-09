@@ -18,6 +18,9 @@ content/multi-goal_api
 envs/fetch/index
 envs/hand/index
 envs/hand_touch/index
+envs/maze/index
+envs/adroit_hand/index
+envs/franka_kitchen/index
 ```
 
 ```{toctree}

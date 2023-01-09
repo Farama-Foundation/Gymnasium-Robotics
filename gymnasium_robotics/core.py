@@ -18,7 +18,12 @@ class GoalEnv(gym.Env):
     - :meth:`compute_truncated` - Returns boolean truncation depending on the achieved and desired goal, as well as extra information.
     """
 
-    def reset(self, seed: Optional[int] = None):
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
         """Reset the environment.
 
         In addition, check if the observation space is correct by inspecting the `observation`, `achieved_goal`, and `desired_goal` keys.

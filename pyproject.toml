@@ -57,9 +57,22 @@ gymnasium_robotics = [
     "envs/assets/LICENSE.md",
     "envs/assets/fetch/*.xml",
     "envs/assets/hand/*.xml",
+    "envs/assets/point/*.xml",
+    "envs/assets/adroit_hand/*.xml",
+    "envs/assets/adroit_hand/resources/meshes/*.stl",
+    "envs/assets/adroit_hand/resources/textures/*.png",
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
+    "envs/assets/kitchen_franka/franka_assets/*.xml",
+    "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
+    "envs/assets/kitchen_franka/franka_assets/meshes/*.obj",
+    "envs/assets/kitchen_franka/franka_assets/meshes/*.stl",
+    "envs/assets/kitchen_franka/kitchen_assets/*.xml",
+    "envs/assets/kitchen_franka/kitchen_assets/LICENSE.md",
+    "envs/assets/kitchen_franka/kitchen_assets/item_assets/*.xml",
+    "envs/assets/kitchen_franka/kitchen_assets/meshes/*.stl",
+    "envs/assets/kitchen_franka/kitchen_assets/textures/*.png",
 ]
 
 # Linters and Test tools #######################################################
@@ -87,15 +100,17 @@ exclude = [
 
 strict = []
 
-# This is required as the CI pre-commit does not download the module (i.e. numpy)
-#   Therefore, we have to ignore missing imports
-reportMissingImports = "none"
 typeCheckingMode = "basic"
 pythonVersion = "3.7"
+pythonPlatform = "All"
 typeshedPath = "typeshed"
 enableTypeIgnoreComments = true
 
+# This is required as the CI pre-commit does not download the module (i.e. numpy)
+#   Therefore, we have to ignore missing imports
 
+reportMissingImports = "none"
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
 # reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
 reportOptionalMemberAccess = "none" # -> raise _version.py error
+
