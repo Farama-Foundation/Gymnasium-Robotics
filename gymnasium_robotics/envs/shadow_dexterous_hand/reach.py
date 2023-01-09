@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 from gymnasium.utils.ezpickle import EzPickle
 
-from gymnasium_robotics.envs.hand_env import MujocoHandEnv, MujocoPyHandEnv
+from gymnasium_robotics.envs.shadow_dexterous_hand import MujocoHandEnv, MujocoPyHandEnv
 
 FINGERTIP_SITE_NAMES = [
     "robot0:S_fftip",

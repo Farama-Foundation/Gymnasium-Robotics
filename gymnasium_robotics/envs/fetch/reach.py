@@ -2,7 +2,7 @@ import os
 
 from gymnasium.utils.ezpickle import EzPickle
 
-from gymnasium_robotics.envs.fetch_env import MujocoFetchEnv, MujocoPyFetchEnv
+from gymnasium_robotics.envs.fetch import MujocoFetchEnv, MujocoPyFetchEnv
 
 # Ensure we get the path separator correct on windows
 MODEL_XML_PATH = os.path.join("fetch", "reach.xml")

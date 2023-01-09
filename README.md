@@ -24,11 +24,9 @@ We support and test for Python 3.7, 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. 
 `Gymnasium-Robotics` includes the following groups of environments:
 
 * [Fetch](https://robotics.farama.org/envs/#fetch-environments) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
-* [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
-* [Shadow Dexterous Hand with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
+* [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen. There are variations of these environments that also include data from 92 touch sensors in the observation space.
 
-The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the
-same action/observation spaces as the original, please read their documentation:
+The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the same action/observation spaces as the original, please read their documentation:
 
 * [Maze Environments]() - An agent has to navigate through a maze to reach certain goal position. Two different agents can be used: a 2-DoF force-controlled ball, or the classic `Ant` agent from the [Gymnasium MuJoCo environments](https://gymnasium.farama.org/environments/mujoco/ant/). The environment can be initialized with a variety of maze shapes with increasing levels of difficulty.
 * [Adroit Arm]() - A collection of environments that use the Shadow Dexterous Hand with additional degrees of freedom for the arm movement.
@@ -71,29 +69,3 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 ```
 
 The `GoalEnv` class can also be used for custom environments.
-
-## Citation
-
-If using the `Fetch` or `Shadow Hand` environments, please cite:
-
-```bibtex
-@misc{1802.09464,
-  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
-  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
-  Year = {2018},
-  Eprint = {arXiv:1802.09464},
-}
-```
-
-To cite the `Shadow Dexterous Hand with Touch Sensors` environments, please use:
-
-```bibtex
-@article{melnik2021using,
-  title={Using tactile sensing to improve the sample efficiency and performance of deep deterministic policy gradients for simulated in-hand manipulation tasks},
-  author={Melnik, Andrew and Lach, Luca and Plappert, Matthias and Korthals, Timo and Haschke, Robert and Ritter, Helge},
-  journal={Frontiers in Robotics and AI},
-  pages={57},
-  year={2021},
-  publisher={Frontiers}
-}
-```
