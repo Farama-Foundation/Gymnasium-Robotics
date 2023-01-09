@@ -7,12 +7,12 @@
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
-    <meta property="og:url" content="https://robotics.farama.org/envs/hand_touch/HandBlockTouchSensors.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Hand Egg Touch Sensors" href="../HandEggTouchSensors/" /><link rel="prev" title="Shadow Dexterous Hand with Touch Sensors" href="../" />
-        <link rel="canonical" href="https://robotics.farama.org/envs/hand_touch/HandBlockTouchSensors.html" />
+    <meta property="og:url" content="https://robotics.farama.org/envs/maze/ant_maze.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Point Maze" href="../point_maze/" /><link rel="prev" title="Maze" href="../" />
+        <link rel="canonical" href="https://robotics.farama.org/envs/maze/ant_maze.html" />
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.3.0, furo 2022.09.15.dev1"/>
-        <title>Hand Block Touch Sensors - Gymnasium-Robotics Documentation</title>
+        <title>Ant Maze - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=3cf7b839e8c50b5f3a39bb99d90baa7b845de926" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=24b18ece81cb9ff18679a2945b9c89ba44829d18" />
@@ -276,16 +276,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../../hand/HandReach/">Hand Reach</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Shadow Dexterous Hand with Touch Sensors</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Hand Block Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../HandEggTouchSensors/">Hand Egg Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../HandPenTouchSensors/">Hand Pen Touch Sensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../ManipulateTouchSensors/">Manipulate Touch Sensors</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../hand_touch/">Shadow Dexterous Hand with Touch Sensors</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandBlockTouchSensors/">Hand Block Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandEggTouchSensors/">Hand Egg Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/HandPenTouchSensors/">Hand Pen Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../hand_touch/ManipulateTouchSensors/">Manipulate Touch Sensors</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../maze/">Maze</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../maze/ant_maze/">Ant Maze</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../maze/point_maze/">Point Maze</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Maze</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Ant Maze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../point_maze/">Point Maze</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../adroit_hand/">Adroit Hand</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -337,93 +337,507 @@
         </div>
         <article role="main">
           
-          <section id="hand-block-touch-sensors">
-<h1>Hand Block Touch Sensors<a class="headerlink" href="#hand-block-touch-sensors" title="Permalink to this heading">#</a></h1>
-<figure class="align-default">
-<a class="reference internal image-reference" href="../../../_images/HandBlockTouchSensors.gif"><img alt="Hand Block Touch Sensors" src="../../../_images/HandBlockTouchSensors.gif" style="width: 200px;" /></a>
+          <section id="ant-maze">
+<h1>Ant Maze<a class="headerlink" href="#ant-maze" title="Permalink to this heading">#</a></h1>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_static/videos/maze/ant_maze.gif"><img alt="_static/videos/maze/ant_maze.gif" src="_static/videos/maze/ant_maze.gif" style="width: 200px;" /></a>
 </figure>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>This environment was introduced in <a class="reference external" href="https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full">“Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks”</a>.</p>
-<p>The environment is based on the same robot hand as in the <code class="docutils literal notranslate"><span class="pre">HandReach</span></code> environment, the <a class="reference external" href="https://www.shadowrobot.com/">Shadow Dexterous Hand</a>. The task to be solved is the same as in the <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> environment. However, in this case the environment observation also includes tactile sensory information.
-This is achieved by placing a total of 92 MuJoCo <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=touch#sensor-touch">touch sensors</a> in the palm and finger phalanxes of the hand. The sensors are created by specifying the tactile sensors’ active zones by so-called sites. Each site can be represented as
-either ellipsoid (for the finger tips) or box (for the phalanxes and palm sensors). When rendering the environment the sites are visualized as red and green transparent shapes attached to the hand model. If a body’s contact point falls within a site’s volume and involves a geometry attached to the same body as the site,
-the corresponding contact force is included in the sensor reading. Soft contacts do not influence the above computation except inasmuch as the contact point might move outside of the site, in which case if a contact point falls outside the sensor zone, but the normal ray intersects the sensor zone, it is also included.
-MuJoCo touch sensors only report normal forces using Minkowski Portal Refinement approach . The output of the contact sensor is a non-negative scalar value of type float that is computed as the sum of all contact normal forces that were included for this sensor in the current time step . Thus, each sensor of the 92 virtual
-touch sensors has a non-negative scalar value.</p>
-<p>The sensors are divided between the areas of the tip, middle, and lower phalanx of the forefinger, middle, ring, and little fingers. In addition to the areas of the three thumb phalanxes and the paml. The number of sensors are divided as follows in the different defined areas of the hand:</p>
+<p>This environment was refactored from the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a> repository, introduced by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, and Sergey Levine
+in <a class="reference external" href="https://arxiv.org/abs/2004.07219">“D4RL: Datasets for Deep Data-Driven Reinforcement Learning”</a>.</p>
+<p>The tasks found in the <code class="docutils literal notranslate"><span class="pre">AntMaze</span></code> environments are the same as the ones in the <code class="docutils literal notranslate"><span class="pre">PointMaze</span></code> environments. However, in this case the agent is the Ant quadruped from the main <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymnaisum</a> repository.
+The control frequency of the ant is of <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">20</span> <span class="pre">Hz</span></code>. Each simulation timestep is of <code class="docutils literal notranslate"><span class="pre">dt=0.01</span></code> and the ant robot repeats the same action for 5 simulation steps.</p>
+</section>
+<section id="maze-variations">
+<h2>Maze Variations<a class="headerlink" href="#maze-variations" title="Permalink to this heading">#</a></h2>
+<section id="maze-size">
+<h3>Maze size<a class="headerlink" href="#maze-size" title="Permalink to this heading">#</a></h3>
+<p>The map variations for the mazes are the same as for <code class="docutils literal notranslate"><span class="pre">PointMaze</span></code>. The ant environments with fixed goal and reset locations are the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze-v3</span></code></p></li>
+</ul>
+</section>
+<section id="diverse-goal-mazes">
+<h3>Diverse goal mazes<a class="headerlink" href="#diverse-goal-mazes" title="Permalink to this heading">#</a></h3>
+<p>The environments with fixed reset position for the ant and randomly selected goals, also known as diverse goal, are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DG-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DG-v3</span></code></p></li>
+</ul>
+</section>
+<section id="diverse-goal-and-reset-mazes">
+<h3>Diverse goal and reset mazes<a class="headerlink" href="#diverse-goal-and-reset-mazes" title="Permalink to this heading">#</a></h3>
+<p>Finally, the environments that select the reset and goal locations randomly are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DGR-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DGR-v3</span></code></p></li>
+</ul>
+</section>
+<section id="custom-maze">
+<h3>Custom maze<a class="headerlink" href="#custom-maze" title="Permalink to this heading">#</a></h3>
+<p>Also, any of the <code class="docutils literal notranslate"><span class="pre">AntMaze</span></code> environments can be initialized with a custom maze map by setting the <code class="docutils literal notranslate"><span class="pre">maze_map</span></code> argument like follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+
+<span class="n">example_map</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+       <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">,</span> <span class="n">maze_map</span><span class="o">=</span><span class="n">example_map</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="action-space">
+<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(8,),</span> <span class="pre">float32)</span></code>. An action represents the torques applied at the hinge joints.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Functional areas of the hand model</p></th>
-<th class="head"><p>Number of areas</p></th>
-<th class="head"><p>Sensors-per-area</p></th>
-<th class="head"><p>Total Sensors</p></th>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Action</p></th>
+<th class="head"><p>Control Min</p></th>
+<th class="head"><p>Control Max</p></th>
+<th class="head"><p>Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint</p></th>
+<th class="head"><p>Unit</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Lower phalanx of the fingers</p></td>
-<td><p>4</p></td>
-<td><p>7</p></td>
-<td><p>28</p></td>
-</tr>
-<tr class="row-odd"><td><p>Middle phalanx of the fingers</p></td>
-<td><p>4</p></td>
-<td><p>5</p></td>
-<td><p>20</p></td>
-</tr>
-<tr class="row-even"><td><p>Tip phalanxes of the fingers</p></td>
-<td><p>4</p></td>
-<td><p>5</p></td>
-<td><p>20</p></td>
-</tr>
-<tr class="row-odd"><td><p>Thumb phalanxes</p></td>
-<td><p>3</p></td>
-<td><p>5</p></td>
-<td><p>15</p></td>
-</tr>
-<tr class="row-even"><td><p>Palm</p></td>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Torque applied on the rotor between the torso and front left hip</p></td>
+<td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>9</p></td>
-<td><p>9</p></td>
+<td><p>hip_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Torque applied on the rotor between the front left two links</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>angle_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Torque applied on the rotor between the torso and front right hip</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>hip_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Torque applied on the rotor between the front right two links</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>angle_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Torque applied on the rotor between the torso and back left hip</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>hip_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Torque applied on the rotor between the back left two links</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>angle_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Torque applied on the rotor between the torso and back right hip</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>hip_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Torque applied on the rotor between the back right two links</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>angle_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>When adding the sensors to the <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> environment there are two possible environment initializations depending on the type of data returned by the touch sensors. This data can be continuous values of external forces or a boolean value which is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the sensor detects any contact force and <code class="docutils literal notranslate"><span class="pre">False</span></code> if not.
-This two types of environments can be initialized from the environment id variations of <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> by adding the <code class="docutils literal notranslate"><span class="pre">_ContinuousTouchSensors</span></code> string to the id if the touch sensors return continuous force values or <code class="docutils literal notranslate"><span class="pre">_BooleanTouchSensors</span></code> if the values are boolean.</p>
-<section id="continuous-touch-sensor-environments">
-<h3>Continuous Touch Sensor Environments:<a class="headerlink" href="#continuous-touch-sensor-environments" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlock_ContinuousTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateZ_ContinuousTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateParallel_ContinuousTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateXYZ_ContinuousTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockFull_ContinuousTouchSensors-v1</span></code></p></li>
-</ul>
-</section>
-<section id="boolean-touch-sensor-environments">
-<h3>Boolean Touch Sensor Environments:<a class="headerlink" href="#boolean-touch-sensor-environments" title="Permalink to this heading">#</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlock_BooleanTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateZ_BooleanTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateParallel_BooleanTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockRotateXYZ_BooleanTouchSensors-v1</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateBlockFull_BooleanTouchSensors-v1</span></code></p></li>
-</ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">Action</span> <span class="pre">Space</span></code>, <code class="docutils literal notranslate"><span class="pre">Rewards</span></code>, <code class="docutils literal notranslate"><span class="pre">Starting</span> <span class="pre">State</span></code>, <code class="docutils literal notranslate"><span class="pre">Episode</span> <span class="pre">End</span></code>, and <code class="docutils literal notranslate"><span class="pre">Arguments</span></code> sections are the same as for the <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> environment and its variations.</p>
-</section>
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
-<p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s joint and block states, as well as information about the goal and touch sensors. The dictionary consists of the same 3 keys as the <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> environments (<code class="docutils literal notranslate"><span class="pre">observation</span></code>,<code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>, and <code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>).
-However, the <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of the observation is now of shape <code class="docutils literal notranslate"><span class="pre">(153,</span> <span class="pre">)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">(61,</span> <span class="pre">)</span></code> since the touch sensor information is added at the end of the array with shape <code class="docutils literal notranslate"><span class="pre">(92,)</span></code>.</p>
+<p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s position and goal. The dictionary consists of the following 3 keys:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: Observations consist of positional values of different body parts of the ant, followed by the velocities of those individual parts (their derivatives) with all
+the positions ordered before all the velocities.</p>
+<p>By default, observations do not include the x- and y-coordinates of the ant’s torso. These values are included in the <code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code> key of the observation.
+However, by default, an observation is a <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(111,)</span></code> if the external contact forces are included with the <code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> arguments. Otherwise, the shape will be <code class="docutils literal notranslate"><span class="pre">(27,</span> <span class="pre">)</span></code>
+The elements of the array correspond to the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>z-coordinate of the torso (centre)</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>x-orientation of the torso (centre)</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>y-orientation of the torso (centre)</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>z-orientation of the torso (centre)</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>w-orientation of the torso (centre)</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>angle between torso and first link on front left</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>angle between the two links on the front left</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>angle between torso and first link on front right</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>angle between the two links on the front right</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>angle between torso and first link on back left</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>angle between the two links on the back left</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>angle between torso and first link on back right</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>angle between the two links on the back right</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>x-coordinate velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>y-coordinate velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>z-coordinate velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>x-coordinate angular velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>y-coordinate angular velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>z-coordinate angular velocity of the torso</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>angular velocity of angle between torso and front left link</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>angular velocity of the angle between front left links</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_1 (front_left_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>angular velocity of angle between torso and front right link</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>angular velocity of the angle between front right links</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_2 (front_right_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>angular velocity of angle between torso and back left link</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>angular velocity of the angle between back left links</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_3 (back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>25</p></td>
+<td><p>angular velocity of angle between torso and back right link</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>hip_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>26</p></td>
+<td><p>angular velocity of the angle between back right links</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>ankle_4 (right_back_leg)</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The remaining 14*6 = 84 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 14 links are: the ground link,
+the torso link, and 3 links for each leg (1 + 1 + 12) with the 6 external forces. These elements are included only if at the environments initialization the argument <code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 2-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>, that consists of the two cartesian coordinates of the desired final ant torso position <code class="docutils literal notranslate"><span class="pre">[x,y]</span></code>. The elements of the array are the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Site Name (in corresponding XML file)</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Final goal x coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Final goal y coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target</p></td>
+<td><p>position (m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the ant’s torso, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER).
+The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>. The elements of the array are the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Site Name (in corresponding XML file)</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Current goal ant position in the x coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Current goal ant position in the y coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>torso</p></td>
+<td><p>position (m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</section>
+<section id="rewards">
+<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
+<ul class="simple">
+<li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">0</span></code> if the ant hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">1</span></code> if the ant is in the final target position (the ant is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).</p></li>
+<li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
+</ul>
+<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">PointMaze_UMaze-v3</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
+reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">AntMaze_UMazeDense-v3</span></code> and initialized as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="starting-state">
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<p>The goal and initial placement of the ant in the maze follows the same structure for all environments. A discrete cell <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> is selected for the goal and agent’s initial position as previously menitoned in the <strong>Maze</strong> section.
+Then this cell index is converted to its cell center as an <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> continuous Cartesian coordinates in the MuJoCo simulation. Finally, a sampled noise from a uniform distribution with range <code class="docutils literal notranslate"><span class="pre">[-0.25,0.25]m</span></code> is added to the
+cell’s center x and y coordinates. This allows to create a richer goal distribution.</p>
+<p>The goal and initial position of the agent can also be specified by the user when the episode is reset. This is done by passing the dictionary argument <code class="docutils literal notranslate"><span class="pre">options</span></code> to the gymnasium reset() function. This dictionary expects one or both of
+the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">goal_cell</span></code>: <code class="docutils literal notranslate"><span class="pre">numpy.ndarray,</span> <span class="pre">shape=(2,0),</span> <span class="pre">type=int</span></code> - Specifies the desired <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> cell location of the goal. A uniform sampled noise will be added to the continuous coordinates of the center of the cell.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_cell</span></code>: <code class="docutils literal notranslate"><span class="pre">numpy.ndarray,</span> <span class="pre">shape=(2,0),</span> <span class="pre">type=int</span></code> - Specifies the desired <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> cell location of the reset initial agent position. A uniform sampled noise will be added to the continuous coordinates of the center of the cell.</p></li>
+</ul>
+</section>
+<section id="episode-end">
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">truncated</span></code> - The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">terminated</span></code> - The task can be set to be continuing with the <code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> argument. In this case the episode will never terminate, instead the goal location is randomly selected again. If the task is set not to be continuing the
+episode will be terminated when the Euclidean distance to the goal is less or equal to 0.5.</p></li>
+</ul>
+</section>
+<section id="arguments">
+<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">maze_map</span></code> - Optional argument to initialize the environment with a custom maze map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> - If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> the episode won’t be terminated when reaching the goal, instead a new goal location will be generated. If <code class="docutils literal notranslate"><span class="pre">False</span></code> the environment is terminated when the ant reaches the final goal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> - If <code class="docutils literal notranslate"><span class="pre">True</span></code> contact forces of the ant are included in the <code class="docutils literal notranslate"><span class="pre">observation</span></code>.</p></li>
+</ul>
+<p>Note that, the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> can be increased or decreased by specifying the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument at initialization. For example,
+to increase the total number of timesteps to 100 make the environment as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>v1: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
-<li><p>v0: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
+<li><p>v3: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
+<li><p>v2 &amp; v1: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
 </ul>
 </section>
 </section>
@@ -433,12 +847,12 @@ However, the <code class="docutils literal notranslate"><span class="pre">ndarra
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../HandEggTouchSensors/">
+          <a class="next-page" href="../point_maze/">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Hand Egg Touch Sensors</div>
+                <div class="title">Point Maze</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -449,7 +863,7 @@ However, the <code class="docutils literal notranslate"><span class="pre">ndarra
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Shadow Dexterous Hand with Touch Sensors</div>
+                <div class="title">Maze</div>
                 
               </div>
             </a>
@@ -490,13 +904,21 @@ However, the <code class="docutils literal notranslate"><span class="pre">ndarra
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Hand Block Touch Sensors</a><ul>
-<li><a class="reference internal" href="#description">Description</a><ul>
-<li><a class="reference internal" href="#continuous-touch-sensor-environments">Continuous Touch Sensor Environments:</a></li>
-<li><a class="reference internal" href="#boolean-touch-sensor-environments">Boolean Touch Sensor Environments:</a></li>
+<li><a class="reference internal" href="#">Ant Maze</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#maze-variations">Maze Variations</a><ul>
+<li><a class="reference internal" href="#maze-size">Maze size</a></li>
+<li><a class="reference internal" href="#diverse-goal-mazes">Diverse goal mazes</a></li>
+<li><a class="reference internal" href="#diverse-goal-and-reset-mazes">Diverse goal and reset mazes</a></li>
+<li><a class="reference internal" href="#custom-maze">Custom maze</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#action-space">Action Space</a></li>
 <li><a class="reference internal" href="#observation-space">Observation Space</a></li>
+<li><a class="reference internal" href="#rewards">Rewards</a></li>
+<li><a class="reference internal" href="#starting-state">Starting State</a></li>
+<li><a class="reference internal" href="#episode-end">Episode End</a></li>
+<li><a class="reference internal" href="#arguments">Arguments</a></li>
 <li><a class="reference internal" href="#version-history">Version History</a></li>
 </ul>
 </li>
