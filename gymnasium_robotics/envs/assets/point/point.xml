@@ -1,0 +1,33 @@
+<mujoco>
+  <compiler inertiafromgeom="true" angle="radian" coordinate="local"/>
+  <option timestep="0.01" gravity="0 0 0" iterations="20" integrator="Euler"/>
+  <default>
+    <joint damping="1" limited='false'/>
+    <geom friction=".5 .1 .1" density="1000" margin="0.002" condim="1" contype="2" conaffinity="1"/>
+  </default>
+  <asset>
+    <texture type="2d" name="groundplane" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" width="100" height="100"/>
+    <texture name="skybox" type="skybox" builtin="gradient" rgb1=".4 .6 .8" rgb2="0 0 0" width="800" height="800" mark="random" markrgb="1 1 1"/>
+    <material name="groundplane" texture="groundplane" texrepeat="20 20"/>
+    <material name="target" rgba=".6 .3 .3 1"/>
+  </asset>
+  <visual>
+    <headlight ambient=".4 .4 .4" diffuse=".8 .8 .8" specular="0.1 0.1 0.1"/>
+    <map znear=".01"/>
+    <quality shadowsize="2048"/>
+  </visual>
+  <worldbody>
+    <geom name="ground" size="40 40 0.25" pos="0 0 -0.1" type="plane" contype="1" conaffinity="0" material="groundplane"/>
+    <body name="particle" pos="0 0 0">
+      <geom name="particle_geom" type="sphere" size="0.1" rgba="0.0 0.0 1.0 0.0" contype="1"/>
+      <site name="particle_site" pos="0.0 0.0 0.0" size="0.2" rgba="0.3 0.6 0.3 1"/>
+      <joint name="ball_x" type="slide" pos="0 0 0" axis="1 0 0"/>
+      <joint name="ball_y" type="slide" pos="0 0 0" axis="0 1 0"/>
+    </body>
+  </worldbody>
+  <actuator>
+    <!-- These are just dummy actuators for providing ranges -->
+    <motor name="motor_x" joint="ball_x" ctrlrange="-1.0 1.0" ctrllimited="true" gear= "100"/>
+    <motor name="motor_y" joint="ball_y" ctrlrange="-1.0 1.0" ctrllimited="true" gear="100"/>
+  </actuator>
+</mujoco>

@@ -1,0 +1,111 @@
+<!-- ======================================================
+    Model       :: ADROIT Hammer
+ 
+    Mujoco      :: Advanced physics simulation engine
+        Source      : www.roboti.us
+        Version     : 1.50
+        Released    : 17Jan'17
+        
+    Author      :: Vikash Kumar
+        Contacts    : vikash@cs.washington.edu
+        Last edits  : 17Jan'17
+
+    Designed for :: Demo Augmented Policy Gradient (DAPG)
+
+    Copyright   :: Vikash Kumar
+        Licensed under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+====================================================== -->
+
+<mujoco model='ADROIT-hammer(v1.5)'>
+    
+    <default>
+        <default class="board">
+            <geom type="box" material="MatWood" />
+            <general user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        </default>
+    </default>
+
+    <!-- ======= CONTACTS ======= -->
+    <contact>
+        <exclude body1='nail_board' body2='nail'/>
+    </contact>
+
+    <!-- ======= SENSORS ======= -->
+    <sensor>
+        <touch site="S_target" name="S_nail" />
+    </sensor>
+
+    <!-- ======= WORLD ======= -->
+    <worldbody>
+        <light directional='false' diffuse='.7 .7 .7' specular='0.03 0.03 0.03' pos='-1 -1.0 4.0' dir='1 1.0 -4'/>
+        <geom name='ground' size="1.5 1.5 0.25" pos="0 0 -1" type="plane" contype="1" conaffinity="0" material="groundplane" />
+        <camera name="fixed" pos="0 -0.7 0.7" quat="0.92388 0.382683 0 0" />
+        <!-- Camera for the VIL paper -->
+        <camera name="vil_camera" pos="0 -1.2 1.2" quat="0.92388 0.382683 0 0" />
+ 
+        <!-- ======= TABLE ======= -->
+        <body name="table">
+            <!-- <geom size="0.5 0.5 0.025" type="plane" material="table2d" /> --> <!-- Plane has better contacts -->
+            <geom size="0.45 0.45 0.025" pos="0 0 -0.025" type="box" material="tablecube" />
+            <geom size="0.04 0.5" pos="0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+        </body>
+        
+        <!-- ======= MOCAP ======= -->
+        <body name="vive_tracker" pos="0 -0.35 0.25" mocap="true">
+            <inertial pos="0 0 0" mass="0.064" diaginertia="1.70667e-05 1.70667e-05 1.70667e-05" />
+            <geom size="0.03 0.01" type="cylinder" contype="0" conaffinity="0" group="3" rgba="0.3 0.3 0.3 0.3" />
+        </body>
+
+        <!-- ======= HAND ======= -->
+        <body name="forearm" pos="0 -0.7 0.2" euler="-1.57 0 3.14">
+            <inertial pos="0.001 -0.002 0.29" quat="0.982037 -0.0160006 0 -0.188007" mass="4" diaginertia="0.01 0.01 0.0075" />
+            <joint name="ARRx" pos="0 0 0" axis="1 0 0" range="-0.4 0.25" damping="20" />
+            <joint name="ARRy" pos="0 0 0" axis="0 1 0" range="-0.3 0.3" damping="20" />
+            <geom name="V_forearm" class="D_Vizual" pos="0 -.01 .181" euler="0 0 -1.57"  mesh="forearm_simple" />
+            <geom name="C_forearm1" class="DC_Hand" size="0.05 0.033" pos="0 0 0.29" type="capsule" rgba="0.4 0.5 0.6 0.1" />
+            
+            <!-- ======= Adroit ======= -->
+            <include file="adroit_model.xml"/>
+        </body>
+
+        <!-- ======= Nail ======= -->
+        <body name="nail_board" pos="0.05 0 0.185245" quat="0.583833 0.583368 -0.399421 -0.399104" user="1001 0 2002 0.05 0 0.1 0.05 0 0.25">
+            <inertial pos="0 0 0" mass="0.512" diaginertia="0.00110933 0.00110933 0.00218453" />
+            <geom name="board" class="board" size="0.08 0.08 0.01" />
+            <site name="nail_goal" pos="0 0 0.01" size="0.034 0.005" type="cylinder" material="MatWood" rgba="1 0.8 0.8 1" />
+            <body name="nail" pos="0 0 0">
+                <inertial pos="0 0 0.0775281" mass="0.0699004" diaginertia="8.23129e-05 8.23129e-05 2.51426e-05" />
+                <joint name="nail_dir" pos="0 0 0" axis="0 0 -1" type="slide" range="-0.01 0.09" frictionloss="2.5" />
+                <geom size="0.035 0.005" pos="0 0 0.1" type="cylinder" material="MatFoil" />
+                <geom size="0.01 0.05" pos="0 0 0.05" type="cylinder" material="MatFoil" />
+                <site name="S_target" pos="0 0 0.101" size="0.034 0.005" type="cylinder" rgba="0 1 0 0.2" />
+            </body>
+        </body>
+
+        <!-- ======= Hammer ======= -->
+        <body name="Object" pos="0 -0.2 0.035" quat="0.707388 0.706825 0 0">
+            <inertial pos="-0.11025 0 0" quat="0.50001 0.49999 0.49999 0.50001" mass="0.253442" diaginertia="0.00349644 0.00345287 8.947e-05" />
+            <joint name="OBJTx" pos="0 0 0" axis="1 0 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTy" pos="0 0 0" axis="0 1 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTz" pos="0 0 0" axis="0 0 1" type="slide" limited="false" damping="0" />
+            <joint name="OBJRx" pos="0 0 0" axis="1 0 0" limited="false" damping="0.1" />
+            <joint name="OBJRy" pos="0 0 0" axis="0 1 0" limited="false" damping="0.1" />
+            <joint name="OBJRz" pos="0 0 0" axis="0 0 1" limited="false" damping="0.1" />
+            <geom name="handle" size="0.025 0.05" quat="0.707388 0 0.706825 0" type="capsule" condim="4" material="MatWood" />
+            <geom name="neck" size="0.007 0.085" pos="-0.14 0 0" quat="0.707388 0 0.706825 0" type="capsule" condim="4" rgba="1 1 1 1" />
+            <geom name="head" size="0.02 0.04" pos="-0.24 0 0" type="cylinder" condim="4" rgba="0.4 0.4 0.4 1" />
+            <site name="tool" pos="-0.2 0 -0.04" size="0.01" group="4" rgba="0.4 0.8 0.4 1" />
+        </body>
+
+    </worldbody>
+
+    
+    <actuator>
+        <general name="A_ARRx" joint="ARRx" ctrlrange="-.4 .25" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" user="1002 0 2001 -0.02 0.02 0 0 0 0 0 0 0 0 0 0 0"/>
+        <general name="A_ARRy" joint="ARRy" ctrlrange="-0.3 0.3" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0"/>
+    </actuator>
+    <include file='adroit_assets.xml'/>
+</mujoco>
