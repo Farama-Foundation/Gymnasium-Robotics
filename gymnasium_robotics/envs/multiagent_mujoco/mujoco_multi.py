@@ -1,3 +1,20 @@
+"""Main file for MaMuJoCo includes the MultiAgentMujocoEnv class.
+
+This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
+(https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/mujoco_multi.py)
+Original Author: Schroeder de Witt
+
+Then Modified by @Kallinteris-Andreas for this project
+changes:
+ - General code cleanup, factorization, type hinting, adding documentation and comments
+ - Now uses PettingZoo APIs instead of a propriatery API
+ - Now supports custom factorizations
+ - Added new functions MultiAgentMujocoEnv.map_global_action_to_local_actions, MultiAgentMujocoEnv.map_local_actions_to_global_action, MultiAgentMujocoEnv.map_local_observation_to_global_state, MultiAgentMujocoEnv.map_local_observation_to_global_state
+
+This project is covered by the Apache 2.0 License.
+"""
+
+
 from __future__ import annotations
 
 import gymnasium
@@ -6,7 +23,7 @@ import pettingzoo
 from gymnasium.wrappers.time_limit import TimeLimit
 
 from gymnasium_robotics.envs.multiagent_mujoco.coupled_half_cheetah import (
-    CoupledHalfCheetah,
+    CoupledHalfCheetahEnv,
 )
 from gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant import ManySegmentAntEnv
 from gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer import (
@@ -111,7 +128,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             )
         elif scenario in ["CoupledHalfCheetah-v4"]:
             self.single_agent_env = TimeLimit(
-                CoupledHalfCheetah(render_mode), max_episode_steps=1000
+                CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000
             )
         else:
             raise NotImplementedError("Custom env not implemented!")
