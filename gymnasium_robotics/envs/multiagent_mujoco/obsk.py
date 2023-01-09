@@ -37,9 +37,9 @@ class Node:
     def __init__(
         self,
         label: str,
-        qpos_ids: int,
-        qvel_ids: int,
-        act_ids: int,
+        qpos_ids: int | None,
+        qvel_ids: int | None,
+        act_ids: int | None,
         body_fn: typing.Callable | None = None,
         bodies: tuple[int, ...] = (),
         extra_obs: dict[str, typing.Callable] = {},
@@ -105,7 +105,7 @@ class HyperEdge:
 
 
 def get_joints_at_kdist(
-    agent_partition: list[tuple[Node, ...]],
+    agent_partition: tuple[Node, ...],
     hyperedges: list[HyperEdge],
     k: int,
 ) -> dict[int, list[Node]]:
@@ -122,8 +122,6 @@ def get_joints_at_kdist(
     Returns:
         dict with k as key, and list of joints/nodes at that distance
     """
-    if k is None:
-        return None
 
     def _adjacent(lst):  # return all sets adjacent to any element in lst
         ret = set()
@@ -232,7 +230,7 @@ def build_obs(
 
 def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
-) -> list[tuple[Node, ...], list[HyperEdge], dict[str, list[Node]]]:
+) -> tuple[list[tuple[Node, ...]], list[HyperEdge], list[Node]]:
     """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
 
     Args:
@@ -855,13 +853,13 @@ def get_parts_and_edges(  # noqa: C901
             -6,
             -6,
             0,
-            tendons=(tendon),
+            # tendons=(tendon),
             extra_obs={
                 "ten_J": lambda data: np.concatenate(
                     [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
                 ),
-                "ten_length": lambda data: data.ten_length,
-                "ten_velocity": lambda data: data.ten_velocity,
+                "ten_length": lambda data: data.ten_length[tendon],
+                "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
         )
         bshin0 = Node("bshin0", -5, -5, 1)
@@ -875,13 +873,13 @@ def get_parts_and_edges(  # noqa: C901
             -6,
             -6,
             6,
-            tendons=(tendon),
+            # tendons=(tendon),
             extra_obs={
                 "ten_J": lambda data: np.concatenate(
                     [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
                 ),
-                "ten_length": lambda data: data.ten_length,
-                "ten_velocity": lambda data: data.ten_velocity,
+                "ten_length": lambda data: data.ten_length[tendon],
+                "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
         )
         bshin1 = Node("bshin1", -5, -5, 7)
@@ -943,6 +941,8 @@ def get_parts_and_edges(  # noqa: C901
         return parts, edges, globals
 
     elif label in ["ManySegmentSwimmer-v4"]:
+        assert partitioning is not None, "Partitioning, required with " + label
+
         try:
             n_agents = int(partitioning.split("x")[0])
             n_segs_per_agents = int(partitioning.split("x")[1])
@@ -966,6 +966,8 @@ def get_parts_and_edges(  # noqa: C901
         return parts, edges, globals
 
     elif label in ["ManySegmentAnt-v4"]:
+        assert partitioning is not None, "Partitioning, required with " + label
+
         try:
             n_agents = int(partitioning.split("x")[0])
             n_segs_per_agents = int(partitioning.split("x")[1])
@@ -973,10 +975,10 @@ def get_parts_and_edges(  # noqa: C901
         except Exception:
             raise Exception(f"UNKNOWN partitioning config: {partitioning}")
 
-        edges = []
+        edges: list[HyperEdge] = []
         joints = []
-        hip1m = None
-        hip2m = None
+        hip1m = Node("Dummy_Node", None, None, None)
+        hip2m = Node("Dummy_Node", None, None, None)
         for segment in range(n_segs):
             torso = 1 + segment * 7
             front_right_leg = 2 + segment * 7
@@ -1055,12 +1057,10 @@ def get_parts_and_edges(  # noqa: C901
             ]
             for i in range(n_agents)
         ]
+        parts = [tuple(part) for part in parts]
 
         return parts, edges, globals
     else:
-        if partitioning is None:
-            print("Warning: using single agent on unknown MuJoCo Environment: " + label)
-            return tuple([tuple("0")]), None, None
         raise Exception(f"UNKNOWN label environment: {label}")
 
 
