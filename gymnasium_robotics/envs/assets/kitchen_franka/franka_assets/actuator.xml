@@ -1,0 +1,31 @@
+<mujocoinclude>
+  <tendon>
+    <fixed name="split">
+      <joint joint="robot:finger_joint1" coef="0.5"/>
+      <joint joint="robot:finger_joint2" coef="0.5"/>
+    </fixed>
+  </tendon>
+
+  <equality>
+    <joint joint1="robot:finger_joint1" joint2="robot:finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+
+  <actuator>
+    <general class="panda" name="actuator1" joint="robot:joint1" gainprm="4500" biasprm="0 -4500 -450"/>
+    <general class="panda" name="actuator2" joint="robot:joint2" gainprm="4500" biasprm="0 -4500 -450"
+        ctrlrange="-1.7628 1.7628"/>
+    <general class="panda" name="actuator3" joint="robot:joint3" gainprm="3500" biasprm="0 -3500 -350"/>
+    <general class="panda" name="actuator4" joint="robot:joint4" gainprm="3500" biasprm="0 -3500 -350"
+        ctrlrange="-3.0718 -0.0698"/>
+    <general class="panda" name="actuator5" joint="robot:joint5" gainprm="2000" biasprm="0 -2000 -200"
+        forcerange="-12 12"/>
+    <general class="panda" name="actuator6" joint="robot:joint6" gainprm="2000" biasprm="0 -2000 -200"
+        forcerange="-12 12" ctrlrange="-0.0175 3.7525"/>
+    <general class="panda" name="actuator7" joint="robot:joint7" gainprm="2000" biasprm="0 -2000 -200"
+        forcerange="-12 12"/>
+    <general class="panda" name="actuator8" tendon="split" forcerange="-100 100" ctrlrange="0 255"
+        gainprm="0.01568627451 0 0" biasprm="0 -100 -10"/>
+  </actuator>
+</mujocoinclude>
+
+

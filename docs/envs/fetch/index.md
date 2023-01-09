@@ -3,7 +3,7 @@ firstpage:
 lastpage:
 ---
 
-## Fetch
+# Fetch
 
 The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following:
 
@@ -14,6 +14,19 @@ The Fetch environments are based on the 7-DoF [Fetch Mobile Manipulator](https:/
 
 ```{raw} html
     :file: list.html
+```
+
+## Reference
+
+If using the `Fetch` environments, please cite:
+
+```bibtex
+@misc{1802.09464,
+  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
+  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
+  Year = {2018},
+  Eprint = {arXiv:1802.09464},
+}
 ```
 
 ```{toctree}

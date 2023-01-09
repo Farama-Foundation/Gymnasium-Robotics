@@ -1,0 +1,344 @@
+ <mujocoinclude>
+     <compiler angle="radian" meshdir='resources/meshes/' texturedir='resources/textures/' /> 
+    <option apirate="200" iterations="20" noslip_iterations="20"/>
+    <size njmax="500" nconmax="100" nstack="600000" nuser_body="9" nuser_jnt="1" nuser_site="1" nuser_tendon="1" nuser_actuator="16" nuser_sensor="1" />
+    <visual>
+        <global offwidth="3024" offheight="1680" />
+        <quality shadowsize="4096" offsamples="8" />
+        <map force="0.1" fogend="5" />
+    </visual>
+    <default class="main">
+        <mesh scale="0.001 0.001 0.001" />
+        <joint limited="true" margin="0.01" armature="0.001" damping="0.05" frictionloss="0.001" />
+        <geom friction="1 0.5 0.01" margin="0.0005" />
+        <site size="0.005 0 0" rgba="0.4 0.9 0.4 1" />
+        <tendon limited="true" />
+        <general ctrllimited="true" ctrlrange="-1 1" user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        <default class="D_Touch">
+            <site size="0.009 0.004 0.013" group="4" type="box" rgba="0.8 0.8 0.8 0.15" />
+            <general user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        </default>
+        <default class="DC_Hand">
+            <geom conaffinity="0" group="4" material="MatColl" />
+            <general user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        </default>
+        <default class="D_Vizual">
+            <geom type="mesh" contype="0" conaffinity="0" group="1" material="MatViz" />
+            <general user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        </default>
+        <default class="free">
+            <joint type="free" limited="false" armature="0" damping="0" />
+            <general user="0 1 0.03 0.0939711 0.513477 0.0358776 1.23598 8.40409 0.485031 6.04244 1.02187 0.175297 0.121642 0 0 0" />
+        </default>
+    </default>
+    <asset>
+        <texture type="cube" name="texgeom" builtin="flat" mark="cross" rgb1="0.3 0.6 0.5" rgb2="0.3 0.6 0.5" width="127" height="762" />
+        <texture type="cube" name="wood" file="wood.png" />
+        <texture type="2d" name="wood2d" file="wood.png" />
+        <texture type="cube" name="square" file="square.png" />
+        <texture type="cube" name="foil" file="silverRaw.png" />
+        <texture type="cube" name="woodb" file="woodb.png" />
+        <texture type="2d" name="groundplane" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" width="100" height="100" />
+        <texture type="2d" name="marble2d" file="marble.png" />
+        <texture type="cube" name="marblecube" file="marble.png" />
+        <material name="MatColl" specular="1" shininess="0.3" reflectance="0.5" rgba="0.4 0.5 0.6 1" />
+        <material name="MatViz" specular="0.75" shininess="0.1" reflectance="0.5" rgba="0.9 0.7 0.5 1" />
+        <material name="MatGnd" specular="0.3" shininess="0.3" reflectance="0.3" rgba="0.5 0.55 0.5 1" />
+        <material name="object" texture="texgeom" />
+        <material name="groundplane" texture="groundplane" texrepeat="10 10" />
+        <material name="table2d" texture="marble2d" reflectance="0.3" rgba="0.8 0.8 0.8 1" />
+        <material name="tablecube" texture="marblecube" rgba="0.8 0.8 0.8 1" />
+        <material name="MatFoil" texture="foil" specular="1" shininess="0.3" rgba="0.9 0.9 0.9 1" />
+        <material name="MatPlane" specular="0.3" shininess="0.3" rgba="0.3 0.3 0.2 1" />
+        <material name="MatWood" texture="wood" texrepeat="3 3" specular="0.4" shininess="0.1" />
+        <material name="MatSquare" texture="square" specular="1" shininess="0.6" rgba="0.8 0.8 0.8 1" />
+        <material name="MatWoodR" texture="wood" specular="1" shininess="0.3" rgba="1 0.5 0.5 1" />
+        <material name="MatWoodG" texture="wood" specular="1" shininess="0.3" rgba="0.2 1 0.2 1" />
+        <material name="MatWoodB" texture="woodb" specular="1" shininess="0.3" />
+        <mesh name="forearm_simple" file="forearm_simple.stl" scale="1 1 1"/>
+        <mesh name="wrist" file="wrist.stl" />
+        <mesh name="palm" file="palm.stl" />
+        <mesh name="lfmetacarpal" file="lfmetacarpal.stl" />
+        <mesh name="knuckle" file="knuckle.stl" />
+        <mesh name="F3" file="F3.stl" />
+        <mesh name="F2" file="F2.stl" />
+        <mesh name="F1" file="F1.stl" />
+        <mesh name="TH3_z" file="TH3_z.stl" />
+        <mesh name="TH2_z" file="TH2_z.stl" />
+        <mesh name="TH1_z" file="TH1_z.stl" />
+    </asset>
+
+    <contact>
+        <pair geom1="C_palm0" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_ffproximal" geom2="C_mfproximal" condim="1" />
+        <pair geom1="C_ffproximal" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_ffmiddle" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_ffdistal" geom2="C_mfdistal" condim="1" />
+        <pair geom1="C_ffdistal" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_mfproximal" geom2="C_rfproximal" condim="1" />
+        <pair geom1="C_mfproximal" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_mfdistal" geom2="C_rfdistal" condim="1" />
+        <pair geom1="C_mfdistal" geom2="C_lfdistal" condim="1" />
+        <pair geom1="C_mfdistal" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_rfproximal" geom2="C_lfproximal" condim="1" />
+        <pair geom1="C_rfmiddle" geom2="C_lfmiddle" condim="1" />
+        <pair geom1="C_rfmiddle" geom2="C_lfdistal" condim="1" />
+        <pair geom1="C_rfdistal" geom2="C_lfmiddle" condim="1" />
+        <pair geom1="C_rfdistal" geom2="C_lfdistal" condim="1" />
+        <pair geom1="C_rfdistal" geom2="C_lfdistal" condim="1" />
+        <pair geom1="C_rfdistal" geom2="C_thdistal" condim="1" />
+        <pair geom1="C_lfdistal" geom2="C_thdistal" condim="1" />
+    </contact>
+    <!-- <equality>
+        <weld body1="vive_tracker" body2="forearm" solref="0.01 1" solimp="0.9 0.9 0.01" />
+    </equality> -->
+    <tendon>
+        <fixed name="T_WRJ1r" range="-0.032 0.032" user="1236">
+            <joint joint="WRJ1" coef="0.018" />
+        </fixed>
+        <fixed name="T_WRJ1l" range="-0.032 0.032" user="1237">
+            <joint joint="WRJ1" coef="-0.018" />
+        </fixed>
+        <fixed name="T_WRJ0u" range="-0.032 0.032" user="1236">
+            <joint joint="WRJ0" coef="0.018" />
+        </fixed>
+        <fixed name="T_WRJ0d" range="-0.032 0.032" user="1237">
+            <joint joint="WRJ0" coef="-0.018" />
+        </fixed>
+        <fixed name="T_FFJ3r" range="-0.018 0.018" user="1204">
+            <joint joint="FFJ3" coef="0.01" />
+        </fixed>
+        <fixed name="T_FFJ3l" range="-0.018 0.018" user="1205">
+            <joint joint="FFJ3" coef="-0.01" />
+        </fixed>
+        <fixed name="T_FFJ2u" range="-0.007 0.03" user="1202">
+            <joint joint="FFJ2" coef="0.01" />
+        </fixed>
+        <fixed name="T_FFJ2d" range="-0.03 0.007" user="1203">
+            <joint joint="FFJ2" coef="-0.01" />
+        </fixed>
+        <fixed name="T_FFJ1c" range="-0.001 0.001">
+            <joint joint="FFJ0" coef="0.00705" />
+            <joint joint="FFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_FFJ1u" range="-0.007 0.03" user="1200">
+            <joint joint="FFJ0" coef="0.00705" />
+            <joint joint="FFJ1" coef="0.00805" />
+        </fixed>
+        <fixed name="T_FFJ1d" range="-0.03 0.007" user="1201">
+            <joint joint="FFJ0" coef="-0.00705" />
+            <joint joint="FFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_MFJ3r" range="-0.018 0.018" user="1210">
+            <joint joint="MFJ3" coef="0.01" />
+        </fixed>
+        <fixed name="T_MFJ3l" range="-0.018 0.018" user="1211">
+            <joint joint="MFJ3" coef="-0.01" />
+        </fixed>
+        <fixed name="T_MFJ2u" range="-0.007 0.03" user="1208">
+            <joint joint="MFJ2" coef="0.01" />
+        </fixed>
+        <fixed name="T_MFJ2d" range="-0.03 0.007" user="1209">
+            <joint joint="MFJ2" coef="-0.01" />
+        </fixed>
+        <fixed name="T_MFJ1c" range="-0.001 0.001">
+            <joint joint="MFJ0" coef="0.00705" />
+            <joint joint="MFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_MFJ1u" range="-0.007 0.03" user="1206">
+            <joint joint="MFJ0" coef="0.00705" />
+            <joint joint="MFJ1" coef="0.00805" />
+        </fixed>
+        <fixed name="T_MFJ1d" range="-0.03 0.007" user="1207">
+            <joint joint="MFJ0" coef="-0.00705" />
+            <joint joint="MFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_RFJ3r" range="-0.018 0.018" user="1216">
+            <joint joint="RFJ3" coef="0.01" />
+        </fixed>
+        <fixed name="T_RFJ3l" range="-0.018 0.018" user="1217">
+            <joint joint="RFJ3" coef="-0.01" />
+        </fixed>
+        <fixed name="T_RFJ2u" range="-0.007 0.03" user="1214">
+            <joint joint="RFJ2" coef="0.01" />
+        </fixed>
+        <fixed name="T_RFJ2d" range="-0.03 0.007" user="1215">
+            <joint joint="RFJ2" coef="-0.01" />
+        </fixed>
+        <fixed name="T_RFJ1c" range="-0.001 0.001">
+            <joint joint="RFJ0" coef="0.00705" />
+            <joint joint="RFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_RFJ1u" range="-0.007 0.03" user="1212">
+            <joint joint="RFJ0" coef="0.00705" />
+            <joint joint="RFJ1" coef="0.00805" />
+        </fixed>
+        <fixed name="T_RFJ1d" range="-0.03 0.007" user="1213">
+            <joint joint="RFJ0" coef="-0.00705" />
+            <joint joint="RFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_LFJ4u" range="-0.007 0.03" user="1224">
+            <joint joint="LFJ4" coef="0.01" />
+        </fixed>
+        <fixed name="T_LFJ4d" range="-0.03 0.007" user="1225">
+            <joint joint="LFJ4" coef="-0.01" />
+        </fixed>
+        <fixed name="T_LFJ3r" range="-0.018 0.018" user="1222">
+            <joint joint="LFJ3" coef="0.01" />
+        </fixed>
+        <fixed name="T_LFJ3l" range="-0.018 0.018" user="1223">
+            <joint joint="LFJ3" coef="-0.01" />
+        </fixed>
+        <fixed name="T_LFJ2u" range="-0.007 0.03" user="1220">
+            <joint joint="LFJ2" coef="0.01" />
+        </fixed>
+        <fixed name="T_LFJ2d" range="-0.03 0.007" user="1221">
+            <joint joint="LFJ2" coef="-0.01" />
+        </fixed>
+        <fixed name="T_LFJ1c" range="-0.001 0.001">
+            <joint joint="LFJ0" coef="0.00705" />
+            <joint joint="LFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_LFJ1u" range="-0.007 0.03" user="1218">
+            <joint joint="LFJ0" coef="0.00705" />
+            <joint joint="LFJ1" coef="0.00805" />
+        </fixed>
+        <fixed name="T_LFJ1d" range="-0.03 0.007" user="1219">
+            <joint joint="LFJ0" coef="-0.00705" />
+            <joint joint="LFJ1" coef="-0.00805" />
+        </fixed>
+        <fixed name="T_THJ4a" range="-0.018 0.018" user="1234">
+            <joint joint="THJ4" coef="0.01636" />
+        </fixed>
+        <fixed name="T_THJ4c" range="-0.018 0.018" user="1235">
+            <joint joint="THJ4" coef="-0.01636" />
+        </fixed>
+        <fixed name="T_THJ3u" range="-0.007 0.03" user="1232">
+            <joint joint="THJ3" coef="0.01" />
+        </fixed>
+        <fixed name="T_THJ3d" range="-0.03 0.007" user="1233">
+            <joint joint="THJ3" coef="-0.01" />
+        </fixed>
+        <fixed name="T_THJ2u" range="-0.018 0.018" user="1230">
+            <joint joint="THJ2" coef="0.011" />
+        </fixed>
+        <fixed name="T_THJ2d" range="-0.018 0.018" user="1231">
+            <joint joint="THJ2" coef="-0.011" />
+        </fixed>
+        <fixed name="T_THJ1r" range="-0.018 0.018" user="1228">
+            <joint joint="THJ1" coef="0.011" />
+        </fixed>
+        <fixed name="T_THJ1l" range="-0.018 0.018" user="1229">
+            <joint joint="THJ1" coef="-0.011" />
+        </fixed>
+        <fixed name="T_THJ0r" range="-0.03 0.007" user="1226">
+            <joint joint="THJ0" coef="0.009" />
+        </fixed>
+        <fixed name="T_THJ0l" range="-0.007 0.03" user="1227">
+            <joint joint="THJ0" coef="-0.009" />
+        </fixed>
+    </tendon>
+   
+   <actuator>
+        <general name="A_WRJ1" joint="WRJ1" ctrlrange="-0.524 0.175" biastype="affine" gainprm="10 0 0" biasprm="0 -10 0" user="1002 0 2001 -0.02 0.02 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_WRJ0" joint="WRJ0" ctrlrange="-0.79 0.61" biastype="affine" gainprm="10 0 0" biasprm="0 -10 0" user="1002 0 2001 -0.02 0.02 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_FFJ3" joint="FFJ3" ctrlrange="-0.44 0.44" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_FFJ2" joint="FFJ2" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_FFJ1" joint="FFJ1" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_FFJ0" joint="FFJ0" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_MFJ3" joint="MFJ3" ctrlrange="-0.44 0.44" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_MFJ2" joint="MFJ2" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_MFJ1" joint="MFJ1" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_MFJ0" joint="MFJ0" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_RFJ3" joint="RFJ3" ctrlrange="-0.44 0.44" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_RFJ2" joint="RFJ2" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_RFJ1" joint="RFJ1" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_RFJ0" joint="RFJ0" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_LFJ4" joint="LFJ4" ctrlrange="0 0.7" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_LFJ3" joint="LFJ3" ctrlrange="-0.44 0.44" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_LFJ2" joint="LFJ2" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_LFJ1" joint="LFJ1" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_LFJ0" joint="LFJ0" ctrlrange="0 1.6" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_THJ4" joint="THJ4" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_THJ3" joint="THJ3" ctrlrange="0 1.3" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_THJ2" joint="THJ2" ctrlrange="-0.26 0.26" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_THJ1" joint="THJ1" ctrlrange="-0.52 0.52" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+        <general name="A_THJ0" joint="THJ0" ctrlrange="-1.571 0" biastype="affine" biasprm="0 -1 0" user="1002 0 2001 -0.1 0.1 0 0 0 0 0 0 0 0 0 0 0" />
+    </actuator>
+
+    <sensor>
+        <actuatorfrc actuator="A_WRJ1" name="Saf_A_WRJ1" />
+        <actuatorfrc actuator="A_WRJ0" name="Saf_A_WRJ0" />
+        <actuatorfrc actuator="A_FFJ3" name="Saf_A_FFJ3" />
+        <actuatorfrc actuator="A_FFJ2" name="Saf_A_FFJ2" />
+        <actuatorfrc actuator="A_FFJ1" name="Saf_A_FFJ1" />
+        <actuatorfrc actuator="A_MFJ3" name="Saf_A_MFJ3" />
+        <actuatorfrc actuator="A_MFJ2" name="Saf_A_MFJ2" />
+        <actuatorfrc actuator="A_MFJ1" name="Saf_A_MFJ1" />
+        <actuatorfrc actuator="A_RFJ3" name="Saf_A_RFJ3" />
+        <actuatorfrc actuator="A_RFJ2" name="Saf_A_RFJ2" />
+        <actuatorfrc actuator="A_RFJ1" name="Saf_A_RFJ1" />
+        <actuatorfrc actuator="A_LFJ4" name="Saf_A_LFJ4" />
+        <actuatorfrc actuator="A_LFJ3" name="Saf_A_LFJ3" />
+        <actuatorfrc actuator="A_LFJ2" name="Saf_A_LFJ2" />
+        <actuatorfrc actuator="A_LFJ1" name="Saf_A_LFJ1" />
+        <actuatorfrc actuator="A_THJ4" name="Saf_A_THJ4" />
+        <actuatorfrc actuator="A_THJ3" name="Saf_A_THJ3" />
+        <actuatorfrc actuator="A_THJ2" name="Saf_A_THJ2" />
+        <actuatorfrc actuator="A_THJ1" name="Saf_A_THJ1" />
+        <actuatorfrc actuator="A_THJ0" name="Saf_A_THJ0" />
+        
+        <!-- ======= Touch Sensors ======= -->
+        <touch name="ST_Tch_fftip"  site="Tch_fftip"/>
+        <touch name="ST_Tch_mftip"  site="Tch_mftip"/>
+        <touch name="ST_Tch_rftip"  site="Tch_rftip"/>
+        <touch name="ST_Tch_lftip"  site="Tch_lftip"/>
+        <touch name="ST_Tch_thtip"  site="Tch_thtip"/>
+
+        <touch name="ST_Tch_ffmiddle"   site="Tch_ffmiddle"/>
+        <touch name="ST_Tch_mfmiddle"   site="Tch_mfmiddle"/>
+        <touch name="ST_Tch_rfmiddle"   site="Tch_rfmiddle"/>
+        <touch name="ST_Tch_lfmiddle"   site="Tch_lfmiddle"/>
+        <touch name="ST_Tch_thmiddle"   site="Tch_thmiddle"/>
+
+        <touch name="ST_Tch_ffproximal" site="Tch_ffproximal"/>
+        <touch name="ST_Tch_mfproximal" site="Tch_mfproximal"/>
+        <touch name="ST_Tch_rfproximal" site="Tch_rfproximal"/>
+        <touch name="ST_Tch_lfproximal" site="Tch_lfproximal"/>
+        <touch name="ST_Tch_thproximal" site="Tch_thproximal"/>
+
+        <touch name="ST_Tch_ffmetacarpal"   site="Tch_ffmetacarpal"/>
+        <touch name="ST_Tch_mfmetacarpal"   site="Tch_mfmetacarpal"/>
+        <touch name="ST_Tch_rfmetacarpal"   site="Tch_rfmetacarpal"/>
+        <touch name="ST_Tch_lfmetacarpal"   site="Tch_lfmetacarpal"/>
+        <touch name="ST_Tch_thmetacarpal"   site="Tch_thmetacarpal"/>
+        
+        <touch name="ST_Tch_palm"   site="Tch_palm"/>
+        
+        <jointpos joint="WRJ1" name="Sjp_WRJ1" />
+        <jointpos joint="WRJ0" name="Sjp_WRJ0" />
+        <jointpos joint="FFJ3" name="Sjp_FFJ3" />
+        <jointpos joint="FFJ2" name="Sjp_FFJ2" />
+        <jointpos joint="FFJ1" name="Sjp_FFJ1" />
+        <jointpos joint="FFJ0" name="Sjp_FFJ0" />
+        <jointpos joint="MFJ3" name="Sjp_MFJ3" />
+        <jointpos joint="MFJ2" name="Sjp_MFJ2" />
+        <jointpos joint="MFJ1" name="Sjp_MFJ1" />
+        <jointpos joint="MFJ0" name="Sjp_MFJ0" />
+        <jointpos joint="RFJ3" name="Sjp_RFJ3" />
+        <jointpos joint="RFJ2" name="Sjp_RFJ2" />
+        <jointpos joint="RFJ1" name="Sjp_RFJ1" />
+        <jointpos joint="RFJ0" name="Sjp_RFJ0" />
+        <jointpos joint="LFJ4" name="Sjp_LFJ4" />
+        <jointpos joint="LFJ3" name="Sjp_LFJ3" />
+        <jointpos joint="LFJ2" name="Sjp_LFJ2" />
+        <jointpos joint="LFJ1" name="Sjp_LFJ1" />
+        <jointpos joint="LFJ0" name="Sjp_LFJ0" />
+        <jointpos joint="THJ4" name="Sjp_THJ4" />
+        <jointpos joint="THJ3" name="Sjp_THJ3" />
+        <jointpos joint="THJ2" name="Sjp_THJ2" />
+        <jointpos joint="THJ1" name="Sjp_THJ1" />
+        <jointpos joint="THJ0" name="Sjp_THJ0" />
+    </sensor>
+
+ </mujocoinclude>

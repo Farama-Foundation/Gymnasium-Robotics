@@ -1,7 +1,7 @@
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 <p align="center">
-    <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
+  <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
 </p>
 
 This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
@@ -18,14 +18,21 @@ Note that the latest environment versions use the latest mujoco python bindings 
 
 We support and test for Python 3.7, 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
 
-
 ## Environments
 
-Gymnasium-Robotics includes the following groups of environments:
+`Gymnasium-Robotics` includes the following groups of environments:
 
-* [Fetch](https://robotics.farama.org/envs/#fetch-environments) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
-* [Shadow Dexterous Hand](https://robotics.farama.org/envs/#shadow-dexterous-hand-environments) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen.
-* [Shadow Hand Dexterous with Touch Sensors](https://robotics.farama.org/envs/#hand-environments-with-touch-sensors) - Variations of the `Shadow Dexterous Hand` environments that include data from 92 touch sensors in the observation space.
+* [Fetch](https://robotics.farama.org/envs/fetch/) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
+* [Shadow Dexterous Hand](https://robotics.farama.org/envs/shadow_dexterous_hand/) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen. There are variations of these environments that also include data from 92 touch sensors in the observation space.
+
+The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the same action/observation spaces as the original, please read their documentation:
+
+* [Maze Environments](https://robotics.farama.org/envs/maze/) - An agent has to navigate through a maze to reach certain goal position. Two different agents can be used: a 2-DoF force-controlled ball, or the classic `Ant` agent from the [Gymnasium MuJoCo environments](https://gymnasium.farama.org/environments/mujoco/ant/). The environment can be initialized with a variety of maze shapes with increasing levels of difficulty.
+* [Adroit Arm](https://robotics.farama.org/envs/adroit_hand/) - A collection of environments that use the Shadow Dexterous Hand with additional degrees of freedom for the arm movement.
+The different tasks involve hammering a nail, opening a door, twirling a pen, or picking up and moving a ball.
+* [Franka Kitchen](https://robotics.farama.org/envs/franka_kitchen/) - Multitask environment in which a 9-DoF Franka robot is placed in a kitchen containing several common household items. The goal of each task is to interact with the items in order to reach a desired goal configuration.
+
+**WIP**: generate new `D4RL` environment datasets with [Minari](https://github.com/Farama-Foundation/Minari).
 
 ## Multi-goal API
 
@@ -62,29 +69,3 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 ```
 
 The `GoalEnv` class can also be used for custom environments.
-
-## Citation
-
-If using the `Fetch` or `Shadow Hand` environments, please cite:
-
-```bibtex
-@misc{1802.09464,
-  Author = {Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba},
-  Title = {Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research},
-  Year = {2018},
-  Eprint = {arXiv:1802.09464},
-}
-```
-
-To cite the `Shadow Dexterous Hand with Touch Sensors` environments, please use:
-
-```bibtex
-@article{melnik2021using,
-  title={Using tactile sensing to improve the sample efficiency and performance of deep deterministic policy gradients for simulated in-hand manipulation tasks},
-  author={Melnik, Andrew and Lach, Luca and Plappert, Matthias and Korthals, Timo and Haschke, Robert and Ritter, Helge},
-  journal={Frontiers in Robotics and AI},
-  pages={57},
-  year={2021},
-  publisher={Frontiers}
-}
-```

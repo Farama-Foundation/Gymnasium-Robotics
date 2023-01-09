@@ -34,5 +34,8 @@ def get_description():
 
 
 setup(
-    name="gymnasium-robotics", version=get_version(), long_description=get_description()
+    name="gymnasium-robotics",
+    version=get_version(),
+    long_description=get_description(),
+    long_description_content_type="text/markdown",
 )
