@@ -546,96 +546,663 @@ The elements of the action array are the following:</p>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s joint and block states, as well as information about the goal. The dictionary consists of the following 3 keys:</p>
-<p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(61,)</span></code>. It consists of kinematic information of the block object and finger joints. The elements of the array correspond to the following:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>| Num | Observation                                                       | Min    | Max    | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
-|-----|-------------------------------------------------------------------|--------|--------|----------------------------------------|----------|------------------------- |
-| 0   | Angular position of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angle (rad)              |
-| 1   | Angular position of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angle (rad)              |
-| 2   | Horizontal angular position of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angle (rad)              |
-| 3   | Vertical angular position of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angle (rad)              |
-| 4   | Angular position of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angle (rad)              |
-| 5   | Angular position of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angle (rad)              |
-| 6   | Horizontal angular position of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angle (rad)              |
-| 7   | Vertical angular position of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angle (rad)              |
-| 8   | Angular position of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angle (rad)              |
-| 9   | Angular position of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angle (rad)              |
-| 10  | Horizontal angular position of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angle (rad)              |
-| 11  | Vertical angular position of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angle (rad)              |
-| 12  | Angular position of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angle (rad)              |
-| 13  | Angular position of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angle (rad)              |
-| 14  | Angular position of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angle (rad)              |
-| 15  | Horizontal angular position of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angle (rad)              |
-| 16  | Vertical angular position of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angle (rad)              |
-| 17  | Angular position of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angle (rad)              |
-| 18  | Angular position of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angle (rad)              |
-| 19  | Horizontal angular position of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angle (rad)              |
-| 20  | Vertical Angular position of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angle (rad)              |
-| 21  | Horizontal angular position of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angle (rad)              |
-| 22  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angle (rad)              |
-| 23  | Angular position of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angle (rad)              |
-| 24  | Angular velocity of the horizontal wrist joint                    | -Inf   | Inf    | robot0:WRJ1                            | hinge    | angular velocity (rad/s) |
-| 25  | Angular velocity of the vertical wrist joint                      | -Inf   | Inf    | robot0:WRJ0                            | hinge    | angular velocity (rad/s) |
-| 26  | Horizontal angular velocity of the MCP joint of the forefinger    | -Inf   | Inf    | robot0:FFJ3                            | hinge    | angular velocity (rad/s) |
-| 27  | Vertical angular velocity of the MCP joint of the forefinge       | -Inf   | Inf    | robot0:FFJ2                            | hinge    | angular velocity (rad/s) |
-| 28  | Angular velocity of the PIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ1                            | hinge    | angular velocity (rad/s) |
-| 29  | Angular velocity of the DIP joint of the forefinger               | -Inf   | Inf    | robot0:FFJ0                            | hinge    | angular velocity (rad/s) |
-| 30  | Horizontal angular velocity of the MCP joint of the middle finger | -Inf   | Inf    | robot0:MFJ3                            | hinge    | angular velocity (rad/s) |
-| 31  | Vertical angular velocity of the MCP joint of the middle finger   | -Inf   | Inf    | robot0:MFJ2                            | hinge    | angular velocity (rad/s) |
-| 32  | Angular velocity of the PIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ1                            | hinge    | angular velocity (rad/s) |
-| 33  | Angular velocity of the DIP joint of the middle finger            | -Inf   | Inf    | robot0:MFJ0                            | hinge    | angular velocity (rad/s) |
-| 34  | Horizontal angular velocity of the MCP joint of the ring finger   | -Inf   | Inf    | robot0:RFJ3                            | hinge    | angular velocity (rad/s) |
-| 35  | Vertical angular velocity of the MCP joint of the ring finger     | -Inf   | Inf    | robot0:RFJ2                            | hinge    | angular velocity (rad/s) |
-| 36  | Angular velocity of the PIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ1                            | hinge    | angular velocity (rad/s) |
-| 37  | Angular velocity of the DIP joint of the ring finger              | -Inf   | Inf    | robot0:RFJ0                            | hinge    | angular velocity (rad/s) |
-| 38  | Angular velocity of the CMC joint of the little finger            | -Inf   | Inf    | robot0:LFJ4                            | hinge    | angular velocity (rad/s) |
-| 39  | Horizontal angular velocity of the MCP joint of the little finger | -Inf   | Inf    | robot0:LFJ3                            | hinge    | angular velocity (rad/s) |
-| 40  | Vertical angular velocity of the MCP joint of the little finger   | -Inf   | Inf    | robot0:LFJ2                            | hinge    | angular velocity (rad/s) |
-| 41  | Angular velocity of the PIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ1                            | hinge    | angular velocity (rad/s) |
-| 42  | Angular velocity of the DIP joint of the little finger            | -Inf   | Inf    | robot0:LFJ0                            | hinge    | angular velocity (rad/s) |
-| 43  | Horizontal angular velocity of the CMC joint of the thumb finger  | -Inf   | Inf    | robot0:THJ4                            | hinge    | angular velocity (rad/s) |
-| 44  | Vertical Angular velocity of the CMC joint of the thumb finger    | -Inf   | Inf    | robot0:THJ3                            | hinge    | angular velocity (rad/s) |
-| 45  | Horizontal angular velocity of the MCP joint of the thumb finger  | -Inf   | Inf    | robot0:THJ2                            | hinge    | angular velocity (rad/s) |
-| 46  | Vertical angular position of the MCP joint of the thumb finger    | -Inf   | Inf    | robot0:THJ1                            | hinge    | angular velocity (rad/s) |
-| 47  | Angular velocity of the IP joint of the thumb finger              | -Inf   | Inf    | robot0:THJ0                            | hinge    | angular velocity (rad/s) |
-| 48  | Linear velocity of the block in x direction                       | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-| 49  | Linear velocity of the block in y direction                       | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-| 50  | Linear velocity of the block in z direction                       | -Inf   | Inf    | object:joint                           | free     | velocity (m/s)           |
-| 51  | Angular velocity of the block in x axis                           | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-| 52  | Angular velocity of the block in y axis                           | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-| 53  | Angular velocity of the block in z axis                           | -Inf   | Inf    | object:joint                           | free     | angular velocity (rad/s) |
-| 54  | Position of the block in the x coordinate                         | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-| 55  | Position of the block in the y coordinate                         | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-| 56  | Position of the block in the z coordinate                         | -Inf   | Inf    | object:joint                           | free     | position (m)             |
-| 57  | w component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
-| 58  | x component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
-| 59  | y component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
-| 60  | z component of the quaternion orientation of the block            | -Inf   | Inf    | object:joint                           | free     | -                        |
-</pre></div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(61,)</span></code>. It consists of kinematic information of the block object and finger joints. The elements of the array correspond to the following:</p></li>
+</ul>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Joint Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint Type</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Angular position of the horizontal wrist joint</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:WRJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Angular position of the vertical wrist joint</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:WRJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Horizontal angular position of the MCP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Vertical angular position of the MCP joint of the forefinge</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Angular position of the PIP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Angular position of the DIP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Horizontal angular position of the MCP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Vertical angular position of the MCP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Angular position of the PIP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Angular position of the DIP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Horizontal angular position of the MCP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>Vertical angular position of the MCP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>Angular position of the PIP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>Angular position of the DIP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>Angular position of the CMC joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ4</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>Horizontal angular position of the MCP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>Vertical angular position of the MCP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>Angular position of the PIP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>Angular position of the DIP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>Horizontal angular position of the CMC joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ4</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>Vertical Angular position of the CMC joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>Horizontal angular position of the MCP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>Vertical angular position of the MCP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>Angular position of the IP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>Angular velocity of the horizontal wrist joint</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:WRJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>25</p></td>
+<td><p>Angular velocity of the vertical wrist joint</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:WRJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>26</p></td>
+<td><p>Horizontal angular velocity of the MCP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>27</p></td>
+<td><p>Vertical angular velocity of the MCP joint of the forefinge</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>28</p></td>
+<td><p>Angular velocity of the PIP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>29</p></td>
+<td><p>Angular velocity of the DIP joint of the forefinger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:FFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>30</p></td>
+<td><p>Horizontal angular velocity of the MCP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>31</p></td>
+<td><p>Vertical angular velocity of the MCP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>32</p></td>
+<td><p>Angular velocity of the PIP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>33</p></td>
+<td><p>Angular velocity of the DIP joint of the middle finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:MFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>34</p></td>
+<td><p>Horizontal angular velocity of the MCP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>35</p></td>
+<td><p>Vertical angular velocity of the MCP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>36</p></td>
+<td><p>Angular velocity of the PIP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>37</p></td>
+<td><p>Angular velocity of the DIP joint of the ring finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:RFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>38</p></td>
+<td><p>Angular velocity of the CMC joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ4</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>39</p></td>
+<td><p>Horizontal angular velocity of the MCP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>40</p></td>
+<td><p>Vertical angular velocity of the MCP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>41</p></td>
+<td><p>Angular velocity of the PIP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>42</p></td>
+<td><p>Angular velocity of the DIP joint of the little finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:LFJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>43</p></td>
+<td><p>Horizontal angular velocity of the CMC joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ4</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>44</p></td>
+<td><p>Vertical Angular velocity of the CMC joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ3</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>45</p></td>
+<td><p>Horizontal angular velocity of the MCP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ2</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>46</p></td>
+<td><p>Vertical angular position of the MCP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ1</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>47</p></td>
+<td><p>Angular velocity of the IP joint of the thumb finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:THJ0</p></td>
+<td><p>hinge</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>48</p></td>
+<td><p>Linear velocity of the block in x direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>49</p></td>
+<td><p>Linear velocity of the block in y direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>50</p></td>
+<td><p>Linear velocity of the block in z direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>51</p></td>
+<td><p>Angular velocity of the block in x axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>52</p></td>
+<td><p>Angular velocity of the block in y axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>53</p></td>
+<td><p>Angular velocity of the block in z axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>54</p></td>
+<td><p>Position of the block in the x coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>55</p></td>
+<td><p>Position of the block in the y coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>56</p></td>
+<td><p>Position of the block in the z coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>57</p></td>
+<td><p>w component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>58</p></td>
+<td><p>x component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>59</p></td>
+<td><p>y component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>60</p></td>
+<td><p>z component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 7-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(7,)</span></code>, that consists of the pose information of the block. The elements of the array are the following:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>| Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
-| 0   | Target x coordinate of the block                                                                                                      | -Inf   | Inf    | target:joint                           | free       | position (m) |
-| 1   | Target y coordinate of the block                                                                                                      | -Inf   | Inf    | target:joint                           | free       | position (m) |
-| 2   | Target z coordinate of the block                                                                                                      | -Inf   | Inf    | target:joint                           | free       | position (m) |
-| 3   | Target w component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | target:joint                           | free       | -            |
-| 4   | Target x component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | target:joint                           | free       | -            |
-| 5   | Target y component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | target:joint                           | free       | -            |
-| 6   | Target z component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | target:joint                           | free       | -            |
-</pre></div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 7-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(7,)</span></code>, that consists of the pose information of the block. The elements of the array are the following:</p></li>
+</ul>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Joint Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint Type</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Target x coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Target y coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Target z coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Target w component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Target x component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Target y component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Target z component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the block, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER).
-The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(7,)</span></code>. The elements of the array are the following:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>| Num | Observation                                                                                                                           | Min    | Max    | Joint Name (in corresponding XML file) | Joint Type | Unit         |
-|-----|---------------------------------------------------------------------------------------------------------------------------------------|--------|--------|----------------------------------------|------------|--------------|
-| 0   | Current x coordinate of the block                                                                                                      | -Inf   | Inf    | object:joint                           | free       | position (m) |
-| 1   | Current y coordinate of the block                                                                                                      | -Inf   | Inf    | object:joint                           | free       | position (m) |
-| 2   | Current z coordinate of the block                                                                                                      | -Inf   | Inf    | object:joint                           | free       | position (m) |
-| 3   | Current w component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | object:joint                           | free       | -            |
-| 4   | Current x component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | object:joint                           | free       | -            |
-| 5   | Current y component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | object:joint                           | free       | -            |
-| 6   | Current z component of the quaternion orientation of the block                                                                         | -Inf   | Inf    | object:joint                           | free       | -            |
-</pre></div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the block, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER).
+The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(7,)</span></code>. The elements of the array are the following:</p></li>
+</ul>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Joint Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint Type</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Current x coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Current y coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Current z coordinate of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Current w component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Current x component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Current y component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Current z component of the quaternion orientation of the block</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object:joint</p></td>
+<td><p>free</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="rewards">
