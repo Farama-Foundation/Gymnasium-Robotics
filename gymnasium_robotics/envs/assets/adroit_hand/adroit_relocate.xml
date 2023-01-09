@@ -1,0 +1,88 @@
+<!-- ======================================================
+    Model       :: ADROIT Relocate Object
+ 
+    Mujoco      :: Advanced physics simulation engine
+        Source      : www.roboti.us
+        Version     : 1.50
+        Released    : 17Jan'17
+        
+    Author      :: Vikash Kumar
+        Contacts    : vikash@cs.washington.edu
+        Last edits  : 17Jan'17
+
+    Designed for :: Demo Augmented Policy Gradient (DAPG)
+
+    Copyright   :: Vikash Kumar
+        Licensed under Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+====================================================== -->
+
+<mujoco model='ADROIT-relocate(v1.5)'>
+
+    <!-- ======= WORLD ======= -->
+    <worldbody>
+        <light directional='false' diffuse='.7 .7 .7' specular='0.03 0.03 0.03' pos='-1 -1.0 4.0' dir='1 1.0 -4'/>
+        <geom name='ground' size="1.5 1.5 0.25" pos="0 0 -1" type="plane" contype="1" conaffinity="0" material="groundplane" />
+        <camera name="fixed" pos="0 -0.7 0.7" quat="0.92388 0.382683 0 0" />
+        <!-- Camera for the VIL paper -->
+        <camera name="vil_camera" pos="0 -1.2 1.2" quat="0.92388 0.382683 0 0" />
+ 
+        <!-- ======= TABLE ======= -->
+        <body name="table">
+            <!-- <geom size="0.5 0.5 0.025" type="plane" material="table2d" /> --> <!-- Plane has better contacts -->
+            <geom size="0.45 0.45 0.025" pos="0 0 -0.025" type="box" material="tablecube" />
+            <geom size="0.04 0.5" pos="0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+            <geom size="0.04 0.5" pos="-0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
+        </body>
+        
+        <!-- ======= MOCAP ======= -->
+        <body name="vive_tracker" pos="0 -0.35 0.25" mocap="true">
+            <inertial pos="0 0 0" mass="0.064" diaginertia="1.70667e-05 1.70667e-05 1.70667e-05" />
+            <geom size="0.03 0.01" type="cylinder" contype="0" conaffinity="0" group="3" rgba="0.3 0.3 0.3 0.3" />
+        </body>
+
+        <!-- ======= HAND ======= -->
+        <body name="forearm" pos="0 -0.7 0.2" euler="-1.57 0 3.14">
+            <inertial pos="0.001 -0.002 0.29" quat="0.982037 -0.0160006 0 -0.188007" mass="4" diaginertia="0.01 0.01 0.0075" />
+            <joint name="ARTx" pos="0 0 0" axis="1 0 0" type="slide" range="-0.25 0.25" damping="20" />
+            <joint name="ARTy" pos="0 0 0" axis="0 1 0" type="slide" range="0 0.2" damping="20" />
+            <joint name="ARTz" pos="0 0 0" axis="0 0 1" type="slide" range="-0.3 0.5" damping="20" />
+            <joint name="ARRx" pos="0 0 0" axis="1 0 0" range="-.75 .75" damping="20" />
+            <joint name="ARRy" pos="0 0 0" axis="0 1 0" range="-.75 .75" damping="20" />
+            <joint name="ARRz" pos="0 0 0" axis="0 0 1" range="-.75 .75" damping="20" />
+            <geom name="V_forearm" class="D_Vizual" pos="0 -.01 .181" euler="0 0 -1.57"  mesh="forearm_simple" />
+            <geom name="C_forearm1" class="DC_Hand" size="0.05 0.033" pos="0 0 0.29" type="capsule" rgba="0.4 0.5 0.6 0.1" />
+            <!-- ======= Adroit ======= -->
+            <include file="adroit_model.xml"/>
+        </body>
+
+        <!-- ======= DESTINATION ======= -->
+        <site name="target" pos="-0.007 0.0 0.2" size="0.07" rgba="0 1 0 0.125" />
+
+        <!-- ======= OBJECT ======= -->
+        <body name="Object" pos="-0.00 0.0 0.035" user="1001 0 2003 27 0 0 0.06 0 0">
+            <inertial pos="0 0 0" mass="0.179594" diaginertia="8.80012e-05 8.80012e-05 8.80012e-05" />
+            <joint name="OBJTx" pos="0 0 0" axis="1 0 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTy" pos="0 0 0" axis="0 1 0" type="slide" limited="false" damping="0" />
+            <joint name="OBJTz" pos="0 0 0" axis="0 0 1" type="slide" limited="false" damping="0" />
+            <joint name="OBJRx" pos="0 0 0" axis="1 0 0" limited="false" damping="0" />
+            <joint name="OBJRy" pos="0 0 0" axis="0 1 0" limited="false" damping="0" />
+            <joint name="OBJRz" pos="0 0 0" axis="0 0 1" limited="false" damping="0" />
+            <geom name="sphere" size="0.035" condim="4" material="MatWoodB" />
+        </body>
+    </worldbody>
+    
+    <actuator>
+        <general name="A_ARTx" joint="ARTx" ctrlrange="-0.25 0.25" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+        <general name="A_ARTy" joint="ARTy" ctrlrange="0.0 0.2" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+        <general name="A_ARTz" joint="ARTz" ctrlrange="-0.3 0.5" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+        <general name="A_ARRx" joint="ARRx" ctrlrange="-.75 .75" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+        <general name="A_ARRy" joint="ARRy" ctrlrange="-.75 .75" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+        <general name="A_ARRz" joint="ARRz" ctrlrange="-.75 .75" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
+    </actuator>
+       
+    <include file='adroit_assets.xml'/>
+       
+    
+</mujoco>
