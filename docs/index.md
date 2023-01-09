@@ -20,6 +20,7 @@ envs/shadow_dexterous_hand/index
 envs/maze/index
 envs/adroit_hand/index
 envs/franka_kitchen/index
+envs/MaMuJoCo/index
 ```
 
 ```{toctree}
