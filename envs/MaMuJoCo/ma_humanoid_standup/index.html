@@ -8,7 +8,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
     <meta property="og:url" content="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid_standup.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Humanoid" href="../ma_humanoid/" /><link rel="prev" title="Hooper" href="../ma_hooper/" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Humanoid" href="../ma_humanoid/" /><link rel="prev" title="Hopper" href="../ma_hopper/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid_standup.html" />
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.3.0, furo 2022.09.15.dev1"/>
@@ -274,7 +274,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hopper/">Hopper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Humanoid Standup</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
@@ -386,7 +386,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>If partitioning, is None then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space">Gymansium’s MuJoCo/Humanoid Standup</a></p>
+<p>If partitioning, is <code class="docutils literal notranslate"><span class="pre">None</span></code> then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space">Gymansium’s MuJoCo/Humanoid Standup</a></p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -759,11 +759,21 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
-<p>All agent terminate and truncate at same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#episode-end">Gymnasium’s Humanoid Standup</a>.</p>
+<p>All agent terminate and truncate at the same time, given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#episode-end">Gymnasium’s Humanoid Standup</a>.</p>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
-<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<ul class="simple">
+<li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
+Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
+<ul>
+<li><p>Added/Fixed Global observations (The Humanoids’s torso: <code class="docutils literal notranslate"><span class="pre">rootx</span></code>, <code class="docutils literal notranslate"><span class="pre">rooty</span></code>, <code class="docutils literal notranslate"><span class="pre">rootz</span></code>) not being observed.</p></li>
+<li><p>Fixed abdomen observations ordering.</p></li>
+<li><p>Added support for body observations (<code class="docutils literal notranslate"><span class="pre">cvel</span></code>, <code class="docutils literal notranslate"><span class="pre">cinert</span></code>, <code class="docutils literal notranslate"><span class="pre">cfrc_ext</span></code>)</p></li>
+<li><p>Changed action ordering to be same as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/#action-space">Gymnasium/MuJoCo/Humanoid</a></p></li>
+</ul>
+</li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </section>

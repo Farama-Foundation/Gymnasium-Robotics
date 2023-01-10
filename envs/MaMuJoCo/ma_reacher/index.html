@@ -274,7 +274,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hopper/">Hopper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_humanoid_standup/">Humanoid Standup</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
@@ -386,7 +386,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>If partitioning, is None then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/reacher/#action-space">Gymansium’s MuJoCo/Reacher</a></p>
+<p>If partitioning, is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/reacher/#action-space">Gymansium’s MuJoCo/Reacher</a>.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -517,11 +517,18 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
-<p>All agent terminate and truncate at same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/reacher/#episode-end">Gymnasium’s Reacher</a>.</p>
+<p>All agent terminate and truncate at the same time, given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/reacher/#episode-end">Gymnasium’s Reacher</a>.</p>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
-<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<ul class="simple">
+<li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
+Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
+<ul>
+<li><p>Added/Fixed Global observations (The Targets’s coordinates: <code class="docutils literal notranslate"><span class="pre">targetx</span></code>, <code class="docutils literal notranslate"><span class="pre">targety</span></code>) not being observed.</p></li>
+</ul>
+</li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </section>

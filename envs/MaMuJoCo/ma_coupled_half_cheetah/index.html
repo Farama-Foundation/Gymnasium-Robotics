@@ -274,7 +274,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hopper/">Hopper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_humanoid_standup/">Humanoid Standup</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
@@ -381,7 +381,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </tbody>
 </table>
 </div>
-<p>If partitioning, is None then the environment contains a single agent with same action space.</p>
+<p>If partitioning, is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the environment contains a single agent with the same action space.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -420,7 +420,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 <td><p>torque (N m)</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
-<td><p>Torque applied on the front thigh rotorof the first cheetah</p></td>
+<td><p>Torque applied on the front thigh rotor of the first cheetah</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
 <td><p>fthigh0</p></td>
@@ -562,7 +562,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 <td><p>torque (N m)</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
-<td><p>Torque applied on the front thigh rotorof the first cheetah</p></td>
+<td><p>Torque applied on the front thigh rotor of the first cheetah</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
 <td><p>fthigh0</p></td>
@@ -661,7 +661,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
-<p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items each cheetah’s top.</p>
+<p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items in each cheetah’s top.</p>
 </section>
 <section id="rewards">
 <h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
@@ -673,11 +673,22 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
-<p>All agent terminate and truncate at same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end">Gymnasium’s Half Cheetah</a>.</p>
+<p>All agent terminate and truncate at the same time, given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end">Gymnasium’s Half Cheetah</a>.</p>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
-<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<ul class="simple">
+<li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
+Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
+<ul>
+<li><p>Fixed action mapping of the second cheetah (It would previously not work)</p></li>
+<li><p>Fixed tendon Jacobean observations</p></li>
+<li><p>Added/Fixed Global observations (The Cheetahes’s front tips: <code class="docutils literal notranslate"><span class="pre">rootx</span></code>s, <code class="docutils literal notranslate"><span class="pre">rooty</span></code>s, <code class="docutils literal notranslate"><span class="pre">rootz</span></code>s) not being observed.</p></li>
+<li><p>Improved node naming</p></li>
+<li><p>Changed action ordering to be same as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/#action-space">Gymnasium/MuJoCo/HalfCheetah</a></p></li>
+</ul>
+</li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </section>
