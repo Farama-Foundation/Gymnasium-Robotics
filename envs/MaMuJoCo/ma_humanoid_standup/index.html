@@ -7,12 +7,12 @@
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="" />
-    <meta property="og:url" content="https://robotics.farama.org/envs/fetch/reach.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Slide" href="../slide/" /><link rel="prev" title="Push" href="../push/" />
-        <link rel="canonical" href="https://robotics.farama.org/envs/fetch/reach.html" />
+    <meta property="og:url" content="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid_standup.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Humanoid" href="../ma_humanoid/" /><link rel="prev" title="Hooper" href="../ma_hooper/" />
+        <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid_standup.html" />
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.3.0, furo 2022.09.15.dev1"/>
-        <title>Reach - Gymnasium-Robotics Documentation</title>
+        <title>Humanoid Standup - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=3cf7b839e8c50b5f3a39bb99d90baa7b845de926" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=24b18ece81cb9ff18679a2945b9c89ba44829d18" />
@@ -231,11 +231,11 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Environments</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../">Fetch</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../pick_and_place/">Pick And Place</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../push/">Push</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Reach</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../slide/">Slide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../fetch/">Fetch</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/pick_and_place/">Pick And Place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/push/">Push</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/reach/">Reach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fetch/slide/">Slide</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shadow_dexterous_hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -264,38 +264,38 @@
 <li class="toctree-l2"><a class="reference internal" href="../../franka_kitchen/franka_kitchen/">Franka Kitchen</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../MaMuJoCo/">MaMuJoCo (Multi-Agent MuJoCo)</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_ant/">Ant</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../">MaMuJoCo (Multi-Agent MuJoCo)</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_ant/">Ant</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_coupled_half_cheetah/">Coupled Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_coupled_half_cheetah/">Coupled Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 current has-children current-page"><a class="current reference internal" href="#">Humanoid Standup</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid/">Humanoid</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_humanoid/">Humanoid</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_reacher/">Reacher</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_reacher/">Reacher</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_swimmer/">Swimmer</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_swimmer/">Swimmer</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_pusher/">Pusher</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_pusher/">Pusher</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_walker2d/">Walker2d</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_walker2d/">Walker2d</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../MaMuJoCo/ma_single/">Single Action Environments</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_single/">Single Action Environments</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -323,7 +323,18 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+    
+    <div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/master/docs/envs/MaMuJoCo/ma_humanoid_standup.md" title="Edit this page">
+    <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -338,23 +349,44 @@
         </div>
         <article role="main">
           
-          <section id="reach">
-<h1>Reach<a class="headerlink" href="#reach" title="Permalink to this heading">#</a></h1>
-<figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/reach.gif"><img alt="../../../_images/reach.gif" src="../../../_images/reach.gif" style="width: 200px;" /></a>
-</figure>
-<section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
-<p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1802.09464">“Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research”</a>.</p>
-<p>The task in the environment is for a manipulator to move the end effector to a randomly selected position in the robot’s workspace. The robot is a 7-DoF <a class="reference external" href="https://fetchrobotics.com/">Fetch Mobile Manipulator</a> with a two-fingered parallel gripper.
-The robot is controlled by small displacements of the gripper in Cartesian coordinates and the inverse kinematics are computed internally by the MuJoCo framework. The task is also continuing which means that the robot has to maintain the end effector’s
-position for an indefinite period of time.</p>
-<p>The control frequency of the robot is of <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">25</span> <span class="pre">Hz</span></code>. This is achieved by applying the same action in 20 subsequent simulator step (with a time step of <code class="docutils literal notranslate"><span class="pre">dt</span> <span class="pre">=</span> <span class="pre">0.002</span> <span class="pre">s</span></code>) before returning the control to the robot.</p>
-</section>
+          <section id="humanoid-standup">
+<h1>Humanoid Standup<a class="headerlink" href="#humanoid-standup" title="Permalink to this heading">#</a></h1>
+<html>
+	<p align="center">
+		<img src="https://gymnasium.farama.org/_images/humanoid_standup.gif" alt="Humanoid Standup" width="200"/>
+	</p>
+</html> 
+<p>This Environment is part of <a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/">MaMuJoCo</a> environments. Please read that page first for general information.
+The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/">Gymansium’s MuJoCo/Humanoid Standup</a></p>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
-<p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(4,),</span> <span class="pre">float32)</span></code>. An action represents the Cartesian displacement dx, dy, and dz of the end effector. In addition to a last action that controls closing and opening of the gripper. This last action is not required since
-there is no object to be manipulated, thus its value won’t generate any control output.</p>
+<p>The action spaces is depended on the partitioning</p>
+<section id="if-partitioning-is-none">
+<h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Instantiate</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;HumanoidStandup&quot;,</span> <span class="pre">None)</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Agents</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">agents=</span> <span class="pre">['agent_0']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Number of Agents</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>Action Spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'agent_0'</span> <span class="pre">:</span> <span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(17,),</span> <span class="pre">float32)}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Part partition</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[(abdomen_x,</span> <span class="pre">abdomen_y,</span> <span class="pre">abdomen_z,</span> <span class="pre">right_hip_x,</span> <span class="pre">right_hip_y,</span> <span class="pre">right_hip_z,</span> <span class="pre">right_knee,</span> <span class="pre">left_hip_x,</span> <span class="pre">left_hip_y,</span> <span class="pre">left_hip_z,</span> <span class="pre">left_knee,</span> <span class="pre">right_shoulder1,</span> <span class="pre">right_shoulder2,</span> <span class="pre">right_elbow,</span> <span class="pre">left_shoulder1,</span> <span class="pre">left_shoulder2,</span> <span class="pre">left_elbow,),]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If partitioning, is None then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space">Gymansium’s MuJoCo/Humanoid Standup</a></p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -369,277 +401,371 @@ there is no object to be manipulated, thus its value won’t generate any contro
 </thead>
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
-<td><p>Displacement of the end effector in the x direction dx</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>robot0:mocap</p></td>
+<td><p>Torque applied on the hinge in the y-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_y</p></td>
 <td><p>hinge</p></td>
-<td><p>position (m)</p></td>
+<td><p>torque (N m)</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
-<td><p>Displacement of the end effector in the y direction dy</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>robot0:mocap</p></td>
+<td><p>Torque applied on the hinge in the z-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_z</p></td>
 <td><p>hinge</p></td>
-<td><p>position (m)</p></td>
+<td><p>torque (N m)</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
-<td><p>Displacement of the end effector in the z direction dz</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>robot0:mocap</p></td>
+<td><p>Torque applied on the hinge in the x-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_x</p></td>
 <td><p>hinge</p></td>
-<td><p>position (m)</p></td>
+<td><p>torque (N m)</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
-<td><p>-</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (x-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_x (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (z-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_z (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (y-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_y (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Torque applied on the rotor between the right hip/thigh and the right shin</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_knee</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (x-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_x (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (z-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_z (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (y-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_y (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Torque applied on the rotor between the left hip/thigh and the left shin</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_knee</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>Torque applied on the rotor between the torso and right upper arm (coordinate -1)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_shoulder1</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>Torque applied on the rotor between the torso and right upper arm (coordinate -2)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_shoulder2</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>Torque applied on the rotor between the right upper arm and right lower arm</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_elbow</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>Torque applied on the rotor between the torso and left upper arm (coordinate -1)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_shoulder1</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>Torque applied on the rotor between the torso and left upper arm (coordinate -2)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_shoulder2</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>Torque applied on the rotor between the left upper arm and left lower arm</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_elbow</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<section id="elif-partitioning-9-8-isolate-upper-and-lower-body">
+<h3>elif partitioning == “9|8”:  # isolate upper and lower body<a class="headerlink" href="#elif-partitioning-9-8-isolate-upper-and-lower-body" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Instantiate</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;HumanoidStandup&quot;,</span> <span class="pre">&quot;3x1&quot;)</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Agents</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">agents=</span> <span class="pre">['agent_0',</span> <span class="pre">'agent_1']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Number of Agents</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p>Action Spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'agent_0':</span> <span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(9,),</span> <span class="pre">float32),</span> <span class="pre">'agent_1'</span> <span class="pre">:</span> <span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(8,),</span> <span class="pre">float32)}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Part partition</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[(abdomen_x,</span> <span class="pre">abdomen_y,</span> <span class="pre">abdomen_z,</span> <span class="pre">right_shoulder1,</span> <span class="pre">right_shoulder2,</span> <span class="pre">right_elbow,</span> <span class="pre">left_shoulder1,</span> <span class="pre">left_shoulder2,</span> <span class="pre">left_elbow,),</span> <span class="pre">(right_hip_x,</span> <span class="pre">right_hip_y,</span> <span class="pre">right_hip_z,</span> <span class="pre">right_knee,</span> <span class="pre">left_hip_x,</span> <span class="pre">left_hip_y,</span> <span class="pre">left_hip_z,</span> <span class="pre">left_knee,)]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The environment is partitioned in 2 parts, one part corresponding to the upper body and one part corresponding to the lower body</p>
+<section id="agent-0-action-space">
+<h4>Agent 0 action space<a class="headerlink" href="#agent-0-action-space" title="Permalink to this heading">#</a></h4>
+<p>Upper Body</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Action</p></th>
+<th class="head"><p>Control Min</p></th>
+<th class="head"><p>Control Max</p></th>
+<th class="head"><p>Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Torque applied on the hinge in the y-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_y</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Torque applied on the hinge in the z-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_z</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Torque applied on the hinge in the x-coordinate of the abdomen</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>abdomen_x</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Torque applied on the rotor between the torso and right upper arm (coordinate -1)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_shoulder1</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Torque applied on the rotor between the torso and right upper arm (coordinate -2)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_shoulder2</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Torque applied on the rotor between the right upper arm and right lower arm</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_elbow</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Torque applied on the rotor between the torso and left upper arm (coordinate -1)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_shoulder1</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Torque applied on the rotor between the torso and left upper arm (coordinate -2)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_shoulder2</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Torque applied on the rotor between the left upper arm and left lower arm</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_elbow</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="agent-1-action-space">
+<h4>Agent 1 action space<a class="headerlink" href="#agent-1-action-space" title="Permalink to this heading">#</a></h4>
+<p>Lower Body</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Action</p></th>
+<th class="head"><p>Control Min</p></th>
+<th class="head"><p>Control Max</p></th>
+<th class="head"><p>Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (x-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_x (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (z-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_z (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the right hip (y-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_hip_y (right_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Torque applied on the rotor between the right hip/thigh and the right shin</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>right_knee</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (x-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_x (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (z-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_z (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Torque applied on the rotor between torso/abdomen and the left hip (y-coordinate)</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_hip_y (left_thigh)</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Torque applied on the rotor between the left hip/thigh and the left shin</p></td>
+<td><p>-0.4</p></td>
+<td><p>0.4</p></td>
+<td><p>left_knee</p></td>
+<td><p>hinge</p></td>
+<td><p>torque (N m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
-<p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s end effector state and goal. The kinematics observations are derived from Mujoco bodies known as <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site">sites</a>
-attached to the body of interest, the end effector. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(10,)</span></code>. It consists of kinematic information of the end effector. The elements of the array correspond to the following:</p></li>
-</ul>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Num</p></th>
-<th class="head"><p>Observation</p></th>
-<th class="head"><p>Min</p></th>
-<th class="head"><p>Max</p></th>
-<th class="head"><p>Site Name (in corresponding XML file)</p></th>
-<th class="head"><p>Joint Name (in corresponding XML file)</p></th>
-<th class="head"><p>Joint Type</p></th>
-<th class="head"><p>Unit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>End effector x position in global coordinates</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>End effector y position in global coordinates</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-even"><td><p>2</p></td>
-<td><p>End effector z position in global coordinates</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>3</p></td>
-<td><p>Joint displacement of the right gripper finger</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>-</p></td>
-<td><p>robot0:r_gripper_finger_joint</p></td>
-<td><p>hinge</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-even"><td><p>4</p></td>
-<td><p>Joint displacement of the left gripper finger</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>-</p></td>
-<td><p>robot0:l_gripper_finger_joint</p></td>
-<td><p>hinge</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>5</p></td>
-<td><p>End effector linear velocity x direction</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>velocity (m/s)</p></td>
-</tr>
-<tr class="row-even"><td><p>6</p></td>
-<td><p>End effector linear velocity y direction</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>velocity (m/s)</p></td>
-</tr>
-<tr class="row-odd"><td><p>7</p></td>
-<td><p>End effector linear velocity z direction</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>-</p></td>
-<td><p>-</p></td>
-<td><p>velocity (m/s)</p></td>
-</tr>
-<tr class="row-even"><td><p>8</p></td>
-<td><p>Right gripper finger linear velocity</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>-</p></td>
-<td><p>robot0:r_gripper_finger_joint</p></td>
-<td><p>hinge</p></td>
-<td><p>velocity (m/s)</p></td>
-</tr>
-<tr class="row-odd"><td><p>9</p></td>
-<td><p>Left gripper finger linear velocity</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>-</p></td>
-<td><p>robot0:l_gripper_finger_joint</p></td>
-<td><p>hinge</p></td>
-<td><p>velocity (m/s)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 3-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, that consists of the three cartesian coordinates of the desired final end effector position <code class="docutils literal notranslate"><span class="pre">[x,y,z]</span></code>. The elements of the array are the following:</p></li>
-</ul>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Num</p></th>
-<th class="head"><p>Observation</p></th>
-<th class="head"><p>Min</p></th>
-<th class="head"><p>Max</p></th>
-<th class="head"><p>Site Name (in corresponding XML file)</p></th>
-<th class="head"><p>Unit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>Final goal end effector position in the x coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>Final goal end effector position in the y coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-even"><td><p>2</p></td>
-<td><p>Final goal end effector position in the z coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the end effector, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER).
-The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. The elements of the array are the following:</p></li>
-</ul>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Num</p></th>
-<th class="head"><p>Observation</p></th>
-<th class="head"><p>Min</p></th>
-<th class="head"><p>Max</p></th>
-<th class="head"><p>Site Name (in corresponding XML file)</p></th>
-<th class="head"><p>Unit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>Current end effector position in the x coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>Current end effector position in the y coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-even"><td><p>2</p></td>
-<td><p>Current end effector position in the z coordinate</p></td>
-<td><p>-Inf</p></td>
-<td><p>Inf</p></td>
-<td><p>robot0:grip</p></td>
-<td><p>position (m)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes all the items of the Humanoid’s torso.
+See more at the <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space">Gymnasium’s Humanoid Standup</a>.</p>
 </section>
 <section id="rewards">
 <h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
-<p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
-<ul class="simple">
-<li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the end effector hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">0</span></code> if the end effector is in the final target position (the robot is considered to have reached the goal if the Euclidean distance between
-the end effector and the goal is lower than 0.05 m).</p></li>
-<li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
-</ul>
-<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">FetchReach-v2</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
-reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">FetchReachDense-v2</span></code> and initialized as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReachDense-v2&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>All agents receive the same <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space">Gymnasium’s Humanoid Standup</a> reward.</p>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
-<p>When the environment is reset the gripper is placed in the following global cartesian coordinates <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span> <span class="pre">=</span> <span class="pre">[1.3419</span> <span class="pre">0.7491</span> <span class="pre">0.555]</span> <span class="pre">m</span></code>, and its orientation in quaternions is <code class="docutils literal notranslate"><span class="pre">(w,x,y,z)</span> <span class="pre">=</span> <span class="pre">[1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0]</span></code>. The joint positions are computed by inverse kinematics
-internally by MuJoCo. The base of the robot will always be fixed at <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span> <span class="pre">=</span> <span class="pre">[0.405,</span> <span class="pre">0.48,</span> <span class="pre">0]</span></code> in global coordinates.</p>
-<p>The gripper’s target position is randomly selected by adding an offset to the initial grippers position <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span></code> sampled from a uniform distribution with a range of <code class="docutils literal notranslate"><span class="pre">[-0.15,</span> <span class="pre">0.15]</span> <span class="pre">m</span></code>.</p>
+<h2>Starting state<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<p>The starting state of the environment is the as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#starting-state">Gymnasium’s Humanoid Standup</a>.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
-<p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 50 timesteps.
-The episode is never <code class="docutils literal notranslate"><span class="pre">terminated</span></code> since the task is continuing with infinite horizon.</p>
-</section>
-<section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
-<p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReach-v2&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>All agent terminate and truncate at same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#episode-end">Gymnasium’s Humanoid Standup</a>.</p>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
-<ul class="simple">
-<li><p>v2: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
-<li><p>v1: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
-</ul>
+<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 </section>
 
@@ -648,26 +774,8 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../slide/">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Slide</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-            <a class="prev-page" href="../push/">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Push</div>
-                
-              </div>
-            </a>
+          
+            
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -705,14 +813,20 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Reach</a><ul>
-<li><a class="reference internal" href="#description">Description</a></li>
-<li><a class="reference internal" href="#action-space">Action Space</a></li>
+<li><a class="reference internal" href="#">Humanoid Standup</a><ul>
+<li><a class="reference internal" href="#action-space">Action Space</a><ul>
+<li><a class="reference internal" href="#if-partitioning-is-none">if partitioning is None:</a></li>
+<li><a class="reference internal" href="#elif-partitioning-9-8-isolate-upper-and-lower-body">elif partitioning == “9|8”:  # isolate upper and lower body</a><ul>
+<li><a class="reference internal" href="#agent-0-action-space">Agent 0 action space</a></li>
+<li><a class="reference internal" href="#agent-1-action-space">Agent 1 action space</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#observation-space">Observation Space</a></li>
 <li><a class="reference internal" href="#rewards">Rewards</a></li>
-<li><a class="reference internal" href="#starting-state">Starting State</a></li>
+<li><a class="reference internal" href="#starting-state">Starting state</a></li>
 <li><a class="reference internal" href="#episode-end">Episode End</a></li>
-<li><a class="reference internal" href="#arguments">Arguments</a></li>
 <li><a class="reference internal" href="#version-history">Version History</a></li>
 </ul>
 </li>
