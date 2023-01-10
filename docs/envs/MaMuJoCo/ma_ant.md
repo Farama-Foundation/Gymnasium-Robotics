@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (8,), float32)}`			|
 | Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
 
-If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/)
+If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
 
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -40,7 +40,7 @@ If partitioning, is None then the environment contains a single agent with the s
 | 5   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
 | 6   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 7   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
-### if partitioning == "2x4":  # neighbouring legs together
+### if partitioning == "2x4":  # neighboring legs together (front and back)
 ```{figure} Ant_2x4.png
     :name: Ant_2x4
 ```
@@ -141,31 +141,32 @@ right back leg
 
 
 ## Observation Space
-
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the ant's torso.
 See more at the [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#starting-state).
 
 
 
 ## Episode End
+All agent terminate and truncate at the same time given the same conditions as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#episode-end).
 
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#episode-end).
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
+	- Fixed diagonal factorization ("2x4d") not being diagonal.
+	- Fixed Global observations (The Ant's Torso: `rootx`, `rooty`, `rootz`) not being observed.
+	- Changed action ordering to be same as [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#action-space)
 
 
 

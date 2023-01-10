@@ -11,7 +11,7 @@ And can be instantiated (without a partition)
 `env = mamujoco_v0.parallel_env("InvertedDoublePendulum", None)`
 `env = mamujoco_v0.parallel_env("InvertedPendulum", None)`
 
-In which case the simply the same environments  with a single agents using the `PettingZoo` APIs.
+In which case, they simply are the same environments with a single agent using the `PettingZoo` APIs.
 
 
 ## Action Space
@@ -33,13 +33,13 @@ The starting state of the environment is the same as single agent Gymnasium envi
 
 
 ## Episode End
-
-The agent terminates and truncates at same time given the same conditions as the single agent Gymnasium environment.
+The agent terminates and truncates at the same time, given the same conditions as the single agent Gymnasium environment.
 
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco).
+No Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)).
 
 
 

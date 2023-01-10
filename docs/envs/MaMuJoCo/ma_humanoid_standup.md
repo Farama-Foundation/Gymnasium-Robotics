@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (17,), float32)}`			|
 | Part partition	| `[(abdomen_x, abdomen_y, abdomen_z, right_hip_x, right_hip_y, right_hip_z, right_knee, left_hip_x, left_hip_y, left_hip_z, left_knee, right_shoulder1, right_shoulder2, right_elbow, left_shoulder1, left_shoulder2, left_elbow,),]`	|
 
-If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space)
+If partitioning, is `None` then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space)
 
 | Num | Action                                                                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ---------------------------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -92,31 +92,32 @@ Lower Body
 
 
 ## Observation Space
-
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes all the items of the Humanoid's torso.
 See more at the [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#starting-state).
 
 
 
 ## Episode End
-
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#episode-end).
+All agent terminate and truncate at the same time, given the same conditions as [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#episode-end).
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
+	- Added/Fixed Global observations (The Humanoids's torso: `rootx`, `rooty`, `rootz`) not being observed.
+	- Fixed abdomen observations ordering.
+	- Added support for body observations (`cvel`, `cinert`, `cfrc_ext`)
+	- Changed action ordering to be same as [Gymnasium/MuJoCo/Humanoid](https://gymnasium.farama.org/environments/mujoco/humanoid/#action-space)
 
 
 
