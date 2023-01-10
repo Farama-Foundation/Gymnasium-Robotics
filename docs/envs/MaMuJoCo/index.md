@@ -90,7 +90,7 @@ v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama
 ma_ant.md
 ma_coupled_half_cheetah.md
 ma_half_cheetah.md
-ma_hooper.md
+ma_hopper.md
 ma_humanoid_standup.md
 ma_humanoid.md
 ma_reacher.md

@@ -98,8 +98,7 @@ All agent terminate and truncate at same time given the same conditions as [Gymn
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), first implemented here.
-
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), first implemented here.
 
 
 ```{toctree}

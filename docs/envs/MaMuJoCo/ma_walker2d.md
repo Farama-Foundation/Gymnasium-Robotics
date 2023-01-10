@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (6,), float32)}`			|
 | Part partition	| `(foot_joint, leg_joint, thigh_joint, foot_left_joint, leg_left_joint, thigh_left_joint,),`	|
 
-If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Walker2d](https://gymnasium.farama.org/environments/mujoco/walker2d/#action-space)
+If partitioning, is `None` then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Walker2d](https://gymnasium.farama.org/environments/mujoco/walker2d/#action-space).
 
 | Num | Action                                 | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|----------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
@@ -70,32 +70,30 @@ left leg
 
 
 ## Observation Space
-
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the walker's top.
 See more at the [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#starting-state).
 
 
 
 ## Episode End
-
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#episode-end).
+All agent terminate and truncate at the same time given the same conditions as [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#episode-end).
 
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
+	- Added/Fixed Global observations (The Walker's top: `rootx`, `rooty`, `rootz`) not being observed.
 
 
 
