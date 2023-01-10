@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (6,), float32)}`			|
 | Part partition	| `[(bthigh, bshin, bfoot, fthigh, fshin, ffoot)]`	|
 
-If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Half_Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/)
+If partitioning, is `None`, then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Half_Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/).
 
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -104,31 +104,30 @@ The environment is partitioned in 6 parts, each part corresponding to a single j
 
 
 ## Observation Space
-
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the half cheetah's tip.
 See more at the [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#starting-state).
 
 
 
 ## Episode End
-
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end).
+All agent terminate and truncate at the same time, given the same conditions as [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end).
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
+	- Added/Fixed Global observations (The Cheetah's front tip: `rootx`, `rooty`, `rootz`) not being observed.
+	- Changed action ordering to be same as [Gymnasium/MuJoCo/HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#action-space)
 
 
 

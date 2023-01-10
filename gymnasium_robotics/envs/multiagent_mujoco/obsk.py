@@ -9,13 +9,13 @@ changes:
  - General code cleanup, factorization, type hinting, adding documentation and comments
  - `build_obs`: fixed global observations, fixed body observations (cvel, cinert, cfrc_ext), how uses mujoco.data, instead of gym.env
  - `HalfCheetah`: fix action ordering
- - `Ant`: Fix global observation, fix "2x4d" factorization how having diogonal observations
+ - `Ant`: Fix global observation, fix "2x4d" factorization how having diagonal observations
  - `Humanoid`s: Added Body support, fixed abdomen observations, added/fixed missing global torso observations, fixed action ordering
  - `Reacher`: Fixxed body mapping
  - `Pusher`: Added support for `Pusher`
  - `Swimmer`: Added Front tip to global observations
  - `Walker2D`: Added missing Global Observations
- - `CoupledHalfCheetah`: improved node naming, fixxed tendon facobian observations, fixed action mapping of the second cheetah, added missing global observations
+ - `CoupledHalfCheetah`: improved node naming, fixed tendon Jacobian observations, fixed action mapping of the second cheetah, added missing global observationsm, fixed action ordering
  - `ManySegmentAnt`: Fixed Global Observations
  - added new functions: `_observation_structure`
 
@@ -381,7 +381,7 @@ def get_parts_and_edges(  # noqa: C901
 
         if partitioning is None:
             parts = [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]
-        elif partitioning == "2x4":  # neighbouring legs together (front and back)
+        elif partitioning == "2x4":  # neighboring legs together (front and back)
             parts = [(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]
         elif partitioning == "2x4d":  # diagonal legs together
             parts = [(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]

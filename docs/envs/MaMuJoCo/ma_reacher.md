@@ -28,7 +28,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (2,), float32)}`			|
 | Part partition	| `[(joint0,), (joint1,),]`	|
 
-If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#action-space)
+If partitioning, is `None`, then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#action-space).
 
 | Num | Action                                                                          | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit |
 |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
@@ -58,31 +58,29 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 
 
 ## Observation Space
-
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position of the reacher's target object.
 See more at the [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#starting-state).
 
 
 
 ## Episode End
-
-All agent terminate and truncate at same time given the same conditions as [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#episode-end).
+All agent terminate and truncate at the same time, given the same conditions as [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#episode-end).
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
+	- Added/Fixed Global observations (The Targets's coordinates: `targetx`, `targety`) not being observed.
 
 
 
