@@ -274,7 +274,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_half_cheetah/">Half Cheetah</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hooper/">Hooper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ma_hopper/">Hopper</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../ma_humanoid_standup/">Humanoid Standup</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
@@ -386,7 +386,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>If partitioning, is None then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymansium’s MuJoCo/Ant</a></p>
+<p>If partitioning, is None then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymansium’s MuJoCo/Ant</a>.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -468,10 +468,10 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="if-partitioning-2x4-neighbouring-legs-together">
-<h3>if partitioning == “2x4”:  # neighbouring legs together<a class="headerlink" href="#if-partitioning-2x4-neighbouring-legs-together" title="Permalink to this heading">#</a></h3>
+<section id="if-partitioning-2x4-neighboring-legs-together-front-and-back">
+<h3>if partitioning == “2x4”:  # neighboring legs together (front and back)<a class="headerlink" href="#if-partitioning-2x4-neighboring-legs-together-front-and-back" title="Permalink to this heading">#</a></h3>
 <figure class="align-default" id="ant-2x4">
-<img alt="envs/MaMuJoCo/Ant_2x4.png" src="envs/MaMuJoCo/Ant_2x4.png" />
+<img alt="../../../_images/Ant_2x4.png" src="../../../_images/Ant_2x4.png" />
 </figure>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -918,11 +918,20 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
-<p>All agent terminate and truncate at same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/#episode-end">Gymnasium’s Ant</a>.</p>
+<p>All agent terminate and truncate at the same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/#episode-end">Gymnasium’s Ant</a>.</p>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
-<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<ul class="simple">
+<li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
+Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
+<ul>
+<li><p>Fixed diagonal factorization (“2x4d”) not being diagonal.</p></li>
+<li><p>Fixed Global observations (The Ant’s Torso: <code class="docutils literal notranslate"><span class="pre">rootx</span></code>, <code class="docutils literal notranslate"><span class="pre">rooty</span></code>, <code class="docutils literal notranslate"><span class="pre">rootz</span></code>) not being observed.</p></li>
+<li><p>Changed action ordering to be same as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/#action-space">Gymnasium/MuJoCo/Ant</a></p></li>
+</ul>
+</li>
+</ul>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -975,7 +984,7 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 <li><a class="reference internal" href="#">Ant</a><ul>
 <li><a class="reference internal" href="#action-space">Action Space</a><ul>
 <li><a class="reference internal" href="#if-partitioning-is-none">if partitioning is None:</a></li>
-<li><a class="reference internal" href="#if-partitioning-2x4-neighbouring-legs-together">if partitioning == “2x4”:  # neighbouring legs together</a><ul>
+<li><a class="reference internal" href="#if-partitioning-2x4-neighboring-legs-together-front-and-back">if partitioning == “2x4”:  # neighboring legs together (front and back)</a><ul>
 <li><a class="reference internal" href="#agent-0-action-space">Agent 0 action space</a></li>
 <li><a class="reference internal" href="#agent-1-action-space">Agent 1 action space</a></li>
 </ul>
