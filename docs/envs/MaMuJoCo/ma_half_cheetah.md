@@ -130,7 +130,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#action-space)
 
 
-
-```{toctree}
-:hidden:
-```

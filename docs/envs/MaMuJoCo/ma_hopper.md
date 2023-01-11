@@ -89,7 +89,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Fixed Global observations (The Hopper's top: `rootx`, `rooty`, `rootz`) not being observed.
 
 
-
-```{toctree}
-:hidden:
-```

@@ -80,8 +80,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Swimmer's front tip: `free_body_rot`) not being observed.
 
-
-
-```{toctree}
-:hidden:
-```
