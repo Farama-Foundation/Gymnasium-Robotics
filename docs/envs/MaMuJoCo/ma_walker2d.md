@@ -42,8 +42,8 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 ### elif partitioning == "2x3":  # isolate right and left foot
-```{figure} figures/walker_2x3.png
-    :name: walker_2x3
+```{figure} figures/walker2d_2x3.png
+    :name: walker2d_2x3
 ```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Walker2d", "2x3")`|
