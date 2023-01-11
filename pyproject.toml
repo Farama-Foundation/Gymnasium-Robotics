@@ -29,13 +29,24 @@ dependencies = [
     "mujoco>=2.3.1.post1",
     "numpy>=1.21.0,<1.24.0",
     "gymnasium>=0.26",
+    "pettingzoo>=1.22.2",
+    "Jinja2>=3.0.3",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 # Update dependencies in `all` if any are added or removed
-testing = ["pytest==7.0.1", "mujoco_py<2.2,>=2.1"]
+testing = [
+	"pytest==7.0.1",
+	"mujoco_py<2.2,>=2.1",
+        "pettingzoo>=1.22.2",
+        "Jinja2>=3.0.3",
+]
 mujoco_py = ["mujoco_py<2.2,>=2.1"]
+mamujoco = [
+    "PettingZoo>=1.22.2",
+    "Jinja2>=3.0.3",
+]
 all = [
     "mujoco_py<2.2,>=2.1",
 ]
@@ -64,6 +75,7 @@ gymnasium_robotics = [
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
+    "envs/multiagent_mujoco/assets/*.xml*",
     "envs/assets/kitchen_franka/franka_assets/*.xml",
     "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
     "envs/assets/kitchen_franka/franka_assets/meshes/*.obj",
@@ -111,6 +123,3 @@ enableTypeIgnoreComments = true
 
 reportMissingImports = "none"
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
-# reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
-reportOptionalMemberAccess = "none" # -> raise _version.py error
-
