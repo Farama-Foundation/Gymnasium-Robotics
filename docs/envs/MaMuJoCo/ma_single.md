@@ -8,7 +8,9 @@ lastpage:
 MaMuJoCo also support single action [Gymansium/MuJoCo/](https://gymnasium.farama.org/environments/mujoco/) environment such as [Gymnasium/Mujoco/InvertedPendulum](https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/) and [Gymnasium/Mujoco/InvertedDoublePendulum](https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/)
 
 And can be instantiated (without a partition)
+
 `env = mamujoco_v0.parallel_env("InvertedDoublePendulum", None)`
+
 `env = mamujoco_v0.parallel_env("InvertedPendulum", None)`
 
 In which case, they simply are the same environments with a single agent using the `PettingZoo` APIs.
@@ -18,7 +20,7 @@ In which case, they simply are the same environments with a single agent using t
 The action spaces is depended on the partitioning
 
 ## Observation Space
-The agent receive the same [Gymnasium's Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/#observation-space) reward.
+The agent receives the same observations as the single agent Gymnasium environment.
 
 
 
