@@ -173,9 +173,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Fixed diagonal factorization ("2x4d") not being diagonal.
 	- Fixed Global observations (The Ant's Torso: `rootx`, `rooty`, `rootz`) not being observed.
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#action-space)
-
-
-
-```{toctree}
-:hidden:
-```

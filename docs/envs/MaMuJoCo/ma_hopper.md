@@ -90,9 +90,3 @@ All agent terminate and truncate at same time given the same conditions as [Gymn
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Fixed Global observations (The Hopper's top: `rootx`, `rooty`, `rootz`) not being observed.
-
-
-
-```{toctree}
-:hidden:
-```

@@ -16,6 +16,15 @@ There are 2 types of Environments, included (1) multi-agent factorizations of [G
 
 Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization
 
+
+The `mamujoco` are not included in the current `1.2.0` release of `Gymnasium-Robotics` since we are performing some evaluation tests. If you want to try the current implementation of these environments please install them from source:
+
+```sh
+git clone https://github.com/Farama-Foundation/Gymnasium-Robotics.git
+cd Gymnasium-Robotics
+pip install -e.
+```
+
 ## API
 
 MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/parallel/), but also supports a few extra functions

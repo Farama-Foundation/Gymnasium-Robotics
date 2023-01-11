@@ -123,6 +123,3 @@ enableTypeIgnoreComments = true
 
 reportMissingImports = "none"
 reportGeneralTypeIssues = "none"  # -> commented out raises 489 errors
-# reportUntypedFunctionDecorator = "none"  # -> pytest.mark.parameterize issues
-reportOptionalMemberAccess = "none" # -> raise _version.py error
-
