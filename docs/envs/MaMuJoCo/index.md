@@ -16,12 +16,13 @@ There are 2 types of Environments, included (1) multi-agent factorizations of [G
 
 Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization
 
-The unique dependencies for this set of environments can be installed via:
+The `mamujoco` are not included in the current `1.2.0` release of `Gymnasium-Robotics` since we are performing some evaluation tests. If you want to try the current implementation of these environments please install them from source:
 
 ```sh
-pip install gymnasium-robotics[mamujoco]
+git clone https://github.com/Farama-Foundation/Gymnasium-Robotics.git
+cd Gymnasium-Robotics
+pip install -e.
 ```
-
 
 ## API
 
