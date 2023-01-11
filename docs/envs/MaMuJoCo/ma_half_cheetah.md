@@ -40,6 +40,9 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | 5   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
 
 ### if partitioning == "2x3":  # front and back 
+```{figure} figures/half_cheetah_2x3.png
+    :name: half_cheetah_2x3
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", "2x3")`|
 |-----------------------|------------------------------------------------------|
@@ -68,6 +71,9 @@ back leg
 | 2   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
 
 ### elif partitioning == "6x1":  # each joint
+```{figure} figures/half_cheetah_6x1.png
+    :name: half_cheetah_6x1
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", "6x1")`|
 |-----------------------|------------------------------------------------------|

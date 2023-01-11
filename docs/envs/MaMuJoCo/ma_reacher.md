@@ -38,6 +38,10 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 
 ### elif partitioning == "2x1":
+```{figure} figures/reacher_2x1.png
+    :name: reacher_2x1
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Reacher", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
