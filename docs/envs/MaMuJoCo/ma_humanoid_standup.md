@@ -118,9 +118,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Fixed abdomen observations ordering.
 	- Added support for body observations (`cvel`, `cinert`, `cfrc_ext`)
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/Humanoid](https://gymnasium.farama.org/environments/mujoco/humanoid/#action-space)
-
-
-
-```{toctree}
-:hidden:
-```
