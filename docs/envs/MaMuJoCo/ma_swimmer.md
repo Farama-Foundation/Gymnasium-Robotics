@@ -38,6 +38,10 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 ### elif partitioning == "2x1":  # isolate upper and lower body
+```{figure} figures/swimmer_2x1.png
+    :name: swimmer_2x1
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Swimmer", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|

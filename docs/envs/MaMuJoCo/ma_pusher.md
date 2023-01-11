@@ -43,6 +43,10 @@ If partitioning, is None then the environment contains a single agent with the s
 
 
 ### elif partitioning == "3p":
+```{figure} figures/pusher_3p.png
+    :name: pusher_3p
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Pusher", "3p")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
@@ -73,27 +77,24 @@ Wrist
 | 0    | Rotation of hinge that rolls the forearm                          | -2          | 2           | r_forearm_roll_joint             | hinge | torque (N m) |
 | 1    | Rotation of flexing the wrist                                     | -2          | 2           | r_wrist_flex_joint               | hinge | torque (N m) |
 | 2    | Rotation of rolling the wrist                                     | -2          | 2           | r_wrist_roll_joint               | hinge | torque (N m) |
-## Observation Space
 
+## Observation Space
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position of the pusher's object and the position of the goal.
 See more at the [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/reacher/#observation-space).
 
 
 
 ## Rewards
-
 All agents receive the same [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/#observation-space) reward.
 
 
 
 ## Starting state
-
 The starting state of the environment is the as [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/#starting-state).
 
 
 
 ## Episode End
-
 All agent terminate and truncate at same time given the same conditions as [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/#episode-end).
 
 

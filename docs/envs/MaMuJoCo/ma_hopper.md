@@ -40,6 +40,9 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 
 ### elif partitioning == "3x1":  # each joint
+```{figure} figures/hopper_3x1.png
+    :name: hopper_3x1
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Hopper", "3x1")`|
 |-----------------------|------------------------------------------------------|

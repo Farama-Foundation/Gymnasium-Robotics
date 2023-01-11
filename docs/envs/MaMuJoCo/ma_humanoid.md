@@ -53,6 +53,10 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 ### elif partitioning == "9|8":  # isolate upper and lower body
+```{figure} figures/humanoid_9|8.png
+    :name: humanoid_9|8
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Humanoid", "3x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|

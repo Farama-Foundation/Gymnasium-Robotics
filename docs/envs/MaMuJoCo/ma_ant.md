@@ -41,8 +41,8 @@ If partitioning, is None then the environment contains a single agent with the s
 | 6   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 7   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
 ### if partitioning == "2x4":  # neighboring legs together (front and back)
-```{figure} Ant_2x4.png
-    :name: Ant_2x4
+```{figure} figures/ant_2x4.png
+    :name: ant_2x4
 ```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "2x4")`		|
@@ -73,6 +73,9 @@ back legs
 | 2   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
 ### elif partitioning == "2x4d":  # diagonal legs together
+```{figure} figures/ant_2x4d.png
+    :name: ant_2x4d
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "2x4d")`		|
 |-----------------------|------------------------------------------------------|
@@ -97,6 +100,9 @@ The environment is partitioned in 2 parts, the front part (containing the front 
 | 2   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
 ### elif partitioning == "4x2":
+```{figure} figures/ant_4x2.png
+    :name: ant_4x2
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "4x2")`		|
 |-----------------------|------------------------------------------------------|

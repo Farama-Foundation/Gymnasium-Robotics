@@ -6,7 +6,7 @@ lastpage:
 
 # MaMuJoCo (Multi-Agent MuJoCo)
 
-```{figure} mamujoco.png
+```{figure} figures/mamujoco.png
     :name: mamujoco
 ```
 
@@ -15,13 +15,6 @@ MaMuJoCo was introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gra
 There are 2 types of Environments, included (1) multi-agent factorizations of [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms
 
 Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization
-
-The unique dependencies for this set of environments can be installed via:
-
-```sh
-pip install gymnasium-robotics[mamujoco]
-```
-
 
 ## API
 

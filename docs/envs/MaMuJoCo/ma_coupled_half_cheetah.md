@@ -42,6 +42,10 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 
 ### elif partitioning == "1p1":  # isolate the cheetahs
+```{figure} figures/coupled_half_cheetah_1p1.png
+    :name: coupled_half_cheetah_1p1
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("CoupledHalfCheetah", "1p1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
