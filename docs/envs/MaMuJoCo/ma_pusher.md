@@ -58,6 +58,7 @@ If partitioning, is None then the environment contains a single agent with the s
 | Part partition	| `[(r_shoulder_pan_joint, r_shoulder_lift_joint, r_upper_arm_roll_joint,), (r_elbow_flex_joint,), (r_forearm_roll_joint, r_wrist_flex_joint, r_wrist_roll_joint),]`|
 
 The environment is partitioned in 3 parts, one part corresponding to the shoulder, one part corresponding to the elbow, and one part to the wrist.
+
 #### Agent 0 action space (Shoulder)
 | Num | Action                                                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|--------------------------------------------------------------------|-------------|-------------|----------------------------------|-------|--------------|

@@ -64,6 +64,7 @@ The environment is partitioned in 2 parts, one part corresponding to the right l
 | 0   | Torque applied on the thigh rotor      | -1          | 1           | thigh_joint                      | hinge | torque (N m) |
 | 1   | Torque applied on the leg rotor        | -1          | 1           | leg_joint                        | hinge | torque (N m) |
 | 2   | Torque applied on the foot rotor       | -1          | 1           | foot_joint                       | hinge | torque (N m) |
+
 #### Agent 1 action space (left leg)
 | Num | Action                                 | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|----------------------------------------|-------------|-------------|----------------------------------|-------|--------------|

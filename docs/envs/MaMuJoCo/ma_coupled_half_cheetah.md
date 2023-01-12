@@ -57,6 +57,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | Part partition	| `[(bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0), (bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1),]`|
 
 The environment is partitioned in 2 parts, one part corresponding to the first cheetah and second part corresponding to the second cheetah.
+
 #### Agent 0 action space (first cheetah)
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -76,6 +77,7 @@ The environment is partitioned in 2 parts, one part corresponding to the first c
 | 3   | Torque applied on the front thigh rotor of the second cheetah | -1          | 1           | fthigh1                          | hinge | torque (N m) |
 | 4   | Torque applied on the front shin rotor of the second cheetah  | -1          | 1           | fshin1                           | hinge | torque (N m) |
 | 5   | Torque applied on the front foot rotor of the second cheetah  | -1          | 1           | ffoot1                           | hinge | torque (N m) |
+
 
 
 ## Observation Space

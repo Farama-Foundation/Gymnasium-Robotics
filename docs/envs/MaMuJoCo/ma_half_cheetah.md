@@ -110,6 +110,7 @@ The environment is partitioned in 6 parts, each part corresponding to a single j
 | 0   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
 
 
+
 ## Observation Space
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the half cheetah's tip.
 See more at the [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#observation-space).

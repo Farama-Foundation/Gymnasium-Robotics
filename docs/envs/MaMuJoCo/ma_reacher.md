@@ -53,6 +53,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | Part partition	| `[(joint0,), (joint1,)]`|
 
 The environment is partitioned in 2 parts, one part corresponding to the first joint, and one part corresponding to the second joint.
+
 #### Agent 0 action space
 | Num | Action                                                                          | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit |
 |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
@@ -62,6 +63,7 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 | Num | Action                                                                          | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit |
 |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
 | 0   |  Torque applied at the second hinge (connecting the two links)                  | -1 | 1 | joint1  | hinge | torque (N m) |
+
 
 
 ## Observation Space
