@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/)
+The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/m
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/ant.png
+    :name: ant
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Ant", None)`		|
 |-----------------------|------------------------------------------------------|
@@ -40,6 +43,7 @@ If partitioning, is None then the environment contains a single agent with the s
 | 5   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
 | 6   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 7   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
+
 ### if partitioning == "2x4":  # neighboring legs together (front and back)
 ```{figure} figures/ant_2x4.png
     :name: ant_2x4
@@ -52,27 +56,25 @@ If partitioning, is None then the environment contains a single agent with the s
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (4,), float32), 'agent_1' : Box(-1, 1, (4,), float32)}`|
 | Part partition	| `[(hip1, ankle1, hip2, ankle2), (hip3, ankle3, hip4, ankle4)]`	|
 
-The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
+The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs).
 
-#### Agent 0 action space
-front legs
-
+#### Agent 0 action space (front legs)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between the torso and front left hip  | -1          | 1           | hip_1 (front_left_leg)           | hinge | torque (N m) |
 | 1   | Torque applied on the rotor between the front left two links      | -1          | 1           | angle_1 (front_left_leg)         | hinge | torque (N m) |
 | 2   | Torque applied on the rotor between the torso and front right hip | -1          | 1           | hip_2 (front_right_leg)          | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
-#### Agent 1 action space
-back legs
 
+#### Agent 1 action space (back legs)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between the torso and back right hip  | -1          | 1           | hip_4 (right_back_leg)           | hinge | torque (N m) |
 | 1   | Torque applied on the rotor between the back right two links      | -1          | 1           | angle_4 (right_back_leg)         | hinge | torque (N m) |
 | 2   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
-### elif partitioning == "2x4d":  # diagonal legs together
+
+### if partitioning == "2x4d":  # diagonal legs together
 ```{figure} figures/ant_2x4d.png
     :name: ant_2x4d
 ```
@@ -84,7 +86,7 @@ back legs
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (4,), float32), 'agent_1' : Box(-1, 1, (4,), float32)}`|
 | Part partition	| `[(hip1, ankle1, hip4, ankle4), (hip2, ankle2, hip3, ankle3)]`	|
 
-The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)
+The environment is partitioned in 2 parts, split diagonally.
 #### Agent 0 action space
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -99,7 +101,8 @@ The environment is partitioned in 2 parts, the front part (containing the front 
 | 1   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
 | 2   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
-### elif partitioning == "4x2":
+
+### if partitioning == "4x2":
 ```{figure} figures/ant_4x2.png
     :name: ant_4x2
 ```
@@ -111,34 +114,27 @@ The environment is partitioned in 2 parts, the front part (containing the front 
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (2,), float32), 'agent_1' : Box(-1, 1, (2,), float32)}, 'agent_2' : Box(-1, 1, (2,), float32), 'agent_3' : Box(-1, 1, (2,), float32)},`|
 | Part partition	| `[(hip1, ankle1), (hip2, ankle2), (hip3, ankle3), (hip4, ankle4)]`	|
 
-The environment is partitioned in 4 parts, with each part corresponding to a leg of the ant
-#### Agent 0 action space
-front left leg
+The environment is partitioned in 4 parts, with each part corresponding to a leg of the ant.
 
+#### Agent 0 action space (front left leg)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between the torso and front left hip  | -1          | 1           | hip_1 (front_left_leg)           | hinge | torque (N m) |
 | 1   | Torque applied on the rotor between the front left two links      | -1          | 1           | angle_1 (front_left_leg)         | hinge | torque (N m) |
 
-#### Agent 1 action space
-front right leg
-
+#### Agent 1 action space (front right leg)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between the torso and front right hip | -1          | 1           | hip_2 (front_right_leg)          | hinge | torque (N m) |
 | 1   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
 
-#### Agent 2 action space
-right left leg
-
+#### Agent 2 action space (right left leg)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 2   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
 | 3   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
 
-#### Agent 3 action space
-right back leg
-
+#### Agent 3 action space (right back leg)
 | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between the torso and back right hip  | -1          | 1           | hip_4 (right_back_leg)           | hinge | torque (N m) |
