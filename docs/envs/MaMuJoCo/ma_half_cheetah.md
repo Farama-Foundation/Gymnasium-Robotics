@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/)
+The task is [Gymansium's MuJoCo/Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Half Cheetah](https://gymnasium.farama.org/envir
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/half_cheetah.png
+    :name: half_cheetah
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -53,24 +56,21 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 The environment is partitioned in 2 parts, the front part (containing the front leg) and the back part (containing the back leg)
 
-#### Agent 0 action space
-front leg
-
+#### Agent 0 action space (front leg)
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the back thigh rotor  | -1          | 1           | bthigh                           | hinge | torque (N m) |
 | 1   | Torque applied on the back shin rotor   | -1          | 1           | bshin                            | hinge | torque (N m) |
 | 2   | Torque applied on the back foot rotor   | -1          | 1           | bfoot                            | hinge | torque (N m) |
-#### Agent 1 action space
-back leg
 
+#### Agent 1 action space (back leg)
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the front thigh rotor | -1          | 1           | fthigh                           | hinge | torque (N m) |
 | 1   | Torque applied on the front shin rotor  | -1          | 1           | fshin                            | hinge | torque (N m) |
 | 2   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
 
-### elif partitioning == "6x1":  # each joint
+### if partitioning == "6x1":  # each joint
 ```{figure} figures/half_cheetah_6x1.png
     :name: half_cheetah_6x1
 ```
@@ -83,6 +83,7 @@ back leg
 | Part partition	| `[(bthigh,), (bshin,), (bfoot,), (fthigh,), (fshin,), (ffoot,)]`|
 
 The environment is partitioned in 6 parts, each part corresponding to a single joint
+
 #### Agent 0 action space
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -107,6 +108,7 @@ The environment is partitioned in 6 parts, each part corresponding to a single j
 | Num | Action                                  | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | --------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
+
 
 
 ## Observation Space

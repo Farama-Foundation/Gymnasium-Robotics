@@ -5,9 +5,9 @@ lastpage:
 
 
 # Single Action Environments
-MaMuJoCo also support single action [Gymansium/MuJoCo/](https://gymnasium.farama.org/environments/mujoco/) environment such as [Gymnasium/Mujoco/InvertedPendulum](https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/) and [Gymnasium/Mujoco/InvertedDoublePendulum](https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/)
+MaMuJoCo also supports single action [Gymansium/MuJoCo/](https://gymnasium.farama.org/environments/mujoco/) environments such as [Gymnasium/Mujoco/InvertedPendulum](https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/) and [Gymnasium/Mujoco/InvertedDoublePendulum](https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/).
 
-And can be instantiated (without a partition)
+And can be instantiated (without a partition):
 
 `env = mamujoco_v0.parallel_env("InvertedDoublePendulum", None)`
 
@@ -15,9 +15,12 @@ And can be instantiated (without a partition)
 
 In which case, they simply are the same environments with a single agent using the `PettingZoo` APIs.
 
+The Purpose of these is to allow researchers to debug multi-agent learning algorithms.
+
+
 
 ## Action Space
-The action spaces is depended on the partitioning
+The action spaces is depended on the partitioning.
 
 ## Observation Space
 The agent receives the same observations as the single agent Gymnasium environment.
