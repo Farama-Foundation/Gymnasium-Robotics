@@ -329,14 +329,15 @@
           
           <section id="single-action-environments">
 <h1>Single Action Environments<a class="headerlink" href="#single-action-environments" title="Permalink to this heading">#</a></h1>
-<p>MaMuJoCo also support single action <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymansium/MuJoCo/</a> environment such as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/">Gymnasium/Mujoco/InvertedPendulum</a> and <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/">Gymnasium/Mujoco/InvertedDoublePendulum</a></p>
-<p>And can be instantiated (without a partition)</p>
+<p>MaMuJoCo also supports single action <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymansium/MuJoCo/</a> environments such as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/">Gymnasium/Mujoco/InvertedPendulum</a> and <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/">Gymnasium/Mujoco/InvertedDoublePendulum</a>.</p>
+<p>And can be instantiated (without a partition):</p>
 <p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;InvertedDoublePendulum&quot;,</span> <span class="pre">None)</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;InvertedPendulum&quot;,</span> <span class="pre">None)</span></code></p>
 <p>In which case, they simply are the same environments with a single agent using the <code class="docutils literal notranslate"><span class="pre">PettingZoo</span></code> APIs.</p>
+<p>The Purpose of these is to allow researchers to debug multi-agent learning algorithms.</p>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
-<p>The action spaces is depended on the partitioning</p>
+<p>The action spaces is depended on the partitioning.</p>
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
