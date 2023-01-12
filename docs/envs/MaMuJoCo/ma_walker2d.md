@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/)
+The task is [Gymansium's MuJoCo/Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Walker2D](https://gymnasium.farama.org/environme
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/walker2d.png
+    :name: walker2d
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Walker2D", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -41,7 +44,7 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 
-### elif partitioning == "2x3":  # isolate right and left foot
+### if partitioning == "2x3":  # isolate right and left foot
 ```{figure} figures/walker2d_2x3.png
     :name: walker2d_2x3
 ```
@@ -53,18 +56,15 @@ If partitioning, is `None` then the environment contains a single agent with the
 | Action Spaces		| `{'agent_0': Box(-1, 1, (3,), float32), 'agent_1' : Box(-1, 1, (3,), float32)}`			|
 | Part partition	| `[(foot_joint, leg_joint, thigh_joint), (foot_left_joint, leg_left_joint, thigh_left_joint,),]`|
 
-The environment is partitioned in 2 parts, one part corresponding to the right leg and one part corresponding to the left leg
-#### Agent 0 action space
-right leg
+The environment is partitioned in 2 parts, one part corresponding to the right leg, and one part corresponding to the left leg.
 
+#### Agent 0 action space (right leg)
 | Num | Action                                 | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|----------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
 | 0   | Torque applied on the thigh rotor      | -1          | 1           | thigh_joint                      | hinge | torque (N m) |
 | 1   | Torque applied on the leg rotor        | -1          | 1           | leg_joint                        | hinge | torque (N m) |
 | 2   | Torque applied on the foot rotor       | -1          | 1           | foot_joint                       | hinge | torque (N m) |
-#### Agent 1 action space
-left leg
-
+#### Agent 1 action space (left leg)
 | Num | Action                                 | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|----------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
 | 0   | Torque applied on the left thigh rotor | -1          | 1           | thigh_left_joint                 | hinge | torque (N m) |
