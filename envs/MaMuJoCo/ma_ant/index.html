@@ -335,12 +335,15 @@
 	</p>
 </html> 
 <p>This Environment is part of <a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/">MaMuJoCo</a> environments. Please read that page first for general information.
-The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymansium’s MuJoCo/Ant</a></p>
+The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymansium’s MuJoCo/Ant</a>.</p>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
 <p>The action spaces is depended on the partitioning</p>
 <section id="if-partitioning-is-none">
 <h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Permalink to this heading">#</a></h3>
+<figure class="align-default" id="id1">
+<img alt="../../../_images/ant.png" src="../../../_images/ant.png" />
+</figure>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -474,10 +477,9 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)</p>
-<section id="agent-0-action-space">
-<h4>Agent 0 action space<a class="headerlink" href="#agent-0-action-space" title="Permalink to this heading">#</a></h4>
-<p>front legs</p>
+<p>The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs).</p>
+<section id="agent-0-action-space-front-legs">
+<h4>Agent 0 action space (front legs)<a class="headerlink" href="#agent-0-action-space-front-legs" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -527,9 +529,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="agent-1-action-space">
-<h4>Agent 1 action space<a class="headerlink" href="#agent-1-action-space" title="Permalink to this heading">#</a></h4>
-<p>back legs</p>
+<section id="agent-1-action-space-back-legs">
+<h4>Agent 1 action space (back legs)<a class="headerlink" href="#agent-1-action-space-back-legs" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -580,8 +581,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </div>
 </section>
 </section>
-<section id="elif-partitioning-2x4d-diagonal-legs-together">
-<h3>elif partitioning == “2x4d”:  # diagonal legs together<a class="headerlink" href="#elif-partitioning-2x4d-diagonal-legs-together" title="Permalink to this heading">#</a></h3>
+<section id="if-partitioning-2x4d-diagonal-legs-together">
+<h3>if partitioning == “2x4d”:  # diagonal legs together<a class="headerlink" href="#if-partitioning-2x4d-diagonal-legs-together" title="Permalink to this heading">#</a></h3>
 <figure class="align-default" id="ant-2x4d">
 <img alt="../../../_images/ant_2x4d.png" src="../../../_images/ant_2x4d.png" />
 </figure>
@@ -608,9 +609,9 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>The environment is partitioned in 2 parts, the front part (containing the front legs) and the back part (containing the back legs)</p>
-<section id="id1">
-<h4>Agent 0 action space<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<p>The environment is partitioned in 2 parts, split diagonally.</p>
+<section id="agent-0-action-space">
+<h4>Agent 0 action space<a class="headerlink" href="#agent-0-action-space" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -660,8 +661,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="id2">
-<h4>Agent 1 action space<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<section id="agent-1-action-space">
+<h4>Agent 1 action space<a class="headerlink" href="#agent-1-action-space" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -712,8 +713,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </div>
 </section>
 </section>
-<section id="elif-partitioning-4x2">
-<h3>elif partitioning == “4x2”:<a class="headerlink" href="#elif-partitioning-4x2" title="Permalink to this heading">#</a></h3>
+<section id="if-partitioning-4x2">
+<h3>if partitioning == “4x2”:<a class="headerlink" href="#if-partitioning-4x2" title="Permalink to this heading">#</a></h3>
 <figure class="align-default" id="ant-4x2">
 <img alt="../../../_images/ant_4x2.png" src="../../../_images/ant_4x2.png" />
 </figure>
@@ -740,10 +741,9 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>The environment is partitioned in 4 parts, with each part corresponding to a leg of the ant</p>
-<section id="id3">
-<h4>Agent 0 action space<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
-<p>front left leg</p>
+<p>The environment is partitioned in 4 parts, with each part corresponding to a leg of the ant.</p>
+<section id="agent-0-action-space-front-left-leg">
+<h4>Agent 0 action space (front left leg)<a class="headerlink" href="#agent-0-action-space-front-left-leg" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -777,9 +777,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="id4">
-<h4>Agent 1 action space<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
-<p>front right leg</p>
+<section id="agent-1-action-space-front-right-leg">
+<h4>Agent 1 action space (front right leg)<a class="headerlink" href="#agent-1-action-space-front-right-leg" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -813,9 +812,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="agent-2-action-space">
-<h4>Agent 2 action space<a class="headerlink" href="#agent-2-action-space" title="Permalink to this heading">#</a></h4>
-<p>right left leg</p>
+<section id="agent-2-action-space-right-left-leg">
+<h4>Agent 2 action space (right left leg)<a class="headerlink" href="#agent-2-action-space-right-left-leg" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -849,9 +847,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="agent-3-action-space">
-<h4>Agent 3 action space<a class="headerlink" href="#agent-3-action-space" title="Permalink to this heading">#</a></h4>
-<p>right back leg</p>
+<section id="agent-3-action-space-right-back-leg">
+<h4>Agent 3 action space (right back leg)<a class="headerlink" href="#agent-3-action-space-right-back-leg" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -967,20 +964,20 @@ Changes from the original <code class="docutils literal notranslate"><span class
 <li><a class="reference internal" href="#action-space">Action Space</a><ul>
 <li><a class="reference internal" href="#if-partitioning-is-none">if partitioning is None:</a></li>
 <li><a class="reference internal" href="#if-partitioning-2x4-neighboring-legs-together-front-and-back">if partitioning == “2x4”:  # neighboring legs together (front and back)</a><ul>
+<li><a class="reference internal" href="#agent-0-action-space-front-legs">Agent 0 action space (front legs)</a></li>
+<li><a class="reference internal" href="#agent-1-action-space-back-legs">Agent 1 action space (back legs)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#if-partitioning-2x4d-diagonal-legs-together">if partitioning == “2x4d”:  # diagonal legs together</a><ul>
 <li><a class="reference internal" href="#agent-0-action-space">Agent 0 action space</a></li>
 <li><a class="reference internal" href="#agent-1-action-space">Agent 1 action space</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#elif-partitioning-2x4d-diagonal-legs-together">elif partitioning == “2x4d”:  # diagonal legs together</a><ul>
-<li><a class="reference internal" href="#id1">Agent 0 action space</a></li>
-<li><a class="reference internal" href="#id2">Agent 1 action space</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#elif-partitioning-4x2">elif partitioning == “4x2”:</a><ul>
-<li><a class="reference internal" href="#id3">Agent 0 action space</a></li>
-<li><a class="reference internal" href="#id4">Agent 1 action space</a></li>
-<li><a class="reference internal" href="#agent-2-action-space">Agent 2 action space</a></li>
-<li><a class="reference internal" href="#agent-3-action-space">Agent 3 action space</a></li>
+<li><a class="reference internal" href="#if-partitioning-4x2">if partitioning == “4x2”:</a><ul>
+<li><a class="reference internal" href="#agent-0-action-space-front-left-leg">Agent 0 action space (front left leg)</a></li>
+<li><a class="reference internal" href="#agent-1-action-space-front-right-leg">Agent 1 action space (front right leg)</a></li>
+<li><a class="reference internal" href="#agent-2-action-space-right-left-leg">Agent 2 action space (right left leg)</a></li>
+<li><a class="reference internal" href="#agent-3-action-space-right-back-leg">Agent 3 action space (right back leg)</a></li>
 </ul>
 </li>
 </ul>

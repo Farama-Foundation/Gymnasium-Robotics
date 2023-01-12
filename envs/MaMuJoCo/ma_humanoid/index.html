@@ -335,12 +335,15 @@
 	</p>
 </html> 
 <p>This Environment is part of <a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/">MaMuJoCo</a> environments. Please read that page first for general information.
-The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/">Gymansium’s MuJoCo/Humanoid</a></p>
+The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/">Gymansium’s MuJoCo/Humanoid</a>.</p>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
 <p>The action spaces is depended on the partitioning</p>
 <section id="if-partitioning-is-none">
 <h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Permalink to this heading">#</a></h3>
+<figure class="align-default" id="id1">
+<img alt="../../../_images/humanoid.png" src="../../../_images/humanoid.png" />
+</figure>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -364,7 +367,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>If partitioning, is <code class="docutils literal notranslate"><span class="pre">None</span></code> then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space">Gymansium’s MuJoCo/Humanoid Standup</a></p>
+<p>If partitioning, is <code class="docutils literal notranslate"><span class="pre">None</span></code> then the environment contains a single agent with the same action space as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space">Gymansium’s MuJoCo/Humanoid Standup</a>.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -518,8 +521,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="elif-partitioning-9-8-isolate-upper-and-lower-body">
-<h3>elif partitioning == “9|8”:  # isolate upper and lower body<a class="headerlink" href="#elif-partitioning-9-8-isolate-upper-and-lower-body" title="Permalink to this heading">#</a></h3>
+<section id="if-partitioning-9-8-isolate-upper-and-lower-body">
+<h3>if partitioning == “9|8”:  # isolate upper and lower body<a class="headerlink" href="#if-partitioning-9-8-isolate-upper-and-lower-body" title="Permalink to this heading">#</a></h3>
 <figure class="align-default" id="humanoid-9-8">
 <img alt="../../../_images/humanoid_9%7C8.png" src="../../../_images/humanoid_9%7C8.png" />
 </figure>
@@ -546,10 +549,9 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </tbody>
 </table>
 </div>
-<p>The environment is partitioned in 2 parts, one part corresponding to the upper body and one part corresponding to the lower body</p>
-<section id="agent-0-action-space">
-<h4>Agent 0 action space<a class="headerlink" href="#agent-0-action-space" title="Permalink to this heading">#</a></h4>
-<p>Upper Body</p>
+<p>The environment is partitioned in 2 parts, one part corresponding to the upper body and one part corresponding to the lower body.</p>
+<section id="agent-0-action-space-upper-body">
+<h4>Agent 0 action space (Upper Body)<a class="headerlink" href="#agent-0-action-space-upper-body" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -639,9 +641,8 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </table>
 </div>
 </section>
-<section id="agent-1-action-space">
-<h4>Agent 1 action space<a class="headerlink" href="#agent-1-action-space" title="Permalink to this heading">#</a></h4>
-<p>Lower Body</p>
+<section id="agent-1-action-space-lower-body">
+<h4>Agent 1 action space (Lower Body)<a class="headerlink" href="#agent-1-action-space-lower-body" title="Permalink to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -805,9 +806,9 @@ Changes from the original <code class="docutils literal notranslate"><span class
 <li><a class="reference internal" href="#">Humanoid</a><ul>
 <li><a class="reference internal" href="#action-space">Action Space</a><ul>
 <li><a class="reference internal" href="#if-partitioning-is-none">if partitioning is None:</a></li>
-<li><a class="reference internal" href="#elif-partitioning-9-8-isolate-upper-and-lower-body">elif partitioning == “9|8”:  # isolate upper and lower body</a><ul>
-<li><a class="reference internal" href="#agent-0-action-space">Agent 0 action space</a></li>
-<li><a class="reference internal" href="#agent-1-action-space">Agent 1 action space</a></li>
+<li><a class="reference internal" href="#if-partitioning-9-8-isolate-upper-and-lower-body">if partitioning == “9|8”:  # isolate upper and lower body</a><ul>
+<li><a class="reference internal" href="#agent-0-action-space-upper-body">Agent 0 action space (Upper Body)</a></li>
+<li><a class="reference internal" href="#agent-1-action-space-lower-body">Agent 1 action space (Lower Body)</a></li>
 </ul>
 </li>
 </ul>
