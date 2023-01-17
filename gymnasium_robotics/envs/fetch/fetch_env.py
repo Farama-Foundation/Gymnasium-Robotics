@@ -238,7 +238,7 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
         self.sim.forward()
 
     def _viewer_setup(self):
-        lookat = self.get_gripper_xpos()
+        lookat = self._get_gripper_xpos()
         for idx, value in enumerate(lookat):
             self.viewer.cam.lookat[idx] = value
         assert self.viewer is not None
