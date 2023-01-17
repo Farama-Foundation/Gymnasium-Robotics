@@ -142,9 +142,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
-    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
+    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
 
     ## Starting State
 
@@ -271,16 +269,14 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         nail_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
         goal_pos = self.data.site_xpos[self.goal_site_id].ravel()
 
-        reward = 0.0
-        if not self.sparse_reward:
-            # get the palm to the hammer handle
-            reward -= 0.1 * np.linalg.norm(palm_pos - hamm_pos)
-            # take hammer head to nail
-            reward -= np.linalg.norm(head_pos - nail_pos)
-            # make nail go inside
-            reward -= 10 * np.linalg.norm(nail_pos - goal_pos)
-            # velocity penalty
-            reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
+        # get the palm to the hammer handle
+        reward = 0.1 * np.linalg.norm(palm_pos - hamm_pos)
+        # take hammer head to nail
+        reward -= np.linalg.norm(head_pos - nail_pos)
+        # make nail go inside
+        reward -= 10 * np.linalg.norm(nail_pos - goal_pos)
+        # velocity penalty
+        reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
 
         # bonus for lifting up the hammer
         if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
@@ -293,6 +289,9 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             reward += 75
 
         goal_achieved = True if np.linalg.norm(nail_pos - goal_pos) < 0.010 else False
+
+        # override the reward if we're using sparse reward
+        reward = float(goal_achieved) if self.sparse_reward else reward
 
         if self.render_mode == "human":
             self.render()
