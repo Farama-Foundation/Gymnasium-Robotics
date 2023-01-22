@@ -79,6 +79,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         local_categories: list[list[str]] | None = None,
         global_categories: tuple[str, ...] | None = None,
         render_mode: str | None = None,
+        **kwargs,
     ):
         """Init.
 
@@ -101,6 +102,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 The default is; local_categories[0]
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
+            kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
+                Note: arguments that change the observation space will not work.
 
             Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values)
         """
@@ -109,7 +112,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.single_agent_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv = (
-                gymnasium.make(scenario, render_mode=render_mode)
+                gymnasium.make(scenario, **kwargs, render_mode=render_mode)
             )
         elif scenario in ["ManySegmentAnt-v4"]:
             assert isinstance(agent_conf, str)
