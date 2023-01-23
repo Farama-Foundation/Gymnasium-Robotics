@@ -24,7 +24,6 @@ classifiers = [
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
 ]
-
 dependencies = [
     "mujoco>=2.3.1.post1",
     "numpy>=1.21.0,<1.24.0",
@@ -43,13 +42,6 @@ testing = [
         "Jinja2>=3.0.3",
 ]
 mujoco_py = ["mujoco_py<2.2,>=2.1"]
-mamujoco = [
-    "PettingZoo>=1.22.2",
-    "Jinja2>=3.0.3",
-]
-all = [
-    "mujoco_py<2.2,>=2.1",
-]
 
 [project.urls]
 Homepage = "https://farama.org"
