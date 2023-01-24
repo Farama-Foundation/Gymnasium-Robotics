@@ -1,9 +1,7 @@
 import numpy as np
-
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
 from gymnasium.spaces import Box
-
 
 DEFAULT_CAMERA_CONFIG = {
     "trackbodyid": 1,
@@ -224,7 +222,6 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
         actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
         external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
-
 
         return np.concatenate(
             (
