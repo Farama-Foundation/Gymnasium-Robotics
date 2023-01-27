@@ -288,10 +288,10 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             reward += 50
 
         # penalty for dropping the pen
-        terminated = False
+        term = False
         if obj_pos[2] < 0.075:
             reward -= 5
-            terminated = True
+            term = True
 
         goal_achieved = True if (dist < 0.075 and orien_similarity > 0.95) else False
 
@@ -301,7 +301,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, terminated, False, dict(success=goal_achieved)
+        return obs, reward, term or goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         qpos = self.data.qpos.ravel()
