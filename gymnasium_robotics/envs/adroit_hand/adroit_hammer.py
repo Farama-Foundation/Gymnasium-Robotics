@@ -282,7 +282,6 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
             reward += 2
 
-
         # bonus for hammering the nail
         nail_distance = np.linalg.norm(nail_pos - goal_pos)
         if nail_distance < 0.020:
