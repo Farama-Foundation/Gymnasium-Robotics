@@ -290,8 +290,6 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         if nail_distance < 0.010:
             reward += 75
 
-        print(nail_distance)
-
         goal_achieved = True if nail_distance < 0.010 else False
 
         # override the reward if we're using sparse reward
