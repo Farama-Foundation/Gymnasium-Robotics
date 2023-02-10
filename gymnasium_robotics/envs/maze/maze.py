@@ -129,8 +129,8 @@ class Maze:
 
     def cell_rowcol_to_xy(self, rowcol_pos: np.ndarray) -> np.ndarray:
         """Converts a cell index `(i,j)` to x and y coordinates in the MuJoCo simulation"""
-        x = rowcol_pos[1] - self.x_map_center
-        y = rowcol_pos[0] - self.y_map_center
+        x = (rowcol_pos[1] + 0.5) * self.maze_size_scaling - self.x_map_center
+        y = self.y_map_center - (rowcol_pos[0] + 0.5) * self.maze_size_scaling
 
         return np.array([x, y])
 
