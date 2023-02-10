@@ -10,7 +10,7 @@ As well as adding support for the Gymnasium API.
 
 This project is covered by the Apache 2.0 License.
 """
-
+import math
 import tempfile
 import xml.etree.ElementTree as ET
 from os import path
@@ -133,6 +133,12 @@ class Maze:
         y = self.y_map_center - (rowcol_pos[0] + 0.5) * self.maze_size_scaling
 
         return np.array([x, y])
+
+    def cell_xy_to_rowcol(self, xy_pos: np.ndarray) -> np.ndarray:
+        """Converts a cell x and y coordinates to `(i,j)`"""
+        i = math.floor((self.y_map_center - xy_pos[1]) / self.maze_size_scaling)
+        j = math.floor((xy_pos[0] + self.x_map_center) / self.maze_size_scaling)
+        return np.array([i, j])
 
     @classmethod
     def make_maze(
