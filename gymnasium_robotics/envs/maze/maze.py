@@ -60,8 +60,8 @@ class Maze:
         # Get the center cell Cartesian position of the maze. This will be the origin
         self._map_length = len(maze_map)
         self._map_width = len(maze_map[0])
-        self._x_map_center = np.ceil(self.map_width / 2) * maze_size_scaling
-        self._y_map_center = np.ceil(self.map_length / 2) * maze_size_scaling
+        self._x_map_center = self.map_width / 2 * maze_size_scaling
+        self._y_map_center = self.map_length / 2 * maze_size_scaling
 
     @property
     def maze_map(self) -> List[List[Union[str, int]]]:
