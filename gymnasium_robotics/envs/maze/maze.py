@@ -292,9 +292,6 @@ class MazeEnv(GoalEnv):
             # Add noise to goal position
             self.goal = self.add_xy_position_noise(goal)
 
-            # Update the position of the target site for visualization
-            self.update_target_site_pos()
-
             if "reset_cell" in options and options["reset_cell"] is not None:
                 # assert that goal cell is valid
                 assert self.maze.map_length > options["reset_cell"][1]
@@ -311,6 +308,8 @@ class MazeEnv(GoalEnv):
             else:
                 reset_pos = self.generate_reset_pos()
 
+        # Update the position of the target site for visualization
+        self.update_target_site_pos()
         # Add noise to reset position
         self.reset_pos = self.add_xy_position_noise(reset_pos)
 
