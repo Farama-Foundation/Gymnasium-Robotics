@@ -389,7 +389,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
         )
 
     def _get_obs(self, point_obs) -> Dict[str, np.ndarray]:
-        achieved_goal = point_obs[2:]
+        achieved_goal = point_obs[:2]
         return {
             "observation": point_obs.copy(),
             "achieved_goal": achieved_goal.copy(),

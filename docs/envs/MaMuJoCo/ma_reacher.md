@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/)
+The task is [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environmen
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/reacher.png
+    :name: reacher
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Reacher", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -37,7 +40,11 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 
 
-### elif partitioning == "2x1":
+### if partitioning == "2x1":
+```{figure} figures/reacher_2x1.png
+    :name: reacher_2x1
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Reacher", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
@@ -45,7 +52,8 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | Action Spaces		| `{'agent_0': Box(-1, 1, (1,), float32), 'agent_1' : Box(-1, 1, (1,), float32)}`			|
 | Part partition	| `[(joint0,), (joint1,)]`|
 
-The environment is partitioned in 2 parts, one part corresponding to the first joint and one part corresponding to the second joint
+The environment is partitioned in 2 parts, one part corresponding to the first joint, and one part corresponding to the second joint.
+
 #### Agent 0 action space
 | Num | Action                                                                          | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit |
 |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
@@ -55,6 +63,7 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 | Num | Action                                                                          | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit |
 |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
 | 0   |  Torque applied at the second hinge (connecting the two links)                  | -1 | 1 | joint1  | hinge | torque (N m) |
+
 
 
 ## Observation Space
@@ -82,8 +91,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Targets's coordinates: `targetx`, `targety`) not being observed.
 
-
-
-```{toctree}
-:hidden:
-```

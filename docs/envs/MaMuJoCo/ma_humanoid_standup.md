@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/)
+The task is [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/e
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/humanoid.png
+    :name: humanoid
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("HumanoidStandup", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -28,7 +31,7 @@ The action spaces is depended on the partitioning
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (17,), float32)}`			|
 | Part partition	| `[(abdomen_x, abdomen_y, abdomen_z, right_hip_x, right_hip_y, right_hip_z, right_knee, left_hip_x, left_hip_y, left_hip_z, left_knee, right_shoulder1, right_shoulder2, right_elbow, left_shoulder1, left_shoulder2, left_elbow,),]`	|
 
-If partitioning, is `None` then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space)
+If partitioning, is `None` then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#action-space).
 
 | Num | Action                                                                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ---------------------------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
@@ -52,7 +55,11 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 
-### elif partitioning == "9|8":  # isolate upper and lower body
+### if partitioning == "9|8":  # isolate upper and lower body
+```{figure} figures/humanoid_9|8.png
+    :name: humanoid_9|8
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("HumanoidStandup", "3x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
@@ -60,10 +67,9 @@ If partitioning, is `None` then the environment contains a single agent with the
 | Action Spaces		| `{'agent_0': Box(-1, 1, (9,), float32), 'agent_1' : Box(-1, 1, (8,), float32)}`			|
 | Part partition	| `[(abdomen_x, abdomen_y, abdomen_z, right_shoulder1, right_shoulder2, right_elbow, left_shoulder1, left_shoulder2, left_elbow,), (right_hip_x, right_hip_y, right_hip_z, right_knee, left_hip_x, left_hip_y, left_hip_z, left_knee,)]`|
 
-The environment is partitioned in 2 parts, one part corresponding to the upper body and one part corresponding to the lower body
-#### Agent 0 action space
-Upper Body
+The environment is partitioned in 2 parts, one part corresponding to the upper body and one part corresponding to the lower body.
 
+#### Agent 0 action space (Upper Body)
 | Num | Action                                                                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ---------------------------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the hinge in the y-coordinate of the abdomen                     | -0.4        | 0.4         | abdomen_y                        | hinge | torque (N m) |
@@ -76,9 +82,7 @@ Upper Body
 | 7   | Torque applied on the rotor between the torso and left upper arm (coordinate -2)   | -0.4        | 0.4         | left_shoulder2                   | hinge | torque (N m) |
 | 8   | Torque applied on the rotor between the left upper arm and left lower arm          | -0.4        | 0.4         | left_elbow                       | hinge | torque (N m) |
 
-#### Agent 1 action space
-Lower Body
-
+#### Agent 1 action space (Lower Body)
 | Num | Action                                                                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 | --- | ---------------------------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
 | 0   | Torque applied on the rotor between torso/abdomen and the right hip (x-coordinate) | -0.4        | 0.4         | right_hip_x (right_thigh)        | hinge | torque (N m) |
@@ -89,6 +93,7 @@ Lower Body
 | 5   | Torque applied on the rotor between torso/abdomen and the left hip (z-coordinate)  | -0.4        | 0.4         | left_hip_z (left_thigh)          | hinge | torque (N m) |
 | 6   | Torque applied on the rotor between torso/abdomen and the left hip (y-coordinate)  | -0.4        | 0.4         | left_hip_y (left_thigh)          | hinge | torque (N m) |
 | 7   | Torque applied on the rotor between the left hip/thigh and the left shin           | -0.4        | 0.4         | left_knee                        | hinge | torque (N m) |
+
 
 
 ## Observation Space
@@ -118,9 +123,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Fixed abdomen observations ordering.
 	- Added support for body observations (`cvel`, `cinert`, `cfrc_ext`)
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/Humanoid](https://gymnasium.farama.org/environments/mujoco/humanoid/#action-space)
-
-
-
-```{toctree}
-:hidden:
-```

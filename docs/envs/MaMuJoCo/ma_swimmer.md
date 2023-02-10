@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Swimmer](https://gymnasium.farama.org/environments/mujoco/swimmer/)
+The task is [Gymansium's MuJoCo/Swimmer](https://gymnasium.farama.org/environments/mujoco/swimmer/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Swimmer](https://gymnasium.farama.org/environmen
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/swimmer.png
+    :name: swimmer
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Swimmer", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -37,7 +40,11 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 
-### elif partitioning == "2x1":  # isolate upper and lower body
+### if partitioning == "2x1":  # isolate upper and lower body
+```{figure} figures/swimmer_2x1.png
+    :name: swimmer_2x1
+```
+
 | Instantiate		| `env = mamujoco_v0.parallel_env("Swimmer", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
@@ -45,7 +52,8 @@ If partitioning, is `None` then the environment contains a single agent with the
 | Action Spaces		| `{'agent_0': Box(-1, 1, (1,), float32), 'agent_1' : Box(-1, 1, (1,), float32)}`			|
 | Part partition	| `[(joint0,), (joint1,)]`|
 
-The environment is partitioned in 2 parts, one part corresponding to the first joint and one part corresponding to the second joint
+The environment is partitioned in 2 parts, one part corresponding to the first joint, and one part corresponding to the second joint.
+
 #### Agent 0 action space
 | Num | Action                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
@@ -54,6 +62,8 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 | Num | Action                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
 | 0   | Torque applied on the second rotor | -1          | 1           | motor2_rot                       | hinge | torque (N m) |
+
+
 
 ## Observation Space
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the swimmer's tip.
@@ -80,8 +90,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Swimmer's front tip: `free_body_rot`) not being observed.
 
-
-
-```{toctree}
-:hidden:
-```

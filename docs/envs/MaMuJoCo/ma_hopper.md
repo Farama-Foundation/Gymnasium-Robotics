@@ -12,7 +12,7 @@ lastpage:
 </html> 
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
-The task is [Gymansium's MuJoCo/Hopper](https://gymnasium.farama.org/environments/mujoco/hopper/)
+The task is [Gymansium's MuJoCo/Hopper](https://gymnasium.farama.org/environments/mujoco/hopper/).
 
 
 
@@ -20,6 +20,9 @@ The task is [Gymansium's MuJoCo/Hopper](https://gymnasium.farama.org/environment
 The action spaces is depended on the partitioning
 
 ### if partitioning is None:
+```{figure} figures/hopper.png
+    :name: hopper
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Hopper", None)`	|
 |-----------------------|------------------------------------------------------|
@@ -39,7 +42,10 @@ If partitioning, is `None`, then the environment contains a single agent with th
 
 
 
-### elif partitioning == "3x1":  # each joint
+### if partitioning == "3x1":  # each joint
+```{figure} figures/hopper_3x1.png
+    :name: hopper_3x1
+```
 
 | Instantiate		| `env = mamujoco_v0.parallel_env("Hopper", "3x1")`|
 |-----------------------|------------------------------------------------------|
@@ -48,7 +54,8 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | Action Spaces		| `{Box(-1, 1, (1,), float32)}`|
 | Part partition	| `[(thigh_joint,), (leg_joint,), (foot_joint,)]`|
 
-The environment is partitioned in 3 parts, each part corresponding to a single joint
+The environment is partitioned in 3 parts, each part corresponding to a single joint.
+
 #### Agent 0 action space
 | Num | Action                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
@@ -61,6 +68,7 @@ The environment is partitioned in 3 parts, each part corresponding to a single j
 | Num | Action                             | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
 |-----|------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
 | 0   | Torque applied on the foot rotor   | -1          | 1           | foot_joint                       | hinge | torque (N m) |
+
 
 
 ## Observation Space
@@ -87,9 +95,3 @@ All agent terminate and truncate at same time given the same conditions as [Gymn
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Fixed Global observations (The Hopper's top: `rootx`, `rooty`, `rootz`) not being observed.
-
-
-
-```{toctree}
-:hidden:
-```
