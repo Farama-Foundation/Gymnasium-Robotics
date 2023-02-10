@@ -171,10 +171,9 @@ class Maze:
             for j in range(maze.map_width):
                 struct = maze_map[i][j]
                 # Store cell locations in simulation global Cartesian coordinates
-                x = j * maze_size_scaling - maze.x_map_center
-                y = i * maze_size_scaling - maze.y_map_center
+                x = (j + 0.5) * maze_size_scaling - maze.x_map_center
+                y = maze.y_map_center - (i + 0.5) * maze_size_scaling
                 if struct == 1:  # Unmovable block.
-
                     # Offset all coordinates so that maze is centered.
                     ET.SubElement(
                         worldbody,
@@ -298,9 +297,6 @@ class MazeEnv(GoalEnv):
             # Add noise to goal position
             self.goal = self.add_xy_position_noise(goal)
 
-            # Update the position of the target site for visualization
-            self.update_target_site_pos()
-
             if "reset_cell" in options and options["reset_cell"] is not None:
                 # assert that goal cell is valid
                 assert self.maze.map_length > options["reset_cell"][1]
@@ -319,6 +315,9 @@ class MazeEnv(GoalEnv):
 
         # Add noise to reset position
         self.reset_pos = self.add_xy_position_noise(reset_pos)
+
+        # Update the position of the target site for visualization
+        self.update_target_site_pos()
 
     def add_xy_position_noise(self, xy_pos: np.ndarray) -> np.ndarray:
         """Pass an x,y coordinate and it will return the same coordinate with a noise addition
@@ -347,18 +346,18 @@ class MazeEnv(GoalEnv):
         if self.reward_type == "dense":
             return np.exp(-np.linalg.norm(desired_goal - achieved_goal))
         elif self.reward_type == "sparse":
-            return 1.0 if np.linalg.norm(achieved_goal - desired_goal) <= 0.5 else 0.0
+            return 1.0 if np.linalg.norm(achieved_goal - desired_goal) <= 0.45 else 0.0
 
     def compute_terminated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
     ) -> bool:
         if not self.continuing_task:
             # If task is episodic terminate the episode when the goal is reached
-            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.5)
+            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
             if (
-                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.5)
+                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
                 and len(self.maze.unique_goal_locations) > 1
             ):
                 # Generate another goal
