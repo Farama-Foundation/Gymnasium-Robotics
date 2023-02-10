@@ -313,6 +313,8 @@ class MazeEnv(GoalEnv):
             else:
                 reset_pos = self.generate_reset_pos()
 
+        # Update the position of the target site for visualization
+        self.update_target_site_pos()
         # Add noise to reset position
         self.reset_pos = self.add_xy_position_noise(reset_pos)
 
