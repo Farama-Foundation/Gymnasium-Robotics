@@ -19,8 +19,8 @@ if __name__ == "__main__":
             ):
                 all_envs.append(env_spec)  # Exclude Fetch and Shadow Hand environments
     filtered_envs_by_type = {}
-    for entry_point in all_envs:
-        env_full_name = entry_point.split(":")
+    for env_spec in all_envs:
+        env_full_name = env_spec.entry_point.split(":")
 
         split_entrypoint = env_full_name[0].split(".")
         if len(split_entrypoint) == 4:
