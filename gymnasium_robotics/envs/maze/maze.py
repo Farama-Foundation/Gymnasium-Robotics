@@ -166,7 +166,7 @@ class Maze:
         worldbody = tree.find(".//worldbody")
 
         maze = cls(maze_map, maze_size_scaling, maze_height)
-
+        empty_locations = []
         for i in range(maze.map_length):
             for j in range(maze.map_width):
                 struct = maze_map[i][j]
@@ -188,18 +188,14 @@ class Maze:
                         rgba="0.7 0.5 0.3 1.0",
                     )
 
-                elif maze_map[i][j] in [
-                    RESET,
-                ]:
+                elif struct == RESET:
                     maze._unique_reset_locations.append(np.array([x, y]))
-                elif maze_map[i][j] in [
-                    GOAL,
-                ]:
+                elif struct == GOAL:
                     maze._unique_goal_locations.append(np.array([x, y]))
-                elif maze_map[i][j] in [
-                    COMBINED,
-                ]:
+                elif struct == COMBINED:
                     maze._combined_locations.append(np.array([x, y]))
+                elif struct == 0:
+                    empty_locations.append(np.array([x, y]))
 
         # Add target site for visualization
         ET.SubElement(
@@ -213,6 +209,14 @@ class Maze:
         )
 
         # Add the combined cell locations (goal/reset) to goal and reset
+        if (
+            not maze._unique_goal_locations
+            and not maze._unique_reset_locations
+            and not maze._combined_locations
+        ):
+            # If there are no given "r", "g" or "c" cells in the maze data structure,
+            # any empty cell can be a reset or goal location at initialization.
+            maze._combined_locations = empty_locations
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
