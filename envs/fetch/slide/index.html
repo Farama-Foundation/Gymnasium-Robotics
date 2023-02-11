@@ -14,8 +14,8 @@
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.3.0, furo 2022.09.15.dev1"/>
         <title>Slide - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=3cf7b839e8c50b5f3a39bb99d90baa7b845de926" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=b332e145f118bbc5b181998bee244c1e810e1f8b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=c36209c3579494d5f9512671edd8cd731f7c406c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=57f753f2a36df4cd87bf0e4232aabc9b3cc73912" />
     
     
 
@@ -183,10 +183,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
-
-
 <div class="page">
-   <!--<header class="mobile-header">
+  <!--<header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
         <div class="visually-hidden">Toggle site navigation sidebar</div>
@@ -291,32 +289,46 @@
       
     </div>
   </aside>
-  <div class="main">
-    <div class="content">
-      <div class="article-container">
-        <a href="#" class="back-to-top muted-link">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
-          </svg>
-          <span>Back to top</span>
-        </a>
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
-              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-            </button>
+  <div class="main-container">
+
+    
+
+    
+
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container">
+            <div class="theme-toggle-container theme-toggle-content">
+              <button class="theme-toggle">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto">
+                  <use href="#svg-sun-half"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-          </label>
-        </div>
-        <article role="main">
-          
-          <section id="slide">
+          <article role="main">
+            
+            <section id="slide">
 <h1>Slide<a class="headerlink" href="#slide" title="Permalink to this heading">#</a></h1>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/slide.gif"><img alt="../../../_images/slide.gif" src="../../../_images/slide.gif" style="width: 200px;" /></a>
@@ -385,46 +397,328 @@ configuration since the puck doesn’t need to be graspped. The task is also con
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s end effector state and goal. The kinematics observations are derived from Mujoco bodies known as <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site">sites</a> attached to
 the body of interest such as the puck or the end effector. Only the observations from the gripper fingers are derived from joints. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:</p>
-<p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(25,)</span></code>. It consists of kinematic information of the puck object and gripper. The elements of the array correspond to the following:
-| Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) | Joint Name (in corresponding XML file) |Joint Type| Unit                     |
-|—–|—————————————————————————————————————————————|——–|——–|—————————————|—————————————-|———-|————————–|
-| 0   | End effector x position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-| 1   | End effector y position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-| 2   | End effector z position in global coordinates                                                                                         | -Inf   | Inf    | robot0:grip                           |-                                       |-         | position (m)             |
-| 3   | Puck x position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 4   | Puck y position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 5   | Puck z position in global coordinates                                                                                                 | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 6   | Relative puck x position with respect to gripper x position in globla coordinates. Equals to x<sub>gripper</sub> - x<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 7   | Relative puck y position with respect to gripper y position in globla coordinates. Equals to y<sub>gripper</sub> - y<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 8   | Relative puck z position with respect to gripper z position in globla coordinates. Equals to z<sub>gripper</sub> - z<sub>puck</sub>   | -Inf   | Inf    | object0                               |-                                       |-         | position (m)             |
-| 9   | Joint displacement of the right gripper finger                                                                                        | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | position (m)             |
-| 10  | Joint displacement of the left gripper finger                                                                                         | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | position (m)             |
-| 11  | Global x rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-| 12  | Global y rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-| 13  | Global z rotation of the puck in a XYZ Euler frame rotation                                                                           | -Inf   | Inf    | object0                               |-                                       |-         | angle (rad)              |
-| 14  | Relative puck linear velocity in x direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-| 15  | Relative puck linear velocity in y direction with respect to the gripper                                                              | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-| 16  | Relative puck linear velocity in z direction                                                                                          | -Inf   | Inf    | object0                               |-                                       |-         | velocity (m/s)           |
-| 17  | Puck angular velocity along the x axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-| 18  | Puck angular velocity along the y axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-| 19  | Puck angular velocity along the z axis                                                                                                | -Inf   | Inf    | object0                               |-                                       |-         | angular velocity (rad/s) |
-| 20  | End effector linear velocity x direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-| 21  | End effector linear velocity y direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-| 22  | End effector linear velocity z direction                                                                                              | -Inf   | Inf    | robot0:grip                           |-                                       |-         | velocity (m/s)           |
-| 23  | Right gripper finger linear velocity                                                                                                  | -Inf   | Inf    |-                                      | robot0:r_gripper_finger_joint          | hinge    | velocity (m/s)           |
-| 24  | Left gripper finger linear velocity                                                                                                   | -Inf   | Inf    |-                                      | robot0:l_gripper_finger_joint          | hinge    | velocity (m/s)           |</p>
-<p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 3-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, that consists of the three cartesian coordinates of the desired final puck position <code class="docutils literal notranslate"><span class="pre">[x,y,z]</span></code>. In order for the robot to perform a pick and place trajectory, the goal position can be elevated over the table or on top of the table. The elements of the array are the following:
-| Num | Observation                                                                                                                           | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
-|—–|—————————————————————————————————————————————|——–|——–|—————————————|————–|
-| 0   | Final goal puck position in the x coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
-| 1   | Final goal puck position in the y coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |
-| 2   | Final goal puck position in the z coordinate                                                                                         | -Inf   | Inf    | target0                               | position (m) |</p>
-<p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the puck, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER). The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. The elements of the array are the following:
-| Num | Observation                                | Min    | Max    | Site Name (in corresponding XML file) |Unit          |
-|—–|——————————————–|——–|——–|—————————————|————–|
-| 0   | Current puck position in the x coordinate  | -Inf   | Inf    | object0                               | position (m) |
-| 1   | Current puck position in the y coordinate  | -Inf   | Inf    | object0                               | position (m) |
-| 2   | Current puck position in the z coordinate  | -Inf   | Inf    | object0                               | position (m) |</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(25,)</span></code>. It consists of kinematic information of the puck object and gripper. The elements of the array correspond to the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Site Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint Name (in corresponding XML file)</p></th>
+<th class="head"><p>Joint Type</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>End effector x position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>End effector y position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>End effector z position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Puck x position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Puck y position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Puck z position in global coordinates</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>Relative puck x position with respect to gripper x position in globla coordinates. Equals to x<sub>gripper</sub> - x<sub>puck</sub></p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>Relative puck y position with respect to gripper y position in globla coordinates. Equals to y<sub>gripper</sub> - y<sub>puck</sub></p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>Relative puck z position with respect to gripper z position in globla coordinates. Equals to z<sub>gripper</sub> - z<sub>puck</sub></p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>Joint displacement of the right gripper finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>-</p></td>
+<td><p>robot0:r_gripper_finger_joint</p></td>
+<td><p>hinge</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>Joint displacement of the left gripper finger</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>-</p></td>
+<td><p>robot0:l_gripper_finger_joint</p></td>
+<td><p>hinge</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>Global x rotation of the puck in a XYZ Euler frame rotation</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>Global y rotation of the puck in a XYZ Euler frame rotation</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>Global z rotation of the puck in a XYZ Euler frame rotation</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angle (rad)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>Relative puck linear velocity in x direction with respect to the gripper</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>Relative puck linear velocity in y direction with respect to the gripper</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>Relative puck linear velocity in z direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>Puck angular velocity along the x axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>Puck angular velocity along the y axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>19</p></td>
+<td><p>Puck angular velocity along the z axis</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>angular velocity (rad/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>20</p></td>
+<td><p>End effector linear velocity x direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>21</p></td>
+<td><p>End effector linear velocity y direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>22</p></td>
+<td><p>End effector linear velocity z direction</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>robot0:grip</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p>23</p></td>
+<td><p>Right gripper finger linear velocity</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>-</p></td>
+<td><p>robot0:r_gripper_finger_joint</p></td>
+<td><p>hinge</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+<tr class="row-even"><td><p>24</p></td>
+<td><p>Left gripper finger linear velocity</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>-</p></td>
+<td><p>robot0:l_gripper_finger_joint</p></td>
+<td><p>hinge</p></td>
+<td><p>velocity (m/s)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 3-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, that consists of the three cartesian coordinates of the desired final puck position <code class="docutils literal notranslate"><span class="pre">[x,y,z]</span></code>. In order for the robot to perform a pick and place trajectory, the goal position can be elevated over the table or on top of the table. The elements of the array are the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Site Name (in corresponding XML file)</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Final goal puck position in the x coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Final goal puck position in the y coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Final goal puck position in the z coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>target0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>: this key represents the current state of the puck, as if it would have achieved a goal. This is useful for goal orientated learning algorithms such as those that use <a class="reference external" href="https://arxiv.org/abs/1707.01495">Hindsight Experience Replay</a> (HER). The value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. The elements of the array are the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Num</p></th>
+<th class="head"><p>Observation</p></th>
+<th class="head"><p>Min</p></th>
+<th class="head"><p>Max</p></th>
+<th class="head"><p>Site Name (in corresponding XML file)</p></th>
+<th class="head"><p>Unit</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Current puck position in the x coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Current puck position in the y coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Current puck position in the z coordinate</p></td>
+<td><p>-Inf</p></td>
+<td><p>Inf</p></td>
+<td><p>object0</p></td>
+<td><p>position (m)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
 </section>
 <section id="rewards">
 <h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
@@ -470,22 +764,26 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 </section>
 </section>
 
-        </article>
-      </div>
-      <footer>
-        
-        <div class="related-pages">
-          <a class="next-page" href="../../shadow_dexterous_hand/">
+          </article>
+        </div>
+        <footer>
+          
+          <div class="related-pages">
+            <a class="next-page" href="../../shadow_dexterous_hand/">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
                 <div class="title">Shadow Dexterous Hand</div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon">
+                <use href="#svg-arrow-right"></use>
+              </svg>
             </a>
             <a class="prev-page" href="../reach/">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon">
+                <use href="#svg-arrow-right"></use>
+              </svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -495,43 +793,46 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
                 
               </div>
             </a>
-        </div>
-        <div class="bottom-of-page">
-          <div class="left-details">
-            <div class="copyright">
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
                 Copyright &#169; 2022
-            </div>
-            <!--
+              </div>
+              <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             -->
-          </div>
-          <div class="right-details">
-            <div class="icons">
-              <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium" aria-label="On GitHub">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                </svg>
-              </a>
+            </div>
+            <div class="right-details">
+              <div class="icons">
+                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium"
+                  aria-label="On GitHub">
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+          
+        </footer>
+      </div>
+      <aside class="toc-drawer">
         
-      </footer>
-    </div>
-    <aside class="toc-drawer">
-      
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
 <li><a class="reference internal" href="#">Slide</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#action-space">Action Space</a></li>
@@ -545,12 +846,13 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 </li>
 </ul>
 
+            </div>
           </div>
         </div>
-      </div>
-      
-      
-    </aside>
+        
+        
+      </aside>
+    </div>
   </div>
 </div>
     <script>
@@ -727,5 +1029,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
     </script>
 
     
+    
+
     </body>
 </html>

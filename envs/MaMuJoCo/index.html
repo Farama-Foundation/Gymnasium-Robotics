@@ -14,8 +14,8 @@
     <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><meta name="generator" content="sphinx-5.3.0, furo 2022.09.15.dev1"/>
         <title>MaMuJoCo (Multi-Agent MuJoCo) - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=3cf7b839e8c50b5f3a39bb99d90baa7b845de926" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=b332e145f118bbc5b181998bee244c1e810e1f8b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=c36209c3579494d5f9512671edd8cd731f7c406c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=57f753f2a36df4cd87bf0e4232aabc9b3cc73912" />
     
     
 
@@ -183,10 +183,8 @@
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
-
-
 <div class="page">
-   <!--<header class="mobile-header">
+  <!--<header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
         <div class="visually-hidden">Toggle site navigation sidebar</div>
@@ -291,17 +289,23 @@
       
     </div>
   </aside>
-  <div class="main">
-    <div class="content">
-      <div class="article-container">
-        <a href="#" class="back-to-top muted-link">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
-          </svg>
-          <span>Back to top</span>
-        </a>
-        <div class="content-icon-container">
-          
+  <div class="main-container">
+
+    
+
+    
+
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container">
+            
     
     <div class="edit-this-page">
   <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium/edit/master/docs/envs/MaMuJoCo/index.md" title="Edit this page">
@@ -313,21 +317,29 @@
     <span class="visually-hidden">Edit this page</span>
   </a>
 </div><div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
-              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-            </button>
+              <button class="theme-toggle">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto">
+                  <use href="#svg-sun-half"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-          </label>
-        </div>
-        <article role="main">
-          
-          <section id="mamujoco-multi-agent-mujoco">
+          <article role="main">
+            
+            <section id="mamujoco-multi-agent-mujoco">
 <h1>MaMuJoCo (Multi-Agent MuJoCo)<a class="headerlink" href="#mamujoco-multi-agent-mujoco" title="Permalink to this heading">#</a></h1>
 <figure class="align-default" id="mamujoco">
 <img alt="../../_images/mamujoco.png" src="../../_images/mamujoco.png" />
@@ -429,7 +441,7 @@ pip<span class="w"> </span>install<span class="w"> </span>-e.
 <h3>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.__init__">
-<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_obsk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_factorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.__init__" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_obsk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_factorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.__init__" title="Permalink to this definition">#</a></dt>
 <dd><p>Init.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -452,6 +464,8 @@ The default is: Everything is observable at depth 0, but only the position items
 The default is; local_categories[0]</p></li>
 <li><p><strong>render_mode</strong> – see [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>),
 valid values: ‘human’, ‘rgb_array’, ‘depth_array’</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments passed to the [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>) environment,
+Note: arguments that change the observation space will not work.</p></li>
 <li><p><strong>Raises</strong> – NotImplementedError: When the scenario is not supported (not part of of the valid values)</p></li>
 </ul>
 </dd>
@@ -496,50 +510,53 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
 </section>
 </section>
 
-        </article>
-      </div>
-      <footer>
-        
-        <div class="related-pages">
-          
-            
+          </article>
         </div>
-        <div class="bottom-of-page">
-          <div class="left-details">
-            <div class="copyright">
+        <footer>
+          
+          <div class="related-pages">
+            
+            
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
                 Copyright &#169; 2022
-            </div>
-            <!--
+              </div>
+              <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             -->
-          </div>
-          <div class="right-details">
-            <div class="icons">
-              <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium" aria-label="On GitHub">
-                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                </svg>
-              </a>
+            </div>
+            <div class="right-details">
+              <div class="icons">
+                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium"
+                  aria-label="On GitHub">
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+          
+        </footer>
+      </div>
+      <aside class="toc-drawer">
         
-      </footer>
-    </div>
-    <aside class="toc-drawer">
-      
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
 <li><a class="reference internal" href="#">MaMuJoCo (Multi-Agent MuJoCo)</a><ul>
 <li><a class="reference internal" href="#api">API</a><ul>
 <li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action"><code class="docutils literal notranslate"><span class="pre">map_local_actions_to_global_action()</span></code></a></li>
@@ -562,12 +579,13 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
 </li>
 </ul>
 
+            </div>
           </div>
         </div>
-      </div>
-      
-      
-    </aside>
+        
+        
+      </aside>
+    </div>
   </div>
 </div>
     <script>
@@ -744,5 +762,7 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
     </script>
 
     
+    
+
     </body>
 </html>
