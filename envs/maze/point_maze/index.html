@@ -354,8 +354,9 @@ The cell encoding can have 5 different values:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;r&quot;:</span> <span class="pre">str</span></code> - Indicates cells in which the agent can be initialized in when the environment is reset.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;c&quot;:</span> <span class="pre">str</span></code> - Stands for combined cell and indicates that this cell can be initialized as a goal or agent reset location.</p></li>
 </ul>
-<p>The maze data structure is discrete. However the observations are continuous and variance is added to the goal and the agent’s initial pose by adding a sammpled noise from a uniform distribution
-to the cell cartesian coordinate center in the MuJoCo simulation.</p>
+<p>Note that if all the empty cells are given a value of <code class="docutils literal notranslate"><span class="pre">0</span></code> and there are no cells in the map representation with values <code class="docutils literal notranslate"><span class="pre">&quot;g&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code>, the initial goal and reset locations
+will be randomly chosen from the empty cells with value <code class="docutils literal notranslate"><span class="pre">0</span></code>. Also, the maze data structure is discrete. However the observations are continuous and variance is added to the goal and the
+agent’s initial pose by adding a sammpled noise from a uniform distribution to the cell’s <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> coordinates in the MuJoCo simulation.</p>
 <section id="maze-size">
 <h3>Maze size<a class="headerlink" href="#maze-size" title="Permalink to this heading">#</a></h3>
 <p>There are three types of environment variations depending on the maze size configuration:</p>
