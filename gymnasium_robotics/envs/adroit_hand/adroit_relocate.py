@@ -134,8 +134,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandReloateSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
+    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
 
     ## Starting State
 
@@ -257,9 +256,14 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
         target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
 
-        reward = 0.0
+        # compute the sparse reward variant first
+        goal_distance = float(np.linalg.norm(obj_pos - target_pos))
+        goal_achieved = True if goal_distance < 0.1 else False
+        reward = 1.0 if goal_achieved else -0.1
+
+        # override reward if not sparse reward
         if not self.sparse_reward:
-            reward -= 0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
+            reward = 0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
             if obj_pos[2] > 0.04:  # if object off the table
                 reward += 1.0  # bonus for lifting the object
                 reward += -0.5 * np.linalg.norm(
@@ -269,20 +273,18 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
                     obj_pos - target_pos
                 )  # make object go to target
 
-        # bonus for object close to target
-        if np.linalg.norm(obj_pos - target_pos) < 0.1:
-            reward += 10.0
+            # bonus for object close to target
+            if goal_distance < 0.1:
+                reward += 10.0
 
-        # bonus for object "very" close to target
-        if np.linalg.norm(obj_pos - target_pos) < 0.05:
-            reward += 20.0
-
-        goal_achieved = True if np.linalg.norm(obj_pos - target_pos) < 0.1 else False
+            # bonus for object "very" close to target
+            if goal_distance < 0.05:
+                reward += 20.0
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, False, False, dict(success=goal_achieved)
+        return obs, reward, goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         # qpos for hand

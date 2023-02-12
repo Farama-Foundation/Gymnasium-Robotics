@@ -133,7 +133,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     - `door_hinge_displacement`: adds a positive reward of `2` if the door hinge is opened more than `0.2` radians, `8` if more than `1.0` randians, and `10` if more than `1.35` radians.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v1')`.
-    In this variant, a reward of 10 is given once the door is opened more than `1.35` radians and zero otherwise.
+    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
 
     ## Starting State
 
@@ -256,35 +256,37 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         self.do_simulation(a, self.frame_skip)
         obs = self._get_obs()
 
-        handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
-        palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
-        door_pos = self.data.qpos[self.door_hinge_addrs]
+        # compute the sparse reward variant first
+        goal_distance = self.data.qpos[self.door_hinge_addrs]
+        goal_achieved = True if goal_distance >= 1.35 else False
+        reward = 1.0 if goal_achieved else -0.1
 
-        reward = 0.0
+        # override reward if not sparse reward
         if not self.sparse_reward:
+            handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
+            palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
+
             # get to handle
-            reward -= 0.1 * np.linalg.norm(palm_pos - handle_pos)
+            reward = 0.1 * np.linalg.norm(palm_pos - handle_pos)
             # open door
-            reward += -0.1 * (door_pos - 1.57) * (door_pos - 1.57)
+            reward += -0.1 * (goal_distance - 1.57) * (goal_distance - 1.57)
             # velocity cost
             reward += -1e-5 * np.sum(self.data.qvel**2)
 
             # Bonus reward
-            if door_pos > 0.2:
+            if goal_distance > 0.2:
                 reward += 2
-            if door_pos > 1.0:
+            if goal_distance > 1.0:
                 reward += 8
 
-        # environment completed
-        if door_pos > 1.35:
-            reward += 10
-
-        goal_achieved = True if door_pos >= 1.35 else False
+            # environment completed
+            if goal_distance > 1.35:
+                reward += 10
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, False, False, dict(success=goal_achieved)
+        return obs, reward, goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         # qpos for hand

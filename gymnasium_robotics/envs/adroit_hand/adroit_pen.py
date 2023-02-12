@@ -39,7 +39,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     ## Action Space
 
-    The action space is a `Box(-1.0, 1.0, (24,), float32)`. The control actions are absolute angular positions of the Adroit hand joints. The input of the control actions is set to a range between -1 and 1 by scaling the real actuator angle ranges in radians.
+    The action space is a Box(-1.0, 1.0, (24,), float32)`. The control actions are absolute angular positions of the Adroit hand joints. The input of the control actions is set to a range between -1 and 1 by scaling the real actuator angle ranges in radians.
     The elements of the action array are the following:
 
     | Num | Action                                                                                  | Control Min | Control Max | Angle Min    | Angle Max   | Name (in corresponding XML file) | Joint | Unit        |
@@ -134,10 +134,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add a negative reward of `5`.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add a negative reward of `5`.
-    - `close_to_target`: bonus reward for the pen being close to the target orientation. If the dot product between both ortientations is greater than `0.9` and the Euclidean
-        distance less than `0.075` add a `10` reward, if the same distance holds and the orientation dot product is greater than `0.95` add `50`.
+    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
 
     ## Starting State
 
@@ -277,31 +274,31 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
 
-        # pos cost
-        dist = np.linalg.norm(obj_pos - desired_loc)
-        reward = -dist * (not self.sparse_reward)
-        # orien cost
+        # compute the sparse reward variant first
+        goal_distance = np.linalg.norm(obj_pos - desired_loc)
         orien_similarity = np.dot(obj_orien, desired_orien)
-        reward += orien_similarity * (not self.sparse_reward)
+        goal_achieved = True if (goal_distance < 0.075 and orien_similarity > 0.95) else False
+        reward = 1.0 if goal_achieved else -0.1
+        goal_failed = obj_pos[2] < 0.075
 
-        # bonus for being close to desired orientation
-        if dist < 0.075 and orien_similarity > 0.9:
-            reward += 10
-        if dist < 0.075 and orien_similarity > 0.95:
-            reward += 50
+        # override reward if not sparse reward
+        if not self.sparse_reward:
+            reward = -goal_distance + orien_similarity
 
-        # penalty for dropping the pen
-        terminated = False
-        if obj_pos[2] < 0.075:
-            reward -= 5
-            terminated = True
+            # bonus for being close to desired orientation
+            if goal_distance < 0.075 and orien_similarity > 0.9:
+                reward += 10
+            if goal_distance < 0.075 and orien_similarity > 0.95:
+                reward += 50
 
-        goal_achieved = True if (dist < 0.075 and orien_similarity > 0.95) else False
+            # penalty for dropping the pen
+            if obj_pos[2] < 0.075:
+                reward -= 5
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, terminated, False, dict(success=goal_achieved)
+        return obs, reward, goal_failed or goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         qpos = self.data.qpos.ravel()
