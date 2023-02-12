@@ -142,9 +142,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
-    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
+    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
 
     ## Starting State
 
@@ -271,10 +269,15 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         nail_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
         goal_pos = self.data.site_xpos[self.goal_site_id].ravel()
 
-        reward = 0.0
+        # compute the sparse reward variant first
+        goal_distance = np.linalg.norm(nail_pos - goal_pos)
+        goal_achieved = True if goal_distance < 0.01 else False
+        reward = 1.0 if goal_achieved else -0.1
+
+        # override reward if not sparse reward
         if not self.sparse_reward:
             # get the palm to the hammer handle
-            reward -= 0.1 * np.linalg.norm(palm_pos - hamm_pos)
+            reward = 0.1 * np.linalg.norm(palm_pos - hamm_pos)
             # take hammer head to nail
             reward -= np.linalg.norm(head_pos - nail_pos)
             # make nail go inside
@@ -282,22 +285,20 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             # velocity penalty
             reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
 
-        # bonus for lifting up the hammer
-        if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
-            reward += 2
+            # bonus for lifting up the hammer
+            if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
+                reward += 2
 
-        # bonus for hammering the nail
-        if np.linalg.norm(nail_pos - goal_pos) < 0.020:
-            reward += 25
-        if np.linalg.norm(nail_pos - goal_pos) < 0.010:
-            reward += 75
-
-        goal_achieved = True if np.linalg.norm(nail_pos - goal_pos) < 0.010 else False
+            # bonus for hammering the nail
+            if goal_distance < 0.020:
+                reward += 25
+            if goal_distance < 0.010:
+                reward += 75
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, False, False, dict(success=goal_achieved)
+        return obs, reward, goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         # qpos for hand
