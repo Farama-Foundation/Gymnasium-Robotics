@@ -274,34 +274,31 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
 
-        # pos cost
-        dist = np.linalg.norm(obj_pos - desired_loc)
-        reward = -dist
-        # orien cost
+        # compute the sparse reward variant first
+        goal_distance = np.linalg.norm(obj_pos - desired_loc)
         orien_similarity = np.dot(obj_orien, desired_orien)
-        reward += orien_similarity
+        goal_achieved = True if (goal_distance < 0.075 and orien_similarity > 0.95) else False
+        reward = 1.0 if goal_achieved else -0.1
+        goal_failed = obj_pos[2] < 0.075
 
-        # bonus for being close to desired orientation
-        if dist < 0.075 and orien_similarity > 0.9:
-            reward += 10
-        if dist < 0.075 and orien_similarity > 0.95:
-            reward += 50
+        # override reward if not sparse reward
+        if not self.sparse_reward:
+            reward = -goal_distance + orien_similarity
 
-        # penalty for dropping the pen
-        term = False
-        if obj_pos[2] < 0.075:
-            reward -= 5
-            term = True
+            # bonus for being close to desired orientation
+            if goal_distance < 0.075 and orien_similarity > 0.9:
+                reward += 10
+            if goal_distance < 0.075 and orien_similarity > 0.95:
+                reward += 50
 
-        goal_achieved = True if (dist < 0.075 and orien_similarity > 0.95) else False
-
-        # override the reward if we're using sparse reward
-        reward = float(goal_achieved) if self.sparse_reward else reward
+            # penalty for dropping the pen
+            if obj_pos[2] < 0.075:
+                reward -= 5
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, term or goal_achieved, False, dict(success=goal_achieved)
+        return obs, reward, goal_failed or goal_achieved, False, dict(success=goal_achieved)
 
     def _get_obs(self):
         qpos = self.data.qpos.ravel()

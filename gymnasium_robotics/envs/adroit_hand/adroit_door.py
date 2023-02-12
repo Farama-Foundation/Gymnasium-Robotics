@@ -256,31 +256,32 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         self.do_simulation(a, self.frame_skip)
         obs = self._get_obs()
 
-        handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
-        palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
-        door_pos = self.data.qpos[self.door_hinge_addrs]
+        # compute the sparse reward variant first
+        goal_distance = self.data.qpos[self.door_hinge_addrs]
+        goal_achieved = True if goal_distance >= 1.35 else False
+        reward = 1.0 if goal_achieved else -0.1
 
-        # get to handle
-        reward = 0.1 * np.linalg.norm(palm_pos - handle_pos)
-        # open door
-        reward += -0.1 * (door_pos - 1.57) * (door_pos - 1.57)
-        # velocity cost
-        reward += -1e-5 * np.sum(self.data.qvel**2)
+        # override reward if not sparse reward
+        if not self.sparse_reward:
+            handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
+            palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
 
-        # Bonus reward
-        if door_pos > 0.2:
-            reward += 2
-        if door_pos > 1.0:
-            reward += 8
+            # get to handle
+            reward = 0.1 * np.linalg.norm(palm_pos - handle_pos)
+            # open door
+            reward += -0.1 * (goal_distance - 1.57) * (goal_distance - 1.57)
+            # velocity cost
+            reward += -1e-5 * np.sum(self.data.qvel**2)
 
-        # environment completed
-        if door_pos > 1.35:
-            reward += 10
+            # Bonus reward
+            if goal_distance > 0.2:
+                reward += 2
+            if goal_distance > 1.0:
+                reward += 8
 
-        goal_achieved = True if door_pos >= 1.35 else False
-
-        # override the reward if we're using sparse reward
-        reward = float(goal_achieved) if self.sparse_reward else reward
+            # environment completed
+            if goal_distance > 1.35:
+                reward += 10
 
         if self.render_mode == "human":
             self.render()
