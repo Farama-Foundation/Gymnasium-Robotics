@@ -142,7 +142,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
-    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
+    In this variant, the environment returns a reward of 100 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -272,7 +272,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         # compute the sparse reward variant first
         goal_distance = np.linalg.norm(nail_pos - goal_pos)
         goal_achieved = True if goal_distance < 0.01 else False
-        reward = 1.0 if goal_achieved else -0.1
+        reward = 100.0 if goal_achieved else -0.1
 
         # override reward if not sparse reward
         if not self.sparse_reward:
