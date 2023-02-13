@@ -30,6 +30,7 @@ dependencies = [
     "gymnasium>=0.26",
     "PettingZoo>=1.22.2",
     "Jinja2>=3.0.3",
+    "imageio"
 ]
 dynamic = ["version"]
 
