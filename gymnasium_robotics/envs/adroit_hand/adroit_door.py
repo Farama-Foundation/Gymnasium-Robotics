@@ -133,7 +133,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     - `door_hinge_displacement`: adds a positive reward of `2` if the door hinge is opened more than `0.2` radians, `8` if more than `1.0` randians, and `10` if more than `1.35` radians.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v1')`.
-    In this variant, the environment returns a reward of 1 for environment success and 0 otherwise.
+    In this variant, the environment returns a reward of 100 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -259,7 +259,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         # compute the sparse reward variant first
         goal_distance = self.data.qpos[self.door_hinge_addrs]
         goal_achieved = True if goal_distance >= 1.35 else False
-        reward = 1.0 if goal_achieved else -0.1
+        reward = 100.0 if goal_achieved else -0.1
 
         # override reward if not sparse reward
         if not self.sparse_reward:
