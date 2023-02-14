@@ -323,10 +323,10 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         """
         qpos = self.data.qpos.ravel().copy()
         qvel = self.data.qvel.ravel().copy()
-        hand_qpos = qpos[:30]
-        obj_pos = self.data.xpos[self.obj_body_id].ravel()
-        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
+        hand_qpos = qpos[:30].copy()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel().copy()
+        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel().copy()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel().copy()
         return dict(
             hand_qpos=hand_qpos,
             obj_pos=obj_pos,
@@ -335,3 +335,15 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             qpos=qpos,
             qvel=qvel,
         )
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_pos[self.obj_body_id] = state_dict["obj_pos"]
+        self.model.site_pos[self.target_obj_site_id] = state_dict["target_pos"]
+
+        self.set_state(qp, qv)
