@@ -12,6 +12,7 @@ This project is covered by the Apache 2.0 License.
 
 from os import path
 
+import mujoco
 import numpy as np
 from gymnasium import spaces
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
@@ -334,3 +335,12 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         qvel = self.data.qvel.ravel().copy()
         door_body_pos = self.model.body_pos[self.door_body_id].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, door_body_pos=door_body_pos)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+        self.model.body_pos[self.door_body_id] = state_dict["door_body_pos"]
+        self.set_state(qp, qv)
