@@ -12,7 +12,6 @@ This project is covered by the Apache 2.0 License.
 
 from os import path
 
-import mujoco
 import numpy as np
 from gymnasium import spaces
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
