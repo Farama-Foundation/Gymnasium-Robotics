@@ -9,13 +9,14 @@ LENGTH = 300
 
 # TODO: Add Fetch and Shadow Hand environments
 # The environment entrypoints have the following standard: `gymnasium_robotics.envs.env_type.env_name:EnvName`
-all_envs = [
-    env_spec
-    for env_spec in gym.registry.values()
-    if env_spec.entry_point.startswith("gymnasium_robotics.envs")
-    and "Mujoco"
-    not in env_spec.entry_point  # Exclude Fetch and Shadow Hand environments
-]
+all_envs = []
+for env_spec in gym.envs.registry.values():
+    if isinstance(env_spec.entry_point, str):
+        if (
+            env_spec.entry_point.startswith("gymnasium_robotics.envs")
+            and "MujocoPy" not in env_spec.entry_point
+        ):
+            all_envs.append(env_spec)  # Exclude Fetch and Shadow Hand environments
 
 # Keep latest version of environments
 filtered_envs_by_version = {}

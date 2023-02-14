@@ -10,7 +10,7 @@ As well as adding support for the Gymnasium API.
 
 This project is covered by the Apache 2.0 License.
 """
-
+import math
 import tempfile
 import xml.etree.ElementTree as ET
 from os import path
@@ -60,8 +60,8 @@ class Maze:
         # Get the center cell Cartesian position of the maze. This will be the origin
         self._map_length = len(maze_map)
         self._map_width = len(maze_map[0])
-        self._x_map_center = np.ceil(self.map_width / 2) * maze_size_scaling
-        self._y_map_center = np.ceil(self.map_length / 2) * maze_size_scaling
+        self._x_map_center = self.map_width / 2 * maze_size_scaling
+        self._y_map_center = self.map_length / 2 * maze_size_scaling
 
     @property
     def maze_map(self) -> List[List[Union[str, int]]]:
@@ -129,10 +129,16 @@ class Maze:
 
     def cell_rowcol_to_xy(self, rowcol_pos: np.ndarray) -> np.ndarray:
         """Converts a cell index `(i,j)` to x and y coordinates in the MuJoCo simulation"""
-        x = rowcol_pos[1] - self.x_map_center
-        y = rowcol_pos[0] - self.y_map_center
+        x = (rowcol_pos[1] + 0.5) * self.maze_size_scaling - self.x_map_center
+        y = self.y_map_center - (rowcol_pos[0] + 0.5) * self.maze_size_scaling
 
         return np.array([x, y])
+
+    def cell_xy_to_rowcol(self, xy_pos: np.ndarray) -> np.ndarray:
+        """Converts a cell x and y coordinates to `(i,j)`"""
+        i = math.floor((self.y_map_center - xy_pos[1]) / self.maze_size_scaling)
+        j = math.floor((xy_pos[0] + self.x_map_center) / self.maze_size_scaling)
+        return np.array([i, j])
 
     @classmethod
     def make_maze(
@@ -160,15 +166,14 @@ class Maze:
         worldbody = tree.find(".//worldbody")
 
         maze = cls(maze_map, maze_size_scaling, maze_height)
-
+        empty_locations = []
         for i in range(maze.map_length):
             for j in range(maze.map_width):
                 struct = maze_map[i][j]
                 # Store cell locations in simulation global Cartesian coordinates
-                x = j * maze_size_scaling - maze.x_map_center
-                y = i * maze_size_scaling - maze.y_map_center
+                x = (j + 0.5) * maze_size_scaling - maze.x_map_center
+                y = maze.y_map_center - (i + 0.5) * maze_size_scaling
                 if struct == 1:  # Unmovable block.
-
                     # Offset all coordinates so that maze is centered.
                     ET.SubElement(
                         worldbody,
@@ -183,18 +188,14 @@ class Maze:
                         rgba="0.7 0.5 0.3 1.0",
                     )
 
-                elif maze_map[i][j] in [
-                    RESET,
-                ]:
+                elif struct == RESET:
                     maze._unique_reset_locations.append(np.array([x, y]))
-                elif maze_map[i][j] in [
-                    GOAL,
-                ]:
+                elif struct == GOAL:
                     maze._unique_goal_locations.append(np.array([x, y]))
-                elif maze_map[i][j] in [
-                    COMBINED,
-                ]:
+                elif struct == COMBINED:
                     maze._combined_locations.append(np.array([x, y]))
+                elif struct == 0:
+                    empty_locations.append(np.array([x, y]))
 
         # Add target site for visualization
         ET.SubElement(
@@ -208,6 +209,14 @@ class Maze:
         )
 
         # Add the combined cell locations (goal/reset) to goal and reset
+        if (
+            not maze._unique_goal_locations
+            and not maze._unique_reset_locations
+            and not maze._combined_locations
+        ):
+            # If there are no given "r", "g" or "c" cells in the maze data structure,
+            # any empty cell can be a reset or goal location at initialization.
+            maze._combined_locations = empty_locations
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
@@ -292,9 +301,6 @@ class MazeEnv(GoalEnv):
             # Add noise to goal position
             self.goal = self.add_xy_position_noise(goal)
 
-            # Update the position of the target site for visualization
-            self.update_target_site_pos()
-
             if "reset_cell" in options and options["reset_cell"] is not None:
                 # assert that goal cell is valid
                 assert self.maze.map_length > options["reset_cell"][1]
@@ -311,8 +317,13 @@ class MazeEnv(GoalEnv):
             else:
                 reset_pos = self.generate_reset_pos()
 
+        # Update the position of the target site for visualization
+        self.update_target_site_pos()
         # Add noise to reset position
         self.reset_pos = self.add_xy_position_noise(reset_pos)
+
+        # Update the position of the target site for visualization
+        self.update_target_site_pos()
 
     def add_xy_position_noise(self, xy_pos: np.ndarray) -> np.ndarray:
         """Pass an x,y coordinate and it will return the same coordinate with a noise addition
@@ -341,18 +352,18 @@ class MazeEnv(GoalEnv):
         if self.reward_type == "dense":
             return np.exp(-np.linalg.norm(desired_goal - achieved_goal))
         elif self.reward_type == "sparse":
-            return 1.0 if np.linalg.norm(achieved_goal - desired_goal) <= 0.5 else 0.0
+            return 1.0 if np.linalg.norm(achieved_goal - desired_goal) <= 0.45 else 0.0
 
     def compute_terminated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
     ) -> bool:
         if not self.continuing_task:
             # If task is episodic terminate the episode when the goal is reached
-            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.5)
+            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
             if (
-                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.5)
+                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
                 and len(self.maze.unique_goal_locations) > 1
             ):
                 # Generate another goal

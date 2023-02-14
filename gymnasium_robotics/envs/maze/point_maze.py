@@ -50,8 +50,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
     * `"r": str` - Indicates cells in which the agent can be initialized in when the environment is reset.
     * `"c": str` - Stands for combined cell and indicates that this cell can be initialized as a goal or agent reset location.
 
-    The maze data structure is discrete. However the observations are continuous and variance is added to the goal and the agent's initial pose by adding a sammpled noise from a uniform distribution
-    to the cell cartesian coordinate center in the MuJoCo simulation.
+    Note that if all the empty cells are given a value of `0` and there are no cells in the map representation with values `"g"`, `"r"`, or `"c"`, the initial goal and reset locations
+    will be randomly chosen from the empty cells with value `0`. Also, the maze data structure is discrete. However the observations are continuous and variance is added to the goal and the
+    agent's initial pose by adding a sammpled noise from a uniform distribution to the cell's `(x,y)` coordinates in the MuJoCo simulation.
 
     #### Maze size
 
@@ -369,6 +370,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
         obs, info = self.point_env.reset(seed=seed)
         obs_dict = self._get_obs(obs)
+        info["success"] = bool(
+            np.linalg.norm(obs_dict["achieved_goal"] - self.goal) <= 0.45
+        )
 
         return obs_dict, info
 
@@ -376,10 +380,13 @@ class PointMazeEnv(MazeEnv, EzPickle):
         obs, _, _, _, info = self.point_env.step(action)
         obs_dict = self._get_obs(obs)
 
+        info["success"] = bool(
+            np.linalg.norm(obs_dict["achieved_goal"] - self.goal) <= 0.45
+        )
+        reward = self.compute_reward(obs_dict["achieved_goal"], self.goal, info)
+
         terminated = self.compute_terminated(obs_dict["achieved_goal"], self.goal, info)
         truncated = self.compute_truncated(obs_dict["achieved_goal"], self.goal, info)
-
-        reward = self.compute_reward(obs_dict["achieved_goal"], self.goal, info)
 
         return obs_dict, reward, terminated, truncated, info
 
