@@ -39,7 +39,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     ## Action Space
 
-    The action space is a Box(-1.0, 1.0, (24,), float32)`. The control actions are absolute angular positions of the Adroit hand joints. The input of the control actions is set to a range between -1 and 1 by scaling the real actuator angle ranges in radians.
+    The action space is a `Box(-1.0, 1.0, (24,), float32)`. The control actions are absolute angular positions of the Adroit hand joints. The input of the control actions is set to a range between -1 and 1 by scaling the real actuator angle ranges in radians.
     The elements of the action array are the following:
 
     | Num | Action                                                                                  | Control Min | Control Max | Angle Min    | Angle Max   | Name (in corresponding XML file) | Joint | Unit        |
