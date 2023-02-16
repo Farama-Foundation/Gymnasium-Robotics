@@ -1087,6 +1087,13 @@ In this variant, the environment returns the following <code class="docutils lit
 <p>To add stochasticity to the environment the z position of the board with the nail is randomly initialized each time the environment is reset. This height is sampled from
 a uninform distribution with range <code class="docutils literal notranslate"><span class="pre">[0.1,0.25]</span></code>.</p>
 <p>The joint values of the environment are deterministically initialized to a zero.</p>
+<p>For reproducibility, the starting state of the environment can also be set when calling <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> by passing the <code class="docutils literal notranslate"><span class="pre">initial_state_dict</span></code> argument. This argument must be a dictionary with the following items:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qpos</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(33,)</span></code>, MuJoCo simulation joint positions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qvel</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(33,)</span></code>, MuJoCo simulation joint velocities</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">board_pos</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, cartesian coordinates of the board with the nail</p></li>
+</ul>
+<p>The state of the simulation can also be set at any step with the <code class="docutils literal notranslate"><span class="pre">env.set_env_state(initial_state_dict)</span></code> method.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
