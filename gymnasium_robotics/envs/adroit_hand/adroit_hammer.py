@@ -153,6 +153,14 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `initial_state_dict` argument. This argument must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(33,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(33,)`, MuJoCo simulation joint velocities
+    * `board_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the board with the nail
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
+
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
@@ -324,6 +332,14 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
                 np.array([nail_impact]),
             ]
         )
+
+    def reset(self, initial_state_dict=None, *args, **kwargs):
+        obs, info = super().reset(*args, **kwargs)
+        if initial_state_dict is not None:
+            self.set_env_state(initial_state_dict)
+            obs = self._get_obs()
+
+        return obs, info
 
     def reset_model(self):
 
