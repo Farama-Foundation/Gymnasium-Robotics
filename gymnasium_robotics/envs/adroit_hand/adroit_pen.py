@@ -281,7 +281,8 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             True if (goal_distance < 0.075 and orien_similarity > 0.95) else False
         )
         reward = 1.0 if goal_achieved else -0.1
-        goal_failed = obj_pos[2] < 0.075
+
+        # goal_failed = obj_pos[2] < 0.075
 
         # override reward if not sparse reward
         if not self.sparse_reward:
