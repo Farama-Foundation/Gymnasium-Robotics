@@ -1037,6 +1037,13 @@ In this variant, a reward of 10 is given once the door is opened more than <code
 <p>To add stochasticity to the environment the <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span></code> coordinates of the door are randomly sampled each time the environment is reset. The values are extracted from a uniform distribution
 with ranges <code class="docutils literal notranslate"><span class="pre">[-0.3,-0.2]</span></code> for the <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate, <code class="docutils literal notranslate"><span class="pre">[0.25,0.35]</span></code> for the <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate, and <code class="docutils literal notranslate"><span class="pre">[0.252,0.35]</span></code> for the <code class="docutils literal notranslate"><span class="pre">z</span></code> coordinate.</p>
 <p>The joint values of the environment are deterministically initialized to a zero.</p>
+<p>For reproducibility, the starting state of the environment can also be set when calling <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> by passing the <code class="docutils literal notranslate"><span class="pre">initial_state_dict</span></code> argument. This argument must be a dictionary with the following items:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">qpos</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(30,)</span></code>, MuJoCo simulation joint positions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qvel</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(30,)</span></code>, MuJoCo simulation joint velocities</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">board_body_pos</span></code>: np.ndarray with shape <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>, cartesian coordinates of the door body</p></li>
+</ul>
+<p>The state of the simulation can also be set at any step with the <code class="docutils literal notranslate"><span class="pre">env.set_env_state(initial_state_dict)</span></code> method.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
