@@ -303,7 +303,8 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         return (
             obs,
             reward,
-            goal_failed or goal_achieved,
+            # goal_failed or goal_achieved,
+            False,
             False,
             dict(success=goal_achieved),
         )
