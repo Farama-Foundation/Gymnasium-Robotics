@@ -134,7 +134,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add a negative reward of `5`.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenSparse-v1')`.
-    In this variant, the environment returns a reward of 100 for environment success and -0.1 otherwise.
+    In this variant, the environment returns a reward of 1 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -280,7 +280,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         goal_achieved = (
             True if (goal_distance < 0.075 and orien_similarity > 0.95) else False
         )
-        reward = 100.0 if goal_achieved else -0.1
+        reward = 1.0 if goal_achieved else -0.1
         goal_failed = obj_pos[2] < 0.075
 
         # override reward if not sparse reward
