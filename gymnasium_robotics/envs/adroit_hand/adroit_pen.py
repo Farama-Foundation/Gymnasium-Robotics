@@ -357,3 +357,13 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         qv = self.data.qvel.ravel().copy()
         desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        qp = state_dict['qpos']
+        qv = state_dict['qvel']
+        
+        self.model.body_quat[self.target_obj_body_id] = state_dict['desired_orien']
+        self.set_state(qp, qv)
