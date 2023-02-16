@@ -142,6 +142,14 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `initial_state_dict` argument. This argument must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(30,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(30,)`, MuJoCo simulation joint velocities
+    * `board_body_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the door body
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
+
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
@@ -312,6 +320,14 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             ]
         )
 
+    def reset(self, initial_state_dict=None, *args, **kwargs):
+        obs, info = super().reset(*args, **kwargs)
+        if initial_state_dict is not None:
+            self.set_env_state(initial_state_dict)
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
         self.model.body_pos[self.door_body_id, 0] = self.np_random.uniform(
             low=-0.3, high=-0.2
@@ -334,3 +350,12 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         qvel = self.data.qvel.ravel().copy()
         door_body_pos = self.model.body_pos[self.door_body_id].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, door_body_pos=door_body_pos)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+        self.model.body_pos[self.door_body_id] = state_dict["door_body_pos"]
+        self.set_state(qp, qv)

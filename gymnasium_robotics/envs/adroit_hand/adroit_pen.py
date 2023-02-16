@@ -146,6 +146,14 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `initial_state_dict` argument. This argument must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(30,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(30,)`, MuJoCo simulation joint velocities
+    * `desired_orien`: np.ndarray with shape `(4,)`, quaternion values of the target pen orientation
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
+
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
@@ -329,6 +337,14 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             ]
         )
 
+    def reset(self, initial_state_dict=None, *args, **kwargs):
+        obs, info = super().reset(*args, **kwargs)
+        if initial_state_dict is not None:
+            self.set_env_state(initial_state_dict)
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
         desired_orien = np.zeros(3)
         desired_orien[0] = self.np_random.uniform(low=-1, high=1)
@@ -355,5 +371,15 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         """
         qp = self.data.qpos.ravel().copy()
         qv = self.data.qvel.ravel().copy()
-        desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
+        desired_orien = self.model.body_quat[self.target_obj_body_id].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_quat[self.target_obj_body_id] = state_dict["desired_orien"]
+        self.set_state(qp, qv)
