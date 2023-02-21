@@ -1076,11 +1076,7 @@ It equals the norm of all the joint velocities. This penalty is scaled by a fact
 <li><p><code class="docutils literal notranslate"><span class="pre">hammer_nail</span></code>: adds a positive reward the closer the head of the nail is to the board. <code class="docutils literal notranslate"><span class="pre">25</span></code> if the distance is less than <code class="docutils literal notranslate"><span class="pre">0.02</span></code> meters and <code class="docutils literal notranslate"><span class="pre">75</span></code> if it is less than <code class="docutils literal notranslate"><span class="pre">0.01</span></code> meters.</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandHammerSparse-v1')</span></code>.
-In this variant, the environment returns the following <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward function that consists of the following parts:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">lift_hammer</span></code>: adds a positive reward of <code class="docutils literal notranslate"><span class="pre">2</span></code> if the hammer is lifted a greater distance than <code class="docutils literal notranslate"><span class="pre">0.04</span></code> meters in the z direction.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hammer_nail</span></code>: adds a positive reward the closer the head of the nail is to the board. <code class="docutils literal notranslate"><span class="pre">25</span></code> if the distance is less than <code class="docutils literal notranslate"><span class="pre">0.02</span></code> meters and <code class="docutils literal notranslate"><span class="pre">75</span></code> if it is less than <code class="docutils literal notranslate"><span class="pre">0.01</span></code> meters.</p></li>
-</ul>
+In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
