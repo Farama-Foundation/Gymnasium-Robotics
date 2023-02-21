@@ -1052,10 +1052,7 @@ This penalty is scaled by a factor of <code class="docutils literal notranslate"
 <li><p><code class="docutils literal notranslate"><span class="pre">ball_close_to_target</span></code>: bonus of <code class="docutils literal notranslate"><span class="pre">10</span></code> if the ball’s Euclidean distance to its target is less than <code class="docutils literal notranslate"><span class="pre">0.1</span></code> meters. Bonus of <code class="docutils literal notranslate"><span class="pre">20</span></code> if the distance is less than <code class="docutils literal notranslate"><span class="pre">0.05</span></code> meters.</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandReloateSparse-v1')</span></code>.
-In this variant, the environment returns the following <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward function that consists of the following parts:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ball_close_to_target</span></code>: bonus of <code class="docutils literal notranslate"><span class="pre">10</span></code> if the ball’s Euclidean distance to its target is less than <code class="docutils literal notranslate"><span class="pre">0.1</span></code> meters. Bonus of <code class="docutils literal notranslate"><span class="pre">20</span></code> if the distance is less than <code class="docutils literal notranslate"><span class="pre">0.05</span></code> meters.</p></li>
-</ul>
+In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>

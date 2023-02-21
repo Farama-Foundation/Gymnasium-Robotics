@@ -1043,12 +1043,7 @@ distance less than <code class="docutils literal notranslate"><span class="pre">
 <li><p><code class="docutils literal notranslate"><span class="pre">dropping_pen</span></code>: If the pen drops from the hand (pen’s height less than <code class="docutils literal notranslate"><span class="pre">0.075</span></code>) add a negative reward of <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandPenSparse-v1')</span></code>.
-In this variant, the environment returns the following <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward function that consists of the following parts:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">dropping_pen</span></code>: If the pen drops from the hand (pen’s height less than <code class="docutils literal notranslate"><span class="pre">0.075</span></code>) add a negative reward of <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">close_to_target</span></code>: bonus reward for the pen being close to the target orientation. If the dot product between both ortientations is greater than <code class="docutils literal notranslate"><span class="pre">0.9</span></code> and the Euclidean
-distance less than <code class="docutils literal notranslate"><span class="pre">0.075</span></code> add a <code class="docutils literal notranslate"><span class="pre">10</span></code> reward, if the same distance holds and the orientation dot product is greater than <code class="docutils literal notranslate"><span class="pre">0.95</span></code> add <code class="docutils literal notranslate"><span class="pre">50</span></code>.</p></li>
-</ul>
+In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>

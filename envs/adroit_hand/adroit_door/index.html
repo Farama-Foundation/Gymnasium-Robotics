@@ -1030,7 +1030,7 @@ It equals the norm of all the joint velocities. This penalty is scaled by a fact
 <li><p><code class="docutils literal notranslate"><span class="pre">door_hinge_displacement</span></code>: adds a positive reward of <code class="docutils literal notranslate"><span class="pre">2</span></code> if the door hinge is opened more than <code class="docutils literal notranslate"><span class="pre">0.2</span></code> radians, <code class="docutils literal notranslate"><span class="pre">8</span></code> if more than <code class="docutils literal notranslate"><span class="pre">1.0</span></code> randians, and <code class="docutils literal notranslate"><span class="pre">10</span></code> if more than <code class="docutils literal notranslate"><span class="pre">1.35</span></code> radians.</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandDoorSparse-v1')</span></code>.
-In this variant, a reward of 10 is given once the door is opened more than <code class="docutils literal notranslate"><span class="pre">1.35</span></code> radians and zero otherwise.</p>
+In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
 <h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
