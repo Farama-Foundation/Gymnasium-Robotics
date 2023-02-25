@@ -144,9 +144,9 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
-    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset) 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
     with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
-    
+
     * `qpos`: np.ndarray with shape `(36,)`, MuJoCo simulation joint positions
     * `qvel`: np.ndarray with shape `(36,)`, MuJoCo simulation joint velocities
     * `obj_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the ball object
