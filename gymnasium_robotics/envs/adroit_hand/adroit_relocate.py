@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Dict, Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -307,10 +308,17 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             [qpos[:-6], palm_pos - obj_pos, palm_pos - target_pos, obj_pos - target_pos]
         )
 
-    def reset(self, initial_state_dict=None, *args, **kwargs):
-        obs, info = super().reset(*args, **kwargs)
-        if initial_state_dict is not None:
-            self.set_env_state(initial_state_dict)
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Dict[str, Optional[Dict[str, np.ndarray]]] = {
+            "initial_state_dict": None
+        },
+    ):
+        obs, info = super().reset(seed=seed)
+        if options["initial_state_dict"] is not None:
+            self.set_env_state(options["initial_state_dict"])
             obs = self._get_obs()
 
         return obs, info
