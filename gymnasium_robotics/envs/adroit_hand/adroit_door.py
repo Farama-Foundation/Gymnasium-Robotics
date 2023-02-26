@@ -11,7 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
-from typing import Dict, Optional
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -257,6 +257,20 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         self.handle_site_id = self._model_names.site_name2id["S_handle"]
         self.door_body_id = self._model_names.body_name2id["frame"]
 
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "board_body_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+            }
+        )
+
         EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
@@ -328,12 +342,10 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         self,
         *,
         seed: Optional[int] = None,
-        options: Dict[str, Optional[Dict[str, np.ndarray]]] = {
-            "initial_state_dict": None
-        },
+        options: Optional[dict] = None,
     ):
         obs, info = super().reset(seed=seed)
-        if options["initial_state_dict"] is not None:
+        if options is not None and "initial_state_dict" in options:
             self.set_env_state(options["initial_state_dict"])
             obs = self._get_obs()
 
@@ -366,6 +378,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         """
         Set the state which includes hand as well as objects and targets in the scene
         """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
         qp = state_dict["qpos"]
         qv = state_dict["qvel"]
         self.model.body_pos[self.door_body_id] = state_dict["door_body_pos"]
