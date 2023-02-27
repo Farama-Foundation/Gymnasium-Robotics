@@ -1118,7 +1118,7 @@ try:
     import sys
     from farama_notifications import notifications
 
-    if "gymnasium" in notifications and __version__ in notifications["gymnasium"]:
-        print(notifications["gymnasium"][__version__], file=sys.stderr)
+    if "gymnasium_robotics" in notifications and __version__ in notifications["gymnasium_robotics"]:
+        print(notifications["gymnasium_robotics"][__version__], file=sys.stderr)
 except Exception:  # nosec
     pass
