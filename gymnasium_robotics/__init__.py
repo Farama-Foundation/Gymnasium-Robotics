@@ -1116,6 +1116,7 @@ __version__ = "1.2.1"
 
 try:
     import sys
+
     from farama_notifications import notifications
 
     if (
