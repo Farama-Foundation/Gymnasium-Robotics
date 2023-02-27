@@ -1112,3 +1112,13 @@ def register_robotics_envs():
 
 
 __version__ = "1.2.0"
+
+
+try:
+    import sys
+    from farama_notifications import notifications
+
+    if "gymnasium" in notifications and __version__ in notifications["gymnasium"]:
+        print(notifications["gymnasium"][__version__], file=sys.stderr)
+except Exception:  # nosec
+    pass
