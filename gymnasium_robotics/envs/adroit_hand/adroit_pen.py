@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -143,6 +144,15 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
+    with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(30,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(30,)`, MuJoCo simulation joint velocities
+    * `desired_orien`: np.ndarray with shape `(4,)`, quaternion values of the target pen orientation
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
+
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
@@ -254,6 +264,20 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
 
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "desired_orien": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(4,), dtype=np.float64
+                ),
+            }
+        )
+
         EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
@@ -336,6 +360,19 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             ]
         )
 
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
+        obs, info = super().reset(seed=seed)
+        if options is not None and "initial_state_dict" in options:
+            self.set_env_state(options["initial_state_dict"])
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
         desired_orien = np.zeros(3)
         desired_orien[0] = self.np_random.uniform(low=-1, high=1)
@@ -362,5 +399,18 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         """
         qp = self.data.qpos.ravel().copy()
         qv = self.data.qvel.ravel().copy()
-        desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
+        desired_orien = self.model.body_quat[self.target_obj_body_id].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_quat[self.target_obj_body_id] = state_dict["desired_orien"]
+        self.set_state(qp, qv)

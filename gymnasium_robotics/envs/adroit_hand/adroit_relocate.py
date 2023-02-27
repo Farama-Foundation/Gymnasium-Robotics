@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -143,6 +144,16 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
 
     The joint values of the environment are deterministically initialized to a zero.
 
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
+    with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(36,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(36,)`, MuJoCo simulation joint velocities
+    * `obj_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the ball object
+    * `target_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the goal ball location
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
+
     ## Episode End
 
     The episode will be `truncated` when the duration reaches a total of `max_episode_steps` which by default is set to 200 timesteps.
@@ -245,6 +256,23 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
 
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(36,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(36,), dtype=np.float64
+                ),
+                "obj_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+                "target_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+            }
+        )
+
         EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
@@ -298,6 +326,19 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             [qpos[:-6], palm_pos - obj_pos, palm_pos - target_pos, obj_pos - target_pos]
         )
 
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
+        obs, info = super().reset(seed=seed)
+        if options is not None and "initial_state_dict" in options:
+            self.set_env_state(options["initial_state_dict"])
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
         self.model.body_pos[self.obj_body_id, 0] = self.np_random.uniform(
             low=-0.15, high=0.15
@@ -325,10 +366,10 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         """
         qpos = self.data.qpos.ravel().copy()
         qvel = self.data.qvel.ravel().copy()
-        hand_qpos = qpos[:30]
-        obj_pos = self.data.xpos[self.obj_body_id].ravel()
-        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
+        hand_qpos = qpos[:30].copy()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel().copy()
+        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel().copy()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel().copy()
         return dict(
             hand_qpos=hand_qpos,
             obj_pos=obj_pos,
@@ -337,3 +378,18 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             qpos=qpos,
             qvel=qvel,
         )
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_pos[self.obj_body_id] = state_dict["obj_pos"]
+        self.model.site_pos[self.target_obj_site_id] = state_dict["target_pos"]
+
+        self.set_state(qp, qv)
