@@ -57,13 +57,6 @@ def register_robotics_envs():
 
         register(
             id=f"FetchReach{suffix}-v2",
-            entry_point="gymnasium_robotics.envs.fetch.reach:MujocoPyFetchReachEnv",
-            kwargs=kwargs,
-            max_episode_steps=50,
-        )
-
-        register(
-            id=f"FetchReach{suffix}-v3",
             entry_point="gymnasium_robotics.envs.fetch.reach:MujocoFetchReachEnv",
             kwargs=kwargs,
             max_episode_steps=50,
