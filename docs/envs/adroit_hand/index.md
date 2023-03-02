@@ -13,6 +13,15 @@ environments that can be initialized depending on the task to be solved:
 * `AdroitHandPen-v1`: The hand has to manipulate a pen until it achieves a desired goal position and rotation.
 * `AdroitHandRelocate-v1`: The hand has to pick up a ball and move it to a target location.
 
+A sparse reward variant of each environment is also provided.
+These environments have a reward of 10.0 for achieving the target goal, and -0.1 otherwise.
+They can be initialized via:
+
+* `AdroitHandDoorSparse-v1`
+* `AdroitHandHammerSparse-v1`
+* `AdroitHandPenSparse-v1`
+* `AdroitHandRelocateSparse-v1`
+
 ```{raw} html
     :file: list.html
 ```
