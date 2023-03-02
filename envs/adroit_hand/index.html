@@ -338,6 +338,15 @@ environments that can be initialized depending on the task to be solved:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandPen-v1</span></code>: The hand has to manipulate a pen until it achieves a desired goal position and rotation.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandRelocate-v1</span></code>: The hand has to pick up a ball and move it to a target location.</p></li>
 </ul>
+<p>A sparse reward variant of each environment is also provided.
+These environments have a reward of 10.0 for achieving the target goal, and -0.1 otherwise.
+They can be initialized via:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandDoorSparse-v1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandHammerSparse-v1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandPenSparse-v1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AdroitHandRelocateSparse-v1</span></code></p></li>
+</ul>
 
     <div class="env-grid">
         
