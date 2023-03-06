@@ -69,3 +69,15 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 ```
 
 The `GoalEnv` class can also be used for custom environments.
+
+## Citation
+
+If you use this in your research, please cite:
+```
+@software{shimmy2022github,
+  author = {Rodrigo de Lazcano, Kallinteris Andreas, Jun Jet Tai, Seungjae Ryan Lee, Jordan Terry},
+  title = {Gymnasium Robotics},
+  url = {http://github.com/Farama-Foundation/Gymnasium-Robotics},
+  version = {1.2.0},
+  year = {2023},
+}```
