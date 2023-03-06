@@ -26,6 +26,7 @@ envs/MaMuJoCo/index
 ```{toctree}
 :hidden:
 :caption: Development
+release_notes
 Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 ```
 # Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
