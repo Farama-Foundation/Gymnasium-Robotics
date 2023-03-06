@@ -56,7 +56,7 @@ If partitioning, is `None` then the environment contains a single agent with the
 
 
 ### if partitioning == "9|8":  # isolate upper and lower body
-```{figure} figures/humanoid_9|8.png
+```{figure} figures/humanoid_9_8.png
     :name: humanoid_9|8
 ```
 
