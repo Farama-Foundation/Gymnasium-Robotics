@@ -265,7 +265,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
                 "qvel": spaces.Box(
                     low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
                 ),
-                "board_body_pos": spaces.Box(
+                "door_body_pos": spaces.Box(
                     low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
                 ),
             }
