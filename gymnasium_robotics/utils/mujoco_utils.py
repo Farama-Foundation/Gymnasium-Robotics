@@ -199,7 +199,7 @@ def get_joint_qvel(model, data, name):
     """Return the joints linear and angular velocities (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     joint_type = model.jnt_type[joint_id]
-    joint_addr = model.jnt_qposadr[joint_id]
+    joint_addr = model.jnt_dofadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
         ndim = 6
