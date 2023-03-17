@@ -148,7 +148,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     * `qpos`: np.ndarray with shape `(30,)`, MuJoCo simulation joint positions
     * `qvel`: np.ndarray with shape `(30,)`, MuJoCo simulation joint velocities
-    * `board_body_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the door body
+    * `door_body_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the door body
 
     The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
 
@@ -265,7 +265,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
                 "qvel": spaces.Box(
                     low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
                 ),
-                "board_body_pos": spaces.Box(
+                "door_body_pos": spaces.Box(
                     low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
                 ),
             }
