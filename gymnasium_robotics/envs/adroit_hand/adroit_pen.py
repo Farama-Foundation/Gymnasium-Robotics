@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -134,10 +135,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add a negative reward of `5`.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `dropping_pen`: If the pen drops from the hand (pen's height less than `0.075`) add a negative reward of `5`.
-    - `close_to_target`: bonus reward for the pen being close to the target orientation. If the dot product between both ortientations is greater than `0.9` and the Euclidean
-        distance less than `0.075` add a `10` reward, if the same distance holds and the orientation dot product is greater than `0.95` add `50`.
+    In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -145,6 +143,15 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
     Only roll and pitch are randomly selected. The initial position of the target is `(x,y,z)=(0,-0.2,0.25)`.
 
     The joint values of the environment are deterministically initialized to a zero.
+
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
+    with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(30,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(30,)`, MuJoCo simulation joint velocities
+    * `desired_orien`: np.ndarray with shape `(4,)`, quaternion values of the target pen orientation
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
 
     ## Episode End
 
@@ -257,6 +264,20 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
 
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(30,), dtype=np.float64
+                ),
+                "desired_orien": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(4,), dtype=np.float64
+                ),
+            }
+        )
+
         EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
@@ -277,31 +298,41 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             - self.data.site_xpos[self.tar_b_site_id]
         ) / self.tar_length
 
-        # pos cost
-        dist = np.linalg.norm(obj_pos - desired_loc)
-        reward = -dist * (not self.sparse_reward)
-        # orien cost
+        # compute the sparse reward variant first
+        goal_distance = np.linalg.norm(obj_pos - desired_loc)
         orien_similarity = np.dot(obj_orien, desired_orien)
-        reward += orien_similarity * (not self.sparse_reward)
+        goal_achieved = (
+            True if (goal_distance < 0.075 and orien_similarity > 0.95) else False
+        )
+        reward = 10.0 if goal_achieved else -0.1
 
-        # bonus for being close to desired orientation
-        if dist < 0.075 and orien_similarity > 0.9:
-            reward += 10
-        if dist < 0.075 and orien_similarity > 0.95:
-            reward += 50
+        # goal_failed = obj_pos[2] < 0.075
 
-        # penalty for dropping the pen
-        terminated = False
-        if obj_pos[2] < 0.075:
-            reward -= 5
-            terminated = True
+        # override reward if not sparse reward
+        if not self.sparse_reward:
+            reward = -goal_distance + orien_similarity
 
-        goal_achieved = True if (dist < 0.075 and orien_similarity > 0.95) else False
+            # bonus for being close to desired orientation
+            if goal_distance < 0.075 and orien_similarity > 0.9:
+                reward += 10
+            if goal_distance < 0.075 and orien_similarity > 0.95:
+                reward += 50
+
+            # penalty for dropping the pen
+            if obj_pos[2] < 0.075:
+                reward -= 5
 
         if self.render_mode == "human":
             self.render()
 
-        return obs, reward, terminated, False, dict(success=goal_achieved)
+        return (
+            obs,
+            reward,
+            # goal_failed or goal_achieved,
+            False,
+            False,
+            dict(success=goal_achieved),
+        )
 
     def _get_obs(self):
         qpos = self.data.qpos.ravel()
@@ -329,6 +360,19 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             ]
         )
 
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
+        obs, info = super().reset(seed=seed)
+        if options is not None and "initial_state_dict" in options:
+            self.set_env_state(options["initial_state_dict"])
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
         desired_orien = np.zeros(3)
         desired_orien[0] = self.np_random.uniform(low=-1, high=1)
@@ -355,5 +399,18 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         """
         qp = self.data.qpos.ravel().copy()
         qv = self.data.qvel.ravel().copy()
-        desired_orien = self.model.body_quat[self.target_obj_bid].ravel().copy()
+        desired_orien = self.model.body_quat[self.target_obj_body_id].ravel().copy()
         return dict(qpos=qp, qvel=qv, desired_orien=desired_orien)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_quat[self.target_obj_body_id] = state_dict["desired_orien"]
+        self.set_state(qp, qv)

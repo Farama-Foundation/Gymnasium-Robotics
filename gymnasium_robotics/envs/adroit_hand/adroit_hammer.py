@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -142,9 +143,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
-    - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
+    In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -152,6 +151,15 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     a uninform distribution with range `[0.1,0.25]`.
 
     The joint values of the environment are deterministically initialized to a zero.
+
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
+    with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(33,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(33,)`, MuJoCo simulation joint velocities
+    * `board_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the board with the nail
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
 
     ## Episode End
 
@@ -252,9 +260,24 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         self.obj_body_id = self._model_names.body_name2id["Object"]
         self.tool_site_id = self._model_names.site_name2id["tool"]
         self.goal_site_id = self._model_names.site_name2id["nail_goal"]
+        self.target_body_id = self._model_names.body_name2id["nail_board"]
         self.act_mean = np.mean(self.model.actuator_ctrlrange, axis=1)
         self.act_rng = 0.5 * (
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
+        )
+
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(33,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(33,), dtype=np.float64
+                ),
+                "board_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+            }
         )
 
         EzPickle.__init__(self, **kwargs)
@@ -271,10 +294,15 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         nail_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
         goal_pos = self.data.site_xpos[self.goal_site_id].ravel()
 
-        reward = 0.0
+        # compute the sparse reward variant first
+        goal_distance = np.linalg.norm(nail_pos - goal_pos)
+        goal_achieved = True if goal_distance < 0.01 else False
+        reward = 10.0 if goal_achieved else -0.1
+
+        # override reward if not sparse reward
         if not self.sparse_reward:
             # get the palm to the hammer handle
-            reward -= 0.1 * np.linalg.norm(palm_pos - hamm_pos)
+            reward = 0.1 * np.linalg.norm(palm_pos - hamm_pos)
             # take hammer head to nail
             reward -= np.linalg.norm(head_pos - nail_pos)
             # make nail go inside
@@ -282,17 +310,15 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             # velocity penalty
             reward -= 1e-2 * np.linalg.norm(self.data.qvel.ravel())
 
-        # bonus for lifting up the hammer
-        if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
-            reward += 2
+            # bonus for lifting up the hammer
+            if hamm_pos[2] > 0.04 and head_pos[2] > 0.04:
+                reward += 2
 
-        # bonus for hammering the nail
-        if np.linalg.norm(nail_pos - goal_pos) < 0.020:
-            reward += 25
-        if np.linalg.norm(nail_pos - goal_pos) < 0.010:
-            reward += 75
-
-        goal_achieved = True if np.linalg.norm(nail_pos - goal_pos) < 0.010 else False
+            # bonus for hammering the nail
+            if goal_distance < 0.020:
+                reward += 25
+            if goal_distance < 0.010:
+                reward += 75
 
         if self.render_mode == "human":
             self.render()
@@ -324,9 +350,24 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
             ]
         )
 
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
+        obs, info = super().reset(seed=seed)
+        if options is not None and "initial_state_dict" in options:
+            self.set_env_state(options["initial_state_dict"])
+            obs = self._get_obs()
+
+        return obs, info
+
     def reset_model(self):
-        target_bid = self._model_names.body_name2id["nail_board"]
-        self.model.body_pos[target_bid, 2] = self.np_random.uniform(low=0.1, high=0.25)
+
+        self.model.body_pos[self.target_body_id, 2] = self.np_random.uniform(
+            low=0.1, high=0.25
+        )
         self.set_state(self.init_qpos, self.init_qvel)
         return self._get_obs()
 
@@ -336,6 +377,19 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         """
         qpos = self.data.qpos.ravel().copy()
         qvel = self.data.qvel.ravel().copy()
-        board_pos = self.model.body_pos[self.model.body_name2id("nail_board")].copy()
-        target_pos = self.data.site_xpos[self.target_obj_sid].ravel().copy()
+        board_pos = self.model.body_pos[self.target_body_id].copy()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, board_pos=board_pos, target_pos=target_pos)
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+        board_pos = state_dict["board_pos"]
+        self.model.body_pos[self.target_body_id] = board_pos
+        self.set_state(qp, qv)

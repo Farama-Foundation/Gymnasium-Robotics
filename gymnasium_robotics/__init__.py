@@ -57,13 +57,6 @@ def register_robotics_envs():
 
         register(
             id=f"FetchReach{suffix}-v2",
-            entry_point="gymnasium_robotics.envs.fetch.reach:MujocoPyFetchReachEnv",
-            kwargs=kwargs,
-            max_episode_steps=50,
-        )
-
-        register(
-            id=f"FetchReach{suffix}-v3",
             entry_point="gymnasium_robotics.envs.fetch.reach:MujocoFetchReachEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -1111,4 +1104,18 @@ def register_robotics_envs():
     )
 
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
+
+
+try:
+    import sys
+
+    from farama_notifications import notifications
+
+    if (
+        "gymnasium_robotics" in notifications
+        and __version__ in notifications["gymnasium_robotics"]
+    ):
+        print(notifications["gymnasium_robotics"][__version__], file=sys.stderr)
+except Exception:  # nosec
+    pass

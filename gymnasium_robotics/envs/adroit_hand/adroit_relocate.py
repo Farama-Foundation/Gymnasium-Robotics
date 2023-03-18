@@ -11,6 +11,7 @@ This project is covered by the Apache 2.0 License.
 """
 
 from os import path
+from typing import Optional
 
 import numpy as np
 from gymnasium import spaces
@@ -134,8 +135,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandReloateSparse-v1')`.
-    In this variant, the environment returns the following `sparse` reward function that consists of the following parts:
-    - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
+    In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
 
@@ -143,6 +143,16 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     The target position is also sampled from uniform distributions with ranges `[-0.2,0.2]` for the `x` coordinate, `[-0.2,0.2]` for the `y` coordinate, and `[0.15,0.35]` for the `z` coordinate.
 
     The joint values of the environment are deterministically initialized to a zero.
+
+    For reproducibility, the starting state of the environment can also be set when calling `env.reset()` by passing the `options` dictionary argument (https://gymnasium.farama.org/api/env/#gymnasium.Env.reset)
+    with the `initial_state_dict` key. The `initial_state_dict` key must be a dictionary with the following items:
+
+    * `qpos`: np.ndarray with shape `(36,)`, MuJoCo simulation joint positions
+    * `qvel`: np.ndarray with shape `(36,)`, MuJoCo simulation joint velocities
+    * `obj_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the ball object
+    * `target_pos`: np.ndarray with shape `(3,)`, cartesian coordinates of the goal ball location
+
+    The state of the simulation can also be set at any step with the `env.set_env_state(initial_state_dict)` method.
 
     ## Episode End
 
@@ -246,6 +256,23 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
         )
 
+        self._state_space = spaces.Dict(
+            {
+                "qpos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(36,), dtype=np.float64
+                ),
+                "qvel": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(36,), dtype=np.float64
+                ),
+                "obj_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+                "target_pos": spaces.Box(
+                    low=-np.inf, high=np.inf, shape=(3,), dtype=np.float64
+                ),
+            }
+        )
+
         EzPickle.__init__(self, **kwargs)
 
     def step(self, a):
@@ -257,9 +284,14 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
         target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
 
-        reward = 0.0
+        # compute the sparse reward variant first
+        goal_distance = float(np.linalg.norm(obj_pos - target_pos))
+        goal_achieved = True if goal_distance < 0.1 else False
+        reward = 10.0 if goal_achieved else -0.1
+
+        # override reward if not sparse reward
         if not self.sparse_reward:
-            reward -= 0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
+            reward = 0.1 * np.linalg.norm(palm_pos - obj_pos)  # take hand to object
             if obj_pos[2] > 0.04:  # if object off the table
                 reward += 1.0  # bonus for lifting the object
                 reward += -0.5 * np.linalg.norm(
@@ -269,15 +301,13 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
                     obj_pos - target_pos
                 )  # make object go to target
 
-        # bonus for object close to target
-        if np.linalg.norm(obj_pos - target_pos) < 0.1:
-            reward += 10.0
+            # bonus for object close to target
+            if goal_distance < 0.1:
+                reward += 10.0
 
-        # bonus for object "very" close to target
-        if np.linalg.norm(obj_pos - target_pos) < 0.05:
-            reward += 20.0
-
-        goal_achieved = True if np.linalg.norm(obj_pos - target_pos) < 0.1 else False
+            # bonus for object "very" close to target
+            if goal_distance < 0.05:
+                reward += 20.0
 
         if self.render_mode == "human":
             self.render()
@@ -295,6 +325,19 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         return np.concatenate(
             [qpos[:-6], palm_pos - obj_pos, palm_pos - target_pos, obj_pos - target_pos]
         )
+
+    def reset(
+        self,
+        *,
+        seed: Optional[int] = None,
+        options: Optional[dict] = None,
+    ):
+        obs, info = super().reset(seed=seed)
+        if options is not None and "initial_state_dict" in options:
+            self.set_env_state(options["initial_state_dict"])
+            obs = self._get_obs()
+
+        return obs, info
 
     def reset_model(self):
         self.model.body_pos[self.obj_body_id, 0] = self.np_random.uniform(
@@ -323,10 +366,10 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         """
         qpos = self.data.qpos.ravel().copy()
         qvel = self.data.qvel.ravel().copy()
-        hand_qpos = qpos[:30]
-        obj_pos = self.data.xpos[self.obj_body_id].ravel()
-        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel()
-        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel()
+        hand_qpos = qpos[:30].copy()
+        obj_pos = self.data.xpos[self.obj_body_id].ravel().copy()
+        palm_pos = self.data.site_xpos[self.S_grasp_site_id].ravel().copy()
+        target_pos = self.data.site_xpos[self.target_obj_site_id].ravel().copy()
         return dict(
             hand_qpos=hand_qpos,
             obj_pos=obj_pos,
@@ -335,3 +378,18 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             qpos=qpos,
             qvel=qvel,
         )
+
+    def set_env_state(self, state_dict):
+        """
+        Set the state which includes hand as well as objects and targets in the scene
+        """
+        assert self._state_space.contains(
+            state_dict
+        ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
+
+        self.model.body_pos[self.obj_body_id] = state_dict["obj_pos"]
+        self.model.site_pos[self.target_obj_site_id] = state_dict["target_pos"]
+
+        self.set_state(qp, qv)
