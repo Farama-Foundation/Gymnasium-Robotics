@@ -489,7 +489,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             return self.single_agent_env.render()
 
         assert (
-            render_mode == "Human"
+            render_mode == "human"
             or render_mode == "rgb_array"
             or render_mode == "depth_array"
         )
