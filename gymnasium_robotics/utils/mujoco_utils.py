@@ -192,7 +192,7 @@ def get_joint_qpos(model, data, name):
     start_idx = joint_addr
     end_idx = joint_addr + ndim
 
-    return data.qpos[start_idx:end_idx]
+    return np.array(data.qpos[start_idx:end_idx])
 
 
 def get_joint_qvel(model, data, name):
@@ -212,7 +212,7 @@ def get_joint_qvel(model, data, name):
     start_idx = joint_addr
     end_idx = joint_addr + ndim
 
-    return data.qvel[start_idx:end_idx]
+    return np.array(data.qvel[start_idx:end_idx])
 
 
 def get_site_xpos(model, data, name):
