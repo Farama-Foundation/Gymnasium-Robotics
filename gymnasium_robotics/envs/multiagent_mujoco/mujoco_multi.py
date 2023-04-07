@@ -475,13 +475,25 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             return self._get_obs(), info
 
-    def render(self):
+    def render(self, render_mode: str | None = None):
         """Renders the MuJoCo environment using the mechanism of the single agent Gymnasium-MuJoCo.
+
+        Args:
+            render_mode: if set to `None` it uses the previously defined render mode (e.g. during the construction of the environment), else it overrides the render method.
 
         Returns:
             The same return value as the single agent Gymnasium.MuJoCo
             see https://gymnasium.farama.org/environments/mujoco/
         """
+        if render_mode is None:
+            return self.single_agent_env.render()
+
+        assert (
+            render_mode == "human"
+            or render_mode == "rgb_array"
+            or render_mode == "depth_array"
+        )
+        self.single_agent_env.unwrapped.render_mode = render_mode
         return self.single_agent_env.render()
 
     def close(self):
