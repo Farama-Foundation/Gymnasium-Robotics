@@ -245,7 +245,7 @@ class KitchenEnv(GoalEnv, EzPickle):
             "rgb_array",
             "depth_array",
         ],
-        "render_fps": 10,
+        "render_fps": 12,
     }
 
     def __init__(
@@ -261,9 +261,41 @@ class KitchenEnv(GoalEnv, EzPickle):
             **kwargs,
         )
 
-        self.robot_env.init_qpos[:7] = np.array(
-            [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, 0.0]
+        self.robot_env.init_qpos = np.array(
+            [
+                1.48388023e-01,
+                -1.76848573e00,
+                1.84390296e00,
+                -2.47685760e00,
+                2.60252026e-01,
+                7.12533105e-01,
+                1.59515394e00,
+                4.79267505e-02,
+                3.71350919e-02,
+                -2.66279850e-04,
+                -5.18043486e-05,
+                3.12877220e-05,
+                -4.51199853e-05,
+                -3.90842156e-06,
+                -4.22629655e-05,
+                6.28065475e-05,
+                4.04984708e-05,
+                4.62730939e-04,
+                -2.26906415e-04,
+                -4.65501369e-04,
+                -6.44129196e-03,
+                -1.77048263e-03,
+                1.08009684e-03,
+                -2.69397440e-01,
+                3.50383255e-01,
+                1.61944683e00,
+                1.00618764e00,
+                4.06395120e-03,
+                -6.62095997e-03,
+                -2.68278933e-04,
+            ]
         )
+
         self.model = self.robot_env.model
         self.data = self.robot_env.data
         self.render_mode = self.robot_env.render_mode
@@ -297,7 +329,7 @@ class KitchenEnv(GoalEnv, EzPickle):
 
         assert (
             int(np.round(1.0 / self.robot_env.dt)) == self.metadata["render_fps"]
-        ), f'Expected value: {int(np.round(1.0 / self.dt))}, Actual value: {self.metadata["render_fps"]}'
+        ), f'Expected value: {int(np.round(1.0 / self.robot_env.dt))}, Actual value: {self.metadata["render_fps"]}'
 
         self.action_space = self.robot_env.action_space
         self.observation_space = spaces.Dict(
@@ -358,11 +390,15 @@ class KitchenEnv(GoalEnv, EzPickle):
         obj_qvel = self.data.qvel[9:].copy()
 
         # Simulate observation noise
-        obj_qpos += self.object_noise_ratio * self.robot_env.np_random.uniform(
-            low=-1.0, high=1.0, size=obj_qpos.shape
+        obj_qpos += (
+            self.object_noise_ratio
+            * self.robot_env.robot_pos_noise_amp[9:]
+            * self.robot_env.np_random.uniform(low=-1.0, high=1.0, size=obj_qpos.shape)
         )
-        obj_qvel += self.object_noise_ratio * self.robot_env.np_random.uniform(
-            low=-1.0, high=1.0, size=obj_qvel.shape
+        obj_qvel += (
+            self.object_noise_ratio
+            * self.robot_env.robot_vel_noise_amp[9:]
+            * self.robot_env.np_random.uniform(low=-1.0, high=1.0, size=obj_qvel.shape)
         )
 
         achieved_goal = {
