@@ -15,6 +15,7 @@ the Gymnasium and Multi-goal API's
 This project is covered by the Apache 2.0 License.
 """
 
+import xml.etree.ElementTree as ET
 from os import path
 
 import numpy as np
