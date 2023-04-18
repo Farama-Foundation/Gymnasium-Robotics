@@ -15,13 +15,16 @@ the Gymnasium and Multi-goal API's
 This project is covered by the Apache 2.0 License.
 """
 
-import xml.etree.ElementTree as ET
 from os import path
 
 import numpy as np
 from gymnasium import spaces
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
 
+from gymnasium_robotics.envs.franka_kitchen.utils import (
+    get_config_root_node,
+    read_config_from_node,
+)
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames, robot_get_obs
 
 MAX_CARTESIAN_DISPLACEMENT = 0.2
@@ -81,6 +84,8 @@ class FrankaRobot(MujocoEnv):
             path.dirname(__file__),
             "../assets/kitchen_franka/franka_assets/franka_config.xml",
         )
+
+        self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(9,))
         self._read_specs_from_config(config_path)
         self.model_names = MujocoModelNames(self.model)
 
@@ -177,41 +182,3 @@ class FrankaRobot(MujocoEnv):
             self.robot_vel_noise_amp[i] = read_config_from_node(
                 root, "qpos" + str(i), "vel_noise_amp", float
             )
-
-
-def read_config_from_node(root_node, parent_name, child_name, dtype=int):
-    # find parent
-    parent_node = root_node.find(parent_name)
-    if parent_node is None:
-        quit("Parent %s not found" % parent_name)
-
-    # get child data
-    child_data = parent_node.get(child_name)
-    if child_data is None:
-        quit("Child %s not found" % child_name)
-
-    config_val = np.array(child_data.split(), dtype=dtype)
-    return config_val
-
-
-def get_config_root_node(config_file_name=None, config_file_data=None):
-    # get root
-    if config_file_data is None:
-        config_file_content = open(config_file_name)
-        config = ET.parse(config_file_content)
-        root_node = config.getroot()
-    else:
-        root_node = ET.fromstring(config_file_data)
-
-    # get root data
-    root_data = root_node.get("name")
-    assert isinstance(root_data, str)
-    root_name = np.array(root_data.split(), dtype=str)
-
-    return root_node, root_name
-
-
-# Read config from config_file
-def read_config_from_xml(config_file_name, parent_name, child_name, dtype=int):
-    root_node, root_name = get_config_root_node(config_file_name=config_file_name)
-    return read_config_from_node(root_node, parent_name, child_name, dtype)
