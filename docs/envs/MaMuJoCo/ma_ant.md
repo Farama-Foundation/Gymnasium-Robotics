@@ -155,7 +155,7 @@ The environment is partitioned in 4 parts, with each part corresponding to a leg
 |-----------------------|------------------------------------------------------|			
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
-| Supported observation categories | `"qpos", "qvel", "cfrc_ext"` |`
+| Supported observation categories | `"qpos", "qvel", "cfrc_ext"` |
 
 
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the ant's torso.
