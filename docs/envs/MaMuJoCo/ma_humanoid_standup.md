@@ -97,6 +97,12 @@ The environment is partitioned in 2 parts, one part corresponding to the upper b
 
 
 ## Observation Space
+| Observation Categories ||
+|-----------------------|------------------------------------------------------|			
+| Default `local_categories` | `[["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"], ["qpos"]` |
+| Default `global_categories` | `("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")` |
+| Supported observation categories | `"qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"` |
+
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes all the items of the Humanoid's torso.
 See more at the [Gymnasium's Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space).
 
