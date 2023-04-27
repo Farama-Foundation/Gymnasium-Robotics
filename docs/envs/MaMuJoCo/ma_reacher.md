@@ -67,6 +67,12 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 
 
 ## Observation Space
+| Observation Categories ||
+|-----------------------|------------------------------------------------------|			
+| Default `local_categories` | `[["qpos", "qvel", "fingertip_dist"], ["qpos"]]` |
+| Default `global_categories` | `("qpos", "qvel")` |
+| Supported observation categories | `"qpos", "qvel", "fingertip_dist"` |
+
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position of the reacher's target object.
 See more at the [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#observation-space).
 
