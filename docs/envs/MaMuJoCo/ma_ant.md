@@ -150,7 +150,6 @@ The environment is partitioned in 4 parts, with each part corresponding to a leg
 
 
 ## Observation Space
-
 | Observation Categories ||
 |-----------------------|------------------------------------------------------|			
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
