@@ -15,6 +15,12 @@ This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo
 The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
 
 
+| Defaults		| `env = mamujoco_v0.parallel_env("Ant", None)`		|
+|-----------------------|------------------------------------------------------|
+| Agents		| `agents= ['agent_0']`					|
+| Number of Agents	| 1							|
+| Action Spaces		| `{'agent_0' : Box(-1, 1, (8,), float32)}`			|
+| Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
 
 ## Action Space
 The action spaces is depended on the partitioning
@@ -30,6 +36,7 @@ The action spaces is depended on the partitioning
 | Number of Agents	| 1							|
 | Action Spaces		| `{'agent_0' : Box(-1, 1, (8,), float32)}`			|
 | Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
+
 
 If partitioning, is None then the environment contains a single agent with the same action space as [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
 
@@ -143,6 +150,14 @@ The environment is partitioned in 4 parts, with each part corresponding to a leg
 
 
 ## Observation Space
+
+| Observation Categories |
+|-----------------------|------------------------------------------------------|			
+| Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
+| Default `global_categories` | `("qpos", "qvel")` |
+| Supported observation categories | `"qpos", "qvel", "cfrc_ext" |`
+
+
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the ant's torso.
 See more at the [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#observation-space).
 
