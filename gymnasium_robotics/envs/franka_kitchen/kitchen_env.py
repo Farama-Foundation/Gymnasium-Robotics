@@ -185,7 +185,7 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     ## Rewards
 
-    The environment's reward is `sparser`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
+    The environment's reward is `sparse`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
     The tasks are considered completed when their joint configuration is within a norm threshold of `0.3` with respect to the goal configuration specified in the `Goal` section.
 
     ## Starting State
@@ -394,7 +394,7 @@ class KitchenEnv(GoalEnv, EzPickle):
     def step(self, action):
         robot_obs, _, terminated, truncated, info = self.robot_env.step(action)
         obs = self._get_obs(robot_obs)
-        info = {"tasks_to_complete": self.tasks_to_complete}
+        info = {"tasks_to_complete": list(self.tasks_to_complete)}
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
 
@@ -423,8 +423,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.episode_task_completions.clear()
         robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
-        self.task_to_complete = self.goal.copy()
-
+        self.task_to_complete = set(self.goal.keys())
         info = {
             "tasks_to_complete": self.task_to_complete,
             "episode_task_completions": [],

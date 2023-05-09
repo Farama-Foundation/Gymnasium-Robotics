@@ -11,7 +11,7 @@ Multitask environment in which a 9-DoF Franka robot is placed in a kitchen conta
     :file: list.html
 ```
 
-The tasks can be selected when the environment is initialized with the `tasks_to_complete` list argument as follows:
+The tasks can be selected when the environment is initialized passing a list of tasks to the `tasks_to_complete` argument as follows:
 
 ```python
 
