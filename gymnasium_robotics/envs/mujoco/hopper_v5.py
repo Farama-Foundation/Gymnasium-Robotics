@@ -134,7 +134,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
 
     ## Version History
 
-    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Hopper gets a new model, the `xml_file` is re-added, added "reward_forward", "reward_ctrl", "reward_survive" to `info`.
+    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Hopper gets a new model, the `xml_file` argument is re-added, added "reward_forward", "reward_ctrl", "reward_survive" to `info`.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
     * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
     * v2: All continuous control environments now use mujoco-py >= 1.50.
