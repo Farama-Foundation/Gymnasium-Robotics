@@ -144,6 +144,7 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     ):
         utils.EzPickle.__init__(
             self,
+            xml_file,
             forward_reward_weight,
             ctrl_cost_weight,
             reset_noise_scale,

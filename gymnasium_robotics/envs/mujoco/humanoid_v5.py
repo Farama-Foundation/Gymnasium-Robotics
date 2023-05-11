@@ -224,6 +224,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
+        xml_file="humanoid.xml",
         forward_reward_weight=1.25,
         ctrl_cost_weight=0.1,
         healthy_reward=5.0,
@@ -235,6 +236,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     ):
         utils.EzPickle.__init__(
             self,
+            xml_file,
             forward_reward_weight,
             ctrl_cost_weight,
             healthy_reward,
@@ -268,7 +270,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         MujocoEnv.__init__(
             self,
-            "humanoid.xml",
+            xml_file,
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,

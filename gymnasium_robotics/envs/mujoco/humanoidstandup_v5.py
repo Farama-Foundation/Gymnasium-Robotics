@@ -198,13 +198,17 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
         "render_fps": 67,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        xml_file="humanoidstandup.xml",
+        **kwargs,
+    ):
         observation_space = Box(
             low=-np.inf, high=np.inf, shape=(348,), dtype=np.float64
         )
         MujocoEnv.__init__(
             self,
-            "humanoidstandup.xml",
+            xml_file,
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
