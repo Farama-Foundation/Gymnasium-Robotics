@@ -2,7 +2,7 @@
 Walker2D model for `Walker2d-v5`, based on openai/gym/Walker2d
 modified by @kallinteris-Andreas
   - To not require `coordinate="global"`
-  - kep feet friction to 0.9/1.9
+  - keep feet friction to 0.9/1.9
 -->
 <mujoco model="walker2d">
   <compiler angle="degree" inertiafromgeom="true"/>
