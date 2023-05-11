@@ -1,9 +1,7 @@
 import numpy as np
-
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
 from gymnasium.spaces import Box
-
 
 DEFAULT_CAMERA_CONFIG = {
     "trackbodyid": -1,
@@ -179,13 +177,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             "reward_ctrl": reward_ctrl,
             "reward_near": reward_near,
         }
-        return (
-            ob,
-            reward,
-            False,
-            False,
-            info
-        )
+        return (ob, reward, False, False, info)
 
     def reset_model(self):
         qpos = self.init_qpos
