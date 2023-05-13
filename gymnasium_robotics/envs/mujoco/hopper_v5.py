@@ -102,7 +102,6 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
 
     ## Arguments
-
     No additional arguments are currently supported in v2 and lower.
 
     ```python
@@ -131,7 +130,6 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     | `exclude_current_positions_from_observation` | **bool**  | `True`                | Whether or not to omit the x-coordinate from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies               |
 
     ## Version History
-
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Hopper gets a new model, the `xml_file` argument is re-added, added "reward_forward", "reward_ctrl", "reward_survive" to `info`.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
     * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
