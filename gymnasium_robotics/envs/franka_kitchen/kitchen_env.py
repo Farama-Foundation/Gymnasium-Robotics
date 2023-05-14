@@ -103,7 +103,7 @@ class KitchenEnv(GoalEnv, EzPickle):
     The observation is a `goal-aware` observation space. The observation space contains the following keys:
 
     * `observation`: this is a `Box(-inf, inf, shape=(59,), dtype="float64")` space and it is formed by the robot's joint positions and velocities, as well as
-        the pose and velocities of the kitchen items. An additional uniform noise of ranfe `[-1,1]` is added to the observations. The noise is also scaled by a factor
+        the pose and velocities of the kitchen items. An additional uniform noise of range `[-1,1]` is added to the observations. The noise is also scaled by a factor
         of `robot_noise_ratio` and `object_noise_ratio` given in the environment arguments. The elements of the `observation` array are the following:
 
 

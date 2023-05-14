@@ -138,16 +138,17 @@ class FrankaRobot(MujocoEnv):
 
         return obs
 
-    def _ctrl_velocity_limits(self, ctrl_velocity):
-        """Enforce velocity specs.
+    def _ctrl_velocity_limits(self, ctrl_velocity: np.ndarray):
+        """Enforce velocity limits and estimate joint position control input (to achieve the desired joint velocity).
 
-        ALERT: This depends on previous observation. This is not ideal as it breaks MDP addumptions. Be careful
+        ALERT: This depends on previous observation. This is not ideal as it breaks MDP assumptions. This is the original
+        implementation from the D4RL environment: https://github.com/Farama-Foundation/D4RL/blob/71a9549f2091accff93eeff68f1f3ab2c0e0a288/d4rl/kitchen/adept_envs/franka/robot/franka_robot.py#L259.
 
         Args:
-            ctrl_velocity (_type_): _description_
+            ctrl_velocity (np.ndarray): environment action with space: Box(low=-1.0, high=1.0, shape=(9,))
 
         Returns:
-            _type_: _description_
+            ctrl_position (np.ndarray): input joint position given to the MuJoCo simulation actuators.
         """
         ctrl_feasible_vel = np.clip(
             ctrl_velocity, self.robot_vel_bound[:9, 0], self.robot_vel_bound[:9, 1]
@@ -155,13 +156,30 @@ class FrankaRobot(MujocoEnv):
         ctrl_feasible_position = self._last_robot_qpos + ctrl_feasible_vel * self.dt
         return ctrl_feasible_position
 
-    def _ctrl_position_limits(self, ctrl_position):
+    def _ctrl_position_limits(self, ctrl_position: np.ndarray):
+        """Enforce joint position limits.
+
+        Args:
+            ctrl_position (np.ndarray): unbounded joint position control input .
+
+        Returns:
+            ctrl_feasible_position (np.ndarray): clipped joint position control input.
+        """
         ctrl_feasible_position = np.clip(
             ctrl_position, self.robot_pos_bound[:9, 0], self.robot_pos_bound[:9, 1]
         )
         return ctrl_feasible_position
 
-    def _read_specs_from_config(self, robot_configs):
+    def _read_specs_from_config(self, robot_configs: str):
+        """Read the specs of the Franka robot joints from the config xml file.
+            - pos_bound: position limits of each joint.
+            - vel_bound: velocity limits of each joint.
+            - pos_noise_amp: scaling factor of the random noise applied in each observation of the robot joint positions.
+            - vel_noise_amp: scaling factor of the random noise applied in each observation of the robot joint velocities.
+
+        Args:
+            robot_configs (str): path to 'franka_config.xml'
+        """
         root, root_name = get_config_root_node(config_file_name=robot_configs)
         self.robot_name = root_name[0]
         self.robot_pos_bound = np.zeros([self.model.nv, 2], dtype=float)
