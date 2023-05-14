@@ -232,7 +232,11 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         healthy_z_range=(1.0, 2.0),
         reset_noise_scale=1e-2,
         exclude_current_positions_from_observation=True,
-        **kwargs
+        include_cinert_from_observation=True,
+        include_cvel_from_observation=True,
+        include_qfrc_actuator_from_observation=True,
+        include_cfrc_ext_from_observation=True,
+        **kwargs,
     ):
         utils.EzPickle.__init__(
             self,
@@ -244,6 +248,10 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             healthy_z_range,
             reset_noise_scale,
             exclude_current_positions_from_observation,
+            include_cinert_from_observation,
+            include_cvel_from_observation,
+            include_qfrc_actuator_from_observation,
+            include_cfrc_ext_from_observation,
             **kwargs
         )
 
@@ -258,6 +266,11 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         self._exclude_current_positions_from_observation = (
             exclude_current_positions_from_observation
         )
+
+        self._include_cinert_from_observation = include_cinert_from_observation
+        self._include_cvel_from_observation = include_cvel_from_observation
+        self._include_qfrc_actuator_from_observation = include_qfrc_actuator_from_observation
+        self._include_cfrc_ext_from_observation = include_cfrc_ext_from_observation
 
         if exclude_current_positions_from_observation:
             observation_space = Box(
@@ -304,11 +317,29 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         position = self.data.qpos.flat.copy()
         velocity = self.data.qvel.flat.copy()
 
-        com_inertia = self.data.cinert[1:].flat.copy()
-        com_velocity = self.data.cvel[1:].flat.copy()
+        if self._include_cinert_from_observation is True:
+            com_inertia = self.data.cinert[1:].flat.copy()
+        else:
+            com_inertia = np.array([])
+        if self._include_cvel_from_observation is True:
+            com_velocity = self.data.cvel[1:].flat.copy()
+        else:
+            com_velocity = np.array([])
 
-        actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
-        external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
+        if self._include_qfrc_actuator_from_observation is True:
+            actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
+        else:
+            actuator_forces = np.array([])
+        if self._include_cfrc_ext_from_observation is True:
+            external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
+        else:
+            external_contact_forces = np.array([])
+
+        # TODO remove after validation
+        assert (self.data.cinert[0].flat.copy == 0).all()
+        assert (self.data.cvel[0].flat.copy == 0).all()
+        assert (self.data.qfrc_actuator[:6].flat.copy == 0).all()
+        assert (self.data.cfrc_ext[0].flat.copy == 0).all()
 
         if self._exclude_current_positions_from_observation:
             position = position[2:]
