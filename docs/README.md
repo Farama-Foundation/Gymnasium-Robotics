@@ -10,7 +10,7 @@ To modify an environment follow the steps below. For more information about how 
 
 ### Editing a page
 
-Fork Gymnasium-Robotics and edit the docstring in the environment's Python file. Then, pip install your fork and run `docs/scripts/gen_mds.py` in this repo. This will automatically generate a md documentation file for the environment.
+Fork Gymnasium-Robotics and edit the docstring in the environment's Python file. Then, pip install your fork and run `docs/_scripts/gen_mds.py` in this repo. This will automatically generate a md documentation file for the environment.
 
 ## Build the Documentation
 
