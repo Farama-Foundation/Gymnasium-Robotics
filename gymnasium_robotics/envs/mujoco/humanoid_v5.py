@@ -272,14 +272,12 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         self._include_qfrc_actuator_from_observation = include_qfrc_actuator_from_observation
         self._include_cfrc_ext_from_observation = include_cfrc_ext_from_observation
 
-        if exclude_current_positions_from_observation:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(348,), dtype=np.float64
-            )
-        else:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(350,), dtype=np.float64
-            )
+        obs_shape = 348
+        if not exclude_current_positions_from_observation:
+            obs_shape += 2
+        observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
+        )
 
         MujocoEnv.__init__(
             self,
