@@ -343,15 +343,14 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         reward = rewards - ctrl_cost
         terminated = self.terminated
         info = {
-            "reward_linvel": forward_reward,
-            "reward_quadctrl": -ctrl_cost,
-            "reward_alive": healthy_reward,
+            "reward_survive": healthy_reward,
+            "reward_forward": forward_reward,
+            "reward_ctrl": -ctrl_cost,
             "x_position": xy_position_after[0],
             "y_position": xy_position_after[1],
             "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
             "x_velocity": x_velocity,
             "y_velocity": y_velocity,
-            "forward_reward": forward_reward,
         }
 
         if self.render_mode == "human":
