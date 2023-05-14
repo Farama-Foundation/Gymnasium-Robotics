@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="">
+    <meta name="description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning">
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning" />
     <meta property="og:url" content="https://robotics.farama.org/content/multi-goal_api.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Fetch" href="../../envs/fetch/" /><link rel="prev" title="Installation" href="../installation/" />
         <link rel="canonical" href="https://robotics.farama.org/content/multi-goal_api.html" />
@@ -373,7 +373,7 @@ goal, e.g. state derived from the simulation.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">GoalEnv</span></code> class can also be used for custom environments.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.</span></span><span class="sig-name descname"><span class="pre">GoalEnv</span></span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.</span></span><span class="sig-name descname"><span class="pre">GoalEnv</span></span><a class="reference internal" href="../../_modules/gymnasium_robotics/core/#GoalEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv" title="Permalink to this definition">#</a></dt>
 <dd><p>A goal-based environment.</p>
 <p>It functions just as any regular Gymnasium environment but it imposes a required structure on the observation_space. More concretely,
 the observation space is required to contain at least three elements, namely <cite>observation</cite>, <cite>desired_goal</cite>, and <cite>achieved_goal</cite>.
@@ -480,7 +480,7 @@ assert truncated == env.compute_truncated(ob[‘achieved_goal’], ob[‘desired
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2022
+                Copyright &#169; 2023 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
