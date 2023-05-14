@@ -13,7 +13,6 @@ DEFAULT_CAMERA_CONFIG = {
 class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment originates from control theory and builds on the cartpole
     environment based on the work done by Barto, Sutton, and Anderson in
     ["Neuronlike adaptive elements that can solve difficult learning control problems"](https://ieeexplore.ieee.org/document/6313077),
@@ -35,12 +34,11 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     | 0   | Force applied on the cart | -1          | 1           | slider                           | slide | Force (N) |
 
     ## Observation Space
-
     The state space consists of positional values of different body parts of the pendulum system,
     followed by the velocities of those individual parts (their derivatives) with all the
     positions ordered before all the velocities.
 
-    The observation is a `ndarray` with shape `(11,)` where the elements correspond to the following:
+    The observation is a `ndarray` with shape `(10,)` where the elements correspond to the following:
 
     | Num | Observation                                                       | Min  | Max | Name (in corresponding XML file) | Joint | Unit                     |
     | --- | ----------------------------------------------------------------- | ---- | --- | -------------------------------- | ----- | ------------------------ |
@@ -52,9 +50,9 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     | 5   | velocity of the cart                                              | -Inf | Inf | slider                           | slide | velocity (m/s)           |
     | 6   | angular velocity of the angle between the cart and the first pole | -Inf | Inf | hinge                            | hinge | angular velocity (rad/s) |
     | 7   | angular velocity of the angle between the two poles               | -Inf | Inf | hinge2                           | hinge | angular velocity (rad/s) |
-    | 8   | constraint force - 1                                              | -Inf | Inf |                                  |       | Force (N)                |
-    | 9   | constraint force - 2                                              | -Inf | Inf |                                  |       | Force (N)                |
-    | 10  | constraint force - 3                                              | -Inf | Inf |                                  |       | Force (N)                |
+    | 8   | constraint force - x                                              | -Inf | Inf | slider                           | slide | Force (N)                |
+    | 9   | constraint force - y                                              | -Inf | Inf | slider                           | slide | Force (N)                |
+    | excluded | constraint force - z                                         | -Inf | Inf | slider                           | slide | Force (N)                |
 
 
     There is physical contact between the robots and their environment - and Mujoco
@@ -70,7 +68,6 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
 
     ## Rewards
-
     The reward consists of two parts:
     - *alive_bonus*: The goal is to make the second inverted pendulum stand upright
     (within a certain angle limit) as long as possible - as such a reward of +10 is awarded
@@ -98,7 +95,6 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     3.Termination: The y_coordinate of the tip of the second pole *is less than or equal* to 1. The maximum standing height of the system is 1.196 m when all the parts are perpendicularly vertical on top of each other).
 
     ## Arguments
-
     No additional arguments are currently supported.
 
     ```python
@@ -114,7 +110,6 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     ```
 
     ## Version History
-
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
     * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
     * v2: All continuous control environments now use mujoco-py >= 1.50
@@ -132,7 +127,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     }
 
     def __init__(self, **kwargs):
-        observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
+        observation_space = Box(low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64)
         MujocoEnv.__init__(
             self,
             "inverted_double_pendulum.xml",
@@ -145,19 +140,31 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
+
         ob = self._get_obs()
+
         x, _, y = self.data.site_xpos[0]
-        dist_penalty = 0.01 * x**2 + (y - 2) ** 2
         v1, v2 = self.data.qvel[1:3]
-        vel_penalty = 1e-3 * v1**2 + 5e-3 * v2**2
-        alive_bonus = 10
-        r = alive_bonus - dist_penalty - vel_penalty
+
         terminated = bool(y <= 1)
+
+        dist_penalty = 0.01 * x**2 + (y - 2) ** 2
+        vel_penalty = 1e-3 * v1**2 + 5e-3 * v2**2
+        alive_bonus = 10 * int(not terminated)
+        r = alive_bonus - dist_penalty - vel_penalty
+
+        info = {
+            "reward_survive": alive_bonus,
+            "distance_penalty": -dist_penalty,
+            "velocity_penalty": -vel_penalty,
+        }
+
         if self.render_mode == "human":
             self.render()
-        return ob, r, terminated, False, {}
+        return ob, r, terminated, False, info
 
     def _get_obs(self):
+        assert self.data.qfrc_constraint[2] == 0  # TODO remove after validation
         return np.concatenate(
             [
                 self.data.qpos[:1],  # cart x pos
