@@ -346,6 +346,29 @@
 </html> 
 <p>This Environment is part of <a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/">MaMuJoCo</a> environments. Please read that page first for general information.
 The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymansium’s MuJoCo/Ant</a>.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Defaults</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;Ant&quot;,</span> <span class="pre">None)</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Agents</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">agents=</span> <span class="pre">['agent_0']</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Number of Agents</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>Action Spaces</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{'agent_0'</span> <span class="pre">:</span> <span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(8,),</span> <span class="pre">float32)}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Part partition</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[(hip4,</span> <span class="pre">ankle4,</span> <span class="pre">hip1,</span> <span class="pre">ankle1,</span> <span class="pre">hip2,</span> <span class="pre">ankle2,</span> <span class="pre">hip3,</span> <span class="pre">ankle3)]</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
 <p>The action spaces is depended on the partitioning</p>
@@ -896,6 +919,26 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Observation Categories</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Default <code class="docutils literal notranslate"><span class="pre">local_categories</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[[&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;],</span> <span class="pre">[&quot;qpos&quot;]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Default <code class="docutils literal notranslate"><span class="pre">global_categories</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Supported observation categories</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;,</span> <span class="pre">&quot;cfrc_ext&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the ant’s torso.
 See more at the <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/#observation-space">Gymnasium’s Ant</a>.</p>
 </section>
