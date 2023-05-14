@@ -82,6 +82,9 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     | excluded | y-coordinate of the torso (centre)                      | -Inf   | Inf    | torso                                  | free  | position (m)             |
 
 
+    Additionally, after all the positional and velocity based values in the table,
+    the observation contains:
+    - *cfrc_ext:*
     If version < `v4` or `use_contact_forces` is `True` then the observation space is extended by 14*6 = 84 elements, which are contact forces
     (external forces - force x, y, z and torque x, y, z) applied to the
     center of mass of each of the body parts. The 14 body parts are:
@@ -321,12 +324,15 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         rewards = forward_reward + healthy_reward
 
         costs = ctrl_cost = self.control_cost(action)
+        contact_cost = self.contact_cost
+        costs += contact_cost
 
         terminated = self.terminated
         observation = self._get_obs()
         info = {
             "reward_forward": forward_reward,
             "reward_ctrl": -ctrl_cost,
+            "reward_contact": -contact_cost,
             "reward_survive": healthy_reward,
             "x_position": xy_position_after[0],
             "y_position": xy_position_after[1],
@@ -335,9 +341,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             "y_velocity": y_velocity,
         }
         # if self._use_contact_forces:
-        contact_cost = self.contact_cost
-        costs += contact_cost
-        info["reward_ctrl"] = -contact_cost
 
         reward = rewards - costs
 
