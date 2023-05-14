@@ -22,7 +22,7 @@ import sys
 import gymnasium_robotics
 
 project = "Gymnasium-Robotics"
-copyright = "2022"
+copyright = "2023 Farama Foundation"
 author = "Farama Foundation"
 
 # The full version, including alpha/beta/rc tags
@@ -40,6 +40,7 @@ extensions = [
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
+    "sphinx.ext.viewcode",
     "myst_parser",
 ]
 
@@ -75,8 +76,9 @@ html_favicon = "_static/img/robotics-favicon.png"
 html_theme_options = {
     "light_logo": "img/robotics.png",
     "dark_logo": "img/robotics-white.png",
-    "gtag": "G-M37ZN7PPMN",
     "image": "img/robotics-github.png",
+    "description": "Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning",
+    "gtag": "G-M37ZN7PPMN",
     "versioning": True,
     "source_repository": "https://github.com/Farama-Foundation/Gymnasium-Robotics/",
     "source_branch": "master",
