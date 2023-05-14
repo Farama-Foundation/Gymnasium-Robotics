@@ -89,22 +89,22 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     (external forces - force x, y, z and torque x, y, z) applied to the
     center of mass of each of the body parts. The 14 body parts are:
 
-    | id (for `v2`, `v3`, `v4)` | body parts |
-    |  ---  |  ------------  |
-    | 0  | worldbody (note: forces are always full of zeros) |
-    | 1  | torso |
-    | 2  | front_left_leg |
-    | 3  | aux_1 (front left leg) |
-    | 4  | ankle_1 (front left leg) |
-    | 5  | front_right_leg |
-    | 6  | aux_2 (front right leg) |
-    | 7  | ankle_2 (front right leg) |
-    | 8  | back_leg (back left leg) |
-    | 9  | aux_3 (back left leg) |
-    | 10 | ankle_3 (back left leg) |
-    | 11 | right_back_leg |
-    | 12 | aux_4 (back right leg) |
-    | 13 | ankle_4 (back right leg) |
+    | id (for `v2`, `v3`, `v4)` | id (for `v5`) | body parts |
+    | --- | --- |  ------------  |
+    | 0  | excluded | worldbody (note: forces are always full of zeros) |
+    | 1  | 0  | torso |
+    | 2  | 1  | front_left_leg |
+    | 3  | 2  | aux_1 (front left leg) |
+    | 4  | 3  | ankle_1 (front left leg) |
+    | 5  | 4  | front_right_leg |
+    | 6  | 5  | aux_2 (front right leg) |
+    | 7  | 6  | ankle_2 (front right leg) |
+    | 8  | 7  | back_leg (back left leg) |
+    | 9  | 8  | aux_3 (back left leg) |
+    | 10 | 9  | ankle_3 (back left leg) |
+    | 11 | 10 | right_back_leg |
+    | 12 | 11 | aux_4 (back right leg) |
+    | 13 | 12 | ankle_4 (back right leg) |
 
 
     The (x,y,z) coordinates are translational DOFs while the orientations are rotational
