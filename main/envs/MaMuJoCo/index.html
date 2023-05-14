@@ -457,9 +457,12 @@ The Default value is: 1</p></li>
 <li><p><strong>agent_factorization</strong> – A custom factorization of the MuJoCo environment (overwrites agent_conf),
 see DOC [how to create new agent factorizations](<a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations">https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations</a>).</p></li>
 <li><p><strong>local_categories</strong> – The categories of local observations for each observation depth,
-The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels</p></li>
-<li><p><strong>global_categories</strong> – The categories of observation for global observations,
-The default is; local_categories[0]</p></li>
+It takes the form of a list where the k-th element is the list of observable items observable at the k-th depth
+For example: if it is set to <cite>[[“qpos, qvel”], [“qvel”]]</cite> then means each agent observes its own position and velocity elements, and it’s neighbors velocity elements.
+The default is: Check each environment’s page on the “observation space” section.</p></li>
+<li><p><strong>global_categories</strong> – The categories of observations extracted from the global observable space,
+For example: if it is set to <cite>(“qpos”)</cite> out of the globally observable items of the environment, only the position items will be observed.
+The default is: Check each environment’s page on the “observation space” section.</p></li>
 <li><p><strong>render_mode</strong> – see [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>),
 valid values: ‘human’, ‘rgb_array’, ‘depth_array’</p></li>
 <li><p><strong>kwargs</strong> – Additional arguments passed to the [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>) environment,

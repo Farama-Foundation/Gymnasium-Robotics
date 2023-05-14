@@ -738,6 +738,26 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Observation Categories</p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Default <code class="docutils literal notranslate"><span class="pre">local_categories</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[[&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;,</span> <span class="pre">&quot;cinert&quot;,</span> <span class="pre">&quot;cvel&quot;,</span> <span class="pre">&quot;qfrc_actuator&quot;,</span> <span class="pre">&quot;cfrc_ext&quot;],</span> <span class="pre">[&quot;qpos&quot;]]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Default <code class="docutils literal notranslate"><span class="pre">global_categories</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;,</span> <span class="pre">&quot;cinert&quot;,</span> <span class="pre">&quot;cvel&quot;,</span> <span class="pre">&quot;qfrc_actuator&quot;,</span> <span class="pre">&quot;cfrc_ext&quot;)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Supported observation categories</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;qpos&quot;,</span> <span class="pre">&quot;qvel&quot;,</span> <span class="pre">&quot;cinert&quot;,</span> <span class="pre">&quot;cvel&quot;,</span> <span class="pre">&quot;qfrc_actuator&quot;,</span> <span class="pre">&quot;cfrc_ext&quot;</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes all the items of the Humanoid’s torso.
 See more at the <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid_standup/#observation-space">Gymnasium’s Humanoid Standup</a>.</p>
 </section>
