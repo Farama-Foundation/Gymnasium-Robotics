@@ -97,9 +97,12 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations).
             local_categories: The categories of local observations for each observation depth,
-                The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
-            global_categories: The categories of observation for global observations,
-                The default is; local_categories[0]
+                It takes the form of a list where the k-th element is the list of observable items observable at the k-th depth
+                For example: if it is set to `[["qpos, qvel"], ["qvel"]]` then means each agent observes its own position and velocity elements, and it's neighbors velocity elements.
+                The default is: Check each environment's page on the "observation space" section.
+            global_categories: The categories of observations extracted from the global observable space,
+                For example: if it is set to `("qpos")` out of the globally observable items of the environment, only the position items will be observed.
+                The default is: Check each environment's page on the "observation space" section.
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
