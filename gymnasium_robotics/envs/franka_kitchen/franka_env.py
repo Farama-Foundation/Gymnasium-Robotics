@@ -85,7 +85,7 @@ class FrankaRobot(MujocoEnv):
             "../assets/kitchen_franka/franka_assets/franka_config.xml",
         )
 
-        self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(9,))
+        self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(9,), dtype=np.float64)
         self._read_specs_from_config(config_path)
         self.model_names = MujocoModelNames(self.model)
 
