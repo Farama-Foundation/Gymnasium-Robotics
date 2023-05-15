@@ -227,6 +227,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         xml_file="humanoid.xml",
         forward_reward_weight=1.25,
         ctrl_cost_weight=0.1,
+        contact_cost_weight=5e-7,
+        contact_cost_range=(-np.inf, 10.0),
         healthy_reward=5.0,
         terminate_when_unhealthy=True,
         healthy_z_range=(1.0, 2.0),
@@ -257,6 +259,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         self._forward_reward_weight = forward_reward_weight
         self._ctrl_cost_weight = ctrl_cost_weight
+        self._contact_cost_weight = contact_cost_weight
+        self._contact_cost_range = contact_cost_range
         self._healthy_reward = healthy_reward
         self._terminate_when_unhealthy = terminate_when_unhealthy
         self._healthy_z_range = healthy_z_range
@@ -273,6 +277,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         self._include_cfrc_ext_from_observation = include_cfrc_ext_from_observation
 
         obs_shape = 348
+        # TODO update for v5 shape
         if not exclude_current_positions_from_observation:
             obs_shape += 2
         observation_space = Box(
@@ -298,6 +303,14 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     def control_cost(self, action):
         control_cost = self._ctrl_cost_weight * np.sum(np.square(self.data.ctrl))
         return control_cost
+
+    @property
+    def contact_cost(self):
+        contact_forces = self.sim.data.cfrc_ext
+        contact_cost = self._contact_cost_weight * np.sum(np.square(contact_forces))
+        min_cost, max_cost = self._contact_cost_range
+        contact_cost = np.clip(contact_cost, min_cost, max_cost)
+        return contact_cost
 
     @property
     def is_healthy(self):
@@ -362,6 +375,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         x_velocity, y_velocity = xy_velocity
 
         ctrl_cost = self.control_cost(action)
+        contact_cost = self.contact_cost
+        costs = ctrl_cost + contact_cost
 
         forward_reward = self._forward_reward_weight * x_velocity
         healthy_reward = self.healthy_reward
@@ -369,12 +384,13 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         rewards = forward_reward + healthy_reward
 
         observation = self._get_obs()
-        reward = rewards - ctrl_cost
+        reward = rewards - costs
         terminated = self.terminated
         info = {
             "reward_survive": healthy_reward,
             "reward_forward": forward_reward,
             "reward_ctrl": -ctrl_cost,
+            "reward_contact": -contact_cost,
             "x_position": xy_position_after[0],
             "y_position": xy_position_after[1],
             "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
