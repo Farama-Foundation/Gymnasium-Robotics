@@ -23,17 +23,22 @@ from gymnasium.utils.ezpickle import EzPickle
 
 from gymnasium_robotics.core import GoalEnv
 from gymnasium_robotics.envs.franka_kitchen.franka_env import FrankaRobot
-from gymnasium_robotics.utils.mujoco_utils import get_joint_qpos
 
+OBS_ELEMENT_INDICES = {
+    "bottom burner": np.array([11, 12]),
+    "top burner": np.array([15, 16]),
+    "light switch": np.array([17, 18]),
+    "slide cabinet": np.array([19]),
+    "hinge cabinet": np.array([20, 21]),
+    "microwave": np.array([22]),
+    "kettle": np.array([23, 24, 25, 26, 27, 28, 29]),
+}
 OBS_ELEMENT_GOALS = {
-    "bottom_right_burner": np.array([-0.01]),
-    "bottom_left_burner": np.array([-0.01]),
-    "top_right_burner": np.array([-0.01]),
-    "top_left_burner": np.array([-0.01]),
-    "light_switch": np.array([-0.7]),
-    "slide_cabinet": np.array([0.37]),
-    "left_hinge_cabinet": np.array([-1.45]),
-    "right_hinge_cabinet": np.array([1.45]),
+    "bottom burner": np.array([-0.88, -0.01]),
+    "top burner": np.array([-0.92, -0.01]),
+    "light switch": np.array([-0.69, -0.05]),
+    "slide cabinet": np.array([0.37]),
+    "hinge cabinet": np.array([0.0, 1.45]),
     "microwave": np.array([-0.75]),
     "kettle": np.array([-0.23, 0.75, 1.62, 0.99, 0.0, 0.0, -0.06]),
 }
@@ -49,11 +54,8 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     The environment is based on the 9 degrees of freedom [Franka robot](https://www.franka.de/). The Franka robot is placed in a kitchen environment containing several common
     household items: a microwave, a kettle, an overhead light, cabinets, and an oven. The environment is a `multitask` goal in which the robot has to interact with the previously
-    mentioned items in order to reach a desired goal configuration. For example, one such state is to have the microwave andv sliding cabinet door open with the kettle on the top burner
-    and the overhead light on. The final tasks to be included in the goal can be configured when the environment is initialized.
-
-    Also, some updates have been done to the original MuJoCo model, such as using an inverse kinematic controller and substituting the legacy Franka model with the maintained MuJoCo model
-    in [deepmind/mujoco_menagerie](https://github.com/deepmind/mujoco_menagerie).
+    mentioned items in order to reach a desired goal configuration. For example, one such state is to have the microwave and sliding cabinet door open with the kettle on the top burner
+    and the overhead light on. The goal tasks can be configured when the environment is created.
 
     ## Goal
 
@@ -67,86 +69,64 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     The following is a table with all the possible tasks and their respective joint goal values:
 
-    | Task (Joint Name in XML) | Description                                                    | Joint Type | Goal                                       |
-    | ------------------------ | -------------------------------------------------------------- | ---------- | ------------------------------------------ |
-    | "bottom_right_burner"    | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
-    | "bottom_left_burner"     | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
-    | "top_right_burner"       | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
-    | "top_left_burner"        | Turn the knob oven knob that activates the bottom right burner | slide      | -0.01                                      |
-    | light_switch"            | Turn on the light switch                                       | hinge      | -0.7                                       |
-    | "slide_cabinet"          | Open the slide cabinet                                         | hinge      | 0.37                                       |
-    | "left_hinge_cabinet"     | Open the left hinge cabinet                                    | hinge      | -1.45                                      |
-    | "right_hinge_cabinet"    | Open the right hinge cabinet                                   | hinge      | 1.45                                       |
-    | "microwave"              | Open the microwave door                                        | hinge      | -0.75                                      |
-    | "kettle"                 | Move the kettle to the top left burner                         | free       | [-0.23, 0.75, 1.62, 0.99, 0.0, 0.0, -0.06] |
+    | Task             | Description                                                    | Joint Type | Goal                                     |
+    | ---------------- | -------------------------------------------------------------- | ---------- | ---------------------------------------- |
+    | "bottom burner"  | Turn the oven knob that activates the bottom burner            | slide      | [-0.88, -0.01]                           |
+    | "top burner"     | Turn the oven knob that activates the top burner               | slide      | [-0.92, -0.01]                           |
+    | "light switch"   | Turn on the light switch                                       | slide      | [-0.69, -0.05]                           |
+    | "slide cabinet"  | Open the slide cabinet                                         | slide      | 0.37                                     |
+    | "hinge cabinet"  | Open the left hinge cabinet                                    | hinge      | [0.0, 1.45]                              |
+    | "microwave"      | Open the microwave door                                        | hinge      | 0.37                                     |
+    | "kettle"         | Move the kettle to the top left burner                         | free       | [-0.23, 0.75, 1.62, 0.99, 0., 0., -0.06] |
 
 
     ## Action Space
 
-    The action space of this environment is different from its original implementation in ["Relay policy learning: Solving long-horizon tasks via imitation and reinforcement learning"](https://arxiv.org/abs/1910.11956).
-    The environment can be initialized with two possible robot controls: an end-effector `inverse kinematic controller` or a `joint position controller`.
+    The default joint actuators in the Franka MuJoCo model are position controlled. However, the action space of the environment are joint velocities clipped between -1 and 1 rad/s.
+    The space is a `Box(-1.0, 1.0, (9,), float32)`. The desired joint position control input is estimated in each time step with the current joint position values and the desired velocity
+    action:
 
-    ### IK Controller
-    This action space can be used by setting the argument `ik_controller` to `True`. The space is a `Box(-1.0, 1.0, (7,), float32)`, which represents the end-effector's desired pose displacement.
-    The end-effector's frame of reference is defined with a MuJoCo site named `EEF`. The controller relies on the model's position control of the actuators by using the Damped Least Squares (DLS)
-    algorithm to compute displacements in the joint space from a desired end-effector configuration. The controller iteratively reduces the error from the current end-effector pose with respect
-    to the desired target. The default number of controller steps per Gymnasium step is `5`. This value can be set with the `control_steps` argument, however it is not recommended to reduce this value
-    since the simulation can get unstable.
-
-    | Num | Action                                                                            | Action Min  | Action Max  | Control Min  | Control Max | Unit        |
-    | --- | ----------------------------------------------------------------------------------| ----------- | ----------- | ------------ | ----------  | ----------- |
-    | 0   | Linear displacement of the end-effector's current position in the x direction     | -1          | 1           | -0.2 (m)     | 0.2 (m)     | position (m)|
-    | 1   | Linear displacement of the end-effector's current position in the y direction     | -1          | 1           | -0.2 (m)     | 0.2 (m)     | position (m)|
-    | 2   | Linear displacement of the end-effector's current position in the z direction     | -1          | 1           | -0.2 (m)     | 0.2 (m)     | position (m)|
-    | 3   | Angular displacement of the end-effector's current orientation around the x axis  | -1          | 1           | -0.5 (rad)   | 0.5 (rad)   | angle (rad) |
-    | 4   | Angular displacement of the end-effector's current orientation around the y axis  | -1          | 1           | -0.5 (rad)   | 0.5 (rad)   | angle (rad) |
-    | 5   | Angular displacement of the end-effector's current orientation around the z axis  | -1          | 1           | -0.5 (rad)   | 0.5 (rad)   | angle (rad) |
-    | 6   | Force applied to the slide joint of the gripper                                   | -1          | 1           | 0.0 (N)      | 255 (N)     | force (N)   |
-
-    ### Joint Position Controller
-    The default control actuators in the Franka MuJoCo model are joint position controllers. The input action is denormalize from `[-1,1]` to the actuator range and input
-    directly to the model. The space is a `Box(-1.0, 1.0, (8,), float32)`, and it can be used by setting the argument `ik_controller` to `False`.
-
-    | Num | Action                                              | Action Min  | Action Max  | Control Min  | Control Max | Name (in corresponding XML file) | Joint | Unit        |
-    | --- | ----------------------------------------------------| ----------- | ----------- | -----------  |-------------| ---------------------------------| ----- | ----------- |
-    | 0   | `robot:joint1` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator1                        | hinge | angle (rad) |
-    | 1   | `robot:joint2` angular position                     | -1          | 1           | -1.76 (rad)  | 1.76 (rad)  | actuator2                        | hinge | angle (rad) |
-    | 2   | `robot:joint3` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator3                        | hinge | angle (rad) |
-    | 3   | `robot:joint4` angular position                     | -1          | 1           | -3.07 (rad)  | 0.0 (rad)   | actuator4                        | hinge | angle (rad) |
-    | 4   | `robot:joint5` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator5                        | hinge | angle (rad) |
-    | 5   | `robot:joint6` angular position                     | -1          | 1           | -0.0 (rad)   | 3.75 (rad)  | actuator6                        | hinge | angle (rad) |
-    | 6   | `robot:joint7` angular position                     | -1          | 1           | -2.9 (rad)   | 2.9 (rad)   | actuator7                        | hinge | angle (rad) |
-    | 7   | `robot:finger_left` and `robot:finger_right` force  | -1          | 1           | 0 (N)        | 255 (N)     | actuator8                        | slide | force (N)   |
+    | Num | Action                                         | Action Min  | Action Max  | Joint | Unit  |
+    | --- | ---------------------------------------------- | ----------- | ----------- | ----- | ----- |
+    | 0   | `robot:panda0_joint1` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 1   | `robot:panda0_joint2` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 2   | `robot:panda0_joint3` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 3   | `robot:panda0_joint4` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 4   | `robot:panda0_joint5` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 5   | `robot:panda0_joint6` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 6   | `robot:panda0_joint7` angular velocity         | -1          | 1           | hinge | rad/s |
+    | 7   | `robot:r_gripper_finger_joint` linear velocity | -1          | 1           | slide | m/s   |
+    | 8   | `robot:l_gripper_finger_joint` linear velocity | -1          | 1           | slide | m/s   |
 
     ## Observation Space
 
-    The observation is a `goal-aware observation space`. The observation space contains the following keys:
+    The observation is a `goal-aware` observation space. The observation space contains the following keys:
 
     * `observation`: this is a `Box(-inf, inf, shape=(59,), dtype="float64")` space and it is formed by the robot's joint positions and velocities, as well as
-        the pose and velocities of the kitchen items. An additional uniform noise of ranfe `[-1,1]` is added to the observations. The noise is also scaled by a factor
+        the pose and velocities of the kitchen items. An additional uniform noise of range `[-1,1]` is added to the observations. The noise is also scaled by a factor
         of `robot_noise_ratio` and `object_noise_ratio` given in the environment arguments. The elements of the `observation` array are the following:
 
 
     | Num   | Observation                                           | Min      | Max      | Joint Name (in corresponding XML file)   | Joint Type | Unit                       |
     | ----- | ----------------------------------------------------- | -------- | -------- | ---------------------------------------- | ---------- | -------------------------- |
-    | 0     | `robot:joint1` hinge joint angle value                | -Inf     | Inf      | robot:joint1                             | hinge      | angle (rad)                |
-    | 1     | `robot:joint2` hinge joint angle value                | -Inf     | Inf      | robot:joint2                             | hinge      | angle (rad)                |
-    | 2     | `robot:joint3` hinge joint angle value                | -Inf     | Inf      | robot:joint3                             | hinge      | angle (rad)                |
-    | 3     | `robot:joint4` hinge joint angle value                | -Inf     | Inf      | robot:joint4                             | hinge      | angle (rad)                |
-    | 4     | `robot:joint5` hinge joint angle value                | -Inf     | Inf      | robot:joint5                             | hinge      | angle (rad)                |
-    | 5     | `robot:joint6` hinge joint angle value                | -Inf     | Inf      | robot:joint6                             | hinge      | angle (rad)                |
-    | 6     | `robot:joint7` hinge joint angle value                | -Inf     | Inf      | robot:joint7                             | hinge      | angle (rad)                |
-    | 7     | `robot:finger_joint1` slide joint translation value   | -Inf     | Inf      | robot:finger_joint1                      | slide      | position (m)               |
-    | 8     | `robot:finger_joint2` slide joint translation value   | -Inf     | Inf      | robot:finger_joint2                      | slide      | position (m)               |
-    | 9     | `robot:joint1` hinge joint angular velocity           | -Inf     | Inf      | robot:joint1                             | hinge      | angular velocity (rad/s)   |
-    | 10    | `robot:joint2` hinge joint angular velocity           | -Inf     | Inf      | robot:joint2                             | hinge      | angular velocity (rad/s)   |
-    | 11    | `robot:joint3` hinge joint angular velocity           | -Inf     | Inf      | robot:joint3                             | hinge      | angular velocity (rad/s)   |
-    | 12    | `robot:joint4` hinge joint angular velocity           | -Inf     | Inf      | robot:joint4                             | hinge      | angular velocity (rad/s)   |
-    | 13    | `robot:joint5` hinge joint angular velocity           | -Inf     | Inf      | robot:joint5                             | hinge      | angular velocity (rad/s)   |
-    | 14    | `robot:joint6` hinge joint angular velocity           | -Inf     | Inf      | robot:joint6                             | hinge      | angular velocity (rad/s)   |
-    | 15    | `robot:joint7` hinge joint angular velocity           | -Inf     | Inf      | robot:joint7                             | hinge      | angle (rad)                |
-    | 16    | `robot:finger_joint1` slide joint linear velocity     | -Inf     | Inf      | robot:finger_joint1                      | slide      | linear velocity (m/s)      |
-    | 17    | `robot:finger_joint2` slide joint linear velocity     | -Inf     | Inf      | robot:finger_joint2                      | slide      | linear velocity (m/s)      |
+    | 0     | `robot:panda0_joint1` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint1                             | hinge      | angle (rad)                |
+    | 1     | `robot:panda0_joint2` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint2                             | hinge      | angle (rad)                |
+    | 2     | `robot:panda0_joint3` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint3                             | hinge      | angle (rad)                |
+    | 3     | `robot:panda0_joint4` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint4                             | hinge      | angle (rad)                |
+    | 4     | `robot:panda0_joint5` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint5                             | hinge      | angle (rad)                |
+    | 5     | `robot:panda0_joint6` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint6                             | hinge      | angle (rad)                |
+    | 6     | `robot:panda0_joint7` hinge joint angle value                | -Inf     | Inf      | robot:panda0_joint7                             | hinge      | angle (rad)                |
+    | 7     | `robot:r_gripper_finger_joint` slide joint translation value   | -Inf     | Inf      | robot:r_gripper_finger_joint                      | slide      | position (m)               |
+    | 8     | `robot:l_gripper_finger_joint` slide joint translation value   | -Inf     | Inf      | robot:l_gripper_finger_joint                      | slide      | position (m)               |
+    | 9     | `robot:panda0_joint1` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint1                             | hinge      | angular velocity (rad/s)   |
+    | 10    | `robot:panda0_joint2` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint2                             | hinge      | angular velocity (rad/s)   |
+    | 11    | `robot:panda0_joint3` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint3                             | hinge      | angular velocity (rad/s)   |
+    | 12    | `robot:panda0_joint4` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint4                             | hinge      | angular velocity (rad/s)   |
+    | 13    | `robot:panda0_joint5` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint5                             | hinge      | angular velocity (rad/s)   |
+    | 14    | `robot:panda0_joint6` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint6                             | hinge      | angular velocity (rad/s)   |
+    | 15    | `robot:panda0_joint7` hinge joint angular velocity           | -Inf     | Inf      | robot:panda0_joint7                             | hinge      | angle (rad)                |
+    | 16    | `robot:r_gripper_finger_joint` slide joint linear velocity     | -Inf     | Inf      | robot:r_gripper_finger_joint                      | slide      | linear velocity (m/s)      |
+    | 17    | `robot:l_gripper_finger_joint` slide joint linear velocity     | -Inf     | Inf      | robot:l_gripper_finger_joint                      | slide      | linear velocity (m/s)      |
     | 18    | Rotation of the knob for the bottom right burner      | -Inf     | Inf      | knob_Joint_1                             | hinge      | angle (rad)                |
     | 19    | Joint opening of the bottom right burner              | -Inf     | Inf      | bottom_right_burner                      | slide      | position (m)               |
     | 20    | Rotation of the knob for the bottom left burner       | -Inf     | Inf      | knob_Joint_2                             | hinge      | angle (rad)                |
@@ -205,7 +185,7 @@ class KitchenEnv(GoalEnv, EzPickle):
 
     ## Rewards
 
-    The environment's reward is `sparser`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
+    The environment's reward is `sparse`. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
     The tasks are considered completed when their joint configuration is within a norm threshold of `0.3` with respect to the goal configuration specified in the `Goal` section.
 
     ## Starting State
@@ -228,14 +208,12 @@ class KitchenEnv(GoalEnv, EzPickle):
     | `terminate_on_tasks_completed` | **bool**        | `True`                                      | Terminate episode if no more tasks to complete (episodic multitask)                 |
     | `remove_task_when_completed`   | **bool**        | `True`                                      | Remove the completed tasks from the info dictionary returned after each step        |
     | `object_noise_ratio`           | **float**       | `0.0005`                                    | Scaling factor applied to the uniform noise added to the kitchen object observations|
-    | `ik_controller`                | **bool**        | `True`                                      | Use inverse kinematic (IK) controller or joint position controller                  |
-    | `control_steps`                | **integer**     | `5`                                         | Number of steps to iterate the DLS in the IK controller                             |
     | `robot_noise_ratio`            | **float**       | `0.01`                                      | Scaling factor applied to the uniform noise added to the robot joint observations   |
     | `max_episode_steps`            | **integer**     | `280`                                       | Maximum number of steps per episode                                                 |
 
     ## Version History
 
-    * v1: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
+    * v1: updated version with most recent python MuJoCo bindings.
     * v0: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
 
@@ -245,7 +223,7 @@ class KitchenEnv(GoalEnv, EzPickle):
             "rgb_array",
             "depth_array",
         ],
-        "render_fps": 10,
+        "render_fps": 12,
     }
 
     def __init__(
@@ -261,9 +239,41 @@ class KitchenEnv(GoalEnv, EzPickle):
             **kwargs,
         )
 
-        self.robot_env.init_qpos[:7] = np.array(
-            [0.0, 0.0, 0.0, -1.57079, 0.0, 1.57079, 0.0]
+        self.robot_env.init_qpos = np.array(
+            [
+                1.48388023e-01,
+                -1.76848573e00,
+                1.84390296e00,
+                -2.47685760e00,
+                2.60252026e-01,
+                7.12533105e-01,
+                1.59515394e00,
+                4.79267505e-02,
+                3.71350919e-02,
+                -2.66279850e-04,
+                -5.18043486e-05,
+                3.12877220e-05,
+                -4.51199853e-05,
+                -3.90842156e-06,
+                -4.22629655e-05,
+                6.28065475e-05,
+                4.04984708e-05,
+                4.62730939e-04,
+                -2.26906415e-04,
+                -4.65501369e-04,
+                -6.44129196e-03,
+                -1.77048263e-03,
+                1.08009684e-03,
+                -2.69397440e-01,
+                3.50383255e-01,
+                1.61944683e00,
+                1.00618764e00,
+                4.06395120e-03,
+                -6.62095997e-03,
+                -2.68278933e-04,
+            ]
         )
+
         self.model = self.robot_env.model
         self.data = self.robot_env.data
         self.render_mode = self.robot_env.render_mode
@@ -297,7 +307,7 @@ class KitchenEnv(GoalEnv, EzPickle):
 
         assert (
             int(np.round(1.0 / self.robot_env.dt)) == self.metadata["render_fps"]
-        ), f'Expected value: {int(np.round(1.0 / self.dt))}, Actual value: {self.metadata["render_fps"]}'
+        ), f'Expected value: {int(np.round(1.0 / self.robot_env.dt))}, Actual value: {self.metadata["render_fps"]}'
 
         self.action_space = self.robot_env.action_space
         self.observation_space = spaces.Dict(
@@ -358,16 +368,19 @@ class KitchenEnv(GoalEnv, EzPickle):
         obj_qvel = self.data.qvel[9:].copy()
 
         # Simulate observation noise
-        obj_qpos += self.object_noise_ratio * self.robot_env.np_random.uniform(
-            low=-1.0, high=1.0, size=obj_qpos.shape
+        obj_qpos += (
+            self.object_noise_ratio
+            * self.robot_env.robot_pos_noise_amp[8:]
+            * self.robot_env.np_random.uniform(low=-1.0, high=1.0, size=obj_qpos.shape)
         )
-        obj_qvel += self.object_noise_ratio * self.robot_env.np_random.uniform(
-            low=-1.0, high=1.0, size=obj_qvel.shape
+        obj_qvel += (
+            self.object_noise_ratio
+            * self.robot_env.robot_vel_noise_amp[9:]
+            * self.robot_env.np_random.uniform(low=-1.0, high=1.0, size=obj_qvel.shape)
         )
 
         achieved_goal = {
-            task: get_joint_qpos(self.model, self.data, task).copy()
-            for task in self.goal.keys()
+            task: self.data.qpos[OBS_ELEMENT_INDICES[task]] for task in self.goal.keys()
         }
 
         obs = {
@@ -381,7 +394,7 @@ class KitchenEnv(GoalEnv, EzPickle):
     def step(self, action):
         robot_obs, _, terminated, truncated, info = self.robot_env.step(action)
         obs = self._get_obs(robot_obs)
-        info = {"tasks_to_complete": self.tasks_to_complete}
+        info = {"tasks_to_complete": list(self.tasks_to_complete)}
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
 
@@ -392,8 +405,11 @@ class KitchenEnv(GoalEnv, EzPickle):
                 for element in self.step_task_completions
             ]
 
-        info["step_task_completions"] = self.step_task_completions
-        self.episode_task_completions += self.step_task_completions
+        info["step_task_completions"] = self.step_task_completions.copy()
+
+        for task in self.step_task_completions:
+            if task not in self.episode_task_completions:
+                self.episode_task_completions.append(task)
         info["episode_task_completions"] = self.episode_task_completions
         self.step_task_completions.clear()
         if self.terminate_on_tasks_completed:
@@ -407,8 +423,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.episode_task_completions.clear()
         robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
-        self.task_to_complete = self.goal.copy()
-
+        self.task_to_complete = set(self.goal.keys())
         info = {
             "tasks_to_complete": self.task_to_complete,
             "episode_task_completions": [],
