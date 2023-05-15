@@ -38,7 +38,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     followed by the velocities of those individual parts (their derivatives) with all the
     positions ordered before all the velocities.
 
-    The observation is a `ndarray` with shape `(10,)` where the elements correspond to the following:
+    The observation is a `ndarray` with shape `(9,)` where the elements correspond to the following:
 
     | Num | Observation                                                       | Min  | Max | Name (in corresponding XML file) | Joint | Unit                     |
     | --- | ----------------------------------------------------------------- | ---- | --- | -------------------------------- | ----- | ------------------------ |
@@ -50,9 +50,9 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     | 5   | velocity of the cart                                              | -Inf | Inf | slider                           | slide | velocity (m/s)           |
     | 6   | angular velocity of the angle between the cart and the first pole | -Inf | Inf | hinge                            | hinge | angular velocity (rad/s) |
     | 7   | angular velocity of the angle between the two poles               | -Inf | Inf | hinge2                           | hinge | angular velocity (rad/s) |
-    | 8   | constraint force - x                                              | -Inf | Inf | slider                           | slide | Force (N)                |
-    | 9   | constraint force - y                                              | -Inf | Inf | slider                           | slide | Force (N)                |
-    | excluded | constraint force - z                                         | -Inf | Inf | slider                           | slide | Force (N)                |
+    | 8   | constraint force                                                  | -Inf | Inf | slider                           | slide | Force (N)                |
+    | excluded | constraint force                                             | -Inf | Inf | hinge                            | slide | Force (N)                |
+    | excluded | constraint force                                             | -Inf | Inf | hinge2                           | slide | Force (N)                |
 
 
     There is physical contact between the robots and their environment - and Mujoco
@@ -110,6 +110,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     ```
 
     ## Version History
+    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Fixed "reward_survive" being 10 on every step (even on terminal steps). Removed "constraint force" of the hinges from the observation space. Added `info` "reward_survive", "distance_penalty", "velocity_penalty".
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
     * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
     * v2: All continuous control environments now use mujoco-py >= 1.50
@@ -127,7 +128,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     }
 
     def __init__(self, **kwargs):
-        observation_space = Box(low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64)
+        observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
         MujocoEnv.__init__(
             self,
             "inverted_double_pendulum.xml",
@@ -165,6 +166,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
     def _get_obs(self):
         assert self.data.qfrc_constraint[2] == 0  # TODO remove after validation
+        assert self.data.qfrc_constraint[1] == 0  # TODO remove after validation
         return np.concatenate(
             [
                 self.data.qpos[:1],  # cart x pos
