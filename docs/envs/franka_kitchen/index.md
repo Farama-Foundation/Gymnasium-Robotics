@@ -11,27 +11,26 @@ Multitask environment in which a 9-DoF Franka robot is placed in a kitchen conta
     :file: list.html
 ```
 
-The tasks can be selected when the environment is initialized with the `tasks_to_complete` list argument as follows:
+The tasks can be selected when the environment is initialized passing a list of tasks to the `tasks_to_complete` argument as follows:
 
 ```python
 
 import gymnasium as gym
 
-env = gym.make('FrankaKitchen-v1', tasks_to_complete=['microwave', 'kettle', 'bottom_left_burner'])
+env = gym.make('FrankaKitchen-v1', tasks_to_complete=['microwave', 'kettle'])
 ```
 
 The possible tasks to complete are:
 
-* `bottom_right_burner`
-* `bottom_left_burner`
-* `top_right_burner`
-* `top_left_burner`
-* `light_switch`
-* `slide_cabinet`
-* `left_hinge_cabinet`
-* `right_hinge_cabinet`
-* `microwave`
-* `kettle`
+| Task            | Description                                                     |
+| --------------- | --------------------------------------------------------------- |
+| `bottom burner` | twist control knob to activate bottom left burner in the stove. |
+| `top burner`    | twist control knob to activate top left burner in the stove.    |
+| `light switch`  | move a lever switch to turn on a light over the burners.        |
+| `slide cabinet` | slide open the cabinet door.                                    |
+| `hinge cabinet` | open a hinge cabinet door.                                      |
+| `microwave`     | open the microwave door.                                        |
+| `kettle`        | move the kettle from the bottom burner to the top burner.       |
 
 ## References
 

@@ -1100,7 +1100,7 @@ def register_robotics_envs():
     register(
         id="FrankaKitchen-v1",
         entry_point="gymnasium_robotics.envs.franka_kitchen:KitchenEnv",
-        max_episode_steps=280,
+        max_episode_steps=500,
     )
 
 

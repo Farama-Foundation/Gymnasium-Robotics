@@ -17,14 +17,15 @@ This project is covered by the Apache 2.0 License.
 
 from os import path
 
-import mujoco
 import numpy as np
 from gymnasium import spaces
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
 
-from gymnasium_robotics.envs.franka_kitchen.ik_controller import IKController
+from gymnasium_robotics.envs.franka_kitchen.utils import (
+    get_config_root_node,
+    read_config_from_node,
+)
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames, robot_get_obs
-from gymnasium_robotics.utils.rotations import euler2quat
 
 MAX_CARTESIAN_DISPLACEMENT = 0.2
 MAX_ROTATION_DISPLACEMENT = 0.5
@@ -44,15 +45,13 @@ class FrankaRobot(MujocoEnv):
             "rgb_array",
             "depth_array",
         ],
-        "render_fps": 10,
+        "render_fps": 12,
     }
 
     def __init__(
         self,
         model_path="../assets/kitchen_franka/franka_assets/franka_panda.xml",
-        frame_skip=50,
-        ik_controller: bool = True,
-        control_steps=5,
+        frame_skip=40,
         robot_noise_ratio: float = 0.01,
         default_camera_config: dict = DEFAULT_CAMERA_CONFIG,
         **kwargs,
@@ -62,7 +61,6 @@ class FrankaRobot(MujocoEnv):
             model_path,
         )
 
-        self.control_steps = control_steps
         self.robot_noise_ratio = robot_noise_ratio
 
         observation_space = (
@@ -77,74 +75,35 @@ class FrankaRobot(MujocoEnv):
             **kwargs,
         )
 
-        self.init_ctrl = np.array([0, 0, 0, -1.57079, 0, 1.57079, 0, 255])
+        self.init_qpos = self.data.qpos
+        self.init_qvel = self.data.qvel
 
-        if ik_controller:
-            self.controller = IKController(self.model, self.data)
-            action_size = 7  # 3 translation + 3 rotation + 1 gripper
-
-        else:
-            self.controller = None
-            action_size = 8  # 7 joint positions + 1 gripper
-
-        self.action_space = spaces.Box(
-            low=-1.0, high=1.0, dtype=np.float32, shape=(action_size,)
+        self.act_mid = np.zeros(9)
+        self.act_rng = np.ones(9) * 2
+        config_path = path.join(
+            path.dirname(__file__),
+            "../assets/kitchen_franka/franka_assets/franka_config.xml",
         )
 
-        # Actuator ranges
-        ctrlrange = self.model.actuator_ctrlrange
-        self.actuation_range = (ctrlrange[:, 1] - ctrlrange[:, 0]) / 2.0
-        self.actuation_center = (ctrlrange[:, 1] + ctrlrange[:, 0]) / 2.0
-
+        self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(9,), dtype=np.float64)
+        self._read_specs_from_config(config_path)
         self.model_names = MujocoModelNames(self.model)
 
     def step(self, action):
         action = np.clip(action, -1.0, 1.0)
-        if self.controller is not None:
-            current_eef_pose = self.data.site_xpos[
-                self.model_names.site_name2id["EEF"]
-            ].copy()
-            target_eef_pose = current_eef_pose + action[:3] * MAX_CARTESIAN_DISPLACEMENT
-            quat_rot = euler2quat(action[3:6] * MAX_ROTATION_DISPLACEMENT)
-            current_eef_quat = np.empty(
-                4
-            )  # current orientation of the end effector site in quaternions
-            target_orientation = np.empty(
-                4
-            )  # desired end effector orientation in quaternions
-            mujoco.mju_mat2Quat(
-                current_eef_quat,
-                self.data.site_xmat[self.model_names.site_name2id["EEF"]].copy(),
-            )
-            mujoco.mju_mulQuat(target_orientation, quat_rot, current_eef_quat)
 
-            ctrl_action = np.zeros(8)
+        # Denormalize the input action from [-1, 1] range to the each actuators control range
+        action = self.act_mid + action * self.act_rng
 
-            # Denormalize gripper action
-            ctrl_action[-1] = (
-                self.actuation_center[-1] + action[-1] * self.actuation_range[-1]
-            )
+        # enforce velocity limits
+        ctrl_feasible = self._ctrl_velocity_limits(action)
+        # enforce position limits
+        ctrl_feasible = self._ctrl_position_limits(ctrl_feasible)
 
-            for _ in range(self.control_steps):
-                delta_qpos = self.controller.compute_qpos_delta(
-                    target_eef_pose, target_orientation
-                )
-                ctrl_action[:7] = self.data.ctrl.copy()[:7] + delta_qpos[:7]
+        self.do_simulation(ctrl_feasible, self.frame_skip)
 
-                # Do not use `do_simulation`` method from MujocoEnv: value error due to discrepancy between
-                # the action space and the simulation control input when using IK controller.
-                # TODO: eliminate error check in MujocoEnv (action space can be different from simulaton control input).
-                self.data.ctrl[:] = ctrl_action
-                mujoco.mj_step(self.model, self.data, nstep=self.frame_skip)
-
-                if self.render_mode == "human":
-                    self.render()
-        else:
-            # Denormalize the input action from [-1, 1] range to the each actuators control range
-            action = self.actuation_center + action * self.actuation_range
-            self.do_simulation(action, self.frame_skip)
-            if self.render_mode == "human":
-                self.render()
+        if self.render_mode == "human":
+            self.render()
 
         obs = self._get_obs()
 
@@ -155,23 +114,89 @@ class FrankaRobot(MujocoEnv):
         robot_qpos, robot_qvel = robot_get_obs(
             self.model, self.data, self.model_names.joint_names
         )
-
         # Simulate observation noise
-        robot_qpos += self.robot_noise_ratio * self.np_random.uniform(
-            low=-1.0, high=1.0, size=robot_qpos.shape
+        robot_qpos += (
+            self.robot_noise_ratio
+            * self.robot_pos_noise_amp[:9]
+            * self.np_random.uniform(low=-1.0, high=1.0, size=robot_qpos.shape)
         )
-        robot_qvel += self.robot_noise_ratio * self.np_random.uniform(
-            low=-1.0, high=1.0, size=robot_qvel.shape
+        robot_qvel += (
+            self.robot_noise_ratio
+            * self.robot_vel_noise_amp[:9]
+            * self.np_random.uniform(low=-1.0, high=1.0, size=robot_qvel.shape)
         )
+
+        self._last_robot_qpos = robot_qpos
 
         return np.concatenate((robot_qpos.copy(), robot_qvel.copy()))
 
     def reset_model(self):
         qpos = self.init_qpos
         qvel = self.init_qvel
-        self.data.ctrl[:] = self.init_ctrl
         self.set_state(qpos, qvel)
-
         obs = self._get_obs()
 
         return obs
+
+    def _ctrl_velocity_limits(self, ctrl_velocity: np.ndarray):
+        """Enforce velocity limits and estimate joint position control input (to achieve the desired joint velocity).
+
+        ALERT: This depends on previous observation. This is not ideal as it breaks MDP assumptions. This is the original
+        implementation from the D4RL environment: https://github.com/Farama-Foundation/D4RL/blob/71a9549f2091accff93eeff68f1f3ab2c0e0a288/d4rl/kitchen/adept_envs/franka/robot/franka_robot.py#L259.
+
+        Args:
+            ctrl_velocity (np.ndarray): environment action with space: Box(low=-1.0, high=1.0, shape=(9,))
+
+        Returns:
+            ctrl_position (np.ndarray): input joint position given to the MuJoCo simulation actuators.
+        """
+        ctrl_feasible_vel = np.clip(
+            ctrl_velocity, self.robot_vel_bound[:9, 0], self.robot_vel_bound[:9, 1]
+        )
+        ctrl_feasible_position = self._last_robot_qpos + ctrl_feasible_vel * self.dt
+        return ctrl_feasible_position
+
+    def _ctrl_position_limits(self, ctrl_position: np.ndarray):
+        """Enforce joint position limits.
+
+        Args:
+            ctrl_position (np.ndarray): unbounded joint position control input .
+
+        Returns:
+            ctrl_feasible_position (np.ndarray): clipped joint position control input.
+        """
+        ctrl_feasible_position = np.clip(
+            ctrl_position, self.robot_pos_bound[:9, 0], self.robot_pos_bound[:9, 1]
+        )
+        return ctrl_feasible_position
+
+    def _read_specs_from_config(self, robot_configs: str):
+        """Read the specs of the Franka robot joints from the config xml file.
+            - pos_bound: position limits of each joint.
+            - vel_bound: velocity limits of each joint.
+            - pos_noise_amp: scaling factor of the random noise applied in each observation of the robot joint positions.
+            - vel_noise_amp: scaling factor of the random noise applied in each observation of the robot joint velocities.
+
+        Args:
+            robot_configs (str): path to 'franka_config.xml'
+        """
+        root, root_name = get_config_root_node(config_file_name=robot_configs)
+        self.robot_name = root_name[0]
+        self.robot_pos_bound = np.zeros([self.model.nv, 2], dtype=float)
+        self.robot_vel_bound = np.zeros([self.model.nv, 2], dtype=float)
+        self.robot_pos_noise_amp = np.zeros(self.model.nv, dtype=float)
+        self.robot_vel_noise_amp = np.zeros(self.model.nv, dtype=float)
+
+        for i in range(self.model.nv):
+            self.robot_pos_bound[i] = read_config_from_node(
+                root, "qpos" + str(i), "pos_bound", float
+            )
+            self.robot_vel_bound[i] = read_config_from_node(
+                root, "qpos" + str(i), "vel_bound", float
+            )
+            self.robot_pos_noise_amp[i] = read_config_from_node(
+                root, "qpos" + str(i), "pos_noise_amp", float
+            )
+            self.robot_vel_noise_amp[i] = read_config_from_node(
+                root, "qpos" + str(i), "vel_noise_amp", float
+            )

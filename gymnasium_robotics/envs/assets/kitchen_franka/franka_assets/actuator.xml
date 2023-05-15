@@ -1,31 +1,17 @@
+<!-- Modified from the original source code at
+        1) https://github.com/vikashplus/franka
+    which was originally written by Vikash Kumar and licensed under the Apache License= -->
+
 <mujocoinclude>
-  <tendon>
-    <fixed name="split">
-      <joint joint="robot:finger_joint1" coef="0.5"/>
-      <joint joint="robot:finger_joint2" coef="0.5"/>
-    </fixed>
-  </tendon>
-
-  <equality>
-    <joint joint1="robot:finger_joint1" joint2="robot:finger_joint2" solimp="0.95 0.99 0.001" solref="0.005 1"/>
-  </equality>
-
-  <actuator>
-    <general class="panda" name="actuator1" joint="robot:joint1" gainprm="4500" biasprm="0 -4500 -450"/>
-    <general class="panda" name="actuator2" joint="robot:joint2" gainprm="4500" biasprm="0 -4500 -450"
-        ctrlrange="-1.7628 1.7628"/>
-    <general class="panda" name="actuator3" joint="robot:joint3" gainprm="3500" biasprm="0 -3500 -350"/>
-    <general class="panda" name="actuator4" joint="robot:joint4" gainprm="3500" biasprm="0 -3500 -350"
-        ctrlrange="-3.0718 -0.0698"/>
-    <general class="panda" name="actuator5" joint="robot:joint5" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12"/>
-    <general class="panda" name="actuator6" joint="robot:joint6" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12" ctrlrange="-0.0175 3.7525"/>
-    <general class="panda" name="actuator7" joint="robot:joint7" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12"/>
-    <general class="panda" name="actuator8" tendon="split" forcerange="-100 100" ctrlrange="0 255"
-        gainprm="0.01568627451 0 0" biasprm="0 -100 -10"/>
-  </actuator>
+	<actuator>
+        <position name="panda0_joint1" joint="robot:panda0_joint1" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint2" joint="robot:panda0_joint2" class="panda" kp="870" forcerange="-87 87" ctrlrange="-1.8326 1.8326"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint3" joint="robot:panda0_joint3" class="panda" kp="870" forcerange="-87 87" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint4" joint="robot:panda0_joint4" class="panda" kp="870" forcerange="-87 87" ctrlrange="-3.1416 0.0"/> <!-- velocity="2.1750" -->
+        <position name="panda0_joint5" joint="robot:panda0_joint5" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint6" joint="robot:panda0_joint6" class="panda" kp="120" forcerange="-12 12" ctrlrange="-3.7525 2.1817"/> <!-- velocity="2.6100" -->
+        <position name="panda0_joint7" joint="robot:panda0_joint7" class="panda" kp="120" forcerange="-12 12" ctrlrange="-2.9671 2.9671"/> <!-- velocity="2.9671" -->
+        <position name="r_gripper_finger_joint" joint="robot:panda0_finger_joint1" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> <!-- velocity=".2" -->
+        <position name="l_gripper_finger_joint" joint="robot:panda0_finger_joint2" class="panda_finger" kp="500" forcerange="-70 70" ctrlrange="0 0.04"/> <!-- velocity=".2" -->
+    </actuator>
 </mujocoinclude>
-
-
