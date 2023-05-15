@@ -356,26 +356,46 @@
             
     </div>
         
-<p>The tasks can be selected when the environment is initialized with the <code class="docutils literal notranslate"><span class="pre">tasks_to_complete</span></code> list argument as follows:</p>
+<p>The tasks can be selected when the environment is initialized passing a list of tasks to the <code class="docutils literal notranslate"><span class="pre">tasks_to_complete</span></code> argument as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 <span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FrankaKitchen-v1&#39;</span><span class="p">,</span> <span class="n">tasks_to_complete</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;microwave&#39;</span><span class="p">,</span> <span class="s1">&#39;kettle&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom_left_burner&#39;</span><span class="p">])</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FrankaKitchen-v1&#39;</span><span class="p">,</span> <span class="n">tasks_to_complete</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;microwave&#39;</span><span class="p">,</span> <span class="s1">&#39;kettle&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>The possible tasks to complete are:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bottom_right_burner</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bottom_left_burner</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">top_right_burner</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">top_left_burner</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">light_switch</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">slide_cabinet</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">left_hinge_cabinet</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">right_hinge_cabinet</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">microwave</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">kettle</span></code></p></li>
-</ul>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">bottom</span> <span class="pre">burner</span></code></p></td>
+<td><p>twist control knob to activate bottom left burner in the stove.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">top</span> <span class="pre">burner</span></code></p></td>
+<td><p>twist control knob to activate top left burner in the stove.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">light</span> <span class="pre">switch</span></code></p></td>
+<td><p>move a lever switch to turn on a light over the burners.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">slide</span> <span class="pre">cabinet</span></code></p></td>
+<td><p>slide open the cabinet door.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hinge</span> <span class="pre">cabinet</span></code></p></td>
+<td><p>open a hinge cabinet door.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">microwave</span></code></p></td>
+<td><p>open the microwave door.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kettle</span></code></p></td>
+<td><p>move the kettle from the bottom burner to the top burner.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
 <p>These environments were first introduced in <a class="reference external" href="https://arxiv.org/abs/1910.11956">“Relay Policy Learning: Solving Long-Horizon Tasks via Imitation and Reinforcement Learning”</a> by Abhishek Gupta, Vikash Kumar, Corey Lynch, Sergey Levine, Karol Hausman, and later modified in <a class="reference external" href="https://arxiv.org/abs/2004.07219">“D4RL: Datasets for Deep Data-Driven Reinforcement Learning”</a> by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, Sergey Levine. Both publications can be cited as follows:</p>

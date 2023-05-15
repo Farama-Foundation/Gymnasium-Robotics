@@ -339,10 +339,8 @@
 by Abhishek Gupta, Vikash Kumar, Corey Lynch, Sergey Levine, Karol Hausman.</p>
 <p>The environment is based on the 9 degrees of freedom <a class="reference external" href="https://www.franka.de/">Franka robot</a>. The Franka robot is placed in a kitchen environment containing several common
 household items: a microwave, a kettle, an overhead light, cabinets, and an oven. The environment is a <code class="docutils literal notranslate"><span class="pre">multitask</span></code> goal in which the robot has to interact with the previously
-mentioned items in order to reach a desired goal configuration. For example, one such state is to have the microwave andv sliding cabinet door open with the kettle on the top burner
-and the overhead light on. The final tasks to be included in the goal can be configured when the environment is initialized.</p>
-<p>Also, some updates have been done to the original MuJoCo model, such as using an inverse kinematic controller and substituting the legacy Franka model with the maintained MuJoCo model
-in <a class="reference external" href="https://github.com/deepmind/mujoco_menagerie">deepmind/mujoco_menagerie</a>.</p>
+mentioned items in order to reach a desired goal configuration. For example, one such state is to have the microwave and sliding cabinet door open with the kettle on the top burner
+and the overhead light on. The goal tasks can be configured when the environment is created.</p>
 </section>
 <section id="goal">
 <h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading">#</a></h2>
@@ -356,62 +354,47 @@ the microwave door and move the kettle create the environment as follows:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Task (Joint Name in XML)</p></th>
+<tr class="row-odd"><th class="head"><p>Task</p></th>
 <th class="head"><p>Description</p></th>
 <th class="head"><p>Joint Type</p></th>
 <th class="head"><p>Goal</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>“bottom_right_burner”</p></td>
-<td><p>Turn the knob oven knob that activates the bottom right burner</p></td>
+<tr class="row-even"><td><p>“bottom burner”</p></td>
+<td><p>Turn the oven knob that activates the bottom burner</p></td>
 <td><p>slide</p></td>
-<td><p>-0.01</p></td>
+<td><p>[-0.88, -0.01]</p></td>
 </tr>
-<tr class="row-odd"><td><p>“bottom_left_burner”</p></td>
-<td><p>Turn the knob oven knob that activates the bottom right burner</p></td>
+<tr class="row-odd"><td><p>“top burner”</p></td>
+<td><p>Turn the oven knob that activates the top burner</p></td>
 <td><p>slide</p></td>
-<td><p>-0.01</p></td>
+<td><p>[-0.92, -0.01]</p></td>
 </tr>
-<tr class="row-even"><td><p>“top_right_burner”</p></td>
-<td><p>Turn the knob oven knob that activates the bottom right burner</p></td>
-<td><p>slide</p></td>
-<td><p>-0.01</p></td>
-</tr>
-<tr class="row-odd"><td><p>“top_left_burner”</p></td>
-<td><p>Turn the knob oven knob that activates the bottom right burner</p></td>
-<td><p>slide</p></td>
-<td><p>-0.01</p></td>
-</tr>
-<tr class="row-even"><td><p>light_switch”</p></td>
+<tr class="row-even"><td><p>“light switch”</p></td>
 <td><p>Turn on the light switch</p></td>
-<td><p>hinge</p></td>
-<td><p>-0.7</p></td>
+<td><p>slide</p></td>
+<td><p>[-0.69, -0.05]</p></td>
 </tr>
-<tr class="row-odd"><td><p>“slide_cabinet”</p></td>
+<tr class="row-odd"><td><p>“slide cabinet”</p></td>
 <td><p>Open the slide cabinet</p></td>
+<td><p>slide</p></td>
+<td><p>0.37</p></td>
+</tr>
+<tr class="row-even"><td><p>“hinge cabinet”</p></td>
+<td><p>Open the left hinge cabinet</p></td>
+<td><p>hinge</p></td>
+<td><p>[0.0, 1.45]</p></td>
+</tr>
+<tr class="row-odd"><td><p>“microwave”</p></td>
+<td><p>Open the microwave door</p></td>
 <td><p>hinge</p></td>
 <td><p>0.37</p></td>
 </tr>
-<tr class="row-even"><td><p>“left_hinge_cabinet”</p></td>
-<td><p>Open the left hinge cabinet</p></td>
-<td><p>hinge</p></td>
-<td><p>-1.45</p></td>
-</tr>
-<tr class="row-odd"><td><p>“right_hinge_cabinet”</p></td>
-<td><p>Open the right hinge cabinet</p></td>
-<td><p>hinge</p></td>
-<td><p>1.45</p></td>
-</tr>
-<tr class="row-even"><td><p>“microwave”</p></td>
-<td><p>Open the microwave door</p></td>
-<td><p>hinge</p></td>
-<td><p>-0.75</p></td>
-</tr>
-<tr class="row-odd"><td><p>“kettle”</p></td>
+<tr class="row-even"><td><p>“kettle”</p></td>
 <td><p>Move the kettle to the top left burner</p></td>
 <td><p>free</p></td>
-<td><p>[-0.23, 0.75, 1.62, 0.99, 0.0, 0.0, -0.06]</p></td>
+<td><p>[-0.23, 0.75, 1.62, 0.99, 0., 0., -0.06]</p></td>
 </tr>
 </tbody>
 </table>
@@ -419,15 +402,9 @@ the microwave door and move the kettle create the environment as follows:</p>
 </section>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
-<p>The action space of this environment is different from its original implementation in <a class="reference external" href="https://arxiv.org/abs/1910.11956">“Relay policy learning: Solving long-horizon tasks via imitation and reinforcement learning”</a>.
-The environment can be initialized with two possible robot controls: an end-effector <code class="docutils literal notranslate"><span class="pre">inverse</span> <span class="pre">kinematic</span> <span class="pre">controller</span></code> or a <code class="docutils literal notranslate"><span class="pre">joint</span> <span class="pre">position</span> <span class="pre">controller</span></code>.</p>
-<section id="ik-controller">
-<h3>IK Controller<a class="headerlink" href="#ik-controller" title="Permalink to this heading">#</a></h3>
-<p>This action space can be used by setting the argument <code class="docutils literal notranslate"><span class="pre">ik_controller</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>. The space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(7,),</span> <span class="pre">float32)</span></code>, which represents the end-effector’s desired pose displacement.
-The end-effector’s frame of reference is defined with a MuJoCo site named <code class="docutils literal notranslate"><span class="pre">EEF</span></code>. The controller relies on the model’s position control of the actuators by using the Damped Least Squares (DLS)
-algorithm to compute displacements in the joint space from a desired end-effector configuration. The controller iteratively reduces the error from the current end-effector pose with respect
-to the desired target. The default number of controller steps per Gymnasium step is <code class="docutils literal notranslate"><span class="pre">5</span></code>. This value can be set with the <code class="docutils literal notranslate"><span class="pre">control_steps</span></code> argument, however it is not recommended to reduce this value
-since the simulation can get unstable.</p>
+<p>The default joint actuators in the Franka MuJoCo model are position controlled. However, the action space of the environment are joint velocities clipped between -1 and 1 rad/s.
+The space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(9,),</span> <span class="pre">float32)</span></code>. The desired joint position control input is estimated in each time step with the current joint position values and the desired velocity
+action:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -435,182 +412,84 @@ since the simulation can get unstable.</p>
 <th class="head"><p>Action</p></th>
 <th class="head"><p>Action Min</p></th>
 <th class="head"><p>Action Max</p></th>
-<th class="head"><p>Control Min</p></th>
-<th class="head"><p>Control Max</p></th>
-<th class="head"><p>Unit</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>0</p></td>
-<td><p>Linear displacement of the end-effector’s current position in the x direction</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.2 (m)</p></td>
-<td><p>0.2 (m)</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>1</p></td>
-<td><p>Linear displacement of the end-effector’s current position in the y direction</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.2 (m)</p></td>
-<td><p>0.2 (m)</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-even"><td><p>2</p></td>
-<td><p>Linear displacement of the end-effector’s current position in the z direction</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.2 (m)</p></td>
-<td><p>0.2 (m)</p></td>
-<td><p>position (m)</p></td>
-</tr>
-<tr class="row-odd"><td><p>3</p></td>
-<td><p>Angular displacement of the end-effector’s current orientation around the x axis</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.5 (rad)</p></td>
-<td><p>0.5 (rad)</p></td>
-<td><p>angle (rad)</p></td>
-</tr>
-<tr class="row-even"><td><p>4</p></td>
-<td><p>Angular displacement of the end-effector’s current orientation around the y axis</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.5 (rad)</p></td>
-<td><p>0.5 (rad)</p></td>
-<td><p>angle (rad)</p></td>
-</tr>
-<tr class="row-odd"><td><p>5</p></td>
-<td><p>Angular displacement of the end-effector’s current orientation around the z axis</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>-0.5 (rad)</p></td>
-<td><p>0.5 (rad)</p></td>
-<td><p>angle (rad)</p></td>
-</tr>
-<tr class="row-even"><td><p>6</p></td>
-<td><p>Force applied to the slide joint of the gripper</p></td>
-<td><p>-1</p></td>
-<td><p>1</p></td>
-<td><p>0.0 (N)</p></td>
-<td><p>255 (N)</p></td>
-<td><p>force (N)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="joint-position-controller">
-<h3>Joint Position Controller<a class="headerlink" href="#joint-position-controller" title="Permalink to this heading">#</a></h3>
-<p>The default control actuators in the Franka MuJoCo model are joint position controllers. The input action is denormalize from <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> to the actuator range and input
-directly to the model. The space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(8,),</span> <span class="pre">float32)</span></code>, and it can be used by setting the argument <code class="docutils literal notranslate"><span class="pre">ik_controller</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
-<div class="table-wrapper colwidths-auto docutils container">
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Num</p></th>
-<th class="head"><p>Action</p></th>
-<th class="head"><p>Action Min</p></th>
-<th class="head"><p>Action Max</p></th>
-<th class="head"><p>Control Min</p></th>
-<th class="head"><p>Control Max</p></th>
-<th class="head"><p>Name (in corresponding XML file)</p></th>
 <th class="head"><p>Joint</p></th>
 <th class="head"><p>Unit</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint1</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint1</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-2.9 (rad)</p></td>
-<td><p>2.9 (rad)</p></td>
-<td><p>actuator1</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint2</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint2</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-1.76 (rad)</p></td>
-<td><p>1.76 (rad)</p></td>
-<td><p>actuator2</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint3</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint3</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-2.9 (rad)</p></td>
-<td><p>2.9 (rad)</p></td>
-<td><p>actuator3</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint4</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint4</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-3.07 (rad)</p></td>
-<td><p>0.0 (rad)</p></td>
-<td><p>actuator4</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-even"><td><p>4</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint5</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint5</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-2.9 (rad)</p></td>
-<td><p>2.9 (rad)</p></td>
-<td><p>actuator5</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-odd"><td><p>5</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint6</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint6</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-0.0 (rad)</p></td>
-<td><p>3.75 (rad)</p></td>
-<td><p>actuator6</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-even"><td><p>6</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint7</span></code> angular position</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint7</span></code> angular velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>-2.9 (rad)</p></td>
-<td><p>2.9 (rad)</p></td>
-<td><p>actuator7</p></td>
 <td><p>hinge</p></td>
-<td><p>angle (rad)</p></td>
+<td><p>rad/s</p></td>
 </tr>
 <tr class="row-odd"><td><p>7</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:finger_left</span></code> and <code class="docutils literal notranslate"><span class="pre">robot:finger_right</span></code> force</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:r_gripper_finger_joint</span></code> linear velocity</p></td>
 <td><p>-1</p></td>
 <td><p>1</p></td>
-<td><p>0 (N)</p></td>
-<td><p>255 (N)</p></td>
-<td><p>actuator8</p></td>
 <td><p>slide</p></td>
-<td><p>force (N)</p></td>
+<td><p>m/s</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:l_gripper_finger_joint</span></code> linear velocity</p></td>
+<td><p>-1</p></td>
+<td><p>1</p></td>
+<td><p>slide</p></td>
+<td><p>m/s</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-</section>
 <section id="observation-space">
 <h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
-<p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. The observation space contains the following keys:</p>
+<p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span></code> observation space. The observation space contains the following keys:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: this is a <code class="docutils literal notranslate"><span class="pre">Box(-inf,</span> <span class="pre">inf,</span> <span class="pre">shape=(59,),</span> <span class="pre">dtype=&quot;float64&quot;)</span></code> space and it is formed by the robot’s joint positions and velocities, as well as
-the pose and velocities of the kitchen items. An additional uniform noise of ranfe <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> is added to the observations. The noise is also scaled by a factor
+the pose and velocities of the kitchen items. An additional uniform noise of range <code class="docutils literal notranslate"><span class="pre">[-1,1]</span></code> is added to the observations. The noise is also scaled by a factor
 of <code class="docutils literal notranslate"><span class="pre">robot_noise_ratio</span></code> and <code class="docutils literal notranslate"><span class="pre">object_noise_ratio</span></code> given in the environment arguments. The elements of the <code class="docutils literal notranslate"><span class="pre">observation</span></code> array are the following:</p></li>
 </ul>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -627,146 +506,146 @@ of <code class="docutils literal notranslate"><span class="pre">robot_noise_rati
 </thead>
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint1</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint1</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint1</p></td>
+<td><p>robot:panda0_joint1</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint2</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint2</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint2</p></td>
+<td><p>robot:panda0_joint2</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint3</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint3</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint3</p></td>
+<td><p>robot:panda0_joint3</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-odd"><td><p>3</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint4</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint4</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint4</p></td>
+<td><p>robot:panda0_joint4</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-even"><td><p>4</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint5</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint5</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint5</p></td>
+<td><p>robot:panda0_joint5</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-odd"><td><p>5</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint6</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint6</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint6</p></td>
+<td><p>robot:panda0_joint6</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-even"><td><p>6</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint7</span></code> hinge joint angle value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint7</span></code> hinge joint angle value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint7</p></td>
+<td><p>robot:panda0_joint7</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-odd"><td><p>7</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:finger_joint1</span></code> slide joint translation value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:r_gripper_finger_joint</span></code> slide joint translation value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:finger_joint1</p></td>
+<td><p>robot:r_gripper_finger_joint</p></td>
 <td><p>slide</p></td>
 <td><p>position (m)</p></td>
 </tr>
 <tr class="row-even"><td><p>8</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:finger_joint2</span></code> slide joint translation value</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:l_gripper_finger_joint</span></code> slide joint translation value</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:finger_joint2</p></td>
+<td><p>robot:l_gripper_finger_joint</p></td>
 <td><p>slide</p></td>
 <td><p>position (m)</p></td>
 </tr>
 <tr class="row-odd"><td><p>9</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint1</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint1</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint1</p></td>
+<td><p>robot:panda0_joint1</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>10</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint2</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint2</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint2</p></td>
+<td><p>robot:panda0_joint2</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-odd"><td><p>11</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint3</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint3</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint3</p></td>
+<td><p>robot:panda0_joint3</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>12</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint4</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint4</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint4</p></td>
+<td><p>robot:panda0_joint4</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-odd"><td><p>13</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint5</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint5</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint5</p></td>
+<td><p>robot:panda0_joint5</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-even"><td><p>14</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint6</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint6</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint6</p></td>
+<td><p>robot:panda0_joint6</p></td>
 <td><p>hinge</p></td>
 <td><p>angular velocity (rad/s)</p></td>
 </tr>
 <tr class="row-odd"><td><p>15</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:joint7</span></code> hinge joint angular velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:panda0_joint7</span></code> hinge joint angular velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:joint7</p></td>
+<td><p>robot:panda0_joint7</p></td>
 <td><p>hinge</p></td>
 <td><p>angle (rad)</p></td>
 </tr>
 <tr class="row-even"><td><p>16</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:finger_joint1</span></code> slide joint linear velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:r_gripper_finger_joint</span></code> slide joint linear velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:finger_joint1</p></td>
+<td><p>robot:r_gripper_finger_joint</p></td>
 <td><p>slide</p></td>
 <td><p>linear velocity (m/s)</p></td>
 </tr>
 <tr class="row-odd"><td><p>17</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">robot:finger_joint2</span></code> slide joint linear velocity</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">robot:l_gripper_finger_joint</span></code> slide joint linear velocity</p></td>
 <td><p>-Inf</p></td>
 <td><p>Inf</p></td>
-<td><p>robot:finger_joint2</p></td>
+<td><p>robot:l_gripper_finger_joint</p></td>
 <td><p>slide</p></td>
 <td><p>linear velocity (m/s)</p></td>
 </tr>
@@ -1119,7 +998,7 @@ current joint configuration of each joint in the task.</p></li>
 </section>
 <section id="rewards">
 <h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
-<p>The environment’s reward is <code class="docutils literal notranslate"><span class="pre">sparser</span></code>. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
+<p>The environment’s reward is <code class="docutils literal notranslate"><span class="pre">sparse</span></code>. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
 The tasks are considered completed when their joint configuration is within a norm threshold of <code class="docutils literal notranslate"><span class="pre">0.3</span></code> with respect to the goal configuration specified in the <code class="docutils literal notranslate"><span class="pre">Goal</span></code> section.</p>
 </section>
 <section id="starting-state">
@@ -1165,16 +1044,6 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
 <td><p><code class="docutils literal notranslate"><span class="pre">0.0005</span></code></p></td>
 <td><p>Scaling factor applied to the uniform noise added to the kitchen object observations</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ik_controller</span></code></p></td>
-<td><p><strong>bool</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p></td>
-<td><p>Use inverse kinematic (IK) controller or joint position controller</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">control_steps</span></code></p></td>
-<td><p><strong>integer</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p></td>
-<td><p>Number of steps to iterate the DLS in the IK controller</p></td>
-</tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">robot_noise_ratio</span></code></p></td>
 <td><p><strong>float</strong></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0.01</span></code></p></td>
@@ -1192,7 +1061,7 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
-<li><p>v1: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
+<li><p>v1: updated version with most recent python MuJoCo bindings.</p></li>
 <li><p>v0: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
 </ul>
 </section>
@@ -1270,11 +1139,7 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
 <li><a class="reference internal" href="#">Franka Kitchen</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#goal">Goal</a></li>
-<li><a class="reference internal" href="#action-space">Action Space</a><ul>
-<li><a class="reference internal" href="#ik-controller">IK Controller</a></li>
-<li><a class="reference internal" href="#joint-position-controller">Joint Position Controller</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#action-space">Action Space</a></li>
 <li><a class="reference internal" href="#observation-space">Observation Space</a></li>
 <li><a class="reference internal" href="#info">Info</a></li>
 <li><a class="reference internal" href="#rewards">Rewards</a></li>
