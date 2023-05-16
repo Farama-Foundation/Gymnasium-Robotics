@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1000px" height="1000px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 1000 1000"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003"
+ inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+ sodipodi:docname="gymrobotics-revised.svg"
+ xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+ xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+ xmlns:svg="http://www.w3.org/2000/svg">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:black;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:22.9256}
+    .fil0 {fill:none}
+   ]]>
+  </style>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="layer2" inkscape:groupmode="layer" inkscape:label="Layer 2">
+   <g id="g5820">
+    <g id="g23544">
+     <g id="g8431">
+      <line id="path7283-50" class="fil0 str0" x1="726.75" y1="365.46" x2="642.08" y2= "265.59" />
+      <g id="g8210">
+       <line id="path7283-8" class="fil0 str0" x1="843.91" y1="277.64" x2="722.72" y2= "111.48" />
+       <g id="g8204">
+        <line id="path7283-5" class="fil0 str0" x1="482.05" y1="439.5" x2="635.92" y2= "212.9" />
+        <line id="path7283" class="fil0 str0" x1="316.79" y1="314.55" x2="491.97" y2= "101.28" />
+       </g>
+      </g>
+      <path id="rect1913" class="fil0 str0" d="M695.76 919.7l0 -148.47c0,-16.76 13.5,-30.26 30.26,-30.26 79.8,0 128.69,-0.66 208.49,-0.66 16.76,0 30.26,13.5 30.26,30.27l0 185.99c0,16.77 -13.5,30.26 -30.26,30.26l-868.96 0c-16.77,0 -30.27,-13.49 -30.27,-30.26l0 -637.22c-0.46,-24.56 2.78,-30.94 11.07,-48.8l33.13 -61.18c16.77,-30.33 16.77,-30.33 47.78,-30.33 9.03,-0.21 19.6,0 30.13,0 20.48,0 20.48,13.91 20.48,33.01l0 62.68 0 230.15c0,16.76 13.5,30.26 30.27,30.26 15.02,0 -15.04,0 -0.03,0" sodipodi:nodetypes="csccsssssccccsccscc"/>
+      <path id="rect1923" class="fil0 str0" d="M886.84 458.38l0 63.07c0,16.76 -13.49,30.26 -30.26,30.26l-50.12 0c-16.77,0 -30.26,-13.5 -30.26,-30.26l0 -63.07" sodipodi:nodetypes="cssssc"/>
+      <path id="rect1925" class="fil0 str0" d="M887.54 295.07c13.3,-10.22 32.23,-7.72 42.44,5.58l17.71 23.06c10.2,13.3 7.72,32.23 -5.58,42.45l-4.37 3.34c-2.31,1.78 -4.78,3.16 -7.34,4.18" sodipodi:nodetypes="cssssc"/>
+      <path id="rect2669" class="fil0 str0" d="M353.18 605.75l0 9.18c0,16.77 -13.5,30.27 -30.27,30.27l-114.77 0c-16.77,0 -30.27,13.5 -30.27,30.26l0 34.59c0,16.76 13.5,30.26 30.27,30.26l0 0 264.13 0c16.77,0 30.27,13.5 30.27,30.27l0 149.12" sodipodi:nodetypes="csccssccssc"/>
+     </g>
+     <path id="path1905" class="fil0 str0" d="M452.09 461.62c0,62.94 -51.04,113.99 -113.99,113.99 -62.94,0 -113.99,-51.05 -113.99,-113.99 0,-62.95 51.05,-113.99 113.99,-113.99 62.95,0 113.99,51.04 113.99,113.99l0 0z"/>
+     <path id="path1909" class="fil0 str0" d="M692.77 98.06c0,0 0,0 0,0 0,46.88 -38.02,84.9 -84.9,84.9 0,0 0,0 0,0 -46.87,0 -84.89,-38.02 -84.89,-84.9 0,0 0,0 0,0 0,-46.88 38.02,-84.89 84.89,-84.89 0,0 0,0 0,0 46.88,0 84.9,38.01 84.9,84.89z"/>
+     <path id="path1911" class="fil0 str0" d="M905.02 375.56c0,40.37 -32.74,73.11 -73.11,73.11 0,0 0,0 0,0 0,0 0,0 0,0 -40.37,0 -73.11,-32.74 -73.11,-73.11 0,0 0,0 0,0 0,-40.38 32.74,-73.12 73.11,-73.12 0,0 0,0 0,0 0,0 0,0 0,0 40.37,0 73.11,32.74 73.11,73.12 0,0 0,0 0,0z"/>
+     <path id="rect1929" class="fil0 str0" d="M852.91 554.87c1.94,2.23 3.1,5.14 3.1,8.34l0 20.13c0,7.05 -5.68,12.73 -12.74,12.73l-24.85 0c-7.05,0 -12.73,-5.68 -12.73,-12.73l0 -20.13c0,-3.71 1.57,-7.04 4.08,-9.35" sodipodi:nodetypes="cssssssc"/>
+     <path id="rect1931" class="fil0 str0" d="M809.74 672.7l42.15 0c7.05,0 12.72,5.68 12.72,12.74l0 42.15c0,7.04 -5.67,12.72 -12.72,12.72l-42.15 0c-7.05,0 -12.73,-5.68 -12.73,-12.72l0 -42.15c0,-7.06 5.68,-12.74 12.73,-12.74l0 0z" sodipodi:nodetypes="sssssssss"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
