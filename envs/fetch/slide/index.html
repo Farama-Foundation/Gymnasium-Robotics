@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
-    <meta name="description" content="">
+    <meta name="description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning">
     <meta property="og:title" content="Gymnasium-Robotics Documentation" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="" />
+    <meta property="og:description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning" />
     <meta property="og:url" content="https://robotics.farama.org/envs/fetch/slide.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Shadow Dexterous Hand" href="../../shadow_dexterous_hand/" /><link rel="prev" title="Reach" href="../reach/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/fetch/slide.html" />
@@ -14,8 +14,8 @@
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07.dev1 -->
         <title>Slide - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=721f65a87c37740baa8d605b09db5bec3a2987a8" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=8813674eb59e2b45ca74943a66245a41bd1ea937" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=cfd2cc3354364f303ef4a892d279bfffada5835d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=6342a809aabeb35cfac296000cfa245808bc1d78" />
     
     
 
@@ -279,6 +279,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Development</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes/">Release Notes</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics">Github</a></li>
 </ul>
 
@@ -304,8 +305,7 @@
             </svg>
             <span>Back to top</span>
           </a>
-          <div class="content-icon-container">
-            <div class="theme-toggle-container theme-toggle-content">
+          <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
               <button class="theme-toggle" title="Toggle color theme">
                 <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
                 <svg class="theme-icon-when-auto">
@@ -797,7 +797,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2022
+                Copyright &#169; 2023 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -807,7 +807,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
             </div>
             <div class="right-details">
               <div class="icons">
-                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium"
+                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/"
                   aria-label="On GitHub">
                   <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -917,6 +917,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
     <script src="../../../_static/scripts/furo.js"></script>
     
     <script>
+      // Create menu with Farama projects by using the API at farama.org/api/projects.json
       const createCORSRequest = (method, url) => {
         let xhr = new XMLHttpRequest();
         xhr.responseType = 'json';
@@ -1029,7 +1030,30 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
     </script>
 
     
-    
+    <script>
+      const versioningConfig = {
+        githubUser: 'Farama-Foundation',
+        githubRepo: 'Gymnasium-Robotics',
+      };
+      fetch('/main/_static/versioning/versioning_menu.html').then(response => {
+        if (response.status === 200) {
+            response.text().then(text => {
+                const container = document.createElement("div");
+                container.innerHTML = text;
+                document.querySelector("body").appendChild(container);
+                // innerHtml doenst evaluate scripts, we need to add them dynamically
+                Array.from(container.querySelectorAll("script")).forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        } else {
+            console.warn("Unable to load versioning menu", response);
+        }
+      });
+    </script>
 
     </body>
 </html>
