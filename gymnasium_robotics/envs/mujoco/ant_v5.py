@@ -82,30 +82,30 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     | excluded | y-coordinate of the torso (centre)                      | -Inf   | Inf    | torso                                  | free  | position (m)             |
 
 
-    Additionally, after all the positional and velocity based values in the table,
-    the observation contains:
-    - *cfrc_ext:*
-    If version < `v4` or `use_contact_forces` is `True` then the observation space is extended by 14*6 = 84 elements, which are contact forces
+    Additionally, after all the positional and velocity based values in the table, the observation contains:
+    - *cfrc_ext:* 13*6 = 78 elements, which are contact forces
     (external forces - force x, y, z and torque x, y, z) applied to the
-    center of mass of each of the body parts. The 14 body parts are:
+    center of mass of each of the body parts.
+    The 13 body parts are:
 
     | id (for `v2`, `v3`, `v4)` | id (for `v5`) | body parts |
-    | --- | --- |  ------------  |
-    | 0  | excluded | worldbody (note: forces are always full of zeros) |
-    | 1  | 0  | torso |
-    | 2  | 1  | front_left_leg |
-    | 3  | 2  | aux_1 (front left leg) |
-    | 4  | 3  | ankle_1 (front left leg) |
-    | 5  | 4  | front_right_leg |
-    | 6  | 5  | aux_2 (front right leg) |
-    | 7  | 6  | ankle_2 (front right leg) |
-    | 8  | 7  | back_leg (back left leg) |
-    | 9  | 8  | aux_3 (back left leg) |
-    | 10 | 9  | ankle_3 (back left leg) |
-    | 11 | 10 | right_back_leg |
-    | 12 | 11 | aux_4 (back right leg) |
-    | 13 | 12 | ankle_4 (back right leg) |
+    | ---|  ---   |  ------------  |
+    | 0  |excluded| worldbody (note: forces are always full of zeros) |
+    | 1  |0       | torso |
+    | 2  |1       | front_left_leg |
+    | 3  |2       | aux_1 (front left leg) |
+    | 4  |3       | ankle_1 (front left leg) |
+    | 5  |4       | front_right_leg |
+    | 6  |5       | aux_2 (front right leg) |
+    | 7  |6       | ankle_2 (front right leg) |
+    | 8  |7       | back_leg (back left leg) |
+    | 9  |8       | aux_3 (back left leg) |
+    | 10 |9       | ankle_3 (back left leg) |
+    | 11 |10      | right_back_leg |
+    | 12 |11      | aux_4 (back right leg) |
+    | 13 |12      | ankle_4 (back right leg) |
 
+    ###If version < `v4` or `use_contact_forces` is `True` then the observation space is extended by
 
     The (x,y,z) coordinates are translational DOFs while the orientations are rotational
     DOFs expressed as quaternions. One can read more about free joints on the [Mujoco Documentation](https://mujoco.readthedocs.io/en/latest/XMLreference.html).
