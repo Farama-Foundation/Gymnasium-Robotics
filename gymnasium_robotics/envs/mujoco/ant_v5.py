@@ -165,7 +165,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
 
     ## Arguments
-
     No additional arguments are currently supported in v2 and lower.
 
     ```python

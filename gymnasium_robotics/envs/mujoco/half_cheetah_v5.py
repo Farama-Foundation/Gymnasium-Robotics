@@ -85,7 +85,7 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     sum(action<sup>2</sup>)* where *`ctrl_cost_weight`* is a parameter set for the
     control and has a default value of 0.1
 
-    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost* and `info` will also contain the individual reward terms
+    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost* and `info` will also contain the individual reward terms.
 
     ## Starting State
     All observations start in state (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,

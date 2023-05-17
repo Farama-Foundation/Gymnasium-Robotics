@@ -82,6 +82,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     fast *0.001 *  v<sub>1</sub><sup>2</sup> + 0.005 * v<sub>2</sub> <sup>2</sup>*
 
     The total reward returned is ***reward*** *=* *alive_bonus - distance_penalty - velocity_penalty*
+    and `info` will also contain the individual reward terms.
 
     ## Starting State
     All observations start in state

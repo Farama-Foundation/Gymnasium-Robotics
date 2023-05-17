@@ -32,7 +32,6 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     | 6    | Rotation of rolling the wrist                                     | -2          | 2           | r_wrist_roll_joint               | hinge | torque (N m) |
 
     ## Observation Space
-
     Observations consist of
 
     - Angle of rotational joints on the pusher
@@ -106,14 +105,12 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     The default framerate is 5 with each frame lasting for 0.01, giving rise to a *dt = 5 * 0.01 = 0.05*
 
     ## Episode End
-
     The episode ends when any of the following happens:
 
     1. Truncation: The episode duration reaches a 100 timesteps.
     2. Termination: Any of the state space values is no longer finite.
 
     ## Arguments
-
     No additional arguments are currently supported (in v2 and lower),
     but modifications can be made to the XML file in the assets folder
     (or by changing the path to a modified XML file in another folder)..
