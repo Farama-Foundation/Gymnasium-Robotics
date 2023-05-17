@@ -42,12 +42,12 @@ class AntEnv(MujocoEnv, utils.EzPickle):
 
     By default, observations do not include the x- and y-coordinates of the ant's torso. These may
     be included by passing `exclude_current_positions_from_observation=False` during construction.
-    In that case, the observation space will be a `Box(-Inf, Inf, (29,), float64)` where the first two observations
+    In that case, the observation space will be a `Box(-Inf, Inf, (107,), float64)` where the first two observations
     represent the x- and y- coordinates of the ant's torso.
     Regardless of whether `exclude_current_positions_from_observation` was set to true or false, the x- and y-coordinates
     of the torso will be returned in `info` with keys `"x_position"` and `"y_position"`, respectively.
 
-    However, by default, observation Space is a `Box(-Inf, Inf, (27,), float64)` where the elements correspond to the following:
+    However, by default, observation Space is a `Box(-Inf, Inf, (105,), float64)` where the elements correspond to the following:
 
     | Num | Observation                                                  | Min    | Max    | Name (in corresponding XML file)       | Joint | Unit                     |
     |-----|--------------------------------------------------------------|--------|--------|----------------------------------------|-------|--------------------------|
