@@ -14,14 +14,6 @@ MaMuJoCo was introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gra
 There are 2 types of Environments, included (1) multi-agent factorizations of [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms.
 
 Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization.
-
-
-The `mamujoco` framework is not included in the current `1.2.0` release of `Gymnasium-Robotics` since we are performing some evaluation tests. If you want to try the current implementation of these environments please install them from source:
-
-```sh
-git clone https://github.com/Farama-Foundation/Gymnasium-Robotics.git
-cd Gymnasium-Robotics
-pip install -e.
 ```
 
 ## API
