@@ -1,3 +1,5 @@
+__credits__ = ["Kallinteris-Andreas"]
+
 import numpy as np
 
 from gymnasium import utils

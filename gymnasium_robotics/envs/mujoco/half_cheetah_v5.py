@@ -1,4 +1,4 @@
-__credits__ = ["Rushiv Arora"]
+__credits__ = ["Kallinteris-Andreas", "Rushiv Arora"]
 
 import numpy as np
 from gymnasium import utils
