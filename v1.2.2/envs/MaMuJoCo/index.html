@@ -1,0 +1,787 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning">
+    <meta property="og:title" content="Gymnasium-Robotics Documentation" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning" />
+    <meta property="og:url" content="https://robotics.farama.org/envs/MaMuJoCo/index.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Ant" href="ma_ant/" /><link rel="prev" title="Franka Kitchen" href="../franka_kitchen/franka_kitchen/" />
+        <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/index.html" />
+
+    <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07.dev1 -->
+        <title>MaMuJoCo (Multi-Agent MuJoCo) - Gymnasium-Robotics Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=cfd2cc3354364f303ef4a892d279bfffada5835d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=6342a809aabeb35cfac296000cfa245808bc1d78" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header class="farama-header" aria-label="Farama header">
+      <div class="farama-header__container">
+        <div class="farama-header__left--mobile">
+          <label class="nav-overlay-icon" for="__navigation">
+            <div class="visually-hidden">Toggle site navigation sidebar</div>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <defs></defs>
+              <line x1="0.5" y1="4" x2="23.5" y2="4"></line>
+              <line x1="0.232" y1="12" x2="23.5" y2="12"></line>
+              <line x1="0.232" y1="20" x2="23.5" y2="20"></line>
+            </svg>
+            <!-- <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0.5" y1="4.5" x2="23.5" y2="4.5" style="fill: none; "></line>
+              <line x1="0.5" y1="12" x2="14" y2="12" ></line>
+              <line x1="0.5" y1="19.5" x2="23.5" y2="19.5"></line>
+              <polyline style="stroke-width: 0px;" points="17 7 22 12 17 17"></polyline>
+            </svg> -->
+            <!-- <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px">
+              <defs></defs>
+              <rect y="1" width="22" height="22" rx="2" ry="2" style="fill: none;" x="1"></rect>
+              <line x1="8" y1="1" x2="8" y2="23"></line>
+              <polyline style="stroke-linecap: round; fill: none; stroke-linejoin: round;" points="13 7 17 12 13 17"></polyline>
+            </svg> -->
+          </label>
+        </div>
+        <div class="farama-header__left farama-header__center--mobile">
+          <a href="../../">
+              <img class="farama-header__logo only-light" src="../../_static/img/robotics.png" alt="Light Logo"/>
+              <img class="farama-header__logo only-dark" src="../../_static/img/robotics-white.png" alt="Dark Logo"/>
+            <span class="farama-header__title">Gymnasium-Robotics Documentation</span>
+          </a>
+        </div>
+        <div class="farama-header__right">
+          <div class="farama-header-menu">
+            <button class="farama-header-menu__btn" aria-label="Open Farama Menu" aria-expanded="false" aria-haspopup="true" aria-controls="farama-menu">
+              <img class="farama-black-logo-invert" src="../../_static/img/farama-logo-header.svg">
+              <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <polyline style="stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 2px;" points="1 7 12 18 23 7"></polyline>
+              </svg>
+            </button>
+            <div class="farama-header-menu-container farama-hidden" aria-hidden="true" id="farama-menu">
+              <div class="farama-header-menu__header">
+                <a href="https://farama.org">
+                  <img class="farama-header-menu__logo farama-white-logo-invert" src="../../_static/img/farama_solid_white.svg" alt="Farama Foundation logo">
+                  <span>Farama Foundation</span>
+                </a>
+                <div class="farama-header-menu-header__right">
+                  <button id="farama-close-menu">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-close">
+                      <line x1="3" y1="21" x2="21" y2="3"></line>
+                      <line x1="3" y1="3" x2="21" y2="21"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="farama-header-menu__body">
+                <!-- Response from farama.org/api/projects.json -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="page">
+  <!--<header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../"><div class="brand">Gymnasium-Robotics Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>-->
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="farama-sidebar__title" href="../../">
+      <img class="farama-header__logo only-light" src="../../_static/img/robotics.png" alt="Light Logo"/>
+      <img class="farama-header__logo only-dark" src="../../_static/img/robotics-white.png" alt="Dark Logo"/>
+    <span class="farama-header__title">Gymnasium-Robotics Documentation</span>
+  </a><form class="sidebar-search-container" method="get" action="../../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../content/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../content/multi-goal_api/">Multi-goal API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Environments</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../fetch/">Fetch</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../fetch/pick_and_place/">Pick And Place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fetch/push/">Push</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fetch/reach/">Reach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fetch/slide/">Slide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../shadow_dexterous_hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_block/">Manipulate Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_block_touch_sensors/">Manipulate Block Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_egg/">Manipulate Egg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_egg_touch_sensors/">Manipulate Egg Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_pen/">Manipulate Pen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/manipulate_pen_touch_sensors/">Manipulate Pen Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../shadow_dexterous_hand/reach/">Reach</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../maze/">Maze</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../maze/ant_maze/">Ant Maze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../maze/point_maze/">Point Maze</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../adroit_hand/">Adroit Hand</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../adroit_hand/adroit_door/">Adroit Door</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adroit_hand/adroit_hammer/">Adroit Hammer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adroit_hand/adroit_pen/">Adroit Pen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../adroit_hand/adroit_relocate/">Adroit Relocate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../franka_kitchen/">Franka Kitchen</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../franka_kitchen/franka_kitchen/">Franka Kitchen</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">MaMuJoCo (Multi-Agent MuJoCo)</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ma_ant/">Ant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_coupled_half_cheetah/">Coupled Half Cheetah</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_half_cheetah/">Half Cheetah</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_hopper/">Hopper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_humanoid_standup/">Humanoid Standup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_reacher/">Reacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_swimmer/">Swimmer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_pusher/">Pusher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_walker2d/">Walker2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ma_single/">Single Action Environments</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../release_notes/">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics">Github</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main-container">
+
+    
+
+    
+
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container"><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/edit/master/docs/envs/MaMuJoCo/index.md" title="Edit this page">
+    <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+              <button class="theme-toggle" title="Toggle color theme">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto">
+                  <use href="#svg-sun-half"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
+          </div>
+          <article role="main">
+            
+            <section id="mamujoco-multi-agent-mujoco">
+<h1>MaMuJoCo (Multi-Agent MuJoCo)<a class="headerlink" href="#mamujoco-multi-agent-mujoco" title="Permalink to this heading">#</a></h1>
+<figure class="align-default" id="mamujoco">
+<img alt="../../_images/mamujoco.png" src="../../_images/mamujoco.png" />
+</figure>
+<p>MaMuJoCo was introduced in <a class="reference external" href="https://arxiv.org/abs/2003.06709">“FACMAC: Factored Multi-Agent Centralised Policy Gradients”</a>.</p>
+<p>There are 2 types of Environments, included (1) multi-agent factorizations of <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymansium/MuJoCo</a> tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms.</p>
+<p>Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization.</p>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h2>
+<p>MaMuJoCo mainly uses the <a class="reference external" href="https://pettingzoo.farama.org/api/parallel/">PettingZoo.ParallelAPI</a>, but also supports a few extra functions:</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">map_local_actions_to_global_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action" title="Permalink to this definition">#</a></dt>
+<dd><p>Maps multi agent actions into single agent action space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> – An dict representing the action of each agent</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>The action of the whole domain</strong> (<em>is what eqivilent single agent action would be</em>)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the Agent action factorization is badly defined (if an action is double defined or not defined at all)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.map_global_action_to_local_actions">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">map_global_action_to_local_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_global_action_to_local_actions" title="Permalink to this definition">#</a></dt>
+<dd><p>Maps single agent action into multi agent action spaces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> – An array representing the actions of the single agent for this domain</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A dictionary of actions to be performed by each agent</strong></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AssertionError</strong> – If the Agent action factorization sizes are badly defined</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.map_global_state_to_local_observations">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">map_global_state_to_local_observations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_global_state_to_local_observations" title="Permalink to this definition">#</a></dt>
+<dd><p>Maps single agent observation into multi agent observation spaces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>global_state</strong> – the global_state (generated from MaMuJoCo.state())</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>A dictionary of states that would be observed by each agent given the ‘global_state’</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">map_local_observation_to_global_state</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_observations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state" title="Permalink to this definition">#</a></dt>
+<dd><p>Maps multi agent observations into single agent observation space.</p>
+<p>NOT IMPLEMENTED, try using MaMuJoCo.state() instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>local_obserations</strong> – the local observation of each agents (generated from MaMuJoCo.step())</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>the global observations that correspond to a single agent</strong> (<em>what you would get with MaMuJoCo.state()</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.get_parts_and_edges">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.</span></span><span class="sig-name descname"><span class="pre">get_parts_and_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partitioning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">HyperEdge</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Node</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.get_parts_and_edges" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets the mujoco Graph (nodes &amp; edges) given an optional partitioning,.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> – the mujoco task to partition</p></li>
+<li><p><strong>partitioning</strong> – the partioneing scheme</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>the partition of the mujoco graph nodes, the graph edges, and global nodes</strong></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>MaMuJoCo also supports the <a class="reference external" href="https://pettingzoo.farama.org/api/aec/">PettingZoo.AECAPI</a> but does not expose extra functions.</p>
+<section id="arguments">
+<h3>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="gymnasium_robotics.mamujoco_v0.parallel_env.__init__">
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.mamujoco_v0.parallel_env.</span></span><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_obsk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_factorization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">global_categories</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">render_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.mamujoco_v0.parallel_env.__init__" title="Permalink to this definition">#</a></dt>
+<dd><p>Init.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scenario</strong> – The Task/Environment, valid values:
+“Ant”, “HalfCheetah”, “Hopper”, “HumanoidStandup”, “Humanoid”, “Reacher”, “Swimmer”, “Pusher”, “Walker2d”, “InvertedPendulum”, “InvertedDoublePendulum”, “ManySegmentSwimmer”, “ManySegmentAnt”, “CoupledHalfCheetah”</p></li>
+<li><p><strong>agent_conf</strong> – ‘${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}’, eg ‘1x6’, ‘2x4’, ‘2x4d’,
+If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)</p></li>
+<li><p><strong>agent_obsk</strong> – Number of nearest joints to observe,
+If set to 0 it only observes local state,
+If set to 1 it observes local state + 1 joint over,
+If set to 2 it observes local state + 2 joints over,
+If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
+The Default value is: 1</p></li>
+<li><p><strong>agent_factorization</strong> – A custom factorization of the MuJoCo environment (overwrites agent_conf),
+see DOC [how to create new agent factorizations](<a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations">https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations</a>).</p></li>
+<li><p><strong>local_categories</strong> – The categories of local observations for each observation depth,
+It takes the form of a list where the k-th element is the list of observable items observable at the k-th depth
+For example: if it is set to <cite>[[“qpos, qvel”], [“qvel”]]</cite> then means each agent observes its own position and velocity elements, and it’s neighbors velocity elements.
+The default is: Check each environment’s page on the “observation space” section.</p></li>
+<li><p><strong>global_categories</strong> – The categories of observations extracted from the global observable space,
+For example: if it is set to <cite>(“qpos”)</cite> out of the globally observable items of the environment, only the position items will be observed.
+The default is: Check each environment’s page on the “observation space” section.</p></li>
+<li><p><strong>render_mode</strong> – see [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>),
+valid values: ‘human’, ‘rgb_array’, ‘depth_array’</p></li>
+<li><p><strong>kwargs</strong> – Additional arguments passed to the [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>) environment,
+Note: arguments that change the observation space will not work.</p></li>
+<li><p><strong>Raises</strong> – NotImplementedError: When the scenario is not supported (not part of of the valid values)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="how-to-create-new-agent-factorizations">
+<h2>How to create new agent factorizations<a class="headerlink" href="#how-to-create-new-agent-factorizations" title="Permalink to this heading">#</a></h2>
+<section id="example-ant-v4-8x1">
+<h3>example ‘Ant-v4’, ‘8x1’<a class="headerlink" href="#example-ant-v4-8x1" title="Permalink to this heading">#</a></h3>
+<p>In this example, we will create an agent factorization not present in Gymnasium-Robotics/MaMuJoCo the “Ant”/’8x1’, where each agent controls a single joint/action (first implemented by <a class="reference external" href="https://github.com/chauncygu/Safe-Multi-Agent-Mujoco">safe-MaMuJoCo</a>).</p>
+<p>first we will load the graph of MaMuJoCo:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gymnasium_robotics.mamujoco_v0</span> <span class="kn">import</span> <span class="n">get_parts_and_edges</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unpartioned_nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">global_nodes</span> <span class="o">=</span> <span class="n">get_parts_and_edges</span><span class="p">(</span><span class="s1">&#39;Ant-v4&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">unpartioned_nodes</span></code> contain the nodes of the MaMuJoCo graph.
+The <code class="docutils literal notranslate"><span class="pre">edges</span></code> well, contain the edges of the graph.
+And the <code class="docutils literal notranslate"><span class="pre">global_nodes</span></code> a set of observations for all agents.</p>
+<p>To create our ‘8x1’ partition we will need to partition the <code class="docutils literal notranslate"><span class="pre">unpartioned_nodes</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unpartioned_nodes</span>
+<span class="go">[(hip1, ankle1, hip2, ankle2, hip3, ankle3, hip4, ankle4)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">partioned_nodes</span> <span class="o">=</span> <span class="p">[(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">5</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">6</span><span class="p">],),</span> <span class="p">(</span><span class="n">unpartioned_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">7</span><span class="p">],)]</span><span class="o">&gt;&gt;&gt;</span> <span class="n">partioned_nodes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">partioned_nodes</span>
+<span class="go">[(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]</span>
+</pre></div>
+</div>
+<p>Finally package the partitions and create our environment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_agent_factorization</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;partition&quot;</span><span class="p">:</span> <span class="n">partioned_nodes</span><span class="p">,</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="p">,</span> <span class="s2">&quot;globals&quot;</span><span class="p">:</span> <span class="n">global_nodes</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gym_env</span> <span class="o">=</span> <span class="n">mamujoco_v0</span><span class="p">(</span><span class="s1">&#39;Ant&#39;</span><span class="p">,</span> <span class="s1">&#39;8x1&#39;</span><span class="p">,</span> <span class="n">agent_factorization</span><span class="o">=</span><span class="n">my_agent_factorization</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="version-history">
+<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+          </article>
+        </div>
+        <footer>
+          
+          <div class="related-pages">
+            
+            
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
+                Copyright &#169; 2023 Farama Foundation
+              </div>
+              <!--
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            -->
+            </div>
+            <div class="right-details">
+              <div class="icons">
+                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/"
+                  aria-label="On GitHub">
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+        </footer>
+      </div>
+      <aside class="toc-drawer">
+        
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
+<li><a class="reference internal" href="#">MaMuJoCo (Multi-Agent MuJoCo)</a><ul>
+<li><a class="reference internal" href="#api">API</a><ul>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action"><code class="docutils literal notranslate"><span class="pre">map_local_actions_to_global_action()</span></code></a></li>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_global_action_to_local_actions"><code class="docutils literal notranslate"><span class="pre">map_global_action_to_local_actions()</span></code></a></li>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_global_state_to_local_observations"><code class="docutils literal notranslate"><span class="pre">map_global_state_to_local_observations()</span></code></a></li>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state"><code class="docutils literal notranslate"><span class="pre">map_local_observation_to_global_state()</span></code></a></li>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.get_parts_and_edges"><code class="docutils literal notranslate"><span class="pre">get_parts_and_edges()</span></code></a></li>
+<li><a class="reference internal" href="#arguments">Arguments</a><ul>
+<li><a class="reference internal" href="#gymnasium_robotics.mamujoco_v0.parallel_env.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-create-new-agent-factorizations">How to create new agent factorizations</a><ul>
+<li><a class="reference internal" href="#example-ant-v4-8x1">example ‘Ant-v4’, ‘8x1’</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#version-history">Version History</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+          </div>
+        </div>
+        
+        
+      </aside>
+    </div>
+  </div>
+</div>
+    <script>
+      const toggleMenu = () => {
+        const menuBtn = document.querySelector(".farama-header-menu__btn");
+        const menuContainer = document.querySelector(".farama-header-menu-container");
+        if (document.querySelector(".farama-header-menu").classList.contains("active")) {
+          menuBtn.setAttribute("aria-expanded", "false");
+          menuContainer.setAttribute("aria-hidden", "true");
+        } else {
+          menuBtn.setAttribute("aria-expanded", "true");
+          menuContainer.setAttribute("aria-hidden", "false");
+        }
+        document.querySelector(".farama-header-menu").classList.toggle("active");
+      }
+
+      document.querySelector(".farama-header-menu__btn").addEventListener("click", toggleMenu);
+      document.getElementById("farama-close-menu").addEventListener("click", toggleMenu);
+    </script>
+
+    
+    <script>
+          (() => {
+              if (!localStorage.getItem("shownCookieAlert")) {
+                  const boxElem = document.createElement("div");
+                  boxElem.classList.add("cookie-alert");
+                  const containerElem = document.createElement("div");
+                  containerElem.classList.add("cookie-alert__container");
+                  const textElem = document.createElement("p");
+                  textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
+                                      Google Analytics</a> to collect statistics. You can disable it by blocking
+                                      the JavaScript coming from www.google-analytics.com.`;
+                                      containerElem.appendChild(textElem);
+                  const closeBtn = document.createElement("button");
+                  closeBtn.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>`
+                  closeBtn.onclick = () => {
+                      localStorage.setItem("shownCookieAlert", "true");
+                      boxElem.style.display = "none";
+                  }
+                  containerElem.appendChild(closeBtn);
+                  boxElem.appendChild(containerElem);
+                  document.body.appendChild(boxElem);
+              }
+          })()
+      </script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-M37ZN7PPMN"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-M37ZN7PPMN');
+      </script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/scripts/furo.js"></script>
+    
+    <script>
+      // Create menu with Farama projects by using the API at farama.org/api/projects.json
+      const createCORSRequest = (method, url) => {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+
+        if ("withCredentials" in xhr) {
+          xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+          // IE8 & IE9
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          // CORS not supported.
+          xhr = null;
+        }
+        return xhr;
+      };
+
+      const url = 'https://farama.org/api/projects.json';
+      const imagesBasepath = "https://farama.org/assets/images"
+      const method = 'GET';
+      let xhr = createCORSRequest(method, url);
+
+      xhr.onload = () => {
+        const jsonResponse = xhr.response;
+        const sections = {
+          "Documentation": [],
+          "Mature Projects": [],
+          "Incubating Projects": [],
+          "Foundation": [
+            {
+              name: "About",
+              link: "https://farama.org/about"
+            },
+            {
+              name: "Standards",
+              link: "https://farama.org/project_standards",
+            },
+            {
+              name: "Donate",
+              link: "https://farama.org/donations"
+            }
+          ]
+        }
+        Object.keys(jsonResponse).forEach(key => {
+          projectJson = jsonResponse[key];
+          if (projectJson.website !== null) {
+            projectJson.link = projectJson.website;
+            sections["Documentation"].push(projectJson)
+          } else if (projectJson.type == "mature") {
+            projectJson.link = projectJson.github;
+            sections["Mature Projects"].push(projectJson)
+          } else {
+            projectJson.link = projectJson.github;
+            sections["Incubating Projects"].push(projectJson)
+          }
+        })
+
+        const menuContainer = document.querySelector(".farama-header-menu__body");
+
+        Object.keys(sections).forEach((key, i) => {
+          projects = sections[key];
+          const sectionElem = Object.assign(
+            document.createElement('div'), {
+              className:'farama-header-menu__section',
+              style: "padding-left: 24px"
+            }
+          )
+          sectionElem.appendChild(Object.assign(document.createElement('span'),
+            {
+              className:'farama-header-menu__section-title' ,
+              innerText: key
+            }
+          ))
+          const ulElem = Object.assign(document.createElement('ul'),
+            {
+              className:'farama-header-menu-list',
+            }
+          )
+          for (let project of projects) {
+            const liElem = document.createElement("li");
+            const aElem = Object.assign(document.createElement("a"),
+              {
+                href: project.link
+              }
+            );
+            liElem.appendChild(aElem);
+            if (key !== "Foundation") {
+              const imgElem = Object.assign(document.createElement("img"),
+                {
+                  src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
+                  alt: `${project.name} logo`,
+                  className: "farama-black-logo-invert"
+                }
+              );
+              aElem.appendChild(imgElem);
+            }
+            aElem.appendChild(document.createTextNode(project.name));
+            ulElem.appendChild(liElem);
+          }
+          sectionElem.appendChild(ulElem);
+          menuContainer.appendChild(sectionElem)
+        });
+      }
+
+      xhr.onerror = function() {
+        console.error("Unable to load projects");
+      };
+
+      xhr.send();
+    </script>
+
+    
+    <script>
+      const versioningConfig = {
+        githubUser: 'Farama-Foundation',
+        githubRepo: 'Gymnasium-Robotics',
+      };
+      fetch('/main/_static/versioning/versioning_menu.html').then(response => {
+        if (response.status === 200) {
+            response.text().then(text => {
+                const container = document.createElement("div");
+                container.innerHTML = text;
+                document.querySelector("body").appendChild(container);
+                // innerHtml doenst evaluate scripts, we need to add them dynamically
+                Array.from(container.querySelectorAll("script")).forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        } else {
+            console.warn("Unable to load versioning menu", response);
+        }
+      });
+    </script>
+
+    </body>
+</html>
