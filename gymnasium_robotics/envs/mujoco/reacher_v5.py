@@ -177,7 +177,9 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
 
     def _get_obs(self):
         theta = self.data.qpos.flat[:2]
-        assert (self.get_body_com("fingertip") - self.get_body_com("target"))[2] == 0  # TODO remove after validation
+        assert (self.get_body_com("fingertip") - self.get_body_com("target"))[
+            2
+        ] == 0  # TODO remove after validation
         return np.concatenate(
             [
                 np.cos(theta),

@@ -308,7 +308,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             include_cvel_from_observation,
             include_qfrc_actuator_from_observation,
             include_cfrc_ext_from_observation,
-            **kwargs
+            **kwargs,
         )
 
         self._forward_reward_weight = forward_reward_weight
@@ -327,7 +327,9 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         self._include_cinert_from_observation = include_cinert_from_observation
         self._include_cvel_from_observation = include_cvel_from_observation
-        self._include_qfrc_actuator_from_observation = include_qfrc_actuator_from_observation
+        self._include_qfrc_actuator_from_observation = (
+            include_qfrc_actuator_from_observation
+        )
         self._include_cfrc_ext_from_observation = include_cfrc_ext_from_observation
 
         obs_shape = 45
@@ -347,7 +349,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
 
     @property
