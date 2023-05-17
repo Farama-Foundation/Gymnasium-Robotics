@@ -90,14 +90,12 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     is set. The default setting has a framerate of 2 and a *dt = 2 * 0.01 = 0.02*
 
     ## Episode End
-
     The episode ends when any of the following happens:
 
     1. Truncation: The episode duration reaches a 50 timesteps (with a new random target popping up if the reacher's fingertip reaches it before 50 timesteps)
     2. Termination: Any of the state space values is no longer finite.
 
     ## Arguments
-
     No additional arguments are currently supported (in v2 and lower),
     but modifications can be made to the XML file in the assets folder
     (or by changing the path to a modified XML file in another folder)..
@@ -111,7 +109,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     beyond take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
 
     ## Version History
-
+    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Remove "z - position_fingertip" from the observation space.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
     * v2: All continuous control environments now use mujoco-py >= 1.50
     * v1: max_time_steps raised to 1000 for robot based tasks (not including reacher, which has a max_time_steps of 50). Added reward_threshold to environments.
