@@ -329,7 +329,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         obs_shape += 130 * self._include_cinert_from_observation
         obs_shape += 78 * self._include_cvel_from_observation
         obs_shape += 17 * self._include_qfrc_actuator_from_observation
-        obs_shape += 78 * self._include_cfrc_ext_from_observation_from_observation
+        obs_shape += 78 * self._include_cfrc_ext_from_observation
         obs_shape += 2 * (not self._exclude_current_positions_from_observation)
 
         observation_space = Box(
@@ -358,7 +358,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
     @property
     def contact_cost(self):
-        contact_forces = self.sim.data.cfrc_ext
+        contact_forces = self.data.cfrc_ext
         contact_cost = self._contact_cost_weight * np.sum(np.square(contact_forces))
         min_cost, max_cost = self._contact_cost_range
         contact_cost = np.clip(contact_cost, min_cost, max_cost)
