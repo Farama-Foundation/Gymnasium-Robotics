@@ -111,7 +111,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     beyond take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
 
     ## Version History
-    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Remove "z - position_fingertip" from the observation space.
+    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. Remove "z - position_fingertip" from the observation space.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
     * v2: All continuous control environments now use mujoco-py >= 1.50
     * v1: max_time_steps raised to 1000 for robot based tasks (not including reacher, which has a max_time_steps of 50). Added reward_threshold to environments.
@@ -127,12 +127,16 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
         "render_fps": 50,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        xml_file="reacher.xml",
+        **kwargs,
+    ):
         utils.EzPickle.__init__(self, **kwargs)
         observation_space = Box(low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64)
         MujocoEnv.__init__(
             self,
-            "reacher.xml",
+            xml_file,
             2,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,

@@ -129,7 +129,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     ```
 
     ## Version History
-    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. "reward_near" is added to the `info`.
+    * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. "reward_near" is added to the `info`.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
     * v2: All continuous control environments now use mujoco-py >= 1.50.
     * v1: max_time_steps raised to 1000 for robot based tasks (not including pusher, which has a max_time_steps of 100). Added reward_threshold to environments.
@@ -145,12 +145,16 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         "render_fps": 20,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        xml_file="pusher.xml",
+        **kwargs,
+    ):
         utils.EzPickle.__init__(self, **kwargs)
         observation_space = Box(low=-np.inf, high=np.inf, shape=(23,), dtype=np.float64)
         MujocoEnv.__init__(
             self,
-            "pusher.xml",
+            xml_file,
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
