@@ -100,19 +100,11 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     The episode truncates when the episode length is greater than 1000.
 
     ## Arguments
-
-    No additional arguments are currently supported in v2 and lower.
-
-    ```python
-    import gymnasium as gym
-    env = gym.make('HalfCheetah-v2')
-    ```
-
-    v3 and v4 take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
+    `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
 
     ```python
     import gymnasium as gym
-    env = gym.make('HalfCheetah-v4', ctrl_cost_weight=0.1, ....)
+    env = gym.make('HalfCheetah-v5', ctrl_cost_weight=0.1, ....)
     ```
 
     | Parameter                                    | Type      | Default              | Description                                                                                                                                                       |

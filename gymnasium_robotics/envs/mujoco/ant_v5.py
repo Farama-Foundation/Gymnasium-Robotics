@@ -165,18 +165,11 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
 
     ## Arguments
-    No additional arguments are currently supported in v2 and lower.
+    `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
 
     ```python
     import gymnasium as gym
-    env = gym.make('Ant-v2')
-    ```
-
-    v3 and v4 take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
-
-    ```python
-    import gymnasium as gym
-    env = gym.make('Ant-v4', ctrl_cost_weight=0.1, ...)
+    env = gym.make('Ant-v5', ctrl_cost_weight=0.1, ...)
     ```
 
     | Parameter               | Type       | Default      |Description                    |
