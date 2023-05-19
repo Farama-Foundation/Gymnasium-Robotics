@@ -1345,7 +1345,7 @@ def register_robotics_envs():
 
     register(
         id="Ant-v5",
-        entry_point="gymnasium_robotics.envs.mujoco.ant_v4:AntEnv",
+        entry_point="gymnasium_robotics.envs.mujoco.ant_v5:AntEnv",
         max_episode_steps=1000,
         reward_threshold=6000.0,
     )
@@ -1390,12 +1390,11 @@ def register_robotics_envs():
     )
     """
 
-    register(
-        id="HumanoidStandup-v5",
-        entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v5:HumanoidStandupEnv",
-        max_episode_steps=1000,
-    )
-
+    #register(
+        #id="HumanoidStandup-v5",
+        #entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v5:HumanoidStandupEnv",
+        #max_episode_steps=1000,
+    #)
 
 
 __version__ = "1.2.1"
