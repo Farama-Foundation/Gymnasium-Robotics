@@ -292,6 +292,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             forward_reward_weight,
             ctrl_cost_weight,
+            contact_cost_range,
             healthy_reward,
             terminate_when_unhealthy,
             healthy_z_range,
