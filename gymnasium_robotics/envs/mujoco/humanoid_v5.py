@@ -246,10 +246,10 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     | `healthy_z_range`                            | **tuple** | `(1.0, 2.0)`     | The humanoid is considered healthy if the z-coordinate of the torso is in this range                                                                                      |
     | `reset_noise_scale`                          | **float** | `1e-2`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                            |
     | `exclude_current_positions_from_observation` | **bool**  | `True`           | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
-    | `include_cinert_from_observation`            | **bool**  | `True`           | Whether to include *cinert* elements in the observations.|
-    | `include_cvel_from_observation`              | **bool**  | `True`           | Whether to include *cvel* elements in the observations. |
-    | `include_qfrc_actuator_from_observation`     | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations. |
-    | `include_cfrc_ext_from_observation`          | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations. |
+    | `include_cinert_in_observation`              | **bool**  | `True`           | Whether to include *cinert* elements in the observations.|
+    | `include_cvel_in_observation`                | **bool**  | `True`           | Whether to include *cvel* elements in the observations. |
+    | `include_qfrc_actuator_in_observation`       | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations. |
+    | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations. |
 
     ## Version History
 
@@ -280,11 +280,11 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         terminate_when_unhealthy=True,
         healthy_z_range=(1.0, 2.0),
         reset_noise_scale=1e-2,
-        exclude_current_positions_from_observation=True,
-        include_cinert_from_observation=True,
-        include_cvel_from_observation=True,
-        include_qfrc_actuator_from_observation=True,
-        include_cfrc_ext_from_observation=True,
+        exclude_current_positions_in_observation=True,
+        include_cinert_in_observation=True,
+        include_cvel_in_observation=True,
+        include_qfrc_actuator_in_observation=True,
+        include_cfrc_ext_in_observation=True,
         **kwargs,
     ):
         utils.EzPickle.__init__(
@@ -296,11 +296,11 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             terminate_when_unhealthy,
             healthy_z_range,
             reset_noise_scale,
-            exclude_current_positions_from_observation,
-            include_cinert_from_observation,
-            include_cvel_from_observation,
-            include_qfrc_actuator_from_observation,
-            include_cfrc_ext_from_observation,
+            exclude_current_positions_in_observation,
+            include_cinert_in_observation,
+            include_cvel_in_observation,
+            include_qfrc_actuator_in_observation,
+            include_cfrc_ext_in_observation,
             **kwargs,
         )
 
@@ -314,23 +314,23 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         self._reset_noise_scale = reset_noise_scale
 
-        self._exclude_current_positions_from_observation = (
-            exclude_current_positions_from_observation
+        self._exclude_current_positions_in_observation = (
+            exclude_current_positions_in_observation
         )
 
-        self._include_cinert_from_observation = include_cinert_from_observation
-        self._include_cvel_from_observation = include_cvel_from_observation
-        self._include_qfrc_actuator_from_observation = (
-            include_qfrc_actuator_from_observation
+        self._include_cinert_in_observation = include_cinert_in_observation
+        self._include_cvel_in_observation = include_cvel_in_observation
+        self._include_qfrc_actuator_in_observation = (
+            include_qfrc_actuator_in_observation
         )
-        self._include_cfrc_ext_from_observation = include_cfrc_ext_from_observation
+        self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
         obs_shape = 45
-        obs_shape += 130 * self._include_cinert_from_observation
-        obs_shape += 78 * self._include_cvel_from_observation
-        obs_shape += 17 * self._include_qfrc_actuator_from_observation
-        obs_shape += 78 * self._include_cfrc_ext_from_observation
-        obs_shape += 2 * (not self._exclude_current_positions_from_observation)
+        obs_shape += 130 * self._include_cinert_in_observation
+        obs_shape += 78 * self._include_cvel_in_observation
+        obs_shape += 17 * self._include_qfrc_actuator_in_observation
+        obs_shape += 78 * self._include_cfrc_ext_in_observation
+        obs_shape += 2 * (not self._exclude_current_positions_in_observation)
 
         observation_space = Box(
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
@@ -380,31 +380,31 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         position = self.data.qpos.flat.copy()
         velocity = self.data.qvel.flat.copy()
 
-        if self._include_cinert_from_observation is True:
+        if self._include_cinert_in_observation is True:
             com_inertia = self.data.cinert[1:].flat.copy()
         else:
             com_inertia = np.array([])
-        if self._include_cvel_from_observation is True:
+        if self._include_cvel_in_observation is True:
             com_velocity = self.data.cvel[1:].flat.copy()
         else:
             com_velocity = np.array([])
 
-        if self._include_qfrc_actuator_from_observation is True:
+        if self._include_qfrc_actuator_in_observation is True:
             actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
         else:
             actuator_forces = np.array([])
-        if self._include_cfrc_ext_from_observation is True:
+        if self._include_cfrc_ext_in_observation is True:
             external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
         else:
             external_contact_forces = np.array([])
 
         # TODO remove after validation
-        assert (self.data.cinert[0].flat.copy == 0).all()
-        assert (self.data.cvel[0].flat.copy == 0).all()
-        assert (self.data.qfrc_actuator[:6].flat.copy == 0).all()
-        assert (self.data.cfrc_ext[0].flat.copy == 0).all()
+        assert (self.data.cinert[0].flat.copy() == 0).all()
+        assert (self.data.cvel[0].flat.copy() == 0).all()
+        assert (self.data.qfrc_actuator[:6].flat.copy() == 0).all()
+        assert (self.data.cfrc_ext[0].flat.copy() == 0).all()
 
-        if self._exclude_current_positions_from_observation:
+        if self._exclude_current_positions_in_observation:
             position = position[2:]
 
         return np.concatenate(
