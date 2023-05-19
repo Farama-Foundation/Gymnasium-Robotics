@@ -107,8 +107,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     | 12 |11      | aux_4 (back right leg) |
     | 13 |12      | ankle_4 (back right leg) |
 
-    ###If version < `v4` or `use_contact_forces` is `True` then the observation space is extended by
-
     The (x,y,z) coordinates are translational DOFs while the orientations are rotational
     DOFs expressed as quaternions. One can read more about free joints on the [Mujoco Documentation](https://mujoco.readthedocs.io/en/latest/XMLreference.html).
 
@@ -134,10 +132,10 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     force is too large. It is calculated *`contact_cost_weight` * sum(clip(external contact
     force to `contact_force_range`)<sup>2</sup>)*.
 
-    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost*.
-
-    But if `use_contact_forces=True` or version < `v4`
     The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost - contact_cost*.
+
+    But if `use_contact_forces=false` on `v4`
+    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost*.
 
     In either case `info` will also contain the individual reward terms.
 
@@ -176,7 +174,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     |-------------------------|------------|--------------|-------------------------------|
     | `xml_file`              | **str**    | `"ant.xml"`  | Path to a MuJoCo model |
     | `ctrl_cost_weight`      | **float**  | `0.5`        | Weight for *ctrl_cost* term (see section on reward) |
-    | `use_contact_forces`    | **bool**  | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
+    | `use_contact_forces` (`v4` only)    | **bool**  | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
     | `contact_cost_weight`   | **float**  | `5e-4`       | Weight for *contact_cost* term (see section on reward) |
     | `healthy_reward`        | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
     | `terminate_when_unhealthy` | **bool**| `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
@@ -206,7 +204,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="ant.xml",
         ctrl_cost_weight=0.5,
-        use_contact_forces=True,
         contact_cost_weight=5e-4,
         healthy_reward=1.0,
         terminate_when_unhealthy=True,
@@ -214,13 +211,13 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         contact_force_range=(-1.0, 1.0),
         reset_noise_scale=0.1,
         exclude_current_positions_from_observation=True,
+        include_cfrc_ext_in_observation=True,
         **kwargs
     ):
         utils.EzPickle.__init__(
             self,
             xml_file,
             ctrl_cost_weight,
-            use_contact_forces,
             contact_cost_weight,
             healthy_reward,
             terminate_when_unhealthy,
@@ -228,6 +225,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             contact_force_range,
             reset_noise_scale,
             exclude_current_positions_from_observation,
+            include_cfrc_ext_in_observation,
             **kwargs
         )
 
@@ -242,17 +240,14 @@ class AntEnv(MujocoEnv, utils.EzPickle):
 
         self._reset_noise_scale = reset_noise_scale
 
-        self._use_contact_forces = use_contact_forces
-
         self._exclude_current_positions_from_observation = (
             exclude_current_positions_from_observation
         )
+        self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
         obs_shape = 27
-        if not exclude_current_positions_from_observation:
-            obs_shape += 2
-        if use_contact_forces:
-            obs_shape += 78
+        obs_shape += 78 * self._include_cfrc_ext_in_observation
+        obs_shape += 2 * (not self._exclude_current_positions_in_observation)
 
         observation_space = Box(
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
@@ -334,7 +329,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             "x_velocity": x_velocity,
             "y_velocity": y_velocity,
         }
-        # if self._use_contact_forces:
 
         reward = rewards - costs
 
@@ -349,7 +343,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         if self._exclude_current_positions_from_observation:
             position = position[2:]
 
-        if self._use_contact_forces:
+        if self._include_cfrc_ext_in_observation:
             assert (
                 self.contact_forces[0].flat.copy() == 0
             ).all()  # TODO remove after validation
