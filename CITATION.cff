@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - name: "Minari Contributors"
+title: "Minari: A dataset API for Offline Reinforcement Learning"
+date-released: 2023-05-17
