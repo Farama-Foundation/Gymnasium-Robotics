@@ -130,8 +130,15 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
         "render_fps": 20,
     }
 
-    def __init__(self, **kwargs):
+    def __init__(
+        self,
+        reset_noise_scale=0.1,
+        **kwargs,
+    ):
+        self._reset_noise_scale = reset_noise_scale
+
         observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
+
         MujocoEnv.__init__(
             self,
             "inverted_double_pendulum.xml",
@@ -140,7 +147,8 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs
         )
-        utils.EzPickle.__init__(self, **kwargs)
+
+        utils.EzPickle.__init__(self, reset_noise_scale, **kwargs)
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
@@ -181,9 +189,12 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
         ).ravel()
 
     def reset_model(self):
+        noise_low = -self._reset_noise_scale
+        noise_high = self._reset_noise_scale
+
         self.set_state(
             self.init_qpos
-            + self.np_random.uniform(low=-0.1, high=0.1, size=self.model.nq),
-            self.init_qvel + self.np_random.standard_normal(self.model.nv) * 0.1,
+            + self.np_random.uniform(low=noise_low, high=noise_high, size=self.model.nq),
+            self.init_qvel + self.np_random.standard_normal(self.model.nv) * self._reset_noise_scale,
         )
         return self._get_obs()
