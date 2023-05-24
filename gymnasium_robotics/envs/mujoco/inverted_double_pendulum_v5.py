@@ -72,7 +72,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     ## Rewards
     The reward consists of two parts:
     - *alive_bonus*: The goal is to make the second inverted pendulum stand upright
-    (within a certain angle limit) as long as possible - as such a reward of +10 is awarded
+    (within a certain angle limit) as long as possible - as such a reward of `` is awarded
      for each timestep that the second pole is upright.
     - *distance_penalty*: This reward is a measure of how far the *tip* of the second pendulum
     (the only free end) moves, and it is calculated as
@@ -112,6 +112,12 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     env = gym.make('InvertedDoublePendulum-v2')
     ```
 
+    | Parameter               | Type       | Default      |Description                    |
+    |-------------------------|------------|--------------|-------------------------------|
+    | `xml_file`              | **str**    | `"inverted_double_pendulum.xml"`  | Path to a MuJoCo model |
+    | `healthy_reward`        | **float**  | `10          | Constant reward given if the pendulum is "healthy" (upright) |
+    | `reset_noise_scale`     | **float**  | `0.1`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
+
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Fixed "reward_survive" being 10 on every step (even on terminal steps). Removed "constraint force" of the hinges from the observation space. Added `info` "reward_survive", "distance_penalty", "velocity_penalty".
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
@@ -132,23 +138,26 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
     def __init__(
         self,
+        xml_file="inverted_double_pendulum.xml",
+        healthy_reward=10.0,
         reset_noise_scale=0.1,
         **kwargs,
     ):
+        self._healthy_reward = healthy_reward
         self._reset_noise_scale = reset_noise_scale
 
         observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
 
         MujocoEnv.__init__(
             self,
-            "inverted_double_pendulum.xml",
+            xml_file,
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs
         )
 
-        utils.EzPickle.__init__(self, reset_noise_scale, **kwargs)
+        utils.EzPickle.__init__(self, xml_file, reset_noise_scale, **kwargs)
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
@@ -162,7 +171,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
         dist_penalty = 0.01 * x**2 + (y - 2) ** 2
         vel_penalty = 1e-3 * v1**2 + 5e-3 * v2**2
-        alive_bonus = 10 * int(not terminated)
+        alive_bonus = self._healthy_reward * int(not terminated)
         r = alive_bonus - dist_penalty - vel_penalty
 
         info = {
