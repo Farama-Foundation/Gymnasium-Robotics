@@ -29,8 +29,14 @@ envs/MaMuJoCo/index
 release_notes
 Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 ```
-# Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
 
+```{project-logo} _static/img/robotics-text.svg
+:alt: Gymnasium-Robotics Logo
+```
+
+```{project-heading}
+Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning
+```
 
 ```{figure} _static/videos/fetch/pick_and_place.gif
    :alt: Fetch Pick And Place

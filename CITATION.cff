@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - name: "Gymnasium-Robotics Contributors"
+title: "Gymnasium-Robotics: A a collection of robotics simulation environments for Reinforcement Learning"
+date-released: 2022-01-07

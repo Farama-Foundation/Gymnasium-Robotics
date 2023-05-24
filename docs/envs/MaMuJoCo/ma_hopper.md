@@ -72,6 +72,12 @@ The environment is partitioned in 3 parts, each part corresponding to a single j
 
 
 ## Observation Space
+| Observation Categories ||
+|-----------------------|------------------------------------------------------|			
+| Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
+| Default `global_categories` | `("qpos", "qvel")` |
+| Supported observation categories | `"qpos", "qvel"` |
+
 Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items of the hopper's top.
 See more at the [Gymnasium's Hopper](https://gymnasium.farama.org/environments/mujoco/hopper/#observation-space).
 

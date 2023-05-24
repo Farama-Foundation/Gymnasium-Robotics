@@ -97,9 +97,12 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations).
             local_categories: The categories of local observations for each observation depth,
-                The default is: Everything is observable at depth 0, but only the position items are observable for further depth levels
-            global_categories: The categories of observation for global observations,
-                The default is; local_categories[0]
+                It takes the form of a list where the k-th element is the list of observable items observable at the k-th depth
+                For example: if it is set to `[["qpos, qvel"], ["qvel"]]` then means each agent observes its own position and velocity elements, and it's neighbors velocity elements.
+                The default is: Check each environment's page on the "observation space" section.
+            global_categories: The categories of observations extracted from the global observable space,
+                For example: if it is set to `("qpos")` out of the globally observable items of the environment, only the position items will be observed.
+                The default is: Check each environment's page on the "observation space" section.
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
@@ -454,12 +457,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.global_categories,
         )
 
-    def reset(self, seed: int | None = None, return_info=False, options=None):
+    def reset(self, seed: int | None = None, options=None):
         """Resets the the `single_agent_env`.
 
         Args:
             seed: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc
-            return_info: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc
             options: Ignored arguments
 
         Returns:
@@ -470,30 +472,15 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         for agent in self.possible_agents:
             info[agent] = info_n
         self.agents = self.possible_agents
-        if return_info is False:
-            return self._get_obs()
-        else:
-            return self._get_obs(), info
+        return self._get_obs(), info
 
-    def render(self, render_mode: str | None = None):
+    def render(self):
         """Renders the MuJoCo environment using the mechanism of the single agent Gymnasium-MuJoCo.
-
-        Args:
-            render_mode: if set to `None` it uses the previously defined render mode (e.g. during the construction of the environment), else it overrides the render method.
 
         Returns:
             The same return value as the single agent Gymnasium.MuJoCo
             see https://gymnasium.farama.org/environments/mujoco/
         """
-        if render_mode is None:
-            return self.single_agent_env.render()
-
-        assert (
-            render_mode == "human"
-            or render_mode == "rgb_array"
-            or render_mode == "depth_array"
-        )
-        self.single_agent_env.unwrapped.render_mode = render_mode
         return self.single_agent_env.render()
 
     def close(self):
@@ -559,31 +546,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             return ("qpos", "qvel")
 
 
-# dev NOTE: make a PR in pettingzoo for this after it has been tested
-def aec_wrapper_fn(par_env_fn):
-    """Converts class(pettingzoo.utils.env.ParallelEnv) -> class(pettingzoo.utils.env.AECEnv).
-
-    Args:
-        par_env_fn: The class to be wrapped.
-
-    Example:
-        class my_par_class(pettingzoo.utils.env.ParallelEnv):
-            ...
-
-        my_aec_class = aec_wrapper_fn(my_par_class)
-
-    Note: applies the `OrderEnforcingWrapper` wrapper
-    """
-
-    def aec_fn(**kwargs):
-        par_env = par_env_fn(**kwargs)
-        aec_env = pettingzoo.utils.parallel_to_aec(par_env)
-        return aec_env
-
-    return aec_fn
-
-
 # These are the export functions (for `PettingZoo` style exportations)
-env = aec_wrapper_fn(MultiAgentMujocoEnv)
+env = pettingzoo.utils.conversions.aec_wrapper_fn(MultiAgentMujocoEnv)
 parallel_env = MultiAgentMujocoEnv
 raw_parallel_env = MultiAgentMujocoEnv
