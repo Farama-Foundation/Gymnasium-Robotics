@@ -1390,11 +1390,11 @@ def register_robotics_envs():
     )
     """
 
-    #register(
-        #id="HumanoidStandup-v5",
-        #entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v5:HumanoidStandupEnv",
-        #max_episode_steps=1000,
-    #)
+    register(
+        id="HumanoidStandup-v5",
+        entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v5:HumanoidStandupEnv",
+        max_episode_steps=1000,
+    )
 
 
 __version__ = "1.2.1"

@@ -1,3 +1,5 @@
+__credits__ = ["Kallinteris-Andreas"]
+
 import numpy as np
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
@@ -9,6 +11,12 @@ DEFAULT_CAMERA_CONFIG = {
     "lookat": np.array((0.0, 0.0, 0.8925)),
     "elevation": -20.0,
 }
+
+
+def mass_center(model, data):
+    mass = np.expand_dims(model.body_mass, axis=1)
+    xpos = data.xipos
+    return (np.sum(mass * xpos, axis=0) / np.sum(mass))[0:2].copy()
 
 
 class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
@@ -50,13 +58,18 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     | 16  | Torque applied on the rotor between the left upper arm and left lower arm          | -0.4        | 0.4         | left_elbow                       | hinge | torque (N m) |
 
     ## Observation Space
+    Observations consist of positional values of different body parts of the Humanoid,
+    followed by the velocities of those individual parts (their derivatives) with all the
+    positions ordered before all the velocities.
 
-    The state space consists of positional values of different body parts of the Humanoid,
-    followed by the velocities of those individual parts (their derivatives) with all the positions ordered before all the velocities.
+    By default, observations do not include the x- and y-coordinates of the torso. These may
+    be included by passing `exclude_current_positions_from_observation=False` during construction.
+    In that case, the observation space will be a `Box(-Inf, Inf, (378,), float64)` where the first two observations
+    represent the x- and y-coordinates of the torso.
+    Regardless of whether `exclude_current_positions_from_observation` was set to true or false, the x- and y-coordinates
+    will be returned in `info` with keys `"x_position"` and `"y_position"`, respectively.
 
-    **Note:** The x- and y-coordinates of the torso are being omitted to produce position-agnostic behavior in policies
-
-    The observation is a `ndarray` with shape `(376,)` where the elements correspond to the following:
+    However, by default, the observation is a `Box(-Inf, Inf, (376,), float64)`. The elements correspond to the following:
 
     | Num | Observation                                                                                                     | Min  | Max | Name (in corresponding XML file) | Joint | Unit                       |
     | --- | --------------------------------------------------------------------------------------------------------------- | ---- | --- | -------------------------------- | ----- | -------------------------- |
@@ -94,21 +107,22 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     | 31  | x-coordinate of the angular velocity of the angle between pelvis and right hip (in right_thigh)                 | -Inf | Inf | right_hip_x                      | hinge | anglular velocity (rad/s)  |
     | 32  | z-coordinate of the angular velocity of the angle between pelvis and right hip (in right_thigh)                 | -Inf | Inf | right_hip_z                      | hinge | anglular velocity (rad/s)  |
     | 33  | y-coordinate of the angular velocity of the angle between pelvis and right hip (in right_thigh)                 | -Inf | Inf | right_hip_y                      | hinge | anglular velocity (rad/s)  |
-    | 35  | angular velocity of the angle between right hip and the right shin (in right_knee)                              | -Inf | Inf | right_knee                       | hinge | anglular velocity (rad/s)  |
-    | 36  | x-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_x                       | hinge | anglular velocity (rad/s)  |
-    | 37  | z-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_z                       | hinge | anglular velocity (rad/s)  |
-    | 38  | y-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_y                       | hinge | anglular velocity (rad/s)  |
-    | 39  | angular velocity of the angle between left hip and the left shin (in left_knee)                                 | -Inf | Inf | left_knee                        | hinge | anglular velocity (rad/s)  |
-    | 40  | coordinate-1 (multi-axis) of the angular velocity of the angle between torso and right arm (in right_upper_arm) | -Inf | Inf | right_shoulder1                  | hinge | anglular velocity (rad/s)  |
-    | 41  | coordinate-2 (multi-axis) of the angular velocity of the angle between torso and right arm (in right_upper_arm) | -Inf | Inf | right_shoulder2                  | hinge | anglular velocity (rad/s)  |
-    | 42  | angular velocity of the angle between right upper arm and right_lower_arm                                       | -Inf | Inf | right_elbow                      | hinge | anglular velocity (rad/s)  |
-    | 43  | coordinate-1 (multi-axis) of the angular velocity of the angle between torso and left arm (in left_upper_arm)   | -Inf | Inf | left_shoulder1                   | hinge | anglular velocity (rad/s)  |
-    | 44  | coordinate-2 (multi-axis) of the angular velocity of the angle between torso and left arm (in left_upper_arm)   | -Inf | Inf | left_shoulder2                   | hinge | anglular velocity (rad/s)  |
-    | 45  | angular velocity of the angle between left upper arm and left_lower_arm                                        | -Inf | Inf | left_elbow                       | hinge | anglular velocity (rad/s)  |
-
+    | 34  | angular velocity of the angle between right hip and the right shin (in right_knee)                              | -Inf | Inf | right_knee                       | hinge | anglular velocity (rad/s)  |
+    | 35  | x-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_x                       | hinge | anglular velocity (rad/s)  |
+    | 36  | z-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_z                       | hinge | anglular velocity (rad/s)  |
+    | 37  | y-coordinate of the angular velocity of the angle between pelvis and left hip (in left_thigh)                   | -Inf | Inf | left_hip_y                       | hinge | anglular velocity (rad/s)  |
+    | 38  | angular velocity of the angle between left hip and the left shin (in left_knee)                                 | -Inf | Inf | left_knee                        | hinge | anglular velocity (rad/s)  |
+    | 39  | coordinate-1 (multi-axis) of the angular velocity of the angle between torso and right arm (in right_upper_arm) | -Inf | Inf | right_shoulder1                  | hinge | anglular velocity (rad/s)  |
+    | 40  | coordinate-2 (multi-axis) of the angular velocity of the angle between torso and right arm (in right_upper_arm) | -Inf | Inf | right_shoulder2                  | hinge | anglular velocity (rad/s)  |
+    | 41  | angular velocity of the angle between right upper arm and right_lower_arm                                       | -Inf | Inf | right_elbow                      | hinge | anglular velocity (rad/s)  |
+    | 42  | coordinate-1 (multi-axis) of the angular velocity of the angle between torso and left arm (in left_upper_arm)   | -Inf | Inf | left_shoulder1                   | hinge | anglular velocity (rad/s)  |
+    | 43  | coordinate-2 (multi-axis) of the angular velocity of the angle between torso and left arm (in left_upper_arm)   | -Inf | Inf | left_shoulder2                   | hinge | anglular velocity (rad/s)  |
+    | 44  | angular velocity of the angle between left upper arm and left_lower_arm                                         | -Inf | Inf | left_elbow                       | hinge | anglular velocity (rad/s)  |
+    | excluded | x-coordinate of the torso (centre)                                                                         | -Inf | Inf | root                             | free  | position (m)               |
+    | excluded | y-coordinate of the torso (centre)                                                                         | -Inf | Inf | root                             | free  | position (m)               |
 
     Additionally, after all the positional and velocity based values in the table,
-    the state_space consists of (in order):
+    the observation contains (in order):
     - *cinert:* Mass and inertia of a single rigid body relative to the center of mass
     (this is an intermediate result of transition). It has shape 14*10 (*nbody * 10*)
     and hence adds to another 140 elements in the state space.
@@ -118,8 +132,55 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     `(23,)`  *(nv * 1)* and hence adds another 23 elements to the state space.
     - *cfrc_ext:* This is the center of mass based external force on the body.  It has shape
     14 * 6 (*nbody * 6*) and hence adds to another 84 elements in the state space.
-    where *nbody* stands for the number of bodies in the robot and *nv* stands for the number
-    of degrees of freedom (*= dim(qvel)*)
+    where *nbody* stands for the number of bodies in the robot and *nv* stands for the
+    number of degrees of freedom (*= dim(qvel)*)
+
+    The body parts are:
+
+    | id (for `v2`,`v3`,`v4`) | body part |
+    | --- |  ------------  |
+    | 0   | worldBody (note: all values are constant 0) |
+    | 1   | torso |
+    | 2   | lwaist |
+    | 3   | pelvis |
+    | 4   | right_thigh |
+    | 5   | right_sin |
+    | 6   | right_foot |
+    | 7   | left_thigh |
+    | 8   | left_sin |
+    | 9   | left_foot |
+    | 10  | right_upper_arm |
+    | 11  | right_lower_arm |
+    | 12  | left_upper_arm |
+    | 13  | left_lower_arm |
+
+    The joints are:
+
+    | id (for `v2`,`v3`,`v4`) | joint |
+    | --- |  ------------  |
+    | 0   | root |
+    | 1   | root |
+    | 2   | root |
+    | 3   | root |
+    | 4   | root |
+    | 5   | root |
+    | 6   | abdomen_z |
+    | 7   | abdomen_y |
+    | 8   | abdomen_x |
+    | 9   | right_hip_x |
+    | 10  | right_hip_z |
+    | 11  | right_hip_y |
+    | 12  | right_knee |
+    | 13  | left_hip_x |
+    | 14  | left_hiz_z |
+    | 15  | left_hip_y |
+    | 16  | left_knee |
+    | 17  | right_shoulder1 |
+    | 18  | right_shoulder2 |
+    | 19  | right_elbow|
+    | 20  | left_shoulder1 |
+    | 21  | left_shoulder2 |
+    | 22  | left_elfbow |
 
     The (x,y,z) coordinates are translational DOFs while the orientations are rotational
     DOFs expressed as quaternions. One can read more about free joints on the
@@ -182,11 +243,11 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
     ## Version History
 
-    * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
-    * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
-    * v2: All continuous control environments now use mujoco-py >= 1.50
+    * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
+    * v3: This environment does not have a v3 release.
+    * v2: All continuous control environments now use mujoco-py >= 1.50.
     * v1: max_time_steps raised to 1000 for robot based tasks. Added reward_threshold to environments.
-    * v0: Initial versions release (1.0.0)
+    * v0: Initial versions release (1.0.0).
     """
 
     metadata = {
@@ -201,31 +262,100 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     def __init__(
         self,
         xml_file="humanoidstandup.xml",
+        uph_cost_weight=1,
+        ctrl_cost_weight=0.1,
+        impact_cost_weight=0.5e-6,
+        impact_cost_range=(-np.inf, 10.0),
+        reset_noise_scale=1e-2,
+        exclude_current_positions_from_observation=True,
+        include_cinert_in_observation=True,
+        include_cvel_in_observation=True,
+        include_qfrc_actuator_in_observation=True,
+        include_cfrc_ext_in_observation=True,
         **kwargs,
     ):
-        observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(348,), dtype=np.float64
+        utils.EzPickle.__init__(
+            self,
+            xml_file,
+            uph_cost_weight,
+            ctrl_cost_weight,
+            impact_cost_weight,
+            impact_cost_range,
+            reset_noise_scale,
+            exclude_current_positions_from_observation,
+            include_cinert_in_observation,
+            include_cvel_in_observation,
+            include_qfrc_actuator_in_observation,
+            include_cfrc_ext_in_observation,
+            **kwargs,
         )
+
+        self._uph_cost_weight = uph_cost_weight
+        self._ctrl_cost_weight = ctrl_cost_weight
+        self._impact_cost_weight = impact_cost_weight
+        self._impact_cost_range = impact_cost_range
+        self._reset_noise_scale = reset_noise_scale
+        self._exclude_current_positions_from_observation = (
+            exclude_current_positions_from_observation
+        )
+
+        self._include_cinert_in_observation = include_cinert_in_observation
+        self._include_cvel_in_observation = include_cvel_in_observation
+        self._include_qfrc_actuator_in_observation = (
+            include_qfrc_actuator_in_observation
+        )
+        self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
+
+        obs_shape = 45
+        obs_shape += 130 * self._include_cinert_in_observation
+        obs_shape += 78 * self._include_cvel_in_observation
+        obs_shape += 17 * self._include_qfrc_actuator_in_observation
+        obs_shape += 78 * self._include_cfrc_ext_in_observation
+        obs_shape += 2 * (not self._exclude_current_positions_from_observation)
+
+        observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
+        )
+
         MujocoEnv.__init__(
             self,
             xml_file,
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
-        utils.EzPickle.__init__(self, **kwargs)
 
     def _get_obs(self):
         position = self.data.qpos.flat.copy()
-        position = position[2:]
         velocity = self.data.qvel.flat.copy()
 
-        com_inertia = self.data.cinert[1:].flat.copy()
-        com_velocity = self.data.cvel[1:].flat.copy()
+        if self._include_cinert_in_observation is True:
+            com_inertia = self.data.cinert[1:].flat.copy()
+        else:
+            com_inertia = np.array([])
+        if self._include_cvel_in_observation is True:
+            com_velocity = self.data.cvel[1:].flat.copy()
+        else:
+            com_velocity = np.array([])
 
-        actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
-        external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
+        if self._include_qfrc_actuator_in_observation is True:
+            actuator_forces = self.data.qfrc_actuator[6:].flat.copy()
+        else:
+            actuator_forces = np.array([])
+        if self._include_cfrc_ext_in_observation is True:
+            external_contact_forces = self.data.cfrc_ext[1:].flat.copy()
+        else:
+            external_contact_forces = np.array([])
+
+        # TODO remove after validation
+        assert (self.data.cinert[0].flat.copy() == 0).all()
+        assert (self.data.cvel[0].flat.copy() == 0).all()
+        assert (self.data.qfrc_actuator[:6].flat.copy() == 0).all()
+        assert (self.data.cfrc_ext[0].flat.copy() == 0).all()
+
+        if self._exclude_current_positions_from_observation:
+            position = position[2:]
 
         return np.concatenate(
             (
@@ -241,13 +371,24 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     def step(self, a):
         self.do_simulation(a, self.frame_skip)
         pos_after = self.data.qpos[2]
-        data = self.data
+
         uph_cost = (pos_after - 0) / self.model.opt.timestep
 
-        quad_ctrl_cost = 0.1 * np.square(data.ctrl).sum()
-        quad_impact_cost = 0.5e-6 * np.square(data.cfrc_ext).sum()
-        quad_impact_cost = min(quad_impact_cost, 10)
+        quad_ctrl_cost = self._ctrl_cost_weight * np.square(self.data.ctrl).sum()
+
+        quad_impact_cost = self._impact_cost_weight * np.square(self.data.cfrc_ext).sum()
+        min_impact_cost, max_impact_cost = self._impact_cost_range
+        quad_impact_cost = np.clip(quad_impact_cost, min_impact_cost, max_impact_cost)
+
         reward = uph_cost - quad_ctrl_cost - quad_impact_cost + 1
+
+        info = {
+            "reward_linup": uph_cost,
+            "reward_quadctrl": -quad_ctrl_cost,
+            "reward_impact": -quad_impact_cost,
+            "x_position": self.data.qpos[0],
+            "y_position": self.data.qpos[1],
+        }
 
         if self.render_mode == "human":
             self.render()
@@ -264,14 +405,16 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
         )
 
     def reset_model(self):
-        c = 0.01
-        self.set_state(
-            self.init_qpos + self.np_random.uniform(low=-c, high=c, size=self.model.nq),
-            self.init_qvel
-            + self.np_random.uniform(
-                low=-c,
-                high=c,
-                size=self.model.nv,
-            ),
+        noise_low = -self._reset_noise_scale
+        noise_high = self._reset_noise_scale
+
+        qpos = self.init_qpos + self.np_random.uniform(
+            low=noise_low, high=noise_high, size=self.model.nq
         )
-        return self._get_obs()
+        qvel = self.init_qvel + self.np_random.uniform(
+            low=noise_low, high=noise_high, size=self.model.nv
+        )
+        self.set_state(qpos, qvel)
+
+        observation = self._get_obs()
+        return observation
