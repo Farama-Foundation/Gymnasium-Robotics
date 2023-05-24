@@ -143,6 +143,8 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
         reset_noise_scale=0.1,
         **kwargs,
     ):
+        utils.EzPickle.__init__(self, xml_file, reset_noise_scale, **kwargs)
+
         self._healthy_reward = healthy_reward
         self._reset_noise_scale = reset_noise_scale
 
@@ -156,8 +158,6 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs
         )
-
-        utils.EzPickle.__init__(self, xml_file, reset_noise_scale, **kwargs)
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
