@@ -13,12 +13,6 @@ DEFAULT_CAMERA_CONFIG = {
 }
 
 
-def mass_center(model, data):
-    mass = np.expand_dims(model.body_mass, axis=1)
-    xpos = data.xipos
-    return (np.sum(mass * xpos, axis=0) / np.sum(mass))[0:2].copy()
-
-
 class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
@@ -392,17 +386,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
         if self.render_mode == "human":
             self.render()
-        return (
-            self._get_obs(),
-            reward,
-            False,
-            False,
-            dict(
-                reward_linup=uph_cost,
-                reward_quadctrl=-quad_ctrl_cost,
-                reward_impact=-quad_impact_cost,
-            ),
-        )
+        return self._get_obs(), reward, False, False, info
 
     def reset_model(self):
         noise_low = -self._reset_noise_scale
