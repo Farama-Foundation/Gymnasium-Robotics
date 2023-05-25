@@ -370,7 +370,9 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
         quad_ctrl_cost = self._ctrl_cost_weight * np.square(self.data.ctrl).sum()
 
-        quad_impact_cost = self._impact_cost_weight * np.square(self.data.cfrc_ext).sum()
+        quad_impact_cost = (
+            self._impact_cost_weight * np.square(self.data.cfrc_ext).sum()
+        )
         min_impact_cost, max_impact_cost = self._impact_cost_range
         quad_impact_cost = np.clip(quad_impact_cost, min_impact_cost, max_impact_cost)
 

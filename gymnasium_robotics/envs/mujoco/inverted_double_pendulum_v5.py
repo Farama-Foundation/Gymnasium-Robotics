@@ -156,7 +156,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
             5,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
 
     def step(self, action):
@@ -203,7 +203,10 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
         self.set_state(
             self.init_qpos
-            + self.np_random.uniform(low=noise_low, high=noise_high, size=self.model.nq),
-            self.init_qvel + self.np_random.standard_normal(self.model.nv) * self._reset_noise_scale,
+            + self.np_random.uniform(
+                low=noise_low, high=noise_high, size=self.model.nq
+            ),
+            self.init_qvel
+            + self.np_random.standard_normal(self.model.nv) * self._reset_noise_scale,
         )
         return self._get_obs()

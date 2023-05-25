@@ -140,7 +140,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
             2,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
-            **kwargs
+            **kwargs,
         )
 
     def step(self, a):
