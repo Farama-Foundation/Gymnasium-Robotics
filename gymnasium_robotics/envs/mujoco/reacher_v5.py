@@ -98,17 +98,16 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     2. Termination: Any of the state space values is no longer finite.
 
     ## Arguments
-    No additional arguments are currently supported (in v2 and lower),
-    but modifications can be made to the XML file in the assets folder
-    (or by changing the path to a modified XML file in another folder)..
+    `gymnasium.make` takes additional arguments such as `xml_file`.
 
     ```python
     import gymnasium as gym
-    env = gym.make('Reacher-v4')
+    env = gym.make('Reacher-v5', xml_file=...)
     ```
 
-    There is no v3 for Reacher, unlike the robot environments where a v3 and
-    beyond take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
+    | Parameter               | Type       | Default       |Description                    |
+    |-------------------------|------------|-------------- |-------------------------------|
+    | `xml_file`              | **str**    |`"reacher.xml"`| Path to a MuJoCo model        |
 
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. Remove "z - position_fingertip" from the observation space.

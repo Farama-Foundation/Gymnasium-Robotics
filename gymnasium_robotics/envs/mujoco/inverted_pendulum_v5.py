@@ -14,7 +14,6 @@ DEFAULT_CAMERA_CONFIG = {
 class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment is the cartpole environment based on the work done by
     Barto, Sutton, and Anderson in ["Neuronlike adaptive elements that can
     solve difficult learning control problems"](https://ieeexplore.ieee.org/document/6313077),
@@ -36,7 +35,6 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     | 0   | Force applied on the cart | -3          | 3           | slider                           | slide | Force (N) |
 
     ## Observation Space
-
     The state space consists of positional values of different body parts of
     the pendulum system, followed by the velocities of those individual parts (their derivatives)
     with all the positions ordered before all the velocities.
@@ -56,6 +54,8 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     as long as possible - as such a reward of +1 is awarded for each timestep that
     the pole is upright.
 
+    and `info` will also contain the reward.
+
     ## Starting State
     All observations start in state
     (0.0, 0.0, 0.0, 0.0) with a uniform noise in the range
@@ -73,13 +73,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
 
     ```python
     import gymnasium as gym
-    env = gym.make('InvertedPendulum-v4')
-    ```
-    There is no v3 for InvertedPendulum, unlike the robot environments where a
-    v3 and beyond take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
-    ```python
-    import gymnasium as gym
-    env = gym.make('InvertedPendulum-v2')
+    env = gym.make('InvertedPendulum-v5')
     ```
 
     ## Version History

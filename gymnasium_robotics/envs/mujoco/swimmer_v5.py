@@ -91,20 +91,16 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     The episode truncates when the episode length is greater than 1000.
 
     ## Arguments
-    `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
+    `gymnasium.make` takes additional arguments such as `xml_file`.
 
     ```python
     import gymnasium as gym
-    env = gym.make('Swimmer-v5', ctrl_cost_weight=0.1, ....)
+    env = gym.make('Swimmer-v5', xml_file=...)
     ```
 
-    | Parameter                                    | Type      | Default         | Description                                                                                                                                                               |
-    | -------------------------------------------- | --------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `xml_file`                                   | **str**   | `"swimmer.xml"` | Path to a MuJoCo model                                                                                                                                                    |
-    | `forward_reward_weight`                      | **float** | `1.0`           | Weight for _forward_reward_ term (see section on reward)                                                                                                                  |
-    | `ctrl_cost_weight`                           | **float** | `1e-4`          | Weight for _ctrl_cost_ term (see section on reward)                                                                                                                       |
-    | `reset_noise_scale`                          | **float** | `0.1`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                            |
-    | `exclude_current_positions_from_observation` | **bool**  | `True`          | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
+    | Parameter               | Type       | Default       |Description                    |
+    |-------------------------|------------|-------------- |-------------------------------|
+    | `xml_file`              | **str**    |`"swimmer.xml"`| Path to a MuJoCo model        |
 
 
     ## Version History

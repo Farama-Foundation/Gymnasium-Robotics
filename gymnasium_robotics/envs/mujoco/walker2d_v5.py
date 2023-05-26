@@ -113,20 +113,20 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
 
     ```python
     import gymnasium as gym
-    env = gym.make('Walker2d-v5', ctrl_cost_weight=0.1, ....)
+    env = gym.make('Walker2d-v5', ctrl_cost_weight=1e-3, ...)
     ```
 
-    | Parameter                                    | Type      | Default          | Description                                                                                                                                                       |
-    | -------------------------------------------- | --------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | Parameter                                    | Type      | Default           | Description                                                                                                                                                       |
+    | -------------------------------------------- | --------- | ----------------  | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `xml_file`                                   | **str**   |`"walker2d_v5.xml"`| Path to a MuJoCo model                                                                                                                                            |
-    | `forward_reward_weight`                      | **float** | `1.0`            | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
-    | `ctrl_cost_weight`                           | **float** | `1e-3`           | Weight for _ctr_cost_ term (see section on reward)                                                                                                                |
-    | `healthy_reward`                             | **float** | `1.0`            | Constant reward given if the ant is "healthy" after timestep                                                                                                      |
-    | `terminate_when_unhealthy`                   | **bool**  | `True`           | If true, issue a done signal if the z-coordinate of the walker is no longer healthy                                                                               |
-    | `healthy_z_range`                            | **tuple** | `(0.8, 2)`       | The z-coordinate of the torso of the walker must be in this range to be considered healthy                                                                        |
-    | `healthy_angle_range`                        | **tuple** | `(-1, 1)`        | The angle must be in this range to be considered healthy                                                                                                          |
-    | `reset_noise_scale`                          | **float** | `5e-3`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                    |
-    | `exclude_current_positions_from_observation` | **bool**  | `True`           | Whether or not to omit the x-coordinate from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
+    | `forward_reward_weight`                      | **float** | `1.0`             | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
+    | `ctrl_cost_weight`                           | **float** | `1e-3`            | Weight for _ctr_cost_ term (see section on reward)                                                                                                                |
+    | `healthy_reward`                             | **float** | `1.0`             | Constant reward given if the ant is "healthy" after timestep                                                                                                      |
+    | `terminate_when_unhealthy`                   | **bool**  | `True`            | If true, issue a done signal if the z-coordinate of the walker is no longer healthy                                                                               |
+    | `healthy_z_range`                            | **tuple** | `(0.8, 2)`        | The z-coordinate of the torso of the walker must be in this range to be considered healthy                                                                        |
+    | `healthy_angle_range`                        | **tuple** | `(-1, 1)`         | The angle must be in this range to be considered healthy                                                                                                          |
+    | `reset_noise_scale`                          | **float** | `5e-3`            | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                    |
+    | `exclude_current_positions_from_observation` | **bool**  | `True`            | Whether or not to omit the x-coordinate from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
 
 
     ## Version History

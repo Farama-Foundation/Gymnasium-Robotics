@@ -98,18 +98,11 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     3.Termination: The y_coordinate of the tip of the second pole *is less than or equal* to 1. The maximum standing height of the system is 1.196 m when all the parts are perpendicularly vertical on top of each other).
 
     ## Arguments
-    No additional arguments are currently supported.
+    `gymnasium.make` takes additional arguments such as `xml_file`, `healthy_reward`, `reset_noise_scale`, etc.
 
     ```python
     import gymnasium as gym
-    env = gym.make('InvertedDoublePendulum-v4')
-    ```
-    There is no v3 for InvertedPendulum, unlike the robot environments where a v3 and
-    beyond take `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
-
-    ```python
-    import gymnasium as gym
-    env = gym.make('InvertedDoublePendulum-v2')
+    env = gym.make('InvertedDoublePendulum-v5', healthy_reward=10, ...)
     ```
 
     | Parameter               | Type       | Default      |Description                    |

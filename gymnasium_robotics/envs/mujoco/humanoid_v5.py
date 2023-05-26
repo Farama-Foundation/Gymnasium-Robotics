@@ -59,12 +59,12 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
     By default, observations do not include the x- and y-coordinates of the torso. These may
     be included by passing `exclude_current_positions_from_observation=False` during construction.
-    In that case, the observation space will be a `Box(-Inf, Inf, (378,), float64)` where the first two observations
+    In that case, the observation space will be a `Box(-Inf, Inf, (350,), float64)` where the first two observations
     represent the x- and y-coordinates of the torso.
     Regardless of whether `exclude_current_positions_from_observation` was set to true or false, the x- and y-coordinates
     will be returned in `info` with keys `"x_position"` and `"y_position"`, respectively.
 
-    However, by default, the observation is a `Box(-Inf, Inf, (376,), float64)`. The elements correspond to the following:
+    However, by default, the observation is a `Box(-Inf, Inf, (348,), float64)`. The elements correspond to the following:
 
     | Num | Observation                                                                                                     | Min  | Max | Name (in corresponding XML file) | Joint | Unit                       |
     | --- | --------------------------------------------------------------------------------------------------------------- | ---- | --- | -------------------------------- | ----- | -------------------------- |
@@ -119,63 +119,63 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     Additionally, after all the positional and velocity based values in the table,
     the observation contains (in order):
     - *cinert:* Mass and inertia of a single rigid body relative to the center of mass
-    (this is an intermediate result of transition). It has shape 14*10 (*nbody * 10*)
-    and hence adds to another 140 elements in the state space.
-    - *cvel:* Center of mass based velocity. It has shape 14 * 6 (*nbody * 6*) and hence
-    adds another 84 elements in the state space
+    (this is an intermediate result of transition). It has shape 13*10 (*nbody * 10*)
+    and hence adds to another 130 elements in the state space.
+    - *cvel:* Center of mass based velocity. It has shape 13 * 6 (*nbody * 6*) and hence
+    adds another 78 elements in the state space
     - *qfrc_actuator:* Constraint force generated as the actuator force. This has shape
-    `(23,)`  *(nv * 1)* and hence adds another 23 elements to the state space.
+    `(17,)`  *(nv * 1)* and hence adds another 17 elements to the state space.
     - *cfrc_ext:* This is the center of mass based external force on the body.  It has shape
-    14 * 6 (*nbody * 6*) and hence adds to another 84 elements in the state space.
+    13 * 6 (*nbody * 6*) and hence adds to another 78 elements in the state space.
     where *nbody* stands for the number of bodies in the robot and *nv* stands for the
     number of degrees of freedom (*= dim(qvel)*)
 
     The body parts are:
 
-    | id (for `v2`,`v3`,`v4`) | body part |
-    | --- |  ------------  |
-    | 0   | worldBody (note: all values are constant 0) |
-    | 1   | torso |
-    | 2   | lwaist |
-    | 3   | pelvis |
-    | 4   | right_thigh |
-    | 5   | right_sin |
-    | 6   | right_foot |
-    | 7   | left_thigh |
-    | 8   | left_sin |
-    | 9   | left_foot |
-    | 10  | right_upper_arm |
-    | 11  | right_lower_arm |
-    | 12  | left_upper_arm |
-    | 13  | left_lower_arm |
+    | id (for `v2`, `v3`, `v4)` | id (for `v5`) | body part |
+    | ---|  ---   |  ------------  |
+    | 0  |excluded| worldbody (note: all values are constant 0) |
+    | 1  | 0      | torso |
+    | 2  | 1      | lwaist |
+    | 3  | 2      | pelvis |
+    | 4  | 3      | right_thigh |
+    | 5  | 4      | right_sin |
+    | 6  | 5      | right_foot |
+    | 7  | 6      | left_thigh |
+    | 8  | 7      | left_sin |
+    | 9  | 8      | left_foot |
+    | 10 | 9      | right_upper_arm |
+    | 11 | 10     | right_lower_arm |
+    | 12 | 11     | left_upper_arm |
+    | 13 | 12     | left_lower_arm |
 
     The joints are:
 
-    | id (for `v2`,`v3`,`v4`) | joint |
-    | --- |  ------------  |
-    | 0   | root |
-    | 1   | root |
-    | 2   | root |
-    | 3   | root |
-    | 4   | root |
-    | 5   | root |
-    | 6   | abdomen_z |
-    | 7   | abdomen_y |
-    | 8   | abdomen_x |
-    | 9   | right_hip_x |
-    | 10  | right_hip_z |
-    | 11  | right_hip_y |
-    | 12  | right_knee |
-    | 13  | left_hip_x |
-    | 14  | left_hiz_z |
-    | 15  | left_hip_y |
-    | 16  | left_knee |
-    | 17  | right_shoulder1 |
-    | 18  | right_shoulder2 |
-    | 19  | right_elbow|
-    | 20  | left_shoulder1 |
-    | 21  | left_shoulder2 |
-    | 22  | left_elfbow |
+    | id (for `v2`, `v3`, `v4)` | id (for `v5`) | joint |
+    | ---|  ---   |  ------------  |
+    | 0  |excluded| root (note: all values are constant 0) |
+    | 1  |excluded| root (note: all values are constant 0) |
+    | 2  |excluded| root (note: all values are constant 0) |
+    | 3  |excluded| root (note: all values are constant 0) |
+    | 4  |excluded| root (note: all values are constant 0) |
+    | 5  |excluded| root (note: all values are constant 0) |
+    | 6  | 0      | abdomen_z |
+    | 7  | 1      | abdomen_y |
+    | 8  | 2      | abdomen_x |
+    | 9  | 3      | right_hip_x |
+    | 10 | 4      | right_hip_z |
+    | 11 | 5      | right_hip_y |
+    | 12 | 6      | right_knee |
+    | 13 | 7      | left_hip_x |
+    | 14 | 8      | left_hiz_z |
+    | 15 | 9      | left_hip_y |
+    | 16 | 10     | left_knee |
+    | 17 | 11     | right_shoulder1 |
+    | 18 | 12     | right_shoulder2 |
+    | 19 | 13     | right_elbow|
+    | 20 | 14     | left_shoulder1 |
+    | 21 | 15     | left_shoulder2 |
+    | 22 | 16     | left_elfbow |
 
     The (x,y,z) coordinates are translational DOFs while the orientations are rotational
     DOFs expressed as quaternions. One can read more about free joints on the
@@ -204,7 +204,10 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     contact force is too large. It is calculated by clipping
     *`contact_cost_weight` * sum(external contact force<sup>2</sup>)* to the interval specified by `contact_cost_range`.
 
-    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost - contact_cost* and `info` will also contain the individual reward terms
+    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost - contact_cost*
+    and `info` will also contain the individual reward terms
+
+    Note: in `v4` the total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost*
 
     ## Starting State
     All observations start in state
@@ -320,12 +323,12 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         )
         self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
-        obs_shape = 45
+        obs_shape = 47
+        obs_shape -= 2 * self._exclude_current_positions_from_observation
         obs_shape += 130 * self._include_cinert_in_observation
         obs_shape += 78 * self._include_cvel_in_observation
         obs_shape += 17 * self._include_qfrc_actuator_in_observation
         obs_shape += 78 * self._include_cfrc_ext_in_observation
-        obs_shape += 2 * (not self._exclude_current_positions_from_observation)
 
         observation_space = Box(
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64

@@ -13,7 +13,6 @@ DEFAULT_CAMERA_CONFIG = {
 class AntEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment is based on the environment introduced by Schulman,
     Moritz, Levine, Jordan and Abbeel in ["High-Dimensional Continuous Control
     Using Generalized Advantage Estimation"](https://arxiv.org/abs/1506.02438).
@@ -88,11 +87,12 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     - *cfrc_ext:* 13*6 = 78 elements, which are contact forces
     (external forces - force x, y, z and torque x, y, z) applied to the
     center of mass of each of the body parts.
-    The 13 body parts are:
 
-    | id (for `v2`, `v3`, `v4)` | id (for `v5`) | body parts |
+    The body parts are:
+
+    | id (for `v2`, `v3`, `v4)` | id (for `v5`) | body part |
     | ---|  ---   |  ------------  |
-    | 0  |excluded| worldbody (note: forces are always full of zeros) |
+    | 0  |excluded| worldbody (note: all values are constant 0) |
     | 1  |0       | torso |
     | 2  |1       | front_left_leg |
     | 3  |2       | aux_1 (front left leg) |
@@ -167,21 +167,22 @@ class AntEnv(MujocoEnv, utils.EzPickle):
 
     ```python
     import gymnasium as gym
-    env = gym.make('Ant-v5', ctrl_cost_weight=0.1, ...)
+    env = gym.make('Ant-v5', ctrl_cost_weight=0.5, ...)
     ```
 
-    | Parameter               | Type       | Default      |Description                    |
-    |-------------------------|------------|--------------|-------------------------------|
-    | `xml_file`              | **str**    | `"ant.xml"`  | Path to a MuJoCo model |
-    | `ctrl_cost_weight`      | **float**  | `0.5`        | Weight for *ctrl_cost* term (see section on reward) |
-    | `use_contact_forces` (`v4` only)    | **bool**  | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
-    | `contact_cost_weight`   | **float**  | `5e-4`       | Weight for *contact_cost* term (see section on reward) |
-    | `healthy_reward`        | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
-    | `terminate_when_unhealthy` | **bool**| `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
-    | `healthy_z_range`       | **tuple**  | `(0.2, 1)`   | The ant is considered healthy if the z-coordinate of the torso is in this range |
-    | `contact_force_range`   | **tuple**  | `(-1, 1)`    | Contact forces are clipped to this range in the computation of *contact_cost* |
-    | `reset_noise_scale`     | **float**  | `0.1`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
-    | `exclude_current_positions_from_observation`| **bool** | `True`| Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
+    | Parameter                                  | Type       | Default      |Description                    |
+    |--------------------------------------------|------------|--------------|-------------------------------|
+    |`xml_file`                                  | **str**    | `"ant.xml"`  | Path to a MuJoCo model |
+    |`ctrl_cost_weight`                          | **float**  | `0.5`        | Weight for *ctrl_cost* term (see section on reward) |
+    |`use_contact_forces` (`v4` only)            | **bool**   | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
+    |`contact_cost_weight`                       | **float**  | `5e-4`       | Weight for *contact_cost* term (see section on reward) |
+    |`healthy_reward`                            | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
+    |`terminate_when_unhealthy`                  | **bool**   | `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
+    |`healthy_z_range`                           | **tuple**  | `(0.2, 1)`   | The ant is considered healthy if the z-coordinate of the torso is in this range |
+    |`contact_force_range`                       | **tuple**  | `(-1, 1)`    | Contact forces are clipped to this range in the computation of *contact_cost* |
+    |`reset_noise_scale`                         | **float**  | `0.1`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
+    |`exclude_current_positions_from_observation`| **bool**   | `True`       | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
+    |`include_cfrc_ext_in_observation`           | **bool**   | `True`       | Whether to include *cfrc_ext* elements in the observations. |
 
     ## Version History
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3, also removed contact forces from the default observation space (new variable `use_contact_forces=True` can restore them)
