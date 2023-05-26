@@ -386,6 +386,8 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             "reward_impact": -quad_impact_cost,
             "x_position": self.data.qpos[0],
             "y_position": self.data.qpos[1],
+            "tendon_lenght": self.data.ten_length,
+            "tendon_velocity": self.data.ten_velocity,
         }
 
         if self.render_mode == "human":

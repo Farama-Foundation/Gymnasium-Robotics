@@ -449,6 +449,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             "reward_contact": -contact_cost,
             "x_position": xy_position_after[0],
             "y_position": xy_position_after[1],
+            "tendon_lenght": self.data.ten_length,
+            "tendon_velocity": self.data.ten_velocity,
             "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
             "x_velocity": x_velocity,
             "y_velocity": y_velocity,
