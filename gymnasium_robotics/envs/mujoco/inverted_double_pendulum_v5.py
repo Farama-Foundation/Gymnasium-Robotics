@@ -127,33 +127,34 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 20,
-    }
-
     def __init__(
         self,
         xml_file="inverted_double_pendulum.xml",
+        frame_skip=5,
         healthy_reward=10.0,
         reset_noise_scale=0.1,
         **kwargs,
     ):
-        utils.EzPickle.__init__(self, xml_file, reset_noise_scale, **kwargs)
+        utils.EzPickle.__init__(self, xml_file, frame_skip, reset_noise_scale, **kwargs)
 
         self._healthy_reward = healthy_reward
         self._reset_noise_scale = reset_noise_scale
 
         observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
 
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 100 / frame_skip,
+        }
+
         MujocoEnv.__init__(
             self,
             xml_file,
-            5,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,

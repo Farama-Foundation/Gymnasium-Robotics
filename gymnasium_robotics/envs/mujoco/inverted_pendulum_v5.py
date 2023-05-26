@@ -91,22 +91,23 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 25,
-    }
-
-    def __init__(self, **kwargs):
-        utils.EzPickle.__init__(self, **kwargs)
+    def __init__(self, frame_skip=2, **kwargs):
+        utils.EzPickle.__init__(self, frame_skip, **kwargs)
         observation_space = Box(low=-np.inf, high=np.inf, shape=(4,), dtype=np.float64)
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 50 / frame_skip,
+        }
+
         MujocoEnv.__init__(
             self,
             "inverted_pendulum.xml",
-            2,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,

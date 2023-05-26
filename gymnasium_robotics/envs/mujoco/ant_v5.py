@@ -191,18 +191,10 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 20,
-    }
-
     def __init__(
         self,
         xml_file="ant.xml",
+        frame_skip=5,
         ctrl_cost_weight=0.5,
         contact_cost_weight=5e-4,
         healthy_reward=1.0,
@@ -217,6 +209,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         utils.EzPickle.__init__(
             self,
             xml_file,
+            frame_skip,
             ctrl_cost_weight,
             contact_cost_weight,
             healthy_reward,
@@ -253,10 +246,19 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
         )
 
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 100 / frame_skip,  # TODO compute `render_fps` in MujocoEnv
+        }
+
         MujocoEnv.__init__(
             self,
             xml_file,
-            5,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs

@@ -133,18 +133,10 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0).
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 125,
-    }
-
     def __init__(
         self,
         xml_file="hopper_v5.xml",
+        frame_skip=4,
         forward_reward_weight=1.0,
         ctrl_cost_weight=1e-3,
         healthy_reward=1.0,
@@ -159,6 +151,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
         utils.EzPickle.__init__(
             self,
             xml_file,
+            frame_skip,
             forward_reward_weight,
             ctrl_cost_weight,
             healthy_reward,
@@ -197,10 +190,19 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
                 low=-np.inf, high=np.inf, shape=(12,), dtype=np.float64
             )
 
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 500 / frame_skip,
+        }
+
         MujocoEnv.__init__(
             self,
             xml_file,
-            4,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,

@@ -260,18 +260,10 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 67,
-    }
-
     def __init__(
         self,
         xml_file="humanoid.xml",
+        frame_skip=5,
         forward_reward_weight=1.25,
         ctrl_cost_weight=0.1,
         contact_cost_weight=5e-7,
@@ -290,6 +282,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         utils.EzPickle.__init__(
             self,
             xml_file,
+            frame_skip,
             forward_reward_weight,
             ctrl_cost_weight,
             contact_cost_weight,
@@ -338,10 +331,19 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
         )
 
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 335 / frame_skip,
+        }
+
         MujocoEnv.__init__(
             self,
             xml_file,
-            5,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,

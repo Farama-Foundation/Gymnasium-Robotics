@@ -148,14 +148,25 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     def __init__(
         self,
         xml_file="pusher.xml",
+        frame_skip=5,
         **kwargs,
     ):
-        utils.EzPickle.__init__(self, **kwargs)
+        utils.EzPickle.__init__(self, xml_file, frame_skip, **kwargs)
         observation_space = Box(low=-np.inf, high=np.inf, shape=(23,), dtype=np.float64)
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 100 / frame_skip,
+        }
+
         MujocoEnv.__init__(
             self,
             xml_file,
-            5,
+            frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,

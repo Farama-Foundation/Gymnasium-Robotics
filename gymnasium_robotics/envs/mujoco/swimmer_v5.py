@@ -116,18 +116,10 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
-    metadata = {
-        "render_modes": [
-            "human",
-            "rgb_array",
-            "depth_array",
-        ],
-        "render_fps": 25,
-    }
-
     def __init__(
         self,
         xml_file="swimmer.xml",
+        frame_skip=4,
         forward_reward_weight=1.0,
         ctrl_cost_weight=1e-4,
         reset_noise_scale=0.1,
@@ -137,6 +129,7 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
         utils.EzPickle.__init__(
             self,
             xml_file,
+            frame_skip,
             forward_reward_weight,
             ctrl_cost_weight,
             reset_noise_scale,
@@ -160,8 +153,18 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
             observation_space = Box(
                 low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64
             )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": 100 / frame_skip,
+        }
+
         MujocoEnv.__init__(
-            self, xml_file, 4, observation_space=observation_space, **kwargs
+            self, xml_file, frame_skip, observation_space=observation_space, **kwargs
         )
 
     def control_cost(self, action):
