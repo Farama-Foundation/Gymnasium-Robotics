@@ -323,33 +323,33 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         )
         self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
-        obs_size = 47
-        obs_size -= 2 * exclude_current_positions_from_observation
-        obs_size += 130 * include_cinert_in_observation
-        obs_size += 78 * include_cvel_in_observation
-        obs_size += 17 * include_qfrc_actuator_in_observation
-        obs_size += 78 * include_cfrc_ext_in_observation
-
-        observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
-        )
-
         self.metadata = {
             "render_modes": [
                 "human",
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 335 / frame_skip,
+            # "render_fps": 335 / frame_skip,
         }
 
         MujocoEnv.__init__(
             self,
             xml_file,
             frame_skip,
-            observation_space=observation_space,
+            observation_space=None,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,
+        )
+
+        obs_size = self.data.qpos.size + self.data.qvel.size
+        obs_size -= 2 * exclude_current_positions_from_observation
+        obs_size += self.data.cinert[1:].size * include_cinert_in_observation
+        obs_size += self.data.cvel[1:].size * include_cvel_in_observation
+        obs_size += (self.data.qvel.size - 6) * include_qfrc_actuator_in_observation
+        obs_size += self.data.cfrc_ext[1:].size * include_cfrc_ext_in_observation
+
+        self.observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
     @property

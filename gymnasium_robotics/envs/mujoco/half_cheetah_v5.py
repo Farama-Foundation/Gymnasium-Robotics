@@ -156,11 +156,6 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation
         )
 
-        obs_size = 18 - exclude_current_positions_from_observation
-        observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
-        )
-
         self.metadata = {
             "render_modes": [
                 "human",
@@ -174,9 +169,14 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
             self,
             xml_file,
             frame_skip,
-            observation_space=observation_space,
+            observation_space=None,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,
+        )
+
+        obs_size = self.data.qpos.size + self.data.qvel.size - exclude_current_positions_from_observation
+        self.observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
     def control_cost(self, action):
