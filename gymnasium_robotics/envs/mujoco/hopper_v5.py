@@ -271,6 +271,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
             "reward_ctrl": -ctrl_cost,
             "reward_survive": healthy_reward,
             "x_position": x_position_after,
+            "z_distance_from_origin": self.data.qpos[1] - self.init_qpos[1],
             "x_velocity": x_velocity,
         }
 
