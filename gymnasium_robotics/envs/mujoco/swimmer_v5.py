@@ -141,14 +141,11 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
         self._exclude_current_positions_from_observation = (
             exclude_current_positions_from_observation
         )
-        if exclude_current_positions_from_observation:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(8,), dtype=np.float64
-            )
-        else:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64
-            )
+
+        obs_size = 10 - 2 * exclude_current_positions_from_observation
+        observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
+        )
 
         self.metadata = {
             "render_modes": [

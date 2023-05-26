@@ -156,14 +156,10 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation
         )
 
-        if exclude_current_positions_from_observation:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(17,), dtype=np.float64
-            )
-        else:
-            observation_space = Box(
-                low=-np.inf, high=np.inf, shape=(18,), dtype=np.float64
-            )
+        obs_size = 18 - exclude_current_positions_from_observation
+        observation_space = Box(
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
+        )
 
         self.metadata = {
             "render_modes": [

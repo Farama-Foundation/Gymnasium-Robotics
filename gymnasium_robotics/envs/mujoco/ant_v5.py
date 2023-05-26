@@ -239,12 +239,12 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         )
         self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
-        obs_shape = 29
-        obs_shape -= 2 * self._exclude_current_positions_from_observation
-        obs_shape += 78 * self._include_cfrc_ext_in_observation
+        obs_size = 29
+        obs_size -= 2 * self._exclude_current_positions_from_observation
+        obs_size += 78 * self._include_cfrc_ext_in_observation
 
         observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
         self.metadata = {

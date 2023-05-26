@@ -297,15 +297,15 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
         )
         self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
-        obs_shape = 47
-        obs_shape -= 2 * self._exclude_current_positions_from_observation
-        obs_shape += 130 * self._include_cinert_in_observation
-        obs_shape += 78 * self._include_cvel_in_observation
-        obs_shape += 17 * self._include_qfrc_actuator_in_observation
-        obs_shape += 78 * self._include_cfrc_ext_in_observation
+        obs_size = 47
+        obs_size -= 2 * exclude_current_positions_from_observation
+        obs_size += 130 * include_cinert_in_observation
+        obs_size += 78 * include_cvel_in_observation
+        obs_size += 17 * include_qfrc_actuator_in_observation
+        obs_size += 78 * include_cfrc_ext_in_observation
 
         observation_space = Box(
-            low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
+            low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
         self.metadata = {
