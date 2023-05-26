@@ -243,16 +243,16 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     | `forward_reward_weight`                      | **float** | `1.25`           | Weight for _forward_reward_ term (see section on reward)                                                                                                                  |
     | `ctrl_cost_weight`                           | **float** | `0.1`            | Weight for _ctrl_cost_ term (see section on reward)                                                                                                                       |
     | `contact_cost_weight`                        | **float** | `5e-7`           | Weight for _contact_cost_ term (see section on reward)                                                                                                                    |
-    | `contact_cost_range`                         | **float** | `(-np.inf, 10.0) |           |
+    | `contact_cost_range`                         | **float** | `(-np.inf, 10.0) | Clamps the _contact_cost_                                                                                                                                                  |
     | `healthy_reward`                             | **float** | `5.0`            | Constant reward given if the humanoid is "healthy" after timestep                                                                                                         |
     | `terminate_when_unhealthy`                   | **bool**  | `True`           | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range`                                                                       |
     | `healthy_z_range`                            | **tuple** | `(1.0, 2.0)`     | The humanoid is considered healthy if the z-coordinate of the torso is in this range                                                                                      |
     | `reset_noise_scale`                          | **float** | `1e-2`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                            |
     | `exclude_current_positions_from_observation` | **bool**  | `True`           | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
-    | `include_cinert_in_observation`              | **bool**  | `True`           | Whether to include *cinert* elements in the observations.|
-    | `include_cvel_in_observation`                | **bool**  | `True`           | Whether to include *cvel* elements in the observations. |
-    | `include_qfrc_actuator_in_observation`       | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations. |
-    | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations. |
+    | `include_cinert_in_observation`              | **bool**  | `True`           | Whether to include *cinert* elements in the observations.                                                                                                                 |
+    | `include_cvel_in_observation`                | **bool**  | `True`           | Whether to include *cvel* elements in the observations.                                                                                                                   |
+    | `include_qfrc_actuator_in_observation`       | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations.                                                                                                          |
+    | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations.                                                                                                               |
 
     ## Version History
 

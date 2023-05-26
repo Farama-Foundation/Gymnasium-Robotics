@@ -228,17 +228,17 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
     | Parameter                                    | Type      | Default          | Description                                                                                                                                                               |
     | -------------------------------------------- | --------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `xml_file`                                   | **str**   | `"humanoidstandup.xml"` | Path to a MuJoCo model                                                                                                                                                    |
-    | `uph_cost_weight`                            | **float** | `1`              | Weight for _uph_cost_ term (see section on reward)                                                                                                                       |
-    | `ctrl_cost_weight`                           | **float** | `0.1`            | Weight for _quad_ctrl_cost_ term (see section on reward)                                                                                                                       |
-    | `impact_cost_weight`                         | **float** | `0.5e-6`         | Weight for _contact_cost_ term (see section on reward)                                                                                                                    |
-    | `impact_cost_range`                          | **float** | `(-np.inf, 10.0) |           |
+    | `xml_file`                                   | **str**   | `"humanoidstandup.xml"` | Path to a MuJoCo model                                                                                                                                             |
+    | `uph_cost_weight`                            | **float** | `1`              | Weight for _uph_cost_ term (see section on reward)                                                                                                                        |
+    | `ctrl_cost_weight`                           | **float** | `0.1`            | Weight for _quad_ctrl_cost_ term (see section on reward)                                                                                                                  |
+    | `impact_cost_weight`                         | **float** | `0.5e-6`         | Weight for _impact_cost_ term (see section on reward)                                                                                                                     |
+    | `impact_cost_range`                          | **float** | `(-np.inf, 10.0) | Clamps the _impact_cost_                                                                                                                                                  |
     | `reset_noise_scale`                          | **float** | `1e-2`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                            |
     | `exclude_current_positions_from_observation` | **bool**  | `True`           | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
-    | `include_cinert_in_observation`              | **bool**  | `True`           | Whether to include *cinert* elements in the observations.|
-    | `include_cvel_in_observation`                | **bool**  | `True`           | Whether to include *cvel* elements in the observations. |
-    | `include_qfrc_actuator_in_observation`       | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations. |
-    | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations. |
+    | `include_cinert_in_observation`              | **bool**  | `True`           | Whether to include *cinert* elements in the observations.                                                                                                                 |
+    | `include_cvel_in_observation`                | **bool**  | `True`           | Whether to include *cvel* elements in the observations.                                                                                                                   |
+    | `include_qfrc_actuator_in_observation`       | **bool**  | `True`           | Whether to include *qfrc_actuator* elements in the observations.                                                                                                          |
+    | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations.                                                                                                               |
 
     ## Version History
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
