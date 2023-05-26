@@ -272,7 +272,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         terminate_when_unhealthy=True,
         healthy_z_range=(1.0, 2.0),
         reset_noise_scale=1e-2,
-        exclude_current_positions_in_observation=True,
+        exclude_current_positions_from_observation=True,
         include_cinert_in_observation=True,
         include_cvel_in_observation=True,
         include_qfrc_actuator_in_observation=True,
@@ -291,7 +291,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             terminate_when_unhealthy,
             healthy_z_range,
             reset_noise_scale,
-            exclude_current_positions_in_observation,
+            exclude_current_positions_from_observation,
             include_cinert_in_observation,
             include_cvel_in_observation,
             include_qfrc_actuator_in_observation,
@@ -309,8 +309,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         self._reset_noise_scale = reset_noise_scale
 
-        self._exclude_current_positions_in_observation = (
-            exclude_current_positions_in_observation
+        self._exclude_current_positions_from_observation = (
+            exclude_current_positions_from_observation
         )
 
         self._include_cinert_in_observation = include_cinert_in_observation
@@ -325,7 +325,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         obs_shape += 78 * self._include_cvel_in_observation
         obs_shape += 17 * self._include_qfrc_actuator_in_observation
         obs_shape += 78 * self._include_cfrc_ext_in_observation
-        obs_shape += 2 * (not self._exclude_current_positions_in_observation)
+        obs_shape += 2 * (not self._exclude_current_positions_from_observation)
 
         observation_space = Box(
             low=-np.inf, high=np.inf, shape=(obs_shape,), dtype=np.float64
@@ -408,7 +408,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         assert (self.data.qfrc_actuator[:6].flat.copy() == 0).all()
         assert (self.data.cfrc_ext[0].flat.copy() == 0).all()
 
-        if self._exclude_current_positions_in_observation:
+        if self._exclude_current_positions_from_observation:
             position = position[2:]
 
         return np.concatenate(
@@ -450,7 +450,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             "x_position": xy_position_after[0],
             "y_position": xy_position_after[1],
             "tendon_lenght": self.data.ten_length,
-            "tendon_velocity": self.data.ten_velocity,
+            "tendon_velocity": self.data.ten_l,
             "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
             "x_velocity": x_velocity,
             "y_velocity": y_velocity,
