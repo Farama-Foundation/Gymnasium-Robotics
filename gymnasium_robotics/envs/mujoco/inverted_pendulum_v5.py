@@ -69,25 +69,38 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     3. Termination: The absolute value of the vertical angle between the pole and the cart is greater than 0.2 radian.
 
     ## Arguments
-    No additional arguments are currently supported.
+    `gymnasium.make` takes additional arguments such as `reset_noise_scale`.
 
     ```python
     import gymnasium as gym
-    env = gym.make('InvertedPendulum-v5')
+    env = gym.make('InvertedPendulum-v5', reset_noise_scale=0.1)
     ```
+
+    | Parameter               | Type       | Default      |Description                    |
+    |-------------------------|------------|--------------|-------------------------------|
+    | `xml_file`              | **str**    | `"inverted_double_pendulum.xml"`  | Path to a MuJoCo model |
+    | `reset_noise_scale`     | **float**  | `0.01`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
 
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Fixed "reward survive" being 1 on every step (even on terminal steps) and added "reward_survive" to `info`.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1..
-    * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen.
+    * v3: This environment does not have a v3 release.
     * v2: All continuous control environments now use mujoco-py >= 1.5.
     * v1: max_time_steps raised to 1000 for robot based tasks (including inverted pendulum).
     * v0: Initial versions release (1.0.0)
     """
 
-    def __init__(self, frame_skip=2, **kwargs):
-        utils.EzPickle.__init__(self, frame_skip, **kwargs)
+    def __init__(
+        self,
+        xml_file="inverted_pendulum.xml",
+        frame_skip=2,
+        reset_noise_scale=0.01,
+        **kwargs,
+    ):
+        utils.EzPickle.__init__(self, xml_file, frame_skip, reset_noise_scale, **kwargs)
         observation_space = Box(low=-np.inf, high=np.inf, shape=(4,), dtype=np.float64)
+
+        self._reset_noise_scale = reset_noise_scale
 
         self.metadata = {
             "render_modes": [
@@ -100,7 +113,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
 
         MujocoEnv.__init__(
             self,
-            "inverted_pendulum.xml",
+            xml_file,
             frame_skip,
             observation_space=observation_space,
             default_camera_config=DEFAULT_CAMERA_CONFIG,
@@ -123,11 +136,14 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
         return ob, reward, terminated, False, info
 
     def reset_model(self):
+        noise_low = -self._reset_noise_scale
+        noise_high = self._reset_noise_scale
+
         qpos = self.init_qpos + self.np_random.uniform(
-            size=self.model.nq, low=-0.01, high=0.01
+            size=self.model.nq, low=noise_low, high=noise_high
         )
         qvel = self.init_qvel + self.np_random.uniform(
-            size=self.model.nv, low=-0.01, high=0.01
+            size=self.model.nv, low=noise_low, high=noise_high
         )
         self.set_state(qpos, qvel)
         return self._get_obs()
