@@ -205,6 +205,16 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
+        self.metadata["observation_structure"] = {
+            "skipped_qpos": 1 * exclude_current_positions_from_observation,
+            "qpos": self.data.qpos.size - 1 * exclude_current_positions_from_observation,
+            "qvel": self.data.qvel.size,
+            "cinert": 0,
+            "cvel": 0,
+            "qfrc_actuator": 0,
+            "cfrc_ext": 0,
+        }
+
     @property
     def healthy_reward(self):
         return (

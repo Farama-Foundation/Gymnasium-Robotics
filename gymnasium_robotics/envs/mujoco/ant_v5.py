@@ -265,6 +265,16 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
+        self.metadata["observation_structure"] = {
+            "skipped_qpos": 2 * exclude_current_positions_from_observation,
+            "qpos": self.data.qpos.size - 2 * exclude_current_positions_from_observation,
+            "qvel": self.data.qvel.size,
+            "cinert": 0,
+            "cvel": 0,
+            "qfrc_actuator": 0,
+            "cfrc_ext": self.data.cfrc_ext[1:].size * include_cfrc_ext_in_observation,
+        }
+
     @property
     def healthy_reward(self):
         return (
