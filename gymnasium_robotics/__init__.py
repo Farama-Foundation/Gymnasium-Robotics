@@ -1149,7 +1149,7 @@ def register_robotics_envs():
 
     register(
         id="Pusher-v5",
-        entry_point="gymnasium_robotics.robotics.envs.mujoco.pusher_v5:PusherEnv",
+        entry_point="gymnasium_robotics.envs.mujoco.pusher_v5:PusherEnv",
         max_episode_steps=100,
         reward_threshold=0.0,
     )
