@@ -118,9 +118,12 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     env = gym.make('Pusher-v5', xml_file=...)
     ```
 
-    | Parameter               | Type       | Default      |Description                    |
-    |-------------------------|------------|--------------|-------------------------------|
-    | `xml_file`              | **str**    |`"pusher.xml"`| Path to a MuJoCo model        |
+    | Parameter               | Type       | Default      |Description                                               |
+    |-------------------------|------------|--------------|----------------------------------------------------------|
+    | `xml_file`              | **str**    |`"pusher.xml"`| Path to a MuJoCo model                                   |
+    | `reward_near_weight`    | **float**  | `0.5`        | Weight for *reward_near* term (see section on reward)    |
+    | `reward_dist_weight`    | **float**  | `1`          | Weight for *reward_dist* term (see section on reward)    |
+    | `reward_control_weight` | **float**  | `0.1`        | Weight for *reward_control* term (see section on reward) |
 
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. "reward_near" is added to the `info`.
@@ -143,9 +146,16 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="pusher.xml",
         frame_skip=5,
+        reward_near_weight=0.5,
+        reward_dist_weight=1,
+        reward_control_weight=0.1,
         **kwargs,
     ):
-        utils.EzPickle.__init__(self, xml_file, frame_skip, **kwargs)
+        utils.EzPickle.__init__(self, xml_file, frame_skip, reward_near_weight, reward_dist_weight, reward_control_weight, **kwargs)
+        self._reward_near_weight = reward_near_weight
+        self._reward_dist_weight = reward_dist_weight
+        self._reward_control_weight = reward_control_weight
+
         observation_space = Box(low=-np.inf, high=np.inf, shape=(23,), dtype=np.float64)
 
         self.metadata = {
@@ -154,7 +164,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 100 / frame_skip,
+            #"render_fps": 100 / frame_skip,
         }
 
         MujocoEnv.__init__(
@@ -170,10 +180,10 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         vec_1 = self.get_body_com("object") - self.get_body_com("tips_arm")
         vec_2 = self.get_body_com("object") - self.get_body_com("goal")
 
-        reward_near = -np.linalg.norm(vec_1)
-        reward_dist = -np.linalg.norm(vec_2)
-        reward_ctrl = -np.square(a).sum()
-        reward = reward_dist + 0.1 * reward_ctrl + 0.5 * reward_near
+        reward_near = -np.linalg.norm(vec_1) * self._reward_near_weight
+        reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
+        reward_ctrl = -np.square(a).sum() * self._reward_control_weight
+        reward = reward_dist + reward_ctrl + reward_near
 
         self.do_simulation(a, self.frame_skip)
         if self.render_mode == "human":

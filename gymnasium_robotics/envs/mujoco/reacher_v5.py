@@ -105,9 +105,11 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     env = gym.make('Reacher-v5', xml_file=...)
     ```
 
-    | Parameter               | Type       | Default       |Description                    |
-    |-------------------------|------------|-------------- |-------------------------------|
-    | `xml_file`              | **str**    |`"reacher.xml"`| Path to a MuJoCo model        |
+    | Parameter               | Type       | Default      |Description                                               |
+    |-------------------------|------------|--------------|----------------------------------------------------------|
+    | `xml_file`              | **str**    |`"reacher.xml"`| Path to a MuJoCo model                                  |
+    | `reward_dist_weight`    | **float**  | `1`          | Weight for *reward_dist* term (see section on reward)    |
+    | `reward_control_weight` | **float**  | `0.1`        | Weight for *reward_control* term (see section on reward) |
 
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. Remove "z - position_fingertip" from the observation space.
@@ -121,9 +123,15 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="reacher.xml",
         frame_skip=2,
+        reward_dist_weight=1,
+        reward_control_weight=1,
         **kwargs,
     ):
-        utils.EzPickle.__init__(self, xml_file, frame_skip, **kwargs)
+        utils.EzPickle.__init__(self, xml_file, frame_skip, reward_dist_weight, reward_control_weight, **kwargs)
+
+        self._reward_dist_weight = reward_dist_weight
+        self._reward_control_weight = reward_control_weight
+
         observation_space = Box(low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64)
 
         self.metadata = {
@@ -132,7 +140,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 100 / frame_skip,
+            #"render_fps": 100 / frame_skip,
         }
 
         MujocoEnv.__init__(
@@ -146,8 +154,8 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
 
     def step(self, a):
         vec = self.get_body_com("fingertip") - self.get_body_com("target")
-        reward_dist = -np.linalg.norm(vec)
-        reward_ctrl = -np.square(a).sum()
+        reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
+        reward_ctrl = -np.square(a).sum() * self._reward_control_weight
         reward = reward_dist + reward_ctrl
 
         self.do_simulation(a, self.frame_skip)
