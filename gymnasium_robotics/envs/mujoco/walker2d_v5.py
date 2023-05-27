@@ -188,7 +188,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 500 / frame_skip,
+            #"render_fps": 500 / frame_skip,
         }
 
         MujocoEnv.__init__(

@@ -152,13 +152,13 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
             **kwargs,
         )
 
-    def step(self, a):
+    def step(self, action):
         vec = self.get_body_com("fingertip") - self.get_body_com("target")
         reward_dist = -np.linalg.norm(vec) * self._reward_dist_weight
-        reward_ctrl = -np.square(a).sum() * self._reward_control_weight
+        reward_ctrl = -np.square(action).sum() * self._reward_control_weight
         reward = reward_dist + reward_ctrl
 
-        self.do_simulation(a, self.frame_skip)
+        self.do_simulation(action, self.frame_skip)
         if self.render_mode == "human":
             self.render()
 

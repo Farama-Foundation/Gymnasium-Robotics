@@ -162,7 +162,7 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 100 / frame_skip,
+            #"render_fps": 100 / frame_skip,
         }
 
         MujocoEnv.__init__(
@@ -205,7 +205,6 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
         reward = forward_reward - ctrl_cost
-        terminated = False
         info = {
             "x_position": x_position_after,
             "x_velocity": x_velocity,
@@ -215,7 +214,7 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
 
         if self.render_mode == "human":
             self.render()
-        return observation, reward, terminated, False, info
+        return observation, reward, False, False, info
 
     def _get_obs(self):
         position = self.data.qpos.flat.copy()

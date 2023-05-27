@@ -108,7 +108,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            "render_fps": 50 / frame_skip,
+            #"render_fps": 50 / frame_skip,
         }
 
         MujocoEnv.__init__(
@@ -120,8 +120,8 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
             **kwargs,
         )
 
-    def step(self, a):
-        self.do_simulation(a, self.frame_skip)
+    def step(self, action):
+        self.do_simulation(action, self.frame_skip)
 
         ob = self._get_obs()
 
