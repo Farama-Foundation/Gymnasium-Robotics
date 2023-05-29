@@ -128,6 +128,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Added `xml_file` argument. "reward_near" is added to the `info`.
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3.
+    * v3: This environment does not have a v3 release.
     * v2: All continuous control environments now use mujoco-py >= 1.50.
     * v1: max_time_steps raised to 1000 for robot based tasks (not including pusher, which has a max_time_steps of 100). Added reward_threshold to environments.
     * v0: Initial versions release (1.0.0).
@@ -164,7 +165,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            #"render_fps": 100 / frame_skip,
+            # "render_fps": 100 / frame_skip,
         }
 
         MujocoEnv.__init__(
@@ -176,16 +177,16 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             **kwargs,
         )
 
-    def step(self, a):
+    def step(self, action):
         vec_1 = self.get_body_com("object") - self.get_body_com("tips_arm")
         vec_2 = self.get_body_com("object") - self.get_body_com("goal")
 
         reward_near = -np.linalg.norm(vec_1) * self._reward_near_weight
         reward_dist = -np.linalg.norm(vec_2) * self._reward_dist_weight
-        reward_ctrl = -np.square(a).sum() * self._reward_control_weight
+        reward_ctrl = -np.square(action).sum() * self._reward_control_weight
         reward = reward_dist + reward_ctrl + reward_near
 
-        self.do_simulation(a, self.frame_skip)
+        self.do_simulation(action, self.frame_skip)
         if self.render_mode == "human":
             self.render()
 

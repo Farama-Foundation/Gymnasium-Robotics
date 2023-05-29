@@ -245,7 +245,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            #"render_fps": 100 / frame_skip,  # TODO compute `render_fps` in MujocoEnv
+            # "render_fps": 100 / frame_skip,  # TODO compute `render_fps` in MujocoEnv
         }
 
         MujocoEnv.__init__(

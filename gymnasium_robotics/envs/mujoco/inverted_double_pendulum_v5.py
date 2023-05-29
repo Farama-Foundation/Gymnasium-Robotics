@@ -114,7 +114,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Fixed "reward_survive" being 10 on every step (even on terminal steps). Removed "constraint force" of the hinges from the observation space. Added `info` "reward_survive", "distance_penalty", "velocity_penalty".
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
-    * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
+    * v3: This environment does not have a v3 release.
     * v2: All continuous control environments now use mujoco-py >= 1.50
     * v1: max_time_steps raised to 1000 for robot based tasks (including inverted pendulum)
     * v0: Initial versions release (1.0.0)
@@ -141,7 +141,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            #"render_fps": 100 / frame_skip,
+            # "render_fps": 100 / frame_skip,
         }
 
         MujocoEnv.__init__(
