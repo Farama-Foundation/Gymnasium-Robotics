@@ -124,6 +124,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="reacher.xml",
         frame_skip=2,
+        default_camera_config=DEFAULT_CAMERA_CONFIG,
         reward_dist_weight=1,
         reward_control_weight=1,
         **kwargs,
@@ -132,6 +133,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
             self,
             xml_file,
             frame_skip,
+            default_camera_config,
             reward_dist_weight,
             reward_control_weight,
             **kwargs,
@@ -156,7 +158,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             observation_space=observation_space,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            default_camera_config=default_camera_config,
             **kwargs,
         )
 

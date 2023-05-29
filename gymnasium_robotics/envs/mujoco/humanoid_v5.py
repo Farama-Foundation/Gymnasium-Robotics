@@ -267,6 +267,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="humanoid.xml",
         frame_skip=5,
+        default_camera_config=DEFAULT_CAMERA_CONFIG,
         forward_reward_weight=1.25,
         ctrl_cost_weight=0.1,
         contact_cost_weight=5e-7,
@@ -337,7 +338,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             observation_space=None,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            default_camera_config=default_camera_config,
             **kwargs,
         )
 

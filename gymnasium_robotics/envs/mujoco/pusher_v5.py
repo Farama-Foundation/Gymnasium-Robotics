@@ -147,6 +147,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="pusher.xml",
         frame_skip=5,
+        default_camera_config=DEFAULT_CAMERA_CONFIG,
         reward_near_weight=0.5,
         reward_dist_weight=1,
         reward_control_weight=0.1,
@@ -156,6 +157,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             self,
             xml_file,
             frame_skip,
+            default_camera_config,
             reward_near_weight,
             reward_dist_weight,
             reward_control_weight,
@@ -181,7 +183,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             observation_space=observation_space,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            default_camera_config=default_camera_config,
             **kwargs,
         )
 

@@ -142,6 +142,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="walker2d_v5.xml",
         frame_skip=4,
+        default_camera_config=DEFAULT_CAMERA_CONFIG,
         forward_reward_weight=1.0,
         ctrl_cost_weight=1e-3,
         healthy_reward=1.0,
@@ -156,6 +157,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             self,
             xml_file,
             frame_skip,
+            default_camera_config,
             forward_reward_weight,
             ctrl_cost_weight,
             healthy_reward,
@@ -196,7 +198,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             observation_space=None,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            default_camera_config=default_camera_config,
             **kwargs,
         )
 

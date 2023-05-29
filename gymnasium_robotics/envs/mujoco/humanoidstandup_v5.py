@@ -252,6 +252,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
         self,
         xml_file="humanoidstandup.xml",
         frame_skip=5,
+        default_camera_config=DEFAULT_CAMERA_CONFIG,
         uph_cost_weight=1,
         ctrl_cost_weight=0.1,
         impact_cost_weight=0.5e-6,
@@ -268,6 +269,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             self,
             xml_file,
             frame_skip,
+            default_camera_config,
             uph_cost_weight,
             ctrl_cost_weight,
             impact_cost_weight,
@@ -318,7 +320,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             observation_space=None,
-            default_camera_config=DEFAULT_CAMERA_CONFIG,
+            default_camera_config=default_camera_config,
             **kwargs,
         )
 
