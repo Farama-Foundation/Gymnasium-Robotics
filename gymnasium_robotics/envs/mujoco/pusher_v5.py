@@ -152,7 +152,15 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         reward_control_weight=0.1,
         **kwargs,
     ):
-        utils.EzPickle.__init__(self, xml_file, frame_skip, reward_near_weight, reward_dist_weight, reward_control_weight, **kwargs)
+        utils.EzPickle.__init__(
+            self,
+            xml_file,
+            frame_skip,
+            reward_near_weight,
+            reward_dist_weight,
+            reward_control_weight,
+            **kwargs,
+        )
         self._reward_near_weight = reward_near_weight
         self._reward_dist_weight = reward_dist_weight
         self._reward_control_weight = reward_control_weight

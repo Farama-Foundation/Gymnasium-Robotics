@@ -108,7 +108,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
                 "rgb_array",
                 "depth_array",
             ],
-            #"render_fps": 50 / frame_skip,
+            # "render_fps": 50 / frame_skip,
         }
 
         MujocoEnv.__init__(

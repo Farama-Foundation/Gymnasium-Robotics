@@ -354,11 +354,13 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
 
         self.metadata["observation_structure"] = {
             "skipped_qpos": 2 * exclude_current_positions_from_observation,
-            "qpos": self.data.qpos.size - 2 * exclude_current_positions_from_observation,
+            "qpos": self.data.qpos.size
+            - 2 * exclude_current_positions_from_observation,
             "qvel": self.data.qvel.size,
             "cinert": self.data.cinert[1:].size * include_cinert_in_observation,
             "cvel": self.data.cvel[1:].size * include_cvel_in_observation,
-            "qfrc_actuator": (self.data.qvel.size - 6) * include_qfrc_actuator_in_observation,
+            "qfrc_actuator": (self.data.qvel.size - 6)
+            * include_qfrc_actuator_in_observation,
             "cfrc_ext": self.data.cfrc_ext[1:].size * include_cfrc_ext_in_observation,
         }
 

@@ -151,18 +151,21 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
             # "render_fps": 100 / frame_skip,
         }
 
-        MujocoEnv.__init__(
-            self, xml_file, frame_skip, observation_space=None, **kwargs
-        )
+        MujocoEnv.__init__(self, xml_file, frame_skip, observation_space=None, **kwargs)
 
-        obs_size = self.data.qpos.size + self.data.qvel.size - 2 * exclude_current_positions_from_observation
+        obs_size = (
+            self.data.qpos.size
+            + self.data.qvel.size
+            - 2 * exclude_current_positions_from_observation
+        )
         self.observation_space = Box(
             low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
         self.metadata["observation_structure"] = {
             "skipped_qpos": 2 * exclude_current_positions_from_observation,
-            "qpos": self.data.qpos.size - 2 * exclude_current_positions_from_observation,
+            "qpos": self.data.qpos.size
+            - 2 * exclude_current_positions_from_observation,
             "qvel": self.data.qvel.size,
             "cinert": 0,
             "cvel": 0,
