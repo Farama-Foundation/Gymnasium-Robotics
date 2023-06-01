@@ -121,8 +121,9 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     The reward consists of three parts:
     - *healthy_reward*: Every timestep that the ant is healthy (see definition in section "Episode Termination"), it gets a reward of fixed value `healthy_reward`
     - *forward_reward*: A reward of moving forward which is measured as
-    *(x-coordinate before action - x-coordinate after action)/dt*. *dt* is the time
-    between actions and is dependent on the `frame_skip` parameter (default is 5),
+    $\frac{dx}{dt} \times$ `forward_reward_weight`.
+    $dx$ is the displacement of the `main_body` (x-coordinate before action - x-coordinate after action)*.
+    $dt$ is the time between actions and is dependent on the `frame_skip` parameter (default is 5),
     where the frametime is 0.01 - making the default *dt = 5 * 0.01 = 0.05*.
     This reward would be positive if the ant moves forward (in positive x direction).
     - *ctrl_cost*: A negative reward for penalising the ant if it takes actions
@@ -173,10 +174,11 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     | Parameter                                  | Type       | Default      |Description                    |
     |--------------------------------------------|------------|--------------|-------------------------------|
     |`xml_file`                                  | **str**    | `"ant.xml"`  | Path to a MuJoCo model |
-    |`forward_reward_weight`                     | **float**  | `1`          | Weight for _forward_reward_ term (see section on reward)                                                                                                                  |
-    |`ctrl_cost_weight`                          | **float**  | `0.5`        | Weight for *ctrl_cost* term (see section on reward) |
-    |`contact_cost_weight`                       | **float**  | `5e-4`       | Weight for *contact_cost* term (see section on reward) |
+    |`forward_reward_weight`                     | **float**  | `1`          | Weight for _forward_reward_ term (see section on reward)|
+    |`ctrl_cost_weight`                          | **float**  | `0.5`        | Weight for _ctrl_cost_ term (see section on reward) |
+    |`contact_cost_weight`                       | **float**  | `5e-4`       | Weight for _contact_cost_ term (see section on reward) |
     |`healthy_reward`                            | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
+    |`main_body`                                 |**str|int** | `1`("torso") | Name or ID of the body, whose diplacement is used to calculate the *dx*/_forward_reward_ (usefull for custom MuJoCo models)|
     |`terminate_when_unhealthy`                  | **bool**   | `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
     |`healthy_z_range`                           | **tuple**  | `(0.2, 1)`   | The ant is considered healthy if the z-coordinate of the torso is in this range |
     |`contact_force_range`                       | **tuple**  | `(-1, 1)`    | Contact forces are clipped to this range in the computation of *contact_cost* |
@@ -202,6 +204,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         ctrl_cost_weight=0.5,
         contact_cost_weight=5e-4,
         healthy_reward=1.0,
+        main_body="torso",
         terminate_when_unhealthy=True,
         healthy_z_range=(0.2, 1.0),
         contact_force_range=(-1.0, 1.0),
@@ -219,6 +222,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             ctrl_cost_weight,
             contact_cost_weight,
             healthy_reward,
+            main_body,
             terminate_when_unhealthy,
             healthy_z_range,
             contact_force_range,
@@ -237,6 +241,8 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         self._healthy_z_range = healthy_z_range
 
         self._contact_force_range = contact_force_range
+
+        self._main_body = main_body
 
         self._reset_noise_scale = reset_noise_scale
 
@@ -320,11 +326,11 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         return terminated
 
     def step(self, action):
-        xy_position_before = self.data.body("torso").xpos[:2]
+        xy_position_before = self.data.body(self._main_body).xpos[:2]
         # TODO remove after validation
         assert (xy_position_before == self.get_body_com("torso")[:2].copy()).all()
         self.do_simulation(action, self.frame_skip)
-        xy_position_after = self.data.body("torso").xpos[:2]
+        xy_position_after = self.data.body(self._main_body).xpos[:2]
         # TODO remove after validation
         assert (xy_position_after == self.get_body_com("torso")[:2].copy()).all()
 
