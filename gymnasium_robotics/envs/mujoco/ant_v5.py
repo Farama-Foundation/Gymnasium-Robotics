@@ -173,8 +173,8 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     | Parameter                                  | Type       | Default      |Description                    |
     |--------------------------------------------|------------|--------------|-------------------------------|
     |`xml_file`                                  | **str**    | `"ant.xml"`  | Path to a MuJoCo model |
+    |`forward_reward_weight`                     | **float**  | `1`          | Weight for _forward_reward_ term (see section on reward)                                                                                                                  |
     |`ctrl_cost_weight`                          | **float**  | `0.5`        | Weight for *ctrl_cost* term (see section on reward) |
-    |`use_contact_forces` (`v4` only)            | **bool**   | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
     |`contact_cost_weight`                       | **float**  | `5e-4`       | Weight for *contact_cost* term (see section on reward) |
     |`healthy_reward`                            | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
     |`terminate_when_unhealthy`                  | **bool**   | `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
@@ -183,6 +183,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     |`reset_noise_scale`                         | **float**  | `0.1`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
     |`exclude_current_positions_from_observation`| **bool**   | `True`       | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
     |`include_cfrc_ext_in_observation`           | **bool**   | `True`       | Whether to include *cfrc_ext* elements in the observations. |
+    |`use_contact_forces` (`v4` only)            | **bool**   | `False`      | If true, it extends the observation space by adding contact forces (see `Observation Space` section) and includes contact_cost to the reward function (see `Rewards` section) |
 
     ## Version History
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3, also removed contact forces from the default observation space (new variable `use_contact_forces=True` can restore them)
