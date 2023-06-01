@@ -197,6 +197,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         xml_file="ant.xml",
         frame_skip=5,
         default_camera_config=DEFAULT_CAMERA_CONFIG,
+        forward_reward_weight=1,
         ctrl_cost_weight=0.5,
         contact_cost_weight=5e-4,
         healthy_reward=1.0,
@@ -213,6 +214,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             xml_file,
             frame_skip,
             default_camera_config,
+            forward_reward_weight,
             ctrl_cost_weight,
             contact_cost_weight,
             healthy_reward,
@@ -225,6 +227,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             **kwargs
         )
 
+        self._forward_reward_weight = forward_reward_weight
         self._ctrl_cost_weight = ctrl_cost_weight
         self._contact_cost_weight = contact_cost_weight
 
@@ -323,7 +326,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         xy_velocity = (xy_position_after - xy_position_before) / self.dt
         x_velocity, y_velocity = xy_velocity
 
-        forward_reward = x_velocity
+        forward_reward = x_velocity * self._forward_reward_weight
         healthy_reward = self.healthy_reward
 
         rewards = forward_reward + healthy_reward
