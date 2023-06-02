@@ -243,8 +243,8 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     | `forward_reward_weight`                      | **float** | `1.25`           | Weight for _forward_reward_ term (see section on reward)                                                                                                                  |
     | `ctrl_cost_weight`                           | **float** | `0.1`            | Weight for _ctrl_cost_ term (see section on reward)                                                                                                                       |
     | `contact_cost_weight`                        | **float** | `5e-7`           | Weight for _contact_cost_ term (see section on reward)                                                                                                                    |
-    | `contact_cost_range`                         | **float** | `(-np.inf, 10.0) | Clamps the _contact_cost_                                                                                                                                                  |
-    | `healthy_reward`                             | **float** | `5.0`            | Constant reward given if the humanoid is "healthy" after timestep                                                                                                         |
+    | `contact_cost_range`                         | **float** | `(-np.inf, 10.0) | Clamps the _contact_cost_ term (see section on reward)                                                                                                                    |
+    | `healthy_reward`                             | **float** | `5.0`            | Weight for _healthy_reward_ term (see section on reward)                                                                                                                    |
     | `terminate_when_unhealthy`                   | **bool**  | `True`           | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range`                                                                       |
     | `healthy_z_range`                            | **tuple** | `(1.0, 2.0)`     | The humanoid is considered healthy if the z-coordinate of the torso is in this range                                                                                      |
     | `reset_noise_scale`                          | **float** | `1e-2`           | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                            |
@@ -255,7 +255,6 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     | `include_cfrc_ext_in_observation`            | **bool**  | `True`           | Whether to include *cfrc_ext* elements in the observations.                                                                                                               |
 
     ## Version History
-
     * v4: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.1.3
     * v3: Support for `gymnasium.make` kwargs such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc. rgb rendering comes from tracking camera (so agent does not run away from screen)
     * v2: All continuous control environments now use mujoco-py >= 1.50

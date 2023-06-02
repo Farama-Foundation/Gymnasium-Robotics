@@ -105,11 +105,11 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     env = gym.make('InvertedDoublePendulum-v5', healthy_reward=10, ...)
     ```
 
-    | Parameter               | Type       | Default      |Description                    |
-    |-------------------------|------------|--------------|-------------------------------|
-    | `xml_file`              | **str**    | `"inverted_double_pendulum.xml"`  | Path to a MuJoCo model |
-    | `healthy_reward`        | **float**  | `10          | Constant reward given if the pendulum is "healthy" (upright) |
-    | `reset_noise_scale`     | **float**  | `0.1`        | Scale of random perturbations of initial position and velocity (see section on Starting State) |
+    | Parameter               | Type       | Default                        | Description                   |
+    |-------------------------|------------|--------------                  |-------------------------------|
+    | `xml_file`              | **str**    |`"inverted_double_pendulum.xml"`| Path to a MuJoCo model |
+    | `healthy_reward`        | **float**  | `10                            | Constant reward given if the pendulum is "healthy" (upright) |
+    | `reset_noise_scale`     | **float**  | `0.1`                          | Scale of random perturbations of initial position and velocity (see section on Starting State) |
 
     ## Version History
     * v5: All MuJoCo environments now use the MuJoCo bindings in mujoco >= 2.3.3. Fixed "reward_survive" being 10 on every step (even on terminal steps). Removed "constraint force" of the hinges from the observation space. Added `info` "reward_survive", "distance_penalty", "velocity_penalty".
