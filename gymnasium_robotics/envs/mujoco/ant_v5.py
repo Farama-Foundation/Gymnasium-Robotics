@@ -178,7 +178,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     |`ctrl_cost_weight`                          | **float**  | `0.5`        | Weight for _ctrl_cost_ term (see section on reward) |
     |`contact_cost_weight`                       | **float**  | `5e-4`       | Weight for _contact_cost_ term (see section on reward) |
     |`healthy_reward`                            | **float**  | `1`          | Constant reward given if the ant is "healthy" after timestep |
-    |`main_body`                                 |**str|int** | `1`("torso") | Name or ID of the body, whose diplacement is used to calculate the *dx*/_forward_reward_ (usefull for custom MuJoCo models)|
+    |`main_body`                                 |**str|int** | `1`("torso") | Name or ID of the body, whose diplacement is used to calculate the *dx*/_forward_reward_ (useful for custom MuJoCo models)|
     |`terminate_when_unhealthy`                  | **bool**   | `True`       | If true, issue a done signal if the z-coordinate of the torso is no longer in the `healthy_z_range` |
     |`healthy_z_range`                           | **tuple**  | `(0.2, 1)`   | The ant is considered healthy if the z-coordinate of the torso is in this range |
     |`contact_force_range`                       | **tuple**  | `(-1, 1)`    | Contact forces are clipped to this range in the computation of *contact_cost* |
@@ -321,7 +321,9 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     def terminated(self):
         terminated = (not self.is_healthy) and self._terminate_when_unhealthy
         # TODO remove after validation
-        assert terminated == (not self.is_healthy if self._terminate_when_unhealthy else False)
+        assert terminated == (
+            not self.is_healthy if self._terminate_when_unhealthy else False
+        )
         return terminated
 
     def step(self, action):

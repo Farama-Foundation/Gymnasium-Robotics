@@ -393,7 +393,9 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     def terminated(self):
         terminated = (not self.is_healthy) and self._terminate_when_unhealthy
         # TODO remove after validation
-        assert terminated == (not self.is_healthy if self._terminate_when_unhealthy else False)
+        assert terminated == (
+            not self.is_healthy if self._terminate_when_unhealthy else False
+        )
         return terminated
 
     def _get_obs(self):
