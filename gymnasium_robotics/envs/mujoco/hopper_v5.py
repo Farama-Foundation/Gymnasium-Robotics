@@ -223,10 +223,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
 
     @property
     def healthy_reward(self):
-        return (
-            float(self.is_healthy or self._terminate_when_unhealthy)
-            * self._healthy_reward
-        )
+        return self.is_healthy * self._healthy_reward
 
     def control_cost(self, action):
         control_cost = self._ctrl_cost_weight * np.sum(np.square(action))
@@ -251,7 +248,9 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
 
     @property
     def terminated(self):
-        terminated = not self.is_healthy if self._terminate_when_unhealthy else False
+        terminated = (not self.is_healthy) and self._terminate_when_unhealthy
+        # TODO remove after validation
+        assert terminated == (not self.is_healthy if self._terminate_when_unhealthy else False)
         return terminated
 
     def _get_obs(self):
