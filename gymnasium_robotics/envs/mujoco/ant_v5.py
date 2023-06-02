@@ -327,11 +327,11 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         return terminated
 
     def step(self, action):
-        xy_position_before = self.data.body(self._main_body).xpos[:2]
+        xy_position_before = self.data.body(self._main_body).xpos[:2].copy()
         # TODO remove after validation
         assert (xy_position_before == self.get_body_com("torso")[:2].copy()).all()
         self.do_simulation(action, self.frame_skip)
-        xy_position_after = self.data.body(self._main_body).xpos[:2]
+        xy_position_after = self.data.body(self._main_body).xpos[:2].copy()
         # TODO remove after validation
         assert (xy_position_after == self.get_body_com("torso")[:2].copy()).all()
 
