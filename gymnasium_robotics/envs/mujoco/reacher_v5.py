@@ -120,6 +120,14 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="reacher.xml",
@@ -144,15 +152,6 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
 
         observation_space = Box(low=-np.inf, high=np.inf, shape=(10,), dtype=np.float64)
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 100 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -161,6 +160,15 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=default_camera_config,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
     def step(self, action):
         vec = self.get_body_com("fingertip") - self.get_body_com("target")

@@ -1,5 +1,7 @@
 __credits__ = ["Kallinteris-Andreas"]
 
+from typing import Dict, Tuple
+
 import numpy as np
 from gymnasium import utils
 from gymnasium.envs.mujoco import MujocoEnv
@@ -195,22 +197,30 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
-        xml_file="ant.xml",
-        frame_skip=5,
-        default_camera_config=DEFAULT_CAMERA_CONFIG,
-        forward_reward_weight=1,
-        ctrl_cost_weight=0.5,
-        contact_cost_weight=5e-4,
-        healthy_reward=1.0,
-        main_body="torso",
-        terminate_when_unhealthy=True,
-        healthy_z_range=(0.2, 1.0),
-        contact_force_range=(-1.0, 1.0),
-        reset_noise_scale=0.1,
-        exclude_current_positions_from_observation=True,
-        include_cfrc_ext_in_observation=True,
+        xml_file: str = "ant.xml",
+        frame_skip: int = 5,
+        default_camera_config: Dict = DEFAULT_CAMERA_CONFIG,
+        forward_reward_weight: float = 1,
+        ctrl_cost_weight: float = 0.5,
+        contact_cost_weight: float = 5e-4,
+        healthy_reward: float = 1.0,
+        main_body: str = "torso",
+        terminate_when_unhealthy: bool = True,
+        healthy_z_range: Tuple[float, float] = (0.2, 1.0),
+        contact_force_range: Tuple[float, float] = (-1.0, 1.0),
+        reset_noise_scale: float = 0.1,
+        exclude_current_positions_from_observation: bool = True,
+        include_cfrc_ext_in_observation: bool = True,
         **kwargs
     ):
         utils.EzPickle.__init__(
@@ -251,15 +261,6 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         )
         self._include_cfrc_ext_in_observation = include_cfrc_ext_in_observation
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 100 / frame_skip,  # TODO compute `render_fps` in MujocoEnv
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -268,6 +269,15 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=default_camera_config,
             **kwargs
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
         obs_size = self.data.qpos.size + self.data.qvel.size
         obs_size -= 2 * exclude_current_positions_from_observation

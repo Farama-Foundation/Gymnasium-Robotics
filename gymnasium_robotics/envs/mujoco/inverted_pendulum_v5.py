@@ -90,6 +90,14 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="inverted_pendulum.xml",
@@ -102,15 +110,6 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
 
         self._reset_noise_scale = reset_noise_scale
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 50 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -119,6 +118,15 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)

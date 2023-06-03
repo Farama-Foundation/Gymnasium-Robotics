@@ -112,6 +112,14 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="swimmer.xml",
@@ -142,16 +150,16 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation
         )
 
+        MujocoEnv.__init__(self, xml_file, frame_skip, observation_space=None, **kwargs)
+
         self.metadata = {
             "render_modes": [
                 "human",
                 "rgb_array",
                 "depth_array",
             ],
-            # "render_fps": 100 / frame_skip,
+            "render_fps": int(np.round(1.0 / self.dt)),
         }
-
-        MujocoEnv.__init__(self, xml_file, frame_skip, observation_space=None, **kwargs)
 
         obs_size = (
             self.data.qpos.size

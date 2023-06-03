@@ -140,7 +140,6 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             "rgb_array",
             "depth_array",
         ],
-        "render_fps": 20,
     }
 
     def __init__(
@@ -169,15 +168,6 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
 
         observation_space = Box(low=-np.inf, high=np.inf, shape=(23,), dtype=np.float64)
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 100 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -186,6 +176,15 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=default_camera_config,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
     def step(self, action):
         vec_1 = self.get_body_com("object") - self.get_body_com("tips_arm")

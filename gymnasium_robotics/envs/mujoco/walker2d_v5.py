@@ -138,6 +138,14 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="walker2d_v5.xml",
@@ -184,15 +192,6 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             exclude_current_positions_from_observation
         )
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 500 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -201,6 +200,15 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=default_camera_config,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
         obs_size = (
             self.data.qpos.size

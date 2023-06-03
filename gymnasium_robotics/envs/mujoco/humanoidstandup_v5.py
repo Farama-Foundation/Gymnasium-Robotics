@@ -248,6 +248,14 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0).
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="humanoidstandup.xml",
@@ -306,15 +314,6 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
         obs_size += 17 * include_qfrc_actuator_in_observation
         obs_size += 78 * include_cfrc_ext_in_observation
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 335 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -323,6 +322,15 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=default_camera_config,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
         obs_size = self.data.qpos.size + self.data.qvel.size
         obs_size -= 2 * exclude_current_positions_from_observation

@@ -120,6 +120,14 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     * v0: Initial versions release (1.0.0)
     """
 
+    metadata = {
+        "render_modes": [
+            "human",
+            "rgb_array",
+            "depth_array",
+        ],
+    }
+
     def __init__(
         self,
         xml_file="inverted_double_pendulum.xml",
@@ -135,15 +143,6 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
 
         observation_space = Box(low=-np.inf, high=np.inf, shape=(9,), dtype=np.float64)
 
-        self.metadata = {
-            "render_modes": [
-                "human",
-                "rgb_array",
-                "depth_array",
-            ],
-            # "render_fps": 100 / frame_skip,
-        }
-
         MujocoEnv.__init__(
             self,
             xml_file,
@@ -152,6 +151,15 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
             default_camera_config=DEFAULT_CAMERA_CONFIG,
             **kwargs,
         )
+
+        self.metadata = {
+            "render_modes": [
+                "human",
+                "rgb_array",
+                "depth_array",
+            ],
+            "render_fps": int(np.round(1.0 / self.dt)),
+        }
 
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
