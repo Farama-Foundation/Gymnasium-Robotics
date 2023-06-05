@@ -326,3 +326,9 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
                 getattr(self.viewer.cam, key)[:] = value
             else:
                 setattr(self.viewer.cam, key, value)
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+            "z_distance_from_origin": self.data.qpos[1] - self.init_qpos[1],
+        }

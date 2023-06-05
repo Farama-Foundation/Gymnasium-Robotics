@@ -419,6 +419,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             "reward_impact": -quad_impact_cost,
             "x_position": self.data.qpos[0],
             "y_position": self.data.qpos[1],
+            "z_distance_from_origin": self.data.qpos[2] - self.init_qpos[2],
             "tendon_lenght": self.data.ten_length,
             "tendon_velocity": self.data.ten_velocity,
         }
@@ -441,3 +442,12 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
         return observation
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+            "y_position": self.data.qpos[1],
+            "z_distance_from_origin": self.data.qpos[2] - self.init_qpos[2],
+            "tendon_lenght": self.data.ten_length,
+            "tendon_velocity": self.data.ten_velocity,
+        }

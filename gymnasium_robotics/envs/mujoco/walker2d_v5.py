@@ -316,3 +316,9 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
         return observation
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+            "z_distance_from_origin": self.data.qpos[1] - self.init_qpos[1],
+        }

@@ -239,3 +239,10 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
         return observation
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+            "y_position": self.data.qpos[1],
+            "distance_from_origin": np.linalg.norm(self.data.qpos[0:2], ord=2),
+        }

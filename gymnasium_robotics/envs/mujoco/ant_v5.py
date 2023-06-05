@@ -113,7 +113,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
     DOFs expressed as quaternions. One can read more about free joints on the [Mujoco Documentation](https://mujoco.readthedocs.io/en/latest/XMLreference.html).
 
 
-    **Note:** Ant-v4 environment no longer has the following contact forces issue.
+    **Note:** Ant-v4+ environment no longer has the following contact forces issue.
     If using previous Humanoid versions from v4, there have been reported issues that using a Mujoco-Py version > 2.0 results
     in the contact forces always being 0. As such we recommend to use a Mujoco-Py version < 2.0
     when using the Ant environment if you would like to report results with contact forces (if
@@ -410,3 +410,10 @@ class AntEnv(MujocoEnv, utils.EzPickle):
         observation = self._get_obs()
 
         return observation
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+            "y_position": self.data.qpos[1],
+            "distance_from_origin": np.linalg.norm(self.data.qpos[0:2], ord=2),
+        }

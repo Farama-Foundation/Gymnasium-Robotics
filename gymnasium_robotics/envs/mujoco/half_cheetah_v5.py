@@ -256,3 +256,8 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
         return observation
+
+    def _get_reset_info(self):
+        return {
+            "x_position": self.data.qpos[0],
+        }
