@@ -353,6 +353,8 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
             "qfrc_actuator": (self.data.qvel.size - 6)
             * include_qfrc_actuator_in_observation,
             "cfrc_ext": self.data.cfrc_ext[1:].size * include_cfrc_ext_in_observation,
+            "ten_lenght": 0,
+            "ten_velocity": 0,
         }
 
     def _get_obs(self):

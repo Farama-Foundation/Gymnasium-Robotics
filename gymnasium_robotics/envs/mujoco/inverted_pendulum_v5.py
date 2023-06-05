@@ -128,6 +128,11 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
             "render_fps": int(np.round(1.0 / self.dt)),
         }
 
+        self.observation_structure = {
+            "qpos": self.data.qpos.size,
+            "qvel": self.data.qvel.size,
+        }
+
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
 

@@ -224,10 +224,6 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
             "qpos": self.data.qpos.size
             - 1 * exclude_current_positions_from_observation,
             "qvel": self.data.qvel.size,
-            "cinert": 0,
-            "cvel": 0,
-            "qfrc_actuator": 0,
-            "cfrc_ext": 0,
         }
 
     @property

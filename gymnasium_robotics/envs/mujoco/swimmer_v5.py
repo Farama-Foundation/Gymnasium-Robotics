@@ -175,10 +175,6 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
             "qpos": self.data.qpos.size
             - 2 * exclude_current_positions_from_observation,
             "qvel": self.data.qvel.size,
-            "cinert": 0,
-            "cvel": 0,
-            "qfrc_actuator": 0,
-            "cfrc_ext": 0,
         }
 
     def control_cost(self, action):
