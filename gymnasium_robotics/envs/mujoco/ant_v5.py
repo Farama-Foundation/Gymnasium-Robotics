@@ -287,7 +287,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             low=-np.inf, high=np.inf, shape=(obs_size,), dtype=np.float64
         )
 
-        self.metadata["observation_structure"] = {
+        self.observation_structure = {
             "skipped_qpos": 2 * exclude_current_positions_from_observation,
             "qpos": self.data.qpos.size
             - 2 * exclude_current_positions_from_observation,
