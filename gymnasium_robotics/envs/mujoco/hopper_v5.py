@@ -16,7 +16,6 @@ DEFAULT_CAMERA_CONFIG = {
 class HopperEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment is based on the work done by Erez, Tassa, and Todorov in
     ["Infinite Horizon Model Predictive Control for Nonlinear Periodic Tasks"](http://www.roboticsproceedings.org/rss07/p10.pdf). The environment aims to
     increase the number of independent state and control variables as compared to
@@ -27,6 +26,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     forward (right) direction by applying torques on the three hinges
     connecting the four body parts.
 
+
     ## Action Space
     The action space is a `Box(-1, 1, (3,), float32)`. An action represents the torques applied at the hinge joints.
 
@@ -35,6 +35,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     | 0   | Torque applied on the thigh rotor  | -1          | 1           | thigh_joint                      | hinge | torque (N m) |
     | 1   | Torque applied on the leg rotor    | -1          | 1           | leg_joint                        | hinge | torque (N m) |
     | 2   | Torque applied on the foot rotor   | -1          | 1           | foot_joint                       | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of positional values of different body parts of the
@@ -69,39 +70,43 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
 
     ## Rewards
     The reward consists of three parts:
-    - *healthy_reward*: Every timestep that the hopper is healthy (see definition in section "Episode Termination"), it gets a reward of fixed value `healthy_reward`.
-    - *forward_reward*: A reward of hopping forward which is measured
-    as *`forward_reward_weight` * (x-coordinate before action - x-coordinate after action)/dt*. *dt* is
-    the time between actions and is dependent on the frame_skip parameter
-    (fixed to 4), where the frametime is 0.002 - making the
-    default *dt = 4 * 0.002 = 0.008*. This reward would be positive if the hopper
-    hops forward (positive x direction).
-    - *ctrl_cost*: A cost for penalising the hopper if it takes
-    actions that are too large. It is measured as *`ctrl_cost_weight` *
-    sum(action<sup>2</sup>)* where *`ctrl_cost_weight`* is a parameter set for the
-    control and has a default value of 0.001
+    - *healthy_reward*:
+    Every timestep that the Hopper is healthy (see definition in section "Episode Termination"),
+    it gets a reward of fixed value `healthy_reward`.
+    - *forward_reward*:
+    A reward of moving forward,
+    this reward would be positive if the Hopper moves forward (in the positive $x$ direction / in the right direction).
+    $w_{forward} \times \frac{dx}{dt}$, where
+    $dx$ is the displacement of the "torso" ($x_{after-action} - x_{before-action}$),
+    $dt$ is the time between actions which is dependent on the `frame_skip` parameter (default is 4),
+    and `frametime` which is 0.002 - making the default $dt = 4 \times 0.002 = 0.008$,
+    $w_{forward}$ is the `forward_reward_weight` (default is $1$).
+    - *ctrl_cost*:
+    A negative reward for penalizing the Hopper if it takes actions that are too large.
+    $w_{control} \times \\|action\\|_2^2$,
+    where $w_{control}$ is `ctrl_cost_weight` (default is $10^{-3}$).
 
-    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost* and `info` will also contain the individual reward terms.
+    The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost*,
+    and `info` will also contain the individual reward terms.
 
     ## Starting State
     All observations start in state
     (0.0, 1.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) with a uniform noise
      in the range of [-`reset_noise_scale`, `reset_noise_scale`] added to the values for stochasticity.
 
+
     ## Episode End
-    The hopper is said to be unhealthy if any of the following happens:
+    #### Termination
+    If `terminate_when_unhealthy is True` (which is the default), the environment terminates when the Hopper is unhealthy.
+    The Hopper is unhealthy if any of the following happens:
 
     1. An element of `observation[1:]` (if  `exclude_current_positions_from_observation=True`, else `observation[2:]`) is no longer contained in the closed interval specified by the argument `healthy_state_range`
     2. The height of the hopper (`observation[0]` if  `exclude_current_positions_from_observation=True`, else `observation[1]`) is no longer contained in the closed interval specified by the argument `healthy_z_range` (usually meaning that it has fallen)
-    3. The angle (`observation[1]` if  `exclude_current_positions_from_observation=True`, else `observation[2]`) is no longer contained in the closed interval specified by the argument `healthy_angle_range`
+    3. The angle of the torso (`observation[1]` if  `exclude_current_positions_from_observation=True`, else `observation[2]`) is no longer contained in the closed interval specified by the argument `healthy_angle_range`
 
-    If `terminate_when_unhealthy=True` is passed during construction (which is the default),
-    the episode ends when any of the following happens:
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
 
-    1. Truncation: The episode duration reaches a 1000 timesteps
-    2. Termination: The hopper is unhealthy
-
-    If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
@@ -114,7 +119,7 @@ class HopperEnv(MujocoEnv, utils.EzPickle):
     | Parameter                                    | Type      | Default               | Description                                                                                                                                                                     |
     | -------------------------------------------- | --------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `xml_file`                                   | **str**   | `"hopper_v5.xml"`     | Path to a MuJoCo model                                                                                                                                                          |
-    | `forward_reward_weight`                      | **float** | `1.0`                 | Weight for _forward_reward_ term (see section on reward)                                                                                                                        |
+    | `forward_reward_weight`                      | **float** | `1`                   | Weight for _forward_reward_ term (see section on reward)                                                                                                                        |
     | `ctrl_cost_weight`                           | **float** | `1e-3`                | Weight for _ctrl_cost_ reward (see section on reward)                                                                                                                           |
     | `healthy_reward`                             | **float** | `1`                   | Weight for _healthy_reward_ reward (see section on reward)                                                                                                                      |
     | `terminate_when_unhealthy`                   | **bool**  | `True`                | If true, issue a done signal if the hopper is no longer healthy                                                                                                                 |

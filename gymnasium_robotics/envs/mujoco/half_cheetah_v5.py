@@ -13,7 +13,6 @@ DEFAULT_CAMERA_CONFIG = {
 class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment is based on the work by P. Wawrzyński in
     ["A Cat-Like Robot Real-Time Learning to Run"](http://staff.elka.pw.edu.pl/~pwawrzyn/pub-s/0812_LSCLRR.pdf).
     The HalfCheetah is a 2-dimensional robot consisting of 9 body parts and 8
@@ -24,6 +23,7 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     cheetah are fixed, and the torque can only be applied on the other 6 joints
     over the front and back thighs (connecting to the torso), shins
     (connecting to the thighs) and feet (connecting to the shins).
+
 
     ## Action Space
     The action space is a `Box(-1, 1, (6,), float32)`. An action represents the torques applied at the hinge joints.
@@ -72,20 +72,25 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     | 16  | angular velocity of second rotor     | -Inf | Inf | ffoot                            | hinge | angular velocity (rad/s) |
     | excluded |  x-coordinate of the front tip  | -Inf | Inf | rootx                            | slide | position (m)             |
 
+
     ## Rewards
     The reward consists of two parts:
-    - *forward_reward*: A reward of moving forward which is measured
-    as *`forward_reward_weight` * (x-coordinate before action - x-coordinate after action)/dt*. *dt* is
-    the time between actions and is dependent on the frame_skip parameter
-    (fixed to 5), where the frametime is 0.01 - making the
-    default *dt = 5 * 0.01 = 0.05*. This reward would be positive if the cheetah
-    runs forward (right).
-    - *ctrl_cost*: A cost for penalising the cheetah if it takes
-    actions that are too large. It is measured as *`ctrl_cost_weight` *
-    sum(action<sup>2</sup>)* where *`ctrl_cost_weight`* is a parameter set for the
-    control and has a default value of 0.1
+    - *forward_reward*:
+    A reward of moving forward,
+    this reward would be positive if the Half Cheetah moves forward (in the positive $x$ direction / in the right direction).
+    $w_{forward} \times \frac{dx}{dt}$, where
+    $dx$ is the displacement of the "tip" ($x_{after-action} - x_{before-action}$),
+    $dt$ is the time between actions which is dependent on the `frame_skip` parameter (default is 5),
+    and `frametime` which is 0.01 - making the default $dt = 5 \times 0.01 = 0.05$,
+    $w_{forward}$ is the `forward_reward_weight` (default is $1$).
+    - *ctrl_cost*:
+    A negative reward for penalizing the Half Cheetah if it takes actions that are too large.
+    $w_{control} \times \\|action\\|_2^2$,
+    where $w_{control}$ is `ctrl_cost_weight` (default is $0.1$).
 
-    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost* and `info` will also contain the individual reward terms.
+    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost*,
+    and `info` will also contain the individual reward terms.
+
 
     ## Starting State
     All observations start in state (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -96,8 +101,14 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     normal noise with a mean of 0 and standard deviation of `reset_noise_scale` is added to the
     initial velocity values of all zeros.
 
+
     ## Episode End
-    The episode truncates when the episode length is greater than 1000.
+    #### Termination
+    The Half Cheetah never terminates.
+
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
@@ -110,7 +121,7 @@ class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
     | Parameter                                    | Type      | Default              | Description                                                                                                                                                       |
     | -------------------------------------------- | --------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `xml_file`                                   | **str**   | `"half_cheetah.xml"` | Path to a MuJoCo model                                                                                                                                            |
-    | `forward_reward_weight`                      | **float** | `1.0`                | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
+    | `forward_reward_weight`                      | **float** | `1`                  | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
     | `ctrl_cost_weight`                           | **float** | `0.1`                | Weight for _ctrl_cost_ weight (see section on reward)                                                                                                             |
     | `reset_noise_scale`                          | **float** | `0.1`                | Scale of random perturbations of initial position and velocity (see section on Starting State)                                                                    |
     | `exclude_current_positions_from_observation` | **bool**  | `True`               | Whether or not to omit the x-coordinate from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |

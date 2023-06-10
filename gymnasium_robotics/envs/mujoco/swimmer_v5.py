@@ -9,7 +9,6 @@ from gymnasium.spaces import Box
 class SwimmerEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment corresponds to the Swimmer environment described in Rémi Coulom's PhD thesis
     ["Reinforcement Learning Using Neural Networks, with Applications to Motor Control"](https://tel.archives-ouvertes.fr/tel-00003985/document).
     The environment aims to increase the number of independent state and control
@@ -34,6 +33,7 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     and *k* = 0.1. It is possible to pass a custom MuJoCo XML file during construction to increase the
     number of links, or to tweak any of the parameters.
 
+
     ## Action Space
     The action space is a `Box(-1, 1, (2,), float32)`. An action represents the torques applied between *links*
 
@@ -41,6 +41,7 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     |-----|------------------------------------|-------------|-------------|----------------------------------|-------|--------------|
     | 0   | Torque applied on the first rotor  | -1          | 1           | motor1_rot                       | hinge | torque (N m) |
     | 1   | Torque applied on the second rotor | -1          | 1           | motor2_rot                       | hinge | torque (N m) |
+
 
     ## Observation Space
     By default, observations consists of:
@@ -69,26 +70,37 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     | excluded | position of the tip along the x-axis | -Inf | Inf | slider1                          | slide | position (m)           |
     | excluded | position of the tip along the y-axis | -Inf | Inf | slider2                          | slide | position (m)           |
 
+
     ## Rewards
     The reward consists of two parts:
-    - *forward_reward*: A reward of moving forward which is measured
-    as *`forward_reward_weight` * (x-coordinate before action - x-coordinate after action)/dt*. *dt* is
-    the time between actions and is dependent on the frame_skip parameter
-    (default is 4), where the frametime is 0.01 - making the
-    default *dt = 4 * 0.01 = 0.04*. This reward would be positive if the swimmer
-    swims right as desired.
-    - *ctrl_cost*: A cost for penalising the swimmer if it takes
-    actions that are too large. It is measured as *`ctrl_cost_weight` *
-    sum(action<sup>2</sup>)* where *`ctrl_cost_weight`* is a parameter set for the
-    control and has a default value of 1e-4
+    - *forward_reward*:
+    A reward of moving forward,
+    this reward would be positive if the Swimmer moves forward (in the positive $x$ direction / in the right direction).
+    $w_{forward} \times \frac{dx}{dt}$, where
+    $dx$ is the displacement of the (front) "tip" ($x_{after-action} - x_{before-action}$),
+    $dt$ is the time between actions which is dependent on the `frame_skip` parameter (default is 4),
+    and `frametime` which is 0.01 - making the default $dt = 4 \times 0.01 = 0.04$,
+    $w_{forward}$ is the `forward_reward_weight` (default is $1$).
+    - *ctrl_cost*:
+    A negative reward for penalizing the Swimmer if it takes actions that are too large.
+    $w_{control} \times \\|action\\|_2^2$,
+    where $w_{control}$ is `ctrl_cost_weight` (default is $10^{-4}$).
 
-    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost* and `info` will also contain the individual reward terms
+    The total reward returned is ***reward*** *=* *forward_reward - ctrl_cost*,
+    and `info` will also contain the individual reward terms
+
 
     ## Starting State
     All observations start in state (0,0,0,0,0,0,0,0) with a Uniform noise in the range of [-`reset_noise_scale`, `reset_noise_scale`] is added to the initial state for stochasticity.
 
+
     ## Episode End
-    The episode truncates when the episode length is greater than 1000.
+    #### Termination
+    The Swimmer never terminates.
+
+    #### truncation
+    The maximum duration of an episode is 1000 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`.
@@ -98,9 +110,13 @@ class SwimmerEnv(MujocoEnv, utils.EzPickle):
     env = gym.make('Swimmer-v5', xml_file=...)
     ```
 
-    | Parameter               | Type       | Default       |Description                    |
-    |-------------------------|------------|-------------- |-------------------------------|
-    | `xml_file`              | **str**    |`"swimmer.xml"`| Path to a MuJoCo model        |
+    | Parameter                                  | Type      | Default       |Description                    |
+    |--------------------------------------------| --------- |-------------- |-------------------------------|
+    |`xml_file`                                  | **str**   |`"swimmer.xml"`| Path to a MuJoCo model        |
+    |`forward_reward_weight`                     | **float** | `1`           | Weight for _forward_reward_ term (see section on reward)|
+    |`ctrl_cost_weight`                          | **float** | `1e-4`        | Weight for _ctrl_cost_ term (see section on reward) |
+    |`reset_noise_scale`                         | **float** | `0.1`         | Scale of random perturbations of initial position and velocity (see section on Starting State) |
+    |`exclude_current_positions_from_observation`| **bool**  | `True`        | Whether or not to omit the x- and y-coordinates from observations. Excluding the position can serve as an inductive bias to induce position-agnostic behavior in policies |
 
 
     ## Version History

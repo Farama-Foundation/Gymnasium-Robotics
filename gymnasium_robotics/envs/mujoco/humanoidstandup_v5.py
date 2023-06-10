@@ -24,6 +24,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     and then the goal of the environment is to make the humanoid standup and then keep it standing
     by applying torques on the various hinges.
 
+
     ## Action Space
     The agent take a 17-element vector for actions.
 
@@ -49,6 +50,7 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     | 14  | Torque applied on the rotor between the torso and left upper arm (coordinate -1)   | -0.4        | 0.4         | left_shoulder1                   | hinge | torque (N m) |
     | 15  | Torque applied on the rotor between the torso and left upper arm (coordinate -2)   | -0.4        | 0.4         | left_shoulder2                   | hinge | torque (N m) |
     | 16  | Torque applied on the rotor between the left upper arm and left lower arm          | -0.4        | 0.4         | left_elbow                       | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of positional values of different body parts of the Humanoid,
@@ -186,23 +188,32 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     with contact forces (if contact forces are not used in your experiments, you can use
     version > 2.0).
 
+
     ## Rewards
     The reward consists of three parts:
-    - *uph_cost*: A reward for moving upward (in an attempt to stand up). This is not a relative
-    reward which measures how much upward it has moved from the last timestep, but it is an
-    absolute reward which measures how much upward the Humanoid has moved overall. It is
-    measured as *(z coordinate after action - 0)/(atomic timestep)*, where *z coordinate after
-    action* is index 0 in the state/index 2 in the table, and *atomic timestep* is the time for
-    one frame of movement even though the simulation has a framerate of 5 (done in order to inflate
-    rewards a little for faster learning).
-    - *quad_ctrl_cost*: A negative reward for penalising the humanoid if it has too large of
-    a control force. If there are *nu* actuators/controls, then the control has shape  `nu x 1`.
-    It is measured as *0.1 **x** sum(control<sup>2</sup>)*.
-    - *quad_impact_cost*: A negative reward for penalising the humanoid if the external
-    contact force is too large. It is calculated as *min(0.5 * 0.000001 * sum(external
-    contact force<sup>2</sup>), 10)*.
+    - *uph_cost*:
+    A reward for moving upward (in an attempt to stand up).
+    This is not a relative reward which measures how much upward it has moved from the last timestep,
+    but it is an absolute reward which measures how much upward the Humanoid has moved overall.
+    It is measured as $weight_{uph} \times (z_{after action} - 0)/dt$,
+    where $z_{after action}$ is the z coordinate of the torso after taking an action,
+    and *dt* is the time between actions and is dependent on the `frame_skip` parameter
+    (default is 5), where the frametime is 0.003 - making the default *dt = 5 * 0.003 = 0.015*.
+    and $weight_{uph}$ is `uph_cost_weight`.
+    - *quad_ctrl_cost*:
+    A negative reward for penalizing the Humanoid if it takes actions that are too large.
+    $w_{quad_control} \times \\|action\\|_2^2$,
+    where $w_{quad_control}$ is `ctrl_cost_weight` (default is $0.1$).
+    If there are *nu* actuators/controls, then the control has shape  `nu x 1`.
+    - *impact_cost*:
+    A negative reward for penalizing the Humanoid if the external contact forces are too large.
+    $w_{impact} \times clamp(impact\\_cost\\_range, \\|F_{contact}\\|_2^2)$, where
+    $w_{impact}$ is `impact_cost_weight` (default is $5\times10^{-7}$),
+    $F_{contact}$ are the external contact forces (see `cfrc_ext` section on observation).
 
-    The total reward returned is ***reward*** *=* *uph_cost + 1 - quad_ctrl_cost - quad_impact_cost*
+    The total reward returned is ***reward*** *=* *uph_cost + 1 - quad_ctrl_cost - quad_impact_cost*,
+    and `info` will also contain the individual reward terms.
+
 
     ## Starting State
     All observations start in state
@@ -212,11 +223,14 @@ class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
     to be low, thereby indicating a laying down humanoid. The initial orientation is
     designed to make it face forward as well.
 
-    ## Episode End
-    The episode ends when any of the following happens:
 
-    1. Truncation: The episode duration reaches a 1000 timesteps
-    2. Termination: Any of the state space values is no longer finite
+    ## Episode End
+    #### Termination
+    The Humanoid never terminates.
+
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.

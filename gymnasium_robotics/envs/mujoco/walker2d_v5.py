@@ -16,7 +16,6 @@ DEFAULT_CAMERA_CONFIG = {
 class Walker2dEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment builds on the [hopper](https://gymnasium.farama.org/environments/mujoco/hopper/) environment
     by adding another set of legs making it possible for the robot to walk forward instead of
     hop. Like other Mujoco environments, this environment aims to increase the number of independent state
@@ -26,6 +25,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
     in the bottom below the thighs, and two feet attached to the legs on which the entire body rests.
     The goal is to walk in the in the forward (right)
     direction by applying torques on the six hinges connecting the seven body parts.
+
 
     ## Action Space
     The action space is a `Box(-1, 1, (6,), float32)`. An action represents the torques applied at the hinge joints.
@@ -38,6 +38,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
     | 3   | Torque applied on the left thigh rotor | -1          | 1           | thigh_left_joint                 | hinge | torque (N m) |
     | 4   | Torque applied on the left leg rotor   | -1          | 1           | leg_left_joint                   | hinge | torque (N m) |
     | 5   | Torque applied on the left foot rotor  | -1          | 1           | foot_left_joint                  | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of positional values of different body parts of the walker,
@@ -73,40 +74,48 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
     | 15  | angular velocity of the leg hinge                  | -Inf | Inf | leg_left_joint                   | hinge | angular velocity (rad/s) |
     | 16  | angular velocity of the foot hinge                 | -Inf | Inf | foot_left_joint                  | hinge | angular velocity (rad/s) |
 
+
     ## Rewards
     The reward consists of three parts:
-    - *healthy_reward*: Every timestep that the walker is alive, it receives a fixed reward of value `healthy_reward`,
-    - *forward_reward*: A reward of walking forward which is measured as
-    *`forward_reward_weight` * (x-coordinate before action - x-coordinate after action)/dt*.
-    *dt* is the time between actions and is dependeent on the frame_skip parameter
-    (default is 4), where the frametime is 0.002 - making the default
-    *dt = 4 * 0.002 = 0.008*. This reward would be positive if the walker walks forward (positive x direction).
-    - *ctrl_cost*: A cost for penalising the walker if it
-    takes actions that are too large. It is measured as
-    *`ctrl_cost_weight` * sum(action<sup>2</sup>)* where *`ctrl_cost_weight`* is
-    a parameter set for the control and has a default value of 0.001
+    - *healthy_reward*:
+    Every timestep that the Walker2d is alive, it receives a fixed reward of value `healthy_reward`,
+    - *forward_reward*:
+    A reward of moving forward,
+    this reward would be positive if the Swimmer moves forward (in the positive $x$ direction / in the right direction).
+    $w_{forward} \times \frac{dx}{dt}$, where
+    $dx$ is the displacement of the (front) "tip" ($x_{after-action} - x_{before-action}$),
+    $dt$ is the time between actions which is dependent on the `frame_skip` parameter (default is 4),
+    and `frametime` which is 0.002 - making the default $dt = 4 \times 0.002 = 0.008$,
+    $w_{forward}$ is the `forward_reward_weight` (default is $1$).
+    - *ctrl_cost*:
+    A negative reward for penalizing the Walker2d if it takes actions that are too large.
+    $w_{control} \times \\|action\\|_2^2$,
+    where $w_{control}$ is `ctrl_cost_weight` (default is $10^{-3}$).
 
-    The total reward returned is ***reward*** *=* *healthy_reward bonus + forward_reward - ctrl_cost* and `info` will also contain the individual reward terms.
+    The total reward returned is ***reward*** *=* *healthy_reward bonus + forward_reward - ctrl_cost*
+    and `info` will also contain the individual reward terms.
+
 
     ## Starting State
     All observations start in state
     (0.0, 1.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     with a uniform noise in the range of [-`reset_noise_scale`, `reset_noise_scale`] added to the values for stochasticity.
 
+
     ## Episode End
-    The walker is said to be unhealthy if any of the following happens:
+    #### termination
+    If `terminate_when_unhealthy is True` (which is the default), the environment terminates when the Walker2d is unhealthy.
+    The Walker2d is unhealthy if any of the following happens:
 
     1. Any of the state space values is no longer finite
     2. The height of the walker is ***not*** in the closed interval specified by `healthy_z_range`
     3. The absolute value of the angle (`observation[1]` if `exclude_current_positions_from_observation=False`, else `observation[2]`) is ***not*** in the closed interval specified by `healthy_angle_range`
 
-    If `terminate_when_unhealthy=True` is passed during construction (which is the default),
-    the episode ends when any of the following happens:
-
-    1. Truncation: The episode duration reaches a 1000 timesteps
-    2. Termination: The walker is unhealthy
+    #### truncation
+    the maximum duration of an episode is 1000 timesteps.
 
     If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.
@@ -119,7 +128,7 @@ class Walker2dEnv(MujocoEnv, utils.EzPickle):
     | Parameter                                    | Type      | Default           | Description                                                                                                                                                       |
     | -------------------------------------------- | --------- | ----------------  | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
     | `xml_file`                                   | **str**   |`"walker2d_v5.xml"`| Path to a MuJoCo model                                                                                                                                            |
-    | `forward_reward_weight`                      | **float** | `1.0`             | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
+    | `forward_reward_weight`                      | **float** | `1`               | Weight for _forward_reward_ term (see section on reward)                                                                                                          |
     | `ctrl_cost_weight`                           | **float** | `1e-3`            | Weight for _ctr_cost_ term (see section on reward)                                                                                                                |
     | `healthy_reward`                             | **float** | `1`               | Weight for _healthy_reward_ reward (see section on reward)                                                                                                        |
     | `terminate_when_unhealthy`                   | **bool**  | `True`            | If true, issue a done signal if the z-coordinate of the walker is no longer healthy                                                                               |

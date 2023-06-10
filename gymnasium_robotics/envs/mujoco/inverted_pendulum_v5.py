@@ -23,6 +23,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     at one end and having another end free. The cart can be pushed left or right, and the
     goal is to balance the pole on the top of the cart by applying forces on the cart.
 
+
     ## Action Space
     The agent take a 1-element vector for actions.
 
@@ -33,6 +34,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     | Num | Action                    | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit      |
     |-----|---------------------------|-------------|-------------|----------------------------------|-------|-----------|
     | 0   | Force applied on the cart | -3          | 3           | slider                           | slide | Force (N) |
+
 
     ## Observation Space
     The state space consists of positional values of different body parts of
@@ -54,19 +56,29 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     as long as possible - as such a reward of +1 is awarded for each timestep that
     the pole is upright.
 
+    The pole is considered upright if:
+    $|angle| < 0.2$
+
     and `info` will also contain the reward.
+
 
     ## Starting State
     All observations start in state
     (0.0, 0.0, 0.0, 0.0) with a uniform noise in the range
-    of [-0.01, 0.01] added to the values for stochasticity.
+    of `[-reset_noise_scale, reset_noise_scale]` added to the values for stochasticity.
+
 
     ## Episode End
-    The episode ends when any of the following happens:
+    #### Termination
+    The environment terminates when the Inverted Pendulum is unhealthy.
+    The Inverted Pendulum is unhealthy if any of the following happens:
 
-    1. Truncation: The episode duration reaches 1000 timesteps.
-    2. Termination: Any of the state space values is no longer finite.
-    3. Termination: The absolute value of the vertical angle between the pole and the cart is greater than 0.2 radian.
+    1. Any of the state space values is no longer finite.
+    2. The absolute value of the vertical angle between the pole and the cart is greater than 0.2 radian.
+
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `reset_noise_scale`.
@@ -136,9 +148,9 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
     def step(self, action):
         self.do_simulation(action, self.frame_skip)
 
-        ob = self._get_obs()
+        observation = self._get_obs()
 
-        terminated = bool(not np.isfinite(ob).all() or (np.abs(ob[1]) > 0.2))
+        terminated = bool(not np.isfinite(observation).all() or (np.abs(observation[1]) > 0.2))
 
         reward = int(not terminated)
 
@@ -146,7 +158,7 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
 
         if self.render_mode == "human":
             self.render()
-        return ob, reward, terminated, False, info
+        return observation, reward, terminated, False, info
 
     def reset_model(self):
         noise_low = -self._reset_noise_scale

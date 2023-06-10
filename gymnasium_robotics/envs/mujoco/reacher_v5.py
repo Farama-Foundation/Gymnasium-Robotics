@@ -9,10 +9,11 @@ DEFAULT_CAMERA_CONFIG = {"trackbodyid": 0}
 
 
 class ReacherEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     "Reacher" is a two-jointed robot arm. The goal is to move the robot's end effector (called *fingertip*) close to a
     target that is spawned at a random position.
+
 
     ## Action Space
     The action space is a `Box(-1, 1, (2,), float32)`. An action `(a, b)` represents the torques applied at the hinge joints.
@@ -21,6 +22,7 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     |-----|---------------------------------------------------------------------------------|-------------|-------------|--------------------------|-------|------|
     | 0   | Torque applied at the first hinge (connecting the link to the point of fixture) | -1 | 1 | joint0  | hinge | torque (N m) |
     | 1   |  Torque applied at the second hinge (connecting the two links)                  | -1 | 1 | joint1  | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of
@@ -45,14 +47,13 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     | 7   | angular velocity of the second arm                                                             | -Inf | Inf | joint1                           | hinge | angular velocity (rad/s) |
     | 8   | x-value of position_fingertip - position_target                                                | -Inf | Inf | NA                               | slide | position (m)             |
     | 9   | y-value of position_fingertip - position_target                                                | -Inf | Inf | NA                               | slide | position (m)             |
-    | excluded | z-value of position_fingertip - position_target (constantly 0 since reacher is 2d and z is same for both) | -Inf | Inf | NA                               | slide | position (m)             |
-
+    | excluded | z-value of position_fingertip - position_target (constantly 0 since reacher is 2d)        | -Inf | Inf | NA                               | slide | position (m)             |
 
     Most Gym environments just return the positions and velocity of the
     joints in the `.xml` file as the state of the environment. However, in
     reacher the state is created by combining only certain elements of the
     position and velocity, and performing some function transformations on them.
-    If one is to read the `.xml` for reacher then they will find 4 joints:
+    If one is to read the `reacher.xml` then they will find 4 joints:
 
     | Num | Observation                 | Min      | Max      | Name (in corresponding XML file) | Joint | Unit               |
     |-----|-----------------------------|----------|----------|----------------------------------|-------|--------------------|
@@ -64,21 +65,18 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
 
     ## Rewards
     The reward consists of two parts:
-    - *reward_distance*: This reward is a measure of how far the *fingertip*
-    of the reacher (the unattached end) is from the target, with a more negative
-    value assigned for when the reacher's *fingertip* is further away from the
-    target. It is calculated as the negative vector norm of (position of
-    the fingertip - position of target), or *-norm("fingertip" - "target")*.
-    - *reward_control*: A negative reward for penalising the walker if
-    it takes actions that are too large. It is measured as the negative squared
-    Euclidean norm of the action, i.e. as *- sum(action<sup>2</sup>)*.
+    - *reward_distance*:
+    This reward is a measure of how far the *fingertip* of the reacher (the unattached end) is from the target,
+    with a more negative value assigned for when the reacher's *fingertip* is further away from the target.
+    It is $-w_{near} \|(P_{fingertip} - P_{target})\|_2$.
+    where $w_{near}$ is `reward_near_weight`.
+    - *reward_control*:
+    A negative reward for penalising the walker if it takes actions that are too large.
+    It is measured as the negative squared Euclidean norm of the action, i.e. as $-w_{control} \|action\|_2^2$.
+    where $w_{control}$ is `reward_control_weight`.
 
-    The total reward returned is ***reward*** *=* *reward_distance + reward_control*
-
-    Unlike other environments, Reacher does not allow you to specify weights for the individual reward terms.
-    However, `info` does contain the keys *reward_dist* and *reward_ctrl*. Thus, if you'd like to weight the terms,
-    you should create a wrapper that computes the weighted reward from `info`.
-
+    The total reward returned is ***reward*** *=* *reward_distance + reward_control*.
+    `info` will also contain the individual reward terms.
 
     ## Starting State
     All observations start in state
@@ -92,10 +90,12 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
     is set. The default setting has a framerate of 2 and a *dt = 2 * 0.01 = 0.02*
 
     ## Episode End
-    The episode ends when any of the following happens:
+    #### Termination
+    The Reacher never terminates.
 
-    1. Truncation: The episode duration reaches a 50 timesteps (with a new random target popping up if the reacher's fingertip reaches it before 50 timesteps)
-    2. Termination: Any of the state space values is no longer finite.
+    #### Truncation
+    The maximum duration of an episode is 50 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`.
@@ -177,17 +177,15 @@ class ReacherEnv(MujocoEnv, utils.EzPickle):
         reward = reward_dist + reward_ctrl
 
         self.do_simulation(action, self.frame_skip)
+
+        observation = self._get_obs()
+        info = {
+            "reward_dist": reward_dist,
+            "reward_ctrl": reward_ctrl,
+        }
         if self.render_mode == "human":
             self.render()
-
-        ob = self._get_obs()
-        return (
-            ob,
-            reward,
-            False,
-            False,
-            dict(reward_dist=reward_dist, reward_ctrl=reward_ctrl),
-        )
+        return observation, reward, False, False, info
 
     def reset_model(self):
         qpos = (

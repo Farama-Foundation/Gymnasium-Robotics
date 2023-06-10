@@ -12,11 +12,12 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class PusherEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     "Pusher" is a multi-jointed robot arm which is very similar to that of a human.
     The goal is to move a target cylinder (called *object*) to a goal position using the robot's end effector (called *fingertip*).
     The robot consists of shoulder, elbow, forearm, and wrist joints.
+
 
     ## Action Space
     The action space is a `Box(-2, 2, (7,), float32)`. An action `(a, b)` represents the torques applied at the hinge joints.
@@ -30,6 +31,7 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
     | 4    | Rotation of hinge that rolls the forearm                          | -2          | 2           | r_forearm_roll_joint             | hinge | torque (N m) |
     | 5    | Rotation of flexing the wrist                                     | -2          | 2           | r_wrist_flex_joint               | hinge | torque (N m) |
     | 6    | Rotation of rolling the wrist                                     | -2          | 2           | r_wrist_roll_joint               | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of
@@ -73,24 +75,23 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
 
     ## Rewards
     The reward consists of two parts:
-    - *reward_near *: This reward is a measure of how far the *fingertip*
-    of the pusher (the unattached end) is from the object, with a more negative
-    value assigned for when the pusher's *fingertip* is further away from the
-    target. It is calculated as the negative vector norm of (position of
-    the fingertip - position of target), or *-norm("fingertip" - "target")*.
-    - *reward_dist *: This reward is a measure of how far the object is from
-    the target goal position, with a more negative value assigned for object is
-    further away from the target. It is calculated as the negative vector norm of
-    (position of the object - position of goal), or *-norm("object" - "target")*.
-    - *reward_control*: A negative reward for penalising the pusher if
-    it takes actions that are too large. It is measured as the negative squared
-    Euclidean norm of the action, i.e. as *- sum(action<sup>2</sup>)*.
+    - *reward_near*:
+    This reward is a measure of how far the *fingertip* of the pusher (the unattached end) is from the object,
+    with a more negative value assigned for when the pusher's *fingertip* is further away from the target.
+    It is $-w_{near} \|(P_{fingertip} - P_{target})\|_2$.
+    where $w_{near}$ is `reward_near_weight`.
+    - *reward_dist*:
+    This reward is a measure of how far the object is from the target goal position,
+    with a more negative value assigned for object that is further away from the target.
+    It is $-w_{dist} \|(P_{object} - P_{target})\|_2$.
+    where $w_{dist}$ is `reward_dist_weight`.
+    - *reward_control*:
+    A negative reward for penalising the pusher if it takes actions that are too large.
+    It is measured as the negative squared Euclidean norm of the action, i.e. as $-w_{control} \|action\|_2^2$.
+    where $w_{control}$ is `reward_control_weight`.
 
-    The total reward returned is ***reward*** *=* *reward_dist + 0.1 * reward_ctrl + 0.5 * reward_near*
-
-    Unlike other environments, Pusher does not allow you to specify weights for the individual reward terms.
-    However, `info` does contain the keys *reward_dist* and *reward_ctrl*. Thus, if you'd like to weight the terms,
-    you should create a wrapper that computes the weighted reward from `info`.
+    The total reward returned is ***reward*** *=* *reward_dist + reward_ctrl + reward_near*,
+    `info` will also contain the individual reward terms.
 
 
     ## Starting State
@@ -104,11 +105,14 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
 
     The default framerate is 5 with each frame lasting for 0.01, giving rise to a *dt = 5 * 0.01 = 0.05*
 
-    ## Episode End
-    The episode ends when any of the following happens:
 
-    1. Truncation: The episode duration reaches a 100 timesteps.
-    2. Termination: Any of the state space values is no longer finite.
+    ## Episode End
+    #### Termination
+    The Pusher never terminates.
+
+    #### Truncation
+    The maximum duration of an episode is 100 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`.
@@ -196,16 +200,16 @@ class PusherEnv(MujocoEnv, utils.EzPickle):
         reward = reward_dist + reward_ctrl + reward_near
 
         self.do_simulation(action, self.frame_skip)
-        if self.render_mode == "human":
-            self.render()
 
-        ob = self._get_obs()
+        observation = self._get_obs()
         info = {
             "reward_dist": reward_dist,
             "reward_ctrl": reward_ctrl,
             "reward_near": reward_near,
         }
-        return (ob, reward, False, False, info)
+        if self.render_mode == "human":
+            self.render()
+        return observation, reward, False, False, info
 
     def reset_model(self):
         qpos = self.init_qpos

@@ -22,12 +22,12 @@ def mass_center(model, data):
 class HumanoidEnv(MujocoEnv, utils.EzPickle):
     """
     ## Description
-
     This environment is based on the environment introduced by Tassa, Erez and Todorov
     in ["Synthesis and stabilization of complex behaviors through online trajectory optimization"](https://ieeexplore.ieee.org/document/6386025).
     The 3D bipedal robot is designed to simulate a human. It has a torso (abdomen) with a pair of
     legs and arms. The legs each consist of three body parts, and the arms 2 body parts (representing the knees and
     elbows respectively). The goal of the environment is to walk forward as fast as possible without falling over.
+
 
     ## Action Space
     The action space is a `Box(-1, 1, (17,), float32)`. An action represents the torques applied at the hinge joints.
@@ -51,6 +51,7 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     | 14  | Torque applied on the rotor between the torso and left upper arm (coordinate -1)   | -0.4 | 0.4 | left_shoulder1              | hinge | torque (N m) |
     | 15  | Torque applied on the rotor between the torso and left upper arm (coordinate -2)   | -0.4 | 0.4 | left_shoulder2              | hinge | torque (N m) |
     | 16  | Torque applied on the rotor between the left upper arm and left lower arm          | -0.4 | 0.4 | left_elbow                  | hinge | torque (N m) |
+
 
     ## Observation Space
     Observations consist of positional values of different body parts of the Humanoid,
@@ -188,26 +189,37 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     with contact forces (if contact forces are not used in your experiments, you can use
     version > 2.0).
 
+
     ## Rewards
     The reward consists of three parts:
-    - *healthy_reward*: Every timestep that the humanoid is alive (see section Episode Termination for definition), it gets a reward of fixed value `healthy_reward`
-    - *forward_reward*: A reward of walking forward which is measured as *`forward_reward_weight` *
-    (average center of mass before action - average center of mass after action)/dt*.
-    *dt* is the time between actions and is dependent on the frame_skip parameter
-    (default is 5), where the frametime is 0.003 - making the default *dt = 5 * 0.003 = 0.015*.
-    This reward would be positive if the humanoid walks forward (in positive x-direction). The calculation
-    for the center of mass is defined in the `.py` file for the Humanoid.
-    - *ctrl_cost*: A negative reward for penalising the humanoid if it has too
-    large of a control force. If there are *nu* actuators/controls, then the control has
-    shape  `nu x 1`. It is measured as *`ctrl_cost_weight` * sum(control<sup>2</sup>)*.
-    - *contact_cost*: A negative reward for penalising the humanoid if the external
-    contact force is too large. It is calculated by clipping
-    *`contact_cost_weight` * sum(external contact force<sup>2</sup>)* to the interval specified by `contact_cost_range`.
+    - *healthy_reward*:
+    Every timestep that the Humanoid is alive (see section Episode Termination for definition),
+    it gets a reward of fixed value `healthy_reward`.
+    - *forward_reward*:
+    A reward of moving forward,
+    this reward would be positive if the Humanoid moves forward (in the positive $x$ direction / in the right direction).
+    $w_{forward} \times \frac{dx}{dt}$, where
+    $dx$ is the displacement of the center of mass ($x_{after-action} - x_{before-action}$),
+    $dt$ is the time between actions which is dependent on the `frame_skip` parameter (default is 5),
+    and `frametime` which is 0.001 - making the default $dt = 5 \times 0.003 = 0.015$,
+    $w_{forward}$ is the `forward_reward_weight` (default is $1.25$).
+    The calculation for the center of mass is defined in the `.py` file for the Humanoid.
+    - *ctrl_cost*:
+    A negative reward for penalizing the Humanoid if it takes actions that are too large.
+    $w_{control} \times \\|action\\|_2^2$,
+    where $w_{control}$ is `ctrl_cost_weight` (default is $0.1$).
+    If there are *nu* actuators/controls, then the control has shape  `nu x 1`.
+    - *contact_cost*:
+    A negative reward for penalizing the Humanoid if the external contact forces are too large.
+    $w_{contact} \times clamp(contact\\_cost\\_range, \\|F_{contact}\\|_2^2)$, where
+    $w_{contact}$ is `contact_cost_weight` (default is $5\times10^{-7}$),
+    $F_{contact}$ are the external contact forces (see `cfrc_ext` section on observation).
 
     The total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost - contact_cost*
-    and `info` will also contain the individual reward terms
+    and `info` will also contain the individual reward terms.
 
     Note: in `v4` the total reward returned is ***reward*** *=* *healthy_reward + forward_reward - ctrl_cost*
+
 
     ## Starting State
     All observations start in state
@@ -217,17 +229,17 @@ class HumanoidEnv(MujocoEnv, utils.EzPickle):
     selected to be high, thereby indicating a standing up humanoid. The initial
     orientation is designed to make it face forward as well.
 
+
     ## Episode End
-    The humanoid is said to be unhealthy if the z-position of the torso is no longer contained in the
-    closed interval specified by the argument `healthy_z_range`.
+    #### Termination
+    If `terminate_when_unhealthy is True` (which is the default), the environment terminates when the Humanoid is unhealthy.
+    The Humanoid is said to be unhealthy if any of the following happens:
 
-    If `terminate_when_unhealthy=True` is passed during construction (which is the default),
-    the episode ends when any of the following happens:
+    1. The z-position of the torso (the height) is no longer contained in `healthy_z_range`.
 
-    1. Truncation: The episode duration reaches a 1000 timesteps
-    3. Termination: The humanoid is unhealthy
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
 
-    If `terminate_when_unhealthy=False` is passed, the episode is ended only when 1000 timesteps are exceeded.
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `ctrl_cost_weight`, `reset_noise_scale`, etc.

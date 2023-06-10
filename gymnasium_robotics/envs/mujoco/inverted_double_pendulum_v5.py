@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment originates from control theory and builds on the cartpole
     environment based on the work done by Barto, Sutton, and Anderson in
@@ -25,6 +25,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     and the goal is to balance the second pole on top of the first pole, which is in turn on top of the
     cart, by applying continuous forces on the cart.
 
+
     ## Action Space
     The agent take a 1-element vector for actions.
     The action space is a continuous `(action)` in `[-1, 1]`, where `action` represents the
@@ -34,6 +35,7 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     | Num | Action                    | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit      |
     |-----|---------------------------|-------------|-------------|----------------------------------|-------|-----------|
     | 0   | Force applied on the cart | -1          | 1           | slider                           | slide | Force (N) |
+
 
     ## Observation Space
     The state space consists of positional values of different body parts of the pendulum system,
@@ -52,9 +54,9 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     | 5   | velocity of the cart                                              | -Inf | Inf | slider                           | slide | velocity (m/s)           |
     | 6   | angular velocity of the angle between the cart and the first pole | -Inf | Inf | hinge                            | hinge | angular velocity (rad/s) |
     | 7   | angular velocity of the angle between the two poles               | -Inf | Inf | hinge2                           | hinge | angular velocity (rad/s) |
-    | 8   | constraint force                                                  | -Inf | Inf | slider                           | slide | Force (N)                |
-    | excluded | constraint force                                             | -Inf | Inf | hinge                            | slide | Force (N)                |
-    | excluded | constraint force                                             | -Inf | Inf | hinge2                           | slide | Force (N)                |
+    | 8   | constraint force - x                                              | -Inf | Inf | slider                           | slide | Force (N)                |
+    | excluded | constraint force - y                                         | -Inf | Inf | hinge                            | slide | Force (N)                |
+    | excluded | constraint force - z                                         | -Inf | Inf | hinge2                           | slide | Force (N)                |
 
 
     There is physical contact between the robots and their environment - and Mujoco
@@ -62,40 +64,48 @@ class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
     dynamics by aiming for physical accuracy and computational efficiency.
 
     There is one constraint force for contacts for each degree of freedom (3).
-    The approach and handling of constraints by Mujoco is unique to the simulator
-    and is based on their research. Once can find more information in their
-    [*documentation*](https://mujoco.readthedocs.io/en/latest/computation.html)
-    or in their paper
-    ["Analytically-invertible dynamics with contacts and constraints: Theory and implementation in MuJoCo"](https://homes.cs.washington.edu/~todorov/papers/TodorovICRA14.pdf).
+    The approach and handling of constraints by Mujoco is unique to the simulator and is based on their research.
+    Once can find more information in their [*documentation*](https://mujoco.readthedocs.io/en/latest/computation.html)
+    or in their paper ["Analytically-invertible dynamics with contacts and constraints: Theory and implementation in MuJoCo"](https://homes.cs.washington.edu/~todorov/papers/TodorovICRA14.pdf).
 
 
     ## Rewards
     The reward consists of two parts:
-    - *alive_bonus*: The goal is to make the second inverted pendulum stand upright
-    (within a certain angle limit) as long as possible - as such a reward of `` is awarded
+    - *alive_bonus*:
+    The goal is to make the second inverted pendulum stand upright
+    (within a certain angle limit) as long as possible - as such a reward of `healthy_reward` is awarded
      for each timestep that the second pole is upright.
-    - *distance_penalty*: This reward is a measure of how far the *tip* of the second pendulum
-    (the only free end) moves, and it is calculated as
-    *0.01 * x<sup>2</sup> + (y - 2)<sup>2</sup>*, where *x* is the x-coordinate of the tip
-    and *y* is the y-coordinate of the tip of the second pole.
-    - *velocity_penalty*: A negative reward for penalising the agent if it moves too
-    fast *0.001 *  v<sub>1</sub><sup>2</sup> + 0.005 * v<sub>2</sub> <sup>2</sup>*
+    - *distance_penalty*:
+    This reward is a measure of how far the *tip* of the second pendulum (the only free end) moves,
+    and it is calculated as $0.01 x_{pole2-tip}^2 + (y_{pole2-tip}-2)^2$,
+    where $x_{pole2-tip}, y_{pole2-tip}$ are the xy-coordinatesof the tip of the second pole.
+    - *velocity_penalty*:
+    A negative reward for penalising the agent if it moves too fast.
+    $10^{-3} \omega_1 + 5 10^{-3} \omega_2$,
+    where $\omega_1, \omega_2$ are the angular velocities of the hinges.
 
     The total reward returned is ***reward*** *=* *alive_bonus - distance_penalty - velocity_penalty*
     and `info` will also contain the individual reward terms.
 
+
     ## Starting State
     All observations start in state
     (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) with a uniform noise in the range
-    of [-0.1, 0.1] added to the positional values (cart position and pole angles) and standard
-    normal force with a standard deviation of 0.1 added to the velocity values for stochasticity.
+    of `[-reset_noise_scale, reset_noise_scale]` added to the positional values (cart position and pole angles) and standard
+    normal force with a standard deviation of `reset_noise_scale` added to the velocity values for stochasticity.
+
 
     ## Episode End
-    The episode ends when any of the following happens:
+    #### Termination
+    The environment terminates when the Inverted Double Pendulum is unhealthy.
+    The Inverted Double Pendulum is unhealthy if any of the following happens:
 
-    1.Truncation:  The episode duration reaches 1000 timesteps.
-    2.Termination: Any of the state space values is no longer finite.
-    3.Termination: The y_coordinate of the tip of the second pole *is less than or equal* to 1. The maximum standing height of the system is 1.196 m when all the parts are perpendicularly vertical on top of each other).
+    1.Termination: The y_coordinate of the tip of the second pole $\leq 1$.
+    The maximum standing height of the system is 1.2 m when all the parts are perpendicularly vertical on top of each other).
+
+    #### Truncation
+    The maximum duration of an episode is 1000 timesteps.
+
 
     ## Arguments
     `gymnasium.make` takes additional arguments such as `xml_file`, `healthy_reward`, `reset_noise_scale`, etc.
