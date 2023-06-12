@@ -262,7 +262,7 @@ class MazeEnv(GoalEnv):
 
         # While reset position is close to goal position
         reset_pos = self.goal.copy()
-        while np.linalg.norm(reset_pos - self.goal) <= 0.5:
+        while np.linalg.norm(reset_pos - self.goal) <= 0.5 * self.maze.maze_size_scaling:
             reset_index = self.np_random.integers(
                 low=0, high=len(self.maze.unique_reset_locations)
             )
