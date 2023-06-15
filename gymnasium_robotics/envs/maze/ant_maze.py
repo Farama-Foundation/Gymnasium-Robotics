@@ -281,9 +281,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         ant_obs, _, _, _, info = self.ant_env.step(action)
         obs = self._get_obs(ant_obs)
 
-        info["success"] = bool(
-            np.linalg.norm(obs["achieved_goal"] - self.goal) <= 0.45
-        )
+        info["success"] = bool(np.linalg.norm(obs["achieved_goal"] - self.goal) <= 0.45)
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
         terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
         truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)

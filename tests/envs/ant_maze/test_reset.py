@@ -1,7 +1,9 @@
-import numpy as np
 import gymnasium as gym
+import numpy as np
+
 
 def test_reset():
+    """Check that AntMaze does not reset into a success state."""
     env = gym.make("AntMaze_UMaze-v3", continuing_task=True)
 
     for _ in range(1000):
