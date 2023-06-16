@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class InvertedDoublePendulumEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment originates from control theory and builds on the cartpole
     environment based on the work done by Barto, Sutton, and Anderson in
