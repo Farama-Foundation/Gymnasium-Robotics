@@ -150,7 +150,9 @@ class InvertedPendulumEnv(MujocoEnv, utils.EzPickle):
 
         observation = self._get_obs()
 
-        terminated = bool(not np.isfinite(observation).all() or (np.abs(observation[1]) > 0.2))
+        terminated = bool(
+            not np.isfinite(observation).all() or (np.abs(observation[1]) > 0.2)
+        )
 
         reward = int(not terminated)
 
