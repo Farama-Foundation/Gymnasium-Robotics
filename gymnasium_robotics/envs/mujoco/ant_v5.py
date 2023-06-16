@@ -374,7 +374,7 @@ class AntEnv(MujocoEnv, utils.EzPickle):
             "reward_survive": healthy_reward,
             "x_position": self.data.qpos[0],
             "y_position": self.data.qpos[1],
-            "distance_from_origin": np.linalg.norm(xy_position_after, ord=2),
+            "distance_from_origin": np.linalg.norm(self.data.qpos[0:2], ord=2),
             "x_velocity": x_velocity,
             "y_velocity": y_velocity,
         }
