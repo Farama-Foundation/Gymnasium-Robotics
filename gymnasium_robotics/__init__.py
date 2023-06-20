@@ -834,7 +834,7 @@ def register_robotics_envs():
         # ----- AntMaze -----
 
         register(
-            id=f"AntMaze_UMaze{suffix}-v3",
+            id=f"AntMaze_UMaze{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -846,7 +846,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Open{suffix}-v3",
+            id=f"AntMaze_Open{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -858,7 +858,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Open_Diverse_G{suffix}-v3",
+            id=f"AntMaze_Open_Diverse_G{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -869,7 +869,7 @@ def register_robotics_envs():
             max_episode_steps=700,
         )
         register(
-            id=f"AntMaze_Open_Diverse_GR{suffix}-v3",
+            id=f"AntMaze_Open_Diverse_GR{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -881,7 +881,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Medium{suffix}-v3",
+            id=f"AntMaze_Medium{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -893,7 +893,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Medium_Diverse_G{suffix}-v3",
+            id=f"AntMaze_Medium_Diverse_G{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -905,7 +905,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Medium_Diverse_GR{suffix}-v3",
+            id=f"AntMaze_Medium_Diverse_GR{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -917,7 +917,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Large{suffix}-v3",
+            id=f"AntMaze_Large{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -929,7 +929,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Large_Diverse_G{suffix}-v3",
+            id=f"AntMaze_Large_Diverse_G{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
@@ -941,7 +941,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"AntMaze_Large_Diverse_GR{suffix}-v3",
+            id=f"AntMaze_Large_Diverse_GR{suffix}-v4",
             entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
             kwargs=_merge(
                 {
