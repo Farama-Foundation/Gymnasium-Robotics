@@ -388,6 +388,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
         terminated = self.compute_terminated(obs_dict["achieved_goal"], self.goal, info)
         truncated = self.compute_truncated(obs_dict["achieved_goal"], self.goal, info)
 
+        # Update the goal position if necessary
+        self.update_goal(obs_dict["achieved_goal"], self.goal)
+
         return obs_dict, reward, terminated, truncated, info
 
     def update_target_site_pos(self):

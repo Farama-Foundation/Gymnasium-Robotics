@@ -289,6 +289,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
         if self.render_mode == "human":
             self.render()
 
+        # Update the goal position if necessary
+        self.update_goal(obs["achieved_goal"], self.goal)
+
         return obs, reward, terminated, truncated, info
 
     def _get_obs(self, ant_obs: np.ndarray) -> Dict[str, np.ndarray]:

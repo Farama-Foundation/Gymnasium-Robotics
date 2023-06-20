@@ -365,18 +365,21 @@ class MazeEnv(GoalEnv):
             return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
-            if (
-                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
-                and len(self.maze.unique_goal_locations) > 1
-            ):
-                # Generate another goal
-                goal = self.generate_target_goal()
-                # Add noise to goal position
-                self.goal = self.add_xy_position_noise(goal)
-                # Update the position of the target site for visualization
-                self.update_target_site_pos()
-
             return False
+
+    def update_goal(self, achieved_goal: np.ndarray, desired_goal: np.ndarray) -> None:
+        """Update goal position if continuing task and within goal radius."""
+        if (
+            self.continuing_task
+            and bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
+            and len(self.maze.unique_goal_locations) > 1
+        ):
+            # Generate another goal
+            goal = self.generate_target_goal()
+            # Add noise to goal position
+            self.goal = self.add_xy_position_noise(goal)
+            # Update the position of the target site for visualization
+            self.update_target_site_pos()
 
     def compute_truncated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
