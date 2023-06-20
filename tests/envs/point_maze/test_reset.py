@@ -3,8 +3,8 @@ import numpy as np
 
 
 def test_reset():
-    """Check that AntMaze does not reset into a success state."""
-    env = gym.make("AntMaze_UMaze-v4", continuing_task=True)
+    """Check that PointMaze does not reset into a success state."""
+    env = gym.make("PointMaze_UMaze-v3", continuing_task=True)
 
     for _ in range(1000):
         obs, _ = env.reset()
