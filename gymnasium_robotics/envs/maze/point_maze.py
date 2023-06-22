@@ -20,7 +20,7 @@ from gymnasium.utils.ezpickle import EzPickle
 
 # from gymnasium_robotics.envs.point_maze.point_env import PointEnv
 from gymnasium_robotics.envs.maze.maps import U_MAZE
-from gymnasium_robotics.envs.maze.maze import MazeEnv
+from gymnasium_robotics.envs.maze.maze_v4 import MazeEnv
 from gymnasium_robotics.envs.maze.point import PointEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
@@ -380,13 +380,15 @@ class PointMazeEnv(MazeEnv, EzPickle):
         obs, _, _, _, info = self.point_env.step(action)
         obs_dict = self._get_obs(obs)
 
+        reward = self.compute_reward(obs_dict["achieved_goal"], self.goal, info)
+        terminated = self.compute_terminated(obs_dict["achieved_goal"], self.goal, info)
+        truncated = self.compute_truncated(obs_dict["achieved_goal"], self.goal, info)
         info["success"] = bool(
             np.linalg.norm(obs_dict["achieved_goal"] - self.goal) <= 0.45
         )
-        reward = self.compute_reward(obs_dict["achieved_goal"], self.goal, info)
 
-        terminated = self.compute_terminated(obs_dict["achieved_goal"], self.goal, info)
-        truncated = self.compute_truncated(obs_dict["achieved_goal"], self.goal, info)
+        # Update the goal position if necessary
+        self.update_goal(obs_dict["achieved_goal"])
 
         return obs_dict, reward, terminated, truncated, info
 
