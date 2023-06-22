@@ -1,15 +1,3 @@
-"""A maze environment with Gymnasium API for the Gymnasium-Robotics PointMaze environments.
-
-The code is inspired by the D4RL repository hosted on GitHub (https://github.com/Farama-Foundation/D4RL), published in the paper
-'D4RL: Datasets for Deep Data-Driven Reinforcement Learning' by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, Sergey Levine.
-
-Original Author of the code: Justin Fu
-
-The modifications made involve organizing the code into different files: `maps.py`, `maze_env.py`, `point_env.py`, and `point_maze_env.py`.
-As well as adding support for the Gymnasium API.
-
-This project is covered by the Apache 2.0 License.
-"""
 import math
 import tempfile
 import xml.etree.ElementTree as ET
@@ -23,28 +11,6 @@ from gymnasium_robotics.envs.maze.maps import COMBINED, GOAL, RESET, U_MAZE
 
 
 class Maze:
-    r"""This class creates and holds information about the maze in the MuJoCo simulation.
-
-    The accessible attributes are the following:
-    - :attr:`maze_map` - The maze discrete data structure.
-    - :attr:`maze_size_scaling` - The maze scaling for the continuous coordinates in the MuJoCo simulation.
-    - :attr:`maze_height` - The height of the walls in the MuJoCo simulation.
-    - :attr:`unique_goal_locations` - All the `(i,j)` possible cell indices for goal locations.
-    - :attr:`unique_reset_locations` - All the `(i,j)` possible cell indices for agent initialization locations.
-    - :attr:`combined_locations` - All the `(i,j)` possible cell indices for goal and agent initialization locations.
-    - :attr:`map_length` - Maximum value of j cell index
-    - :attr:`map_width` - Mazimum value of i cell index
-    - :attr:`x_map_center` - The x coordinate of the map's center
-    - :attr:`y_map_center` - The y coordinate of the map's center
-
-    The Maze class also presents a method to convert from cell indices to `(x,y)` coordinates in the MuJoCo simulation:
-    - :meth:`cell_rowcol_to_xy` - Convert from `(i,j)` to `(x,y)`
-
-    ### Version History
-    * v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
-    * v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
-    """
-
     def __init__(
         self,
         maze_map: List[List[Union[str, int]]],
