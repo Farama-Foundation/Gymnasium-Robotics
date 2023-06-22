@@ -21,7 +21,7 @@ from gymnasium.envs.mujoco.ant_v4 import AntEnv
 from gymnasium.utils.ezpickle import EzPickle
 
 from gymnasium_robotics.envs.maze.maps import U_MAZE
-from gymnasium_robotics.envs.maze.maze import MazeEnv
+from gymnasium_robotics.envs.maze.maze_v4 import MazeEnv
 from gymnasium_robotics.utils.mujoco_utils import MujocoModelNames
 
 
@@ -41,23 +41,23 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     The map variations for the mazes are the same as for `PointMaze`. The ant environments with fixed goal and reset locations are the following:
 
-    * `AntMaze_UMaze-v3`
-    * `AntMaze_BigMaze-v3`
-    * `AntMaze_HardestMaze-v3`
+    * `AntMaze_UMaze-v4`
+    * `AntMaze_BigMaze-v4`
+    * `AntMaze_HardestMaze-v4`
 
     #### Diverse goal mazes
 
     The environments with fixed reset position for the ant and randomly selected goals, also known as diverse goal, are:
 
-    * `AntMaze_BigMaze_DG-v3`
-    * `AntMaze_HardestMaze_DG-v3`
+    * `AntMaze_BigMaze_DG-v4`
+    * `AntMaze_HardestMaze_DG-v4`
 
     #### Diverse goal and reset mazes
 
     Finally, the environments that select the reset and goal locations randomly are:
 
-    * `AntMaze_BigMaze_DGR-v3`
-    * `AntMaze_HardestMaze_DGR-v3`
+    * `AntMaze_BigMaze_DGR-v4`
+    * `AntMaze_HardestMaze_DGR-v4`
 
     #### Custom maze
 
@@ -70,7 +70,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
            [1, C, 0, C, 1],
            [1, 1, 1, 1, 1]]
 
-    env = gym.make('AntMaze_UMaze-v3', maze_map=example_map)
+    env = gym.make('AntMaze_UMaze-v4', maze_map=example_map)
     ```
 
     ### Action Space
@@ -153,13 +153,13 @@ class AntMazeEnv(MazeEnv, EzPickle):
     - *sparse*: the returned reward can have two values: `0` if the ant hasn't reached its final target position, and `1` if the ant is in the final target position (the ant is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).
     - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
 
-    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `PointMaze_UMaze-v3`. However, for `dense`
-    reward the id must be modified to `AntMaze_UMazeDense-v3` and initialized as follows:
+    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `AntMaze_UMaze-v4`. However, for `dense`
+    reward the id must be modified to `AntMaze_UMazeDense-v4` and initialized as follows:
 
     ```python
     import gymnasium as gym
 
-    env = gym.make('AntMaze_UMaze-v3')
+    env = gym.make('AntMaze_UMaze-v4')
     ```
 
     ### Starting State
@@ -192,10 +192,11 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ```python
     import gymnasium as gym
 
-    env = gym.make('AntMaze_UMaze-v3', max_episode_steps=100)
+    env = gym.make('AntMaze_UMaze-v4', max_episode_steps=100)
     ```
 
     ### Version History
+    * v4: Update to maze_v4. Refactor compute_terminated in MazeEnv into a pure function compute_terminated and a new function update_goal which resets the goal position. Ant bug fix: Reward is now computed before reset (i.e. sparse reward is not always zero). Maze bug fix: Ant can no longer reset within the goal radius 0.45 due to maze_size_scaling factor missing in MazeEnv. info['success'] key added.
     * v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
@@ -271,6 +272,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
         obs, info = self.ant_env.reset(seed=seed)
         obs_dict = self._get_obs(obs)
+        info["success"] = bool(
+            np.linalg.norm(obs_dict["achieved_goal"] - self.goal) <= 0.45
+        )
 
         return obs_dict, info
 
@@ -278,13 +282,16 @@ class AntMazeEnv(MazeEnv, EzPickle):
         ant_obs, _, _, _, info = self.ant_env.step(action)
         obs = self._get_obs(ant_obs)
 
+        reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
         terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
         truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
-
-        reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
+        info["success"] = bool(np.linalg.norm(obs["achieved_goal"] - self.goal) <= 0.45)
 
         if self.render_mode == "human":
             self.render()
+
+        # Update the goal position if necessary
+        self.update_goal(obs["achieved_goal"])
 
         return obs, reward, terminated, truncated, info
 

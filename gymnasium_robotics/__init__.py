@@ -847,7 +847,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_UMaze{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.U_MAZE,
@@ -871,7 +871,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Open{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.OPEN,
@@ -895,7 +895,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Open_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.OPEN_DIVERSE_G,
@@ -919,7 +919,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Open_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.OPEN_DIVERSE_GR,
@@ -943,7 +943,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Medium{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.MEDIUM_MAZE,
@@ -967,7 +967,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Medium_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.MEDIUM_MAZE_DIVERSE_G,
@@ -991,7 +991,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Medium_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.MEDIUM_MAZE_DIVERSE_GR,
@@ -1015,7 +1015,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Large{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.LARGE_MAZE,
@@ -1039,7 +1039,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Large_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.LARGE_MAZE_DIVERSE_G,
@@ -1063,7 +1063,7 @@ def register_robotics_envs():
 
         register(
             id=f"AntMaze_Large_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
+            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
             kwargs=_merge(
                 {
                     "maze_map": maps.LARGE_MAZE_DIVERSE_GR,

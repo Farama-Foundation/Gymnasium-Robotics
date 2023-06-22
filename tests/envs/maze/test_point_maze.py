@@ -7,6 +7,7 @@ def test_reset():
     env = gym.make("PointMaze_UMaze-v3", continuing_task=True)
 
     for _ in range(1000):
-        obs, _ = env.reset()
+        obs, info = env.reset()
+        assert not info["success"]
         dist = np.linalg.norm(obs["achieved_goal"] - obs["desired_goal"])
         assert dist > 0.45, f"dist={dist} < 0.45"

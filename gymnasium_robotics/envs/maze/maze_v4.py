@@ -41,6 +41,7 @@ class Maze:
     - :meth:`cell_rowcol_to_xy` - Convert from `(i,j)` to `(x,y)`
 
     ### Version History
+    * v4: Refactor compute_terminated into a pure function compute_terminated and a new function update_goal which resets the goal position. Bug fix: missing maze_size_scaling factor added in generate_reset_pos() -- only affects AntMaze.
     * v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
@@ -265,7 +266,9 @@ class MazeEnv(GoalEnv):
 
         # While reset position is close to goal position
         reset_pos = self.goal.copy()
-        while np.linalg.norm(reset_pos - self.goal) <= 0.5:
+        while (
+            np.linalg.norm(reset_pos - self.goal) <= 0.5 * self.maze.maze_size_scaling
+        ):
             reset_index = self.np_random.integers(
                 low=0, high=len(self.maze.unique_reset_locations)
             )
@@ -366,18 +369,25 @@ class MazeEnv(GoalEnv):
             return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
-            if (
-                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
-                and len(self.maze.unique_goal_locations) > 1
-            ):
+            return False
+
+    def update_goal(self, achieved_goal: np.ndarray) -> None:
+        """Update goal position if continuing task and within goal radius."""
+        if (
+            self.continuing_task
+            and bool(np.linalg.norm(achieved_goal - self.goal) <= 0.45)
+            and len(self.maze.unique_goal_locations) > 1
+        ):
+            # Generate a goal while within 0.45 of achieved_goal. The distance check above
+            # is not redundant, it avoids calling update_target_site_pos() unless necessary
+            while np.linalg.norm(achieved_goal - self.goal) <= 0.45:
                 # Generate another goal
                 goal = self.generate_target_goal()
                 # Add noise to goal position
                 self.goal = self.add_xy_position_noise(goal)
-                # Update the position of the target site for visualization
-                self.update_target_site_pos()
 
-            return False
+            # Update the position of the target site for visualization
+            self.update_target_site_pos()
 
     def compute_truncated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
