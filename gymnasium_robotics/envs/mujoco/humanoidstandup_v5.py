@@ -14,7 +14,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class HumanoidStandupEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment is based on the environment introduced by Tassa, Erez and Todorov
     in ["Synthesis and stabilization of complex behaviors through online trajectory optimization"](https://ieeexplore.ieee.org/document/6386025).

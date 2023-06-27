@@ -7,7 +7,7 @@ from gymnasium.spaces import Box
 
 
 class SwimmerEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment corresponds to the Swimmer environment described in Rémi Coulom's PhD thesis
     ["Reinforcement Learning Using Neural Networks, with Applications to Motor Control"](https://tel.archives-ouvertes.fr/tel-00003985/document).

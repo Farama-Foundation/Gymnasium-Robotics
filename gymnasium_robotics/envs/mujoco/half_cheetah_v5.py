@@ -11,7 +11,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class HalfCheetahEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment is based on the work by P. Wawrzyński in
     ["A Cat-Like Robot Real-Time Learning to Run"](http://staff.elka.pw.edu.pl/~pwawrzyn/pub-s/0812_LSCLRR.pdf).

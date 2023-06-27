@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class AntEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment is based on the environment introduced by Schulman,
     Moritz, Levine, Jordan and Abbeel in ["High-Dimensional Continuous Control

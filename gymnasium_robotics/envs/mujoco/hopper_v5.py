@@ -14,7 +14,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 class HopperEnv(MujocoEnv, utils.EzPickle):
-    """
+    r"""
     ## Description
     This environment is based on the work done by Erez, Tassa, and Todorov in
     ["Infinite Horizon Model Predictive Control for Nonlinear Periodic Tasks"](http://www.roboticsproceedings.org/rss07/p10.pdf). The environment aims to
