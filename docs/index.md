@@ -30,7 +30,7 @@ release_notes
 Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
 ```
 
-```{project-logo} _static/img/robotics-text.svg
+```{project-logo} _static/img/robotics-text.png
 :alt: Gymnasium-Robotics Logo
 ```
 
