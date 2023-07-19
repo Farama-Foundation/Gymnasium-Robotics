@@ -38,10 +38,11 @@ dynamic = ["version"]
 testing = [
 	"pytest==7.0.1",
 	"mujoco_py<2.2,>=2.1",
-        "PettingZoo>=1.23.0",
-        "Jinja2>=3.0.3",
+    "cython<3",
+    "PettingZoo>=1.23.0",
+    "Jinja2>=3.0.3",
 ]
-mujoco_py = ["mujoco_py<2.2,>=2.1"]
+mujoco_py = ["mujoco_py<2.2,>=2.1", "cython<3"]
 
 [project.urls]
 Homepage = "https://farama.org"
