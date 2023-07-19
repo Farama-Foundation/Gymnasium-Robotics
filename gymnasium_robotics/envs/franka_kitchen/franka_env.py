@@ -196,7 +196,7 @@ class FrankaRobot(MujocoEnv):
             )
             self.robot_pos_noise_amp[i] = read_config_from_node(
                 root, "qpos" + str(i), "pos_noise_amp", float
-            )
+            )[0]
             self.robot_vel_noise_amp[i] = read_config_from_node(
                 root, "qpos" + str(i), "vel_noise_amp", float
-            )
+            )[0]

@@ -23,8 +23,8 @@ def read_config_from_node(root_node, parent_name, child_name, dtype=int):
 def get_config_root_node(config_file_name=None, config_file_data=None):
     # get root
     if config_file_data is None:
-        config_file_content = open(config_file_name)
-        config = ET.parse(config_file_content)
+        with open(config_file_name) as config_file_content:
+            config = ET.parse(config_file_content)
         root_node = config.getroot()
     else:
         root_node = ET.fromstring(config_file_data)
