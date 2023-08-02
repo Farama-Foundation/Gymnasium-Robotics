@@ -218,7 +218,8 @@ class MazeEnv(GoalEnv):
                 assert self.maze.map_length > options["goal_cell"][1]
                 assert self.maze.map_width > options["goal_cell"][0]
                 assert (
-                    self.maze.maze_map[options["goal_cell"][1]][options["goal_cell"][0]] != 1
+                    self.maze.maze_map[options["goal_cell"][1]][options["goal_cell"][0]]
+                    != 1
                 ), f"Goal can't be placed in a wall cell, {options['goal_cell']}"
 
                 goal = self.maze.cell_rowcol_to_xy(options["goal_cell"])
@@ -233,7 +234,10 @@ class MazeEnv(GoalEnv):
                 assert self.maze.map_length > options["reset_cell"][1]
                 assert self.maze.map_width > options["reset_cell"][0]
                 assert (
-                    self.maze.maze_map[options["reset_cell"][1]][options["reset_cell"][0]] != 1
+                    self.maze.maze_map[options["reset_cell"][1]][
+                        options["reset_cell"][0]
+                    ]
+                    != 1
                 ), f"Reset can't be placed in a wall cell, {options['reset_cell']}"
 
                 reset_pos = self.maze.cell_rowcol_to_xy(options["reset_cell"])
