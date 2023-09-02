@@ -423,9 +423,9 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.episode_task_completions.clear()
         robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
-        self.task_to_complete = set(self.goal.keys())
+        self.tasks_to_complete = set(self.goal.keys())
         info = {
-            "tasks_to_complete": self.task_to_complete,
+            "tasks_to_complete": self.tasks_to_complete,
             "episode_task_completions": [],
             "step_task_completions": [],
         }
