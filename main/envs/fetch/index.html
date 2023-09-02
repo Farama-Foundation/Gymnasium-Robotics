@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Pick And Place" href="pick_and_place/" /><link rel="prev" title="Multi-goal API" href="../../content/multi-goal_api/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/fetch/index.html" />
 
-    <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Fetch - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -326,7 +326,7 @@
           <article role="main">
             
             <section id="fetch">
-<h1>Fetch<a class="headerlink" href="#fetch" title="Permalink to this heading">#</a></h1>
+<h1>Fetch<a class="headerlink" href="#fetch" title="Link to this heading">#</a></h1>
 <p>The Fetch environments are based on the 7-DoF <a class="reference external" href="https://fetchrobotics.com/">Fetch Mobile Manipulator</a> arm, with a two-fingered parallel gripper attached to it. The main environment tasks are the following:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">FetchReach-v2</span></code>: Fetch has to move its end-effector to the desired goal position.</p></li>
@@ -387,7 +387,7 @@
     </div>
         
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">#</a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Link to this heading">#</a></h2>
 <p>If using the <code class="docutils literal notranslate"><span class="pre">Fetch</span></code> environments, please cite:</p>
 <div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@misc</span><span class="p">{</span><span class="nl">1802.09464</span><span class="p">,</span>
 <span class="w">  </span><span class="na">Author</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Matthias Plappert and Marcin Andrychowicz and Alex Ray and Bob McGrew and Bowen Baker and Glenn Powell and Jonas Schneider and Josh Tobin and Maciek Chociej and Peter Welinder and Vikash Kumar and Wojciech Zaremba}</span><span class="p">,</span>
@@ -537,9 +537,9 @@
         })()
       </script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -670,7 +670,7 @@
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -685,7 +685,7 @@
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })

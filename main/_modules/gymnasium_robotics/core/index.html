@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -10,11 +10,11 @@
     <meta property="og:url" content="https://robotics.farama.org/_modules/gymnasium_robotics/core.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" />
         <link rel="canonical" href="https://robotics.farama.org/_modules/gymnasium_robotics/core.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>gymnasium_robotics.core - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -323,7 +323,9 @@
 <span class="kn">from</span> <span class="nn">gymnasium</span> <span class="kn">import</span> <span class="n">error</span>
 
 
-<div class="viewcode-block" id="GoalEnv"><a class="viewcode-back" href="../../../content/multi-goal_api/#gymnasium_robotics.core.GoalEnv">[docs]</a><span class="k">class</span> <span class="nc">GoalEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<div class="viewcode-block" id="GoalEnv">
+<a class="viewcode-back" href="../../../content/multi-goal_api/#gymnasium_robotics.core.GoalEnv">[docs]</a>
+<span class="k">class</span> <span class="nc">GoalEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A goal-based environment.</span>
 
 <span class="sd">    It functions just as any regular Gymnasium environment but it imposes a required structure on the observation_space. More concretely,</span>
@@ -430,6 +432,7 @@
 <span class="sd">                assert truncated == env.compute_truncated(ob[&#39;achieved_goal&#39;], ob[&#39;desired_goal&#39;], info)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
 </pre></div>
           </article>
         </div>
@@ -547,9 +550,9 @@
         })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -680,7 +683,7 @@
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -695,7 +698,7 @@
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })

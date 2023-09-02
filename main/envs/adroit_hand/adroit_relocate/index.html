@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Franka Kitchen" href="../../franka_kitchen/" /><link rel="prev" title="Adroit Pen" href="../adroit_pen/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/adroit_hand/adroit_relocate.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Adroit Relocate - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -317,12 +317,12 @@
           <article role="main">
             
             <section id="adroit-relocate">
-<h1>Adroit Relocate<a class="headerlink" href="#adroit-relocate" title="Permalink to this heading">#</a></h1>
+<h1>Adroit Relocate<a class="headerlink" href="#adroit-relocate" title="Link to this heading">#</a></h1>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/adroit_relocate.gif"><img alt="../../../_images/adroit_relocate.gif" src="../../../_images/adroit_relocate.gif" style="width: 200px;" /></a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1709.10087">“Learning Complex Dexterous Manipulation with Deep Reinforcement Learning and Demonstrations”</a>
 by Aravind Rajeswaran, Vikash Kumar, Abhishek Gupta, Giulia Vezzani, John Schulman, Emanuel Todorov, and Sergey Levine.</p>
 <p>The environment is based on the <a class="reference external" href="https://github.com/vikashplus/Adroit">Adroit manipulation platform</a>, a30 degree of freedom system which consists of a 24 degrees of freedom
@@ -330,7 +330,7 @@ ShadowHand and a 6 degree of freedom arm. The task to be completed consists on m
 workspace. The task will be considered successful when the object is within epsilon-ball of the target.</p>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(30,),</span> <span class="pre">float32)</span></code>. The control actions are absolute angular positions of the Adroit hand joints. The input of the control actions is set to a range between -1 and 1 by scaling the real actuator angle ranges in radians.
 The elements of the action array are the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -653,7 +653,7 @@ The elements of the action array are the following:</p>
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
 <p>The observation space is of the type <code class="docutils literal notranslate"><span class="pre">Box(-inf,</span> <span class="pre">inf,</span> <span class="pre">(39,),</span> <span class="pre">float64)</span></code>. It contains information about the angular position of the finger joints, the pose of the palm of the hand, as well as kinematic information about the ball and target.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -1025,7 +1025,7 @@ The elements of the action array are the following:</p>
 </div>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
 <p>The environment can be initialized in either a <code class="docutils literal notranslate"><span class="pre">dense</span></code> or <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">dense</span></code> reward setting, the environment returns a <code class="docutils literal notranslate"><span class="pre">dense</span></code> reward function that consists of the following parts:</p>
 <ul class="simple">
@@ -1043,7 +1043,7 @@ This penalty is scaled by a factor of <code class="docutils literal notranslate"
 In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
 <p>The ball is set randomly over the table at reset. The ranges of the uniform distribution from which the position is samples are <code class="docutils literal notranslate"><span class="pre">[-0.15,0.15]</span></code> for the <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate, and <code class="docutils literal notranslate"><span class="pre">[-0.15,0.3]</span></code> got the <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate.
 The target position is also sampled from uniform distributions with ranges <code class="docutils literal notranslate"><span class="pre">[-0.2,0.2]</span></code> for the <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate, <code class="docutils literal notranslate"><span class="pre">[-0.2,0.2]</span></code> for the <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate, and <code class="docutils literal notranslate"><span class="pre">[0.15,0.35]</span></code> for the <code class="docutils literal notranslate"><span class="pre">z</span></code> coordinate.</p>
 <p>The joint values of the environment are deterministically initialized to a zero.</p>
@@ -1058,12 +1058,12 @@ with the <code class="docutils literal notranslate"><span class="pre">initial_st
 <p>The state of the simulation can also be set at any step with the <code class="docutils literal notranslate"><span class="pre">env.set_env_state(initial_state_dict)</span></code> method.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
 <p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 200 timesteps.
 The episode is never <code class="docutils literal notranslate"><span class="pre">terminated</span></code> since the task is continuing with infinite horizon.</p>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
 <p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 400 make the environment as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
@@ -1072,7 +1072,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>v1: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
@@ -1244,9 +1244,9 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -1377,7 +1377,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -1392,7 +1392,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })

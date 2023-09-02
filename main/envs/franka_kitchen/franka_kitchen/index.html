@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="MaMuJoCo (Multi-Agent MuJoCo)" href="../../MaMuJoCo/" /><link rel="prev" title="Franka Kitchen" href="../" />
         <link rel="canonical" href="https://robotics.farama.org/envs/franka_kitchen/franka_kitchen.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Franka Kitchen - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -317,12 +317,12 @@
           <article role="main">
             
             <section id="franka-kitchen">
-<h1>Franka Kitchen<a class="headerlink" href="#franka-kitchen" title="Permalink to this heading">#</a></h1>
+<h1>Franka Kitchen<a class="headerlink" href="#franka-kitchen" title="Link to this heading">#</a></h1>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/franka_kitchen.gif"><img alt="../../../_images/franka_kitchen.gif" src="../../../_images/franka_kitchen.gif" style="width: 200px;" /></a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1910.11956">“Relay policy learning: Solving long-horizon tasks via imitation and reinforcement learning”</a>
 by Abhishek Gupta, Vikash Kumar, Corey Lynch, Sergey Levine, Karol Hausman.</p>
 <p>The environment is based on the 9 degrees of freedom <a class="reference external" href="https://www.franka.de/">Franka robot</a>. The Franka robot is placed in a kitchen environment containing several common
@@ -331,7 +331,7 @@ mentioned items in order to reach a desired goal configuration. For example, one
 and the overhead light on. The goal tasks can be configured when the environment is created.</p>
 </section>
 <section id="goal">
-<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading">#</a></h2>
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading">#</a></h2>
 <p>The goal has a multitask configuration. The multiple tasks to be completed in an episode can be set by passing a list of tasks to the argument<code class="docutils literal notranslate"><span class="pre">tasks_to_complete</span></code>. For example, to open
 the microwave door and move the kettle create the environment as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
@@ -389,7 +389,7 @@ the microwave door and move the kettle create the environment as follows:</p>
 </div>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
 <p>The default joint actuators in the Franka MuJoCo model are position controlled. However, the action space of the environment are joint velocities clipped between -1 and 1 rad/s.
 The space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(9,),</span> <span class="pre">float32)</span></code>. The desired joint position control input is estimated in each time step with the current joint position values and the desired velocity
 action:</p>
@@ -473,7 +473,7 @@ action:</p>
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span></code> observation space. The observation space contains the following keys:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: this is a <code class="docutils literal notranslate"><span class="pre">Box(-inf,</span> <span class="pre">inf,</span> <span class="pre">shape=(59,),</span> <span class="pre">dtype=&quot;float64&quot;)</span></code> space and it is formed by the robot’s joint positions and velocities, as well as
@@ -976,7 +976,7 @@ current joint configuration of each joint in the task.</p></li>
 </ul>
 </section>
 <section id="info">
-<h2>Info<a class="headerlink" href="#info" title="Permalink to this heading">#</a></h2>
+<h2>Info<a class="headerlink" href="#info" title="Link to this heading">#</a></h2>
 <p>The environment also returns an <code class="docutils literal notranslate"><span class="pre">info</span></code> dictionary in each Gymnasium step. The keys are:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">tasks_to_complete</span></code> (list[str]): list of tasks that haven’t yet been completed in the current episode.</p></li>
@@ -985,22 +985,22 @@ current joint configuration of each joint in the task.</p></li>
 </ul>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
 <p>The environment’s reward is <code class="docutils literal notranslate"><span class="pre">sparse</span></code>. The reward in each Gymnasium step is equal to the number of task completed in the given step. If no task is completed the returned reward will be zero.
 The tasks are considered completed when their joint configuration is within a norm threshold of <code class="docutils literal notranslate"><span class="pre">0.3</span></code> with respect to the goal configuration specified in the <code class="docutils literal notranslate"><span class="pre">Goal</span></code> section.</p>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
 <p>The simulation starts with all of the joint position actuators of the Franka robot set to zero. The doors of the microwave and cabinets are closed, the burners turned off, and the light switch also off. The kettle
 will be placed in the bottom left burner.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
 <p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 280 timesteps.
 The episode is <code class="docutils literal notranslate"><span class="pre">terminated</span></code> when all the tasks have been completed unless the <code class="docutils literal notranslate"><span class="pre">terminate_on_tasks_completed</span></code> argument is set to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
 <p>The following arguments can be passed when initializing the environment with <code class="docutils literal notranslate"><span class="pre">gymnasium.make</span></code> kwargs:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -1047,7 +1047,7 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>v1: updated version with most recent python MuJoCo bindings.</p></li>
 <li><p>v0: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
@@ -1221,9 +1221,9 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
         })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -1354,7 +1354,7 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -1369,7 +1369,7 @@ The episode is <code class="docutils literal notranslate"><span class="pre">term
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })
