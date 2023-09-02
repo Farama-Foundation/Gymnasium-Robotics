@@ -230,6 +230,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
             maze_height=0.5,
             reward_type=reward_type,
             continuing_task=continuing_task,
+            reset_target=reset_target,
             **kwargs,
         )
         # Create the MuJoCo environment, include position observation of the Ant for GoalEnv
