@@ -238,6 +238,7 @@ class MazeEnv(GoalEnv):
         agent_xml_path: str,
         reward_type: str = "dense",
         continuing_task: bool = True,
+        reset_target: bool = True,
         maze_map: List[List[Union[int, str]]] = U_MAZE,
         maze_size_scaling: float = 1.0,
         maze_height: float = 0.5,
@@ -247,6 +248,7 @@ class MazeEnv(GoalEnv):
 
         self.reward_type = reward_type
         self.continuing_task = continuing_task
+        self.reset_target = reset_target
         self.maze, self.tmp_xml_file_path = Maze.make_maze(
             agent_xml_path, maze_map, maze_size_scaling, maze_height
         )
@@ -375,6 +377,7 @@ class MazeEnv(GoalEnv):
         """Update goal position if continuing task and within goal radius."""
         if (
             self.continuing_task
+            and self.reset_target
             and bool(np.linalg.norm(achieved_goal - self.goal) <= 0.45)
             and len(self.maze.unique_goal_locations) > 1
         ):
