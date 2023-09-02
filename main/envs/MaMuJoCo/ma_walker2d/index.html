@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Single Action Environments" href="../ma_single/" /><link rel="prev" title="Pusher" href="../ma_pusher/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_walker2d.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Walker2d - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -326,7 +326,7 @@
           <article role="main">
             
             <section id="walker2d">
-<h1>Walker2d<a class="headerlink" href="#walker2d" title="Permalink to this heading">#</a></h1>
+<h1>Walker2d<a class="headerlink" href="#walker2d" title="Link to this heading">#</a></h1>
 <html>
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/walker2d.gif" alt="Walker2D" width="200"/>
@@ -335,10 +335,10 @@
 <p>This Environment is part of <a class="reference external" href="https://robotics.farama.org/envs/MaMuJoCo/">MaMuJoCo</a> environments. Please read that page first for general information.
 The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/walker2d/">Gymansium’s MuJoCo/Walker2D</a>.</p>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
 <p>The action spaces is depended on the partitioning</p>
 <section id="if-partitioning-is-none">
-<h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Permalink to this heading">#</a></h3>
+<h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="id1">
 <img alt="../../../_images/walker2d.png" src="../../../_images/walker2d.png" />
 </figure>
@@ -432,7 +432,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </div>
 </section>
 <section id="if-partitioning-2x3-isolate-right-and-left-foot">
-<h3>if partitioning == “2x3”:  # isolate right and left foot<a class="headerlink" href="#if-partitioning-2x3-isolate-right-and-left-foot" title="Permalink to this heading">#</a></h3>
+<h3>if partitioning == “2x3”:  # isolate right and left foot<a class="headerlink" href="#if-partitioning-2x3-isolate-right-and-left-foot" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="walker2d-2x3">
 <img alt="../../../_images/walker2d_2x3.png" src="../../../_images/walker2d_2x3.png" />
 </figure>
@@ -461,7 +461,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </div>
 <p>The environment is partitioned in 2 parts, one part corresponding to the right leg, and one part corresponding to the left leg.</p>
 <section id="agent-0-action-space-right-leg">
-<h4>Agent 0 action space (right leg)<a class="headerlink" href="#agent-0-action-space-right-leg" title="Permalink to this heading">#</a></h4>
+<h4>Agent 0 action space (right leg)<a class="headerlink" href="#agent-0-action-space-right-leg" title="Link to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -504,7 +504,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </div>
 </section>
 <section id="agent-1-action-space-left-leg">
-<h4>Agent 1 action space (left leg)<a class="headerlink" href="#agent-1-action-space-left-leg" title="Permalink to this heading">#</a></h4>
+<h4>Agent 1 action space (left leg)<a class="headerlink" href="#agent-1-action-space-left-leg" title="Link to this heading">#</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -549,7 +549,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 </section>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -574,19 +574,19 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 See more at the <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/walker2d/#observation-space">Gymnasium’s Walker2D</a>.</p>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
 <p>All agents receive the same <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/walker2d/#observation-space">Gymnasium’s Walker2D</a> reward.</p>
 </section>
 <section id="starting-state">
-<h2>Starting state<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
 <p>The starting state of the environment is the as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/walker2d/#starting-state">Gymnasium’s Walker2D</a>.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
 <p>All agent terminate and truncate at the same time given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/walker2d/#episode-end">Gymnasium’s Walker2D</a>.</p>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
 Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
@@ -746,9 +746,9 @@ Changes from the original <code class="docutils literal notranslate"><span class
         })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -879,7 +879,7 @@ Changes from the original <code class="docutils literal notranslate"><span class
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -894,7 +894,7 @@ Changes from the original <code class="docutils literal notranslate"><span class
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })

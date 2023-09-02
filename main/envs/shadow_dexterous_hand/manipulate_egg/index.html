@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Manipulate Egg Touch Sensors" href="../manipulate_egg_touch_sensors/" /><link rel="prev" title="Manipulate Block Touch Sensors" href="../manipulate_block_touch_sensors/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/shadow_dexterous_hand/manipulate_egg.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Manipulate Egg - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -317,12 +317,12 @@
           <article role="main">
             
             <section id="manipulate-egg">
-<h1>Manipulate Egg<a class="headerlink" href="#manipulate-egg" title="Permalink to this heading">#</a></h1>
+<h1>Manipulate Egg<a class="headerlink" href="#manipulate-egg" title="Link to this heading">#</a></h1>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/manipulate_egg.gif"><img alt="../../../_images/manipulate_egg.gif" src="../../../_images/manipulate_egg.gif" style="width: 200px;" /></a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1802.09464">“Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research”</a>.</p>
 <p>The environment is based on the same robot hand as in the <code class="docutils literal notranslate"><span class="pre">HandReach</span></code> environment, the <a class="reference external" href="https://www.shadowrobot.com/">Shadow Dexterous Hand</a>. The task to be solved is
 very similar to that in the <code class="docutils literal notranslate"><span class="pre">HandManipulateBlock</span></code> environment, but in this case an egg-shaped object is placed on the palm of the hand. The task is to then manipulate
@@ -334,7 +334,7 @@ In addition, variations of this environment can be used with increasing levels o
 </ul>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(20,),</span> <span class="pre">float32)</span></code>. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control
 actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges. The elements of the action array are the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -557,7 +557,7 @@ actions is set to a range between -1 and 1 by scaling the actual actuator angle 
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s joint and egg states, as well as information about the goal.
 The dictionary consists of the following 3 keys:</p>
 <ul class="simple">
@@ -1222,7 +1222,7 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </div>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the egg hasn’t reached its final target pose, and <code class="docutils literal notranslate"><span class="pre">0</span></code> if the egg is in its final target pose. The egg is considered to have reached its final goal if the theta angle difference
@@ -1240,7 +1240,7 @@ However, for <code class="docutils literal notranslate"><span class="pre">dense<
 <p>The rest of the id’s of the other environment variations follow the same convention to select between a sparse or dense reward function.</p>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
 <p>When the environment is reset the joints of the hand are initialized to their resting position with a 0 displacement. The egg’s position and orientation are randomly selected. The initial position is set to <code class="docutils literal notranslate"><span class="pre">(x,y,z)=(1,</span> <span class="pre">0.87,</span> <span class="pre">0.2)</span></code> and an offset is added
 to each coordinate sampled from a normal distribution with 0 mean and 0.005 standard deviation.
 While the initial orientation is set to <code class="docutils literal notranslate"><span class="pre">(w,x,y,z)=(1,0,0,0)</span></code> and an axis is randomly selected depending on the environment variation to add an angle offset sampled from a uniform distribution with range <code class="docutils literal notranslate"><span class="pre">[-pi,</span> <span class="pre">pi]</span></code>.</p>
@@ -1248,12 +1248,12 @@ While the initial orientation is set to <code class="docutils literal notranslat
 The orientation offset is sampled from a uniform distribution with range <code class="docutils literal notranslate"><span class="pre">[-pi,pi]</span></code> and added to one of the Euler axis depending on the environment variation.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
 <p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 50 timesteps.
 The episode is never <code class="docutils literal notranslate"><span class="pre">terminated</span></code> since the task is continuing with infinite horizon.</p>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
 <p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
@@ -1263,7 +1263,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 <p>The same applies for the other environment variations.</p>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>v1: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
@@ -1435,9 +1435,9 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -1568,7 +1568,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -1583,7 +1583,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })

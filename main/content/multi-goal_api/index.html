@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../genindex/" /><link rel="search" title="Search" href="../../search/" /><link rel="next" title="Fetch" href="../../envs/fetch/" /><link rel="prev" title="Installation" href="../installation/" />
         <link rel="canonical" href="https://robotics.farama.org/content/multi-goal_api.html" />
 
-    <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.1.2 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Multi-goal API - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=362ab14a" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=2b6f8eb5452c44539a42dd9ada0a48f56e5f404d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=d98e5db1aa483f10fd0a50bf79700ebb0c5bab79" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -326,7 +326,7 @@
           <article role="main">
             
             <section id="multi-goal-api">
-<h1>Multi-goal API<a class="headerlink" href="#multi-goal-api" title="Permalink to this heading">#</a></h1>
+<h1>Multi-goal API<a class="headerlink" href="#multi-goal-api" title="Link to this heading">#</a></h1>
 <p>The robotic environments use an extension of the core Gymansium API by inheriting from <a class="reference external" href="https://robotics.farama.org/envs/#">GoalEnv</a> class. The new API forces the environments to have a dictionary observation space that contains 3 keys:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code> - The actual observation of the environment</p></li>
@@ -357,11 +357,11 @@ goal, e.g. state derived from the simulation.</p>
 </pre></div>
 </div>
 <section id="goalenv">
-<h2>GoalEnv<a class="headerlink" href="#goalenv" title="Permalink to this heading">#</a></h2>
+<h2>GoalEnv<a class="headerlink" href="#goalenv" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">GoalEnv</span></code> class can also be used for custom environments.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.</span></span><span class="sig-name descname"><span class="pre">GoalEnv</span></span><a class="reference internal" href="../../_modules/gymnasium_robotics/core/#GoalEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.</span></span><span class="sig-name descname"><span class="pre">GoalEnv</span></span><a class="reference internal" href="../../_modules/gymnasium_robotics/core/#GoalEnv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv" title="Link to this definition">#</a></dt>
 <dd><p>A goal-based environment.</p>
 <p>It functions just as any regular Gymnasium environment but it imposes a required structure on the observation_space. More concretely,
 the observation space is required to contain at least three elements, namely <cite>observation</cite>, <cite>desired_goal</cite>, and <cite>achieved_goal</cite>.
@@ -375,10 +375,10 @@ Here, <cite>desired_goal</cite> specifies the goal that the agent should attempt
 </dd></dl>
 
 <section id="methods">
-<h3>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h3>
+<h3>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h3>
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_reward">
-<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_reward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_reward" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_reward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_reward" title="Link to this definition">#</a></dt>
 <dd><p>Compute the step reward. This externalizes the reward function and makes it dependent on a desired goal and the one that was achieved.</p>
 <p>If you wish to include additional rewards that are independent of the goal, you can include the necessary values
 to derive it in ‘info’ and compute it accordingly.</p>
@@ -402,7 +402,7 @@ assert reward == env.compute_reward(ob[‘achieved_goal’], ob[‘desired_goal�
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_terminated">
-<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_terminated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_terminated" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_terminated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_terminated" title="Link to this definition">#</a></dt>
 <dd><p>Compute the step termination. Allows to customize the termination states depending on the desired and the achieved goal.</p>
 <p>If you wish to determine termination states independent of the goal, you can include necessary values to derive it in ‘info’
 and compute it accordingly. The envirtonment reaches a termination state when this state leads to an episode ending in an episodic
@@ -429,7 +429,7 @@ assert terminated == env.compute_terminated(ob[‘achieved_goal’], ob[‘desir
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gymnasium_robotics.core.GoalEnv.compute_truncated">
-<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_truncated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_truncated" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gymnasium_robotics.core.GoalEnv.</span></span><span class="sig-name descname"><span class="pre">compute_truncated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">achieved_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_goal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gymnasium_robotics.core.GoalEnv.compute_truncated" title="Link to this definition">#</a></dt>
 <dd><p>Compute the step truncation. Allows to customize the truncated states depending on the desired and the achieved goal.</p>
 <p>If you wish to determine truncated states independent of the goal, you can include necessary values to derive it in ‘info’
 and compute it accordingly. Truncated states are those that are out of the scope of the Markov Decision Process (MDP) such
@@ -601,9 +601,9 @@ assert truncated == env.compute_truncated(ob[‘achieved_goal’], ob[‘desired
         })()
       </script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e3994538"></script>
+    <script src="../../_static/documentation_options.js?v=348dacf0"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
@@ -734,7 +734,7 @@ assert truncated == env.compute_truncated(ob[‘achieved_goal’], ob[‘desired
             const subSectionContainerElem = Object.assign(
                 document.createElement('div'), {
                   className:'farama-header-menu__subsections-container',
-                  style: key == "Mature Projects" ? "display: flex" : ""
+                  style: 'display: flex'
                 }
             )
             Object.keys(subSections).forEach((subKey, i) => {
@@ -749,7 +749,7 @@ assert truncated == env.compute_truncated(ob[‘achieved_goal’], ob[‘desired
                   innerText: subKey
                 }
               ))
-              const ulElem = createProjectsList(subSections[subKey], key !== "Foundation");
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
               subSectionElem.appendChild(ulElem);
               subSectionContainerElem.appendChild(subSectionElem);
             })
