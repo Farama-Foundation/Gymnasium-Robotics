@@ -355,7 +355,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         desired_goal: "dict[str, np.ndarray]",
         info: "dict[str, Any]",
     ):
-        for task in info["tasks_to_complete"]:
+        for task in self.tasks_to_complete:
             distance = np.linalg.norm(achieved_goal[task] - desired_goal[task])
             complete = distance < BONUS_THRESH
             if complete:
@@ -394,8 +394,7 @@ class KitchenEnv(GoalEnv, EzPickle):
     def step(self, action):
         robot_obs, _, terminated, truncated, info = self.robot_env.step(action)
         obs = self._get_obs(robot_obs)
-        info = {"tasks_to_complete": list(self.tasks_to_complete)}
-
+        
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
 
         if self.remove_task_when_completed:
@@ -405,6 +404,7 @@ class KitchenEnv(GoalEnv, EzPickle):
                 for element in self.step_task_completions
             ]
 
+        info = {"tasks_to_complete": list(self.tasks_to_complete)}
         info["step_task_completions"] = self.step_task_completions.copy()
 
         for task in self.step_task_completions:
