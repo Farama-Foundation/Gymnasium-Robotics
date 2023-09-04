@@ -375,6 +375,7 @@ class MazeEnv(GoalEnv):
 
     def update_goal(self, achieved_goal: np.ndarray) -> None:
         """Update goal position if continuing task and within goal radius."""
+
         if (
             self.continuing_task
             and self.reset_target

@@ -258,13 +258,13 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
         self.render_mode = render_mode
-
         EzPickle.__init__(
             self,
             render_mode,
             maze_map,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 

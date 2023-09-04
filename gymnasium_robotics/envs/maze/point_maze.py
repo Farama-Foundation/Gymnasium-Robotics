@@ -310,7 +310,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
         render_mode: Optional[str] = None,
         reward_type: str = "sparse",
         continuing_task: bool = True,
-        reset_target: bool = False,
+        reset_target: bool = True,
         **kwargs,
     ):
         point_xml_file_path = path.join(
@@ -359,6 +359,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
             render_mode,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 
