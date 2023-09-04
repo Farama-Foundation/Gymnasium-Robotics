@@ -355,7 +355,8 @@ class KitchenEnv(GoalEnv, EzPickle):
         desired_goal: "dict[str, np.ndarray]",
         info: "dict[str, Any]",
     ):
-        for task in info["tasks_to_complete"]:
+        self.step_task_completions.clear()
+        for task in self.tasks_to_complete:
             distance = np.linalg.norm(achieved_goal[task] - desired_goal[task])
             complete = distance < BONUS_THRESH
             if complete:
@@ -394,7 +395,6 @@ class KitchenEnv(GoalEnv, EzPickle):
     def step(self, action):
         robot_obs, _, terminated, truncated, info = self.robot_env.step(action)
         obs = self._get_obs(robot_obs)
-        info = {"tasks_to_complete": list(self.tasks_to_complete)}
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
 
@@ -405,13 +405,13 @@ class KitchenEnv(GoalEnv, EzPickle):
                 for element in self.step_task_completions
             ]
 
+        info = {"tasks_to_complete": list(self.tasks_to_complete)}
         info["step_task_completions"] = self.step_task_completions.copy()
 
         for task in self.step_task_completions:
             if task not in self.episode_task_completions:
                 self.episode_task_completions.append(task)
         info["episode_task_completions"] = self.episode_task_completions
-        self.step_task_completions.clear()
         if self.terminate_on_tasks_completed:
             # terminate if there are no more tasks to complete
             terminated = len(self.episode_task_completions) == len(self.goal.keys())
@@ -423,9 +423,9 @@ class KitchenEnv(GoalEnv, EzPickle):
         self.episode_task_completions.clear()
         robot_obs, _ = self.robot_env.reset(seed=seed)
         obs = self._get_obs(robot_obs)
-        self.task_to_complete = set(self.goal.keys())
+        self.tasks_to_complete = set(self.goal.keys())
         info = {
-            "tasks_to_complete": self.task_to_complete,
+            "tasks_to_complete": list(self.tasks_to_complete),
             "episode_task_completions": [],
             "step_task_completions": [],
         }
