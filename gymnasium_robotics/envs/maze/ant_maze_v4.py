@@ -217,7 +217,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         maze_map: List[List[Union[str, int]]] = U_MAZE,
         reward_type: str = "sparse",
         continuing_task: bool = True,
-        reset_target: bool = True,
+        reset_target: bool = False,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package
