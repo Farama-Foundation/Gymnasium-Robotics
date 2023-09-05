@@ -217,7 +217,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         maze_map: List[List[Union[str, int]]] = U_MAZE,
         reward_type: str = "sparse",
         continuing_task: bool = True,
-        reset_target: bool = True,
+        reset_target: bool = False,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package
@@ -258,13 +258,13 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
         self.render_mode = render_mode
-
         EzPickle.__init__(
             self,
             render_mode,
             maze_map,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 

@@ -221,6 +221,15 @@ class Maze:
             # If there are no given "r", "g" or "c" cells in the maze data structure,
             # any empty cell can be a reset or goal location at initialization.
             maze._combined_locations = empty_locations
+        elif not maze._unique_reset_locations and not maze._combined_locations:
+            # If there are no given "r" or "c" cells in the maze data structure,
+            # any empty cell can be a reset location at initialization.
+            maze._unique_reset_locations = empty_locations
+        elif not maze._unique_goal_locations and not maze._combined_locations:
+            # If there are no given "g" or "c" cells in the maze data structure,
+            # any empty cell can be a gaol location at initialization.
+            maze._unique_goal_locations = empty_locations
+
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
@@ -375,6 +384,7 @@ class MazeEnv(GoalEnv):
 
     def update_goal(self, achieved_goal: np.ndarray) -> None:
         """Update goal position if continuing task and within goal radius."""
+
         if (
             self.continuing_task
             and self.reset_target

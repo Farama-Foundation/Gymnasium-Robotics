@@ -359,6 +359,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
             render_mode,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 
