@@ -51,9 +51,9 @@ for entry_point in tqdm(entry_points):
     if len(split_entrypoint) == 3:
         env_type = split_entrypoint[-1]
         env_name = split_entrypoint[-1]
-    
+
     # Remove file version from env_name
-    env_name = re.sub('_v(?P<version>\d+)', '', env_name)
+    env_name = re.sub(r"(?:_v(?P<version>\d+))", "", env_name)
     title_env_name = env_name.replace("_", " ").title()
 
     v_path = os.path.join(
