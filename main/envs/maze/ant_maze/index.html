@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark">
@@ -11,11 +11,11 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Point Maze" href="../point_maze/" /><link rel="prev" title="Maze" href="../" />
         <link rel="canonical" href="https://robotics.farama.org/envs/maze/ant_maze.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.5 and Furo 2023.08.19.dev1 -->
         <title>Ant Maze - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=a022fd11c0d7e10ac71ac296890386cea7a2fa24" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=6342a809aabeb35cfac296000cfa245808bc1d78" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
     
     
 
@@ -53,18 +53,6 @@
               <line x1="0.232" y1="12" x2="23.5" y2="12"></line>
               <line x1="0.232" y1="20" x2="23.5" y2="20"></line>
             </svg>
-            <!-- <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <line x1="0.5" y1="4.5" x2="23.5" y2="4.5" style="fill: none; "></line>
-              <line x1="0.5" y1="12" x2="14" y2="12" ></line>
-              <line x1="0.5" y1="19.5" x2="23.5" y2="19.5"></line>
-              <polyline style="stroke-width: 0px;" points="17 7 22 12 17 17"></polyline>
-            </svg> -->
-            <!-- <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:20px">
-              <defs></defs>
-              <rect y="1" width="22" height="22" rx="2" ry="2" style="fill: none;" x="1"></rect>
-              <line x1="8" y1="1" x2="8" y2="23"></line>
-              <polyline style="stroke-linecap: round; fill: none; stroke-linejoin: round;" points="13 7 17 12 13 17"></polyline>
-            </svg> -->
           </label>
         </div>
         <div class="farama-header__left farama-header__center--mobile">
@@ -329,46 +317,46 @@
           <article role="main">
             
             <section id="ant-maze">
-<h1>Ant Maze<a class="headerlink" href="#ant-maze" title="Permalink to this heading">#</a></h1>
+<h1>Ant Maze<a class="headerlink" href="#ant-maze" title="Link to this heading">#</a></h1>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../../../_images/ant_maze.gif"><img alt="../../../_images/ant_maze.gif" src="../../../_images/ant_maze.gif" style="width: 200px;" /></a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
 <p>This environment was refactored from the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a> repository, introduced by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, and Sergey Levine
 in <a class="reference external" href="https://arxiv.org/abs/2004.07219">“D4RL: Datasets for Deep Data-Driven Reinforcement Learning”</a>.</p>
 <p>The tasks found in the <code class="docutils literal notranslate"><span class="pre">AntMaze</span></code> environments are the same as the ones in the <code class="docutils literal notranslate"><span class="pre">PointMaze</span></code> environments. However, in this case the agent is the Ant quadruped from the main <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/ant/">Gymnaisum</a> repository.
 The control frequency of the ant is of <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">20</span> <span class="pre">Hz</span></code>. Each simulation timestep is of <code class="docutils literal notranslate"><span class="pre">dt=0.01</span></code> and the ant robot repeats the same action for 5 simulation steps.</p>
 </section>
 <section id="maze-variations">
-<h2>Maze Variations<a class="headerlink" href="#maze-variations" title="Permalink to this heading">#</a></h2>
+<h2>Maze Variations<a class="headerlink" href="#maze-variations" title="Link to this heading">#</a></h2>
 <section id="maze-size">
-<h3>Maze size<a class="headerlink" href="#maze-size" title="Permalink to this heading">#</a></h3>
+<h3>Maze size<a class="headerlink" href="#maze-size" title="Link to this heading">#</a></h3>
 <p>The map variations for the mazes are the same as for <code class="docutils literal notranslate"><span class="pre">PointMaze</span></code>. The ant environments with fixed goal and reset locations are the following:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v3</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze-v3</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze-v4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze-v4</span></code></p></li>
 </ul>
 </section>
 <section id="diverse-goal-mazes">
-<h3>Diverse goal mazes<a class="headerlink" href="#diverse-goal-mazes" title="Permalink to this heading">#</a></h3>
+<h3>Diverse goal mazes<a class="headerlink" href="#diverse-goal-mazes" title="Link to this heading">#</a></h3>
 <p>The environments with fixed reset position for the ant and randomly selected goals, also known as diverse goal, are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DG-v3</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DG-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DG-v4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DG-v4</span></code></p></li>
 </ul>
 </section>
 <section id="diverse-goal-and-reset-mazes">
-<h3>Diverse goal and reset mazes<a class="headerlink" href="#diverse-goal-and-reset-mazes" title="Permalink to this heading">#</a></h3>
+<h3>Diverse goal and reset mazes<a class="headerlink" href="#diverse-goal-and-reset-mazes" title="Link to this heading">#</a></h3>
 <p>Finally, the environments that select the reset and goal locations randomly are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DGR-v3</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DGR-v3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_BigMaze_DGR-v4</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AntMaze_HardestMaze_DGR-v4</span></code></p></li>
 </ul>
 </section>
 <section id="custom-maze">
-<h3>Custom maze<a class="headerlink" href="#custom-maze" title="Permalink to this heading">#</a></h3>
+<h3>Custom maze<a class="headerlink" href="#custom-maze" title="Link to this heading">#</a></h3>
 <p>Also, any of the <code class="docutils literal notranslate"><span class="pre">AntMaze</span></code> environments can be initialized with a custom maze map by setting the <code class="docutils literal notranslate"><span class="pre">maze_map</span></code> argument like follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
@@ -376,13 +364,13 @@ The control frequency of the ant is of <code class="docutils literal notranslate
        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">,</span> <span class="n">maze_map</span><span class="o">=</span><span class="n">example_map</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v4&#39;</span><span class="p">,</span> <span class="n">maze_map</span><span class="o">=</span><span class="n">example_map</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Permalink to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1,</span> <span class="pre">1,</span> <span class="pre">(8,),</span> <span class="pre">float32)</span></code>. An action represents the torques applied at the hinge joints.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -466,7 +454,7 @@ The control frequency of the ant is of <code class="docutils literal notranslate
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Permalink to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s position and goal. The dictionary consists of the following 3 keys:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: Observations consist of positional values of different body parts of the ant, followed by the velocities of those individual parts (their derivatives) with all
@@ -775,22 +763,22 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </ul>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">0</span></code> if the ant hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">1</span></code> if the ant is in the final target position (the ant is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).</p></li>
 <li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
 </ul>
-<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">PointMaze_UMaze-v3</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
-reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">AntMaze_UMazeDense-v3</span></code> and initialized as follows:</p>
+<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v4</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
+reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">AntMaze_UMazeDense-v4</span></code> and initialized as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v4&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Permalink to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
 <p>The goal and initial placement of the ant in the maze follows the same structure for all environments. A discrete cell <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> is selected for the goal and agent’s initial position as previously menitoned in the <strong>Maze</strong> section.
 Then this cell index is converted to its cell center as an <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> continuous Cartesian coordinates in the MuJoCo simulation. Finally, a sampled noise from a uniform distribution with range <code class="docutils literal notranslate"><span class="pre">[-0.25,0.25]m</span></code> is added to the
 cell’s center x and y coordinates. This allows to create a richer goal distribution.</p>
@@ -802,7 +790,7 @@ the following keys:</p>
 </ul>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Permalink to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">truncated</span></code> - The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">terminated</span></code> - The task can be set to be continuing with the <code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> argument. In this case the episode will never terminate, instead the goal location is randomly selected again. If the task is set not to be continuing the
@@ -810,23 +798,25 @@ episode will be terminated when the Euclidean distance to the goal is less or eq
 </ul>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maze_map</span></code> - Optional argument to initialize the environment with a custom maze map.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> - If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> the episode won’t be terminated when reaching the goal, instead a new goal location will be generated. If <code class="docutils literal notranslate"><span class="pre">False</span></code> the environment is terminated when the ant reaches the final goal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> - If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> the episode won’t be terminated when reaching the goal, instead a new goal location will be generated (unless <code class="docutils literal notranslate"><span class="pre">reset_target</span></code> argument is <code class="docutils literal notranslate"><span class="pre">True</span></code>). If <code class="docutils literal notranslate"><span class="pre">False</span></code> the environment is terminated when the ant reaches the final goal.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_target</span></code> - If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> and the argument <code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> is also <code class="docutils literal notranslate"><span class="pre">True</span></code>, when the ant reaches the target goal the location of the goal will be kept the same and no new goal location will be generated. If <code class="docutils literal notranslate"><span class="pre">False</span></code> a new goal will be generated when reached.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> - If <code class="docutils literal notranslate"><span class="pre">True</span></code> contact forces of the ant are included in the <code class="docutils literal notranslate"><span class="pre">observation</span></code>.</p></li>
 </ul>
 <p>Note that, the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> can be increased or decreased by specifying the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument at initialization. For example,
 to increase the total number of timesteps to 100 make the environment as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v3&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AntMaze_UMaze-v4&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Permalink to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
 <ul class="simple">
+<li><p>v4: Update to maze_v4. Refactor compute_terminated in MazeEnv into a pure function compute_terminated and a new function update_goal which resets the goal position. Ant bug fix: Reward is now computed before reset (i.e. sparse reward is not always zero). Maze bug fix: Ant can no longer reset within the goal radius 0.45 due to maze_size_scaling factor missing in MazeEnv. info[‘success’] key added.</p></li>
 <li><p>v3: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v2 &amp; v1: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
 </ul>
@@ -950,46 +940,97 @@ to increase the total number of timesteps to 100 make the environment as follows
     </script>
 
     
-    <script>
-          (() => {
-              if (!localStorage.getItem("shownCookieAlert")) {
-                  const boxElem = document.createElement("div");
-                  boxElem.classList.add("cookie-alert");
-                  const containerElem = document.createElement("div");
-                  containerElem.classList.add("cookie-alert__container");
-                  const textElem = document.createElement("p");
-                  textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
-                                      Google Analytics</a> to collect statistics. You can disable it by blocking
-                                      the JavaScript coming from www.google-analytics.com.`;
-                                      containerElem.appendChild(textElem);
-                  const closeBtn = document.createElement("button");
-                  closeBtn.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style></defs><title/><g id="cross"><line class="cls-1" x1="7" x2="25" y1="7" y2="25"/><line class="cls-1" x1="7" x2="25" y1="25" y2="7"/></g></svg>`
-                  closeBtn.onclick = () => {
-                      localStorage.setItem("shownCookieAlert", "true");
-                      boxElem.style.display = "none";
-                  }
-                  containerElem.appendChild(closeBtn);
-                  boxElem.appendChild(containerElem);
-                  document.body.appendChild(boxElem);
-              }
-          })()
-      </script>
-
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-M37ZN7PPMN"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M37ZN7PPMN"></script>
       <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        const enableGtag = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-M37ZN7PPMN');
+        }
+        (() => {
+            if (!localStorage.getItem("acceptedCookieAlert")) {
+                const boxElem = document.createElement("div");
+                boxElem.classList.add("cookie-alert");
+                const containerElem = document.createElement("div");
+                containerElem.classList.add("cookie-alert__container");
+                const textElem = document.createElement("p");
+                textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
+                                    Google Analytics</a> to collect statistics.`;
+                                    containerElem.appendChild(textElem);
 
-        gtag('config', 'G-M37ZN7PPMN');
+                const declineBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Deny",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__decline",
+                  }
+                );
+                declineBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", false);
+                  boxElem.remove();
+                });
+
+                const acceptBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Allow",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__accept",
+                  }
+                );
+                acceptBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", true);
+                  boxElem.remove();
+                  enableGtag();
+                });
+
+                containerElem.appendChild(declineBtn);
+                containerElem.appendChild(acceptBtn);
+                boxElem.appendChild(containerElem);
+                document.body.appendChild(boxElem);
+            } else if (localStorage.getItem("acceptedCookieAlert") === "true") {
+              enableGtag();
+            }
+        })()
       </script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/scripts/furo.js"></script>
+    <script src="../../../_static/documentation_options.js?v=348dacf0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
     <script>
+
+      const createProjectsList = (projects, displayImages) => {
+        const ulElem = Object.assign(document.createElement('ul'),
+          {
+            className:'farama-header-menu-list',
+          }
+        )
+        for (let project of projects) {
+          const liElem = document.createElement("li");
+          const aElem = Object.assign(document.createElement("a"),
+            {
+              href: project.link
+            }
+          );
+          liElem.appendChild(aElem);
+          if (displayImages) {
+            const imgElem = Object.assign(document.createElement("img"),
+              {
+                src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
+                alt: `${project.name} logo`,
+                className: "farama-black-logo-invert"
+              }
+            );
+            aElem.appendChild(imgElem);
+          }
+          aElem.appendChild(document.createTextNode(project.name));
+          ulElem.appendChild(liElem);
+        }
+        return ulElem;
+      }
+
       // Create menu with Farama projects by using the API at farama.org/api/projects.json
       const createCORSRequest = (method, url) => {
         let xhr = new XMLHttpRequest();
@@ -1016,9 +1057,15 @@ to increase the total number of timesteps to 100 make the environment as follows
       xhr.onload = () => {
         const jsonResponse = xhr.response;
         const sections = {
-          "Documentation": [],
-          "Mature Projects": [],
-          "Incubating Projects": [],
+          "Core Projects": [],
+          "Mature Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
+          "Incubating Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
           "Foundation": [
             {
               name: "About",
@@ -1034,28 +1081,38 @@ to increase the total number of timesteps to 100 make the environment as follows
             }
           ]
         }
+
+        // Categorize projects
         Object.keys(jsonResponse).forEach(key => {
           projectJson = jsonResponse[key];
           if (projectJson.website !== null) {
             projectJson.link = projectJson.website;
-            sections["Documentation"].push(projectJson)
-          } else if (projectJson.type == "mature") {
-            projectJson.link = projectJson.github;
-            sections["Mature Projects"].push(projectJson)
           } else {
             projectJson.link = projectJson.github;
-            sections["Incubating Projects"].push(projectJson)
+          }
+          if (projectJson.type === "core") {
+            sections["Core Projects"].push(projectJson)
+          } else if (projectJson.type == "mature") {
+            if (projectJson.website !== null) {
+              sections["Mature Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Mature Projects"]["Repositories"].push(projectJson)
+            }
+          } else {
+            if (projectJson.website !== null) {
+              sections["Incubating Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Incubating Projects"]["Repositories"].push(projectJson)
+            }
           }
         })
 
         const menuContainer = document.querySelector(".farama-header-menu__body");
 
         Object.keys(sections).forEach((key, i) => {
-          projects = sections[key];
           const sectionElem = Object.assign(
             document.createElement('div'), {
               className:'farama-header-menu__section',
-              style: "padding-left: 24px"
             }
           )
           sectionElem.appendChild(Object.assign(document.createElement('span'),
@@ -1064,33 +1121,37 @@ to increase the total number of timesteps to 100 make the environment as follows
               innerText: key
             }
           ))
-          const ulElem = Object.assign(document.createElement('ul'),
-            {
-              className:'farama-header-menu-list',
-            }
-          )
-          for (let project of projects) {
-            const liElem = document.createElement("li");
-            const aElem = Object.assign(document.createElement("a"),
-              {
-                href: project.link
-              }
-            );
-            liElem.appendChild(aElem);
-            if (key !== "Foundation") {
-              const imgElem = Object.assign(document.createElement("img"),
-                {
-                  src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
-                  alt: `${project.name} logo`,
-                  className: "farama-black-logo-invert"
+          // is not a list
+          if (sections[key].constructor !== Array) {
+            const subSections = sections[key];
+            const subSectionContainerElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsections-container',
+                  style: 'display: flex'
                 }
-              );
-              aElem.appendChild(imgElem);
-            }
-            aElem.appendChild(document.createTextNode(project.name));
-            ulElem.appendChild(liElem);
+            )
+            Object.keys(subSections).forEach((subKey, i) => {
+              const subSectionElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsection',
+                }
+              )
+              subSectionElem.appendChild(Object.assign(document.createElement('span'),
+                {
+                  className:'farama-header-menu__subsection-title' ,
+                  innerText: subKey
+                }
+              ))
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
+              subSectionElem.appendChild(ulElem);
+              subSectionContainerElem.appendChild(subSectionElem);
+            })
+            sectionElem.appendChild(subSectionContainerElem);
+          } else {
+            const projects = sections[key];
+            const ulElem = createProjectsList(projects, true);
+            sectionElem.appendChild(ulElem);
           }
-          sectionElem.appendChild(ulElem);
           menuContainer.appendChild(sectionElem)
         });
       }
