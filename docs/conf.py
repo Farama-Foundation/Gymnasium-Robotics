@@ -42,6 +42,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.viewcode",
     "myst_parser",
+    "sphinx_github_changelog",
 ]
 
 source_suffix = {
