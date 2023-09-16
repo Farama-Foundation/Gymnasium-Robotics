@@ -1,4 +1,5 @@
 import os
+import re
 
 import gymnasium as gym
 from tqdm import tqdm
@@ -30,6 +31,9 @@ if __name__ == "__main__":
         if len(split_entrypoint) == 3:
             env_type = split_entrypoint[-1]
             env_name = split_entrypoint[-1]
+
+        # Remove file version from env_name
+        env_name = re.sub(r"(?:_v(?P<version>\d+))", "", env_name)
 
         if env_type not in filtered_envs_by_type:
             filtered_envs_by_type[env_type] = [env_name]
