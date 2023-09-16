@@ -293,6 +293,12 @@ class MazeEnv(GoalEnv):
         seed: Optional[int] = None,
         options: Optional[Dict[str, Optional[np.ndarray]]] = None,
     ):
+        """Reset the maze simulation.
+
+        Args:
+            options (dict[str, np.ndarray]): the options dictionary can contain two items, "goal_cell" and "reset_cell" that will set the initial goal and reset location (i,j) in the self.maze.map list of list maze structure.
+
+        """
         super().reset(seed=seed)
 
         if options is None:
@@ -303,10 +309,10 @@ class MazeEnv(GoalEnv):
         else:
             if "goal_cell" in options and options["goal_cell"] is not None:
                 # assert that goal cell is valid
-                assert self.maze.map_length > options["goal_cell"][1]
-                assert self.maze.map_width > options["goal_cell"][0]
+                assert self.maze.map_length > options["goal_cell"][0]
+                assert self.maze.map_width > options["goal_cell"][1]
                 assert (
-                    self.maze.maze_map[options["goal_cell"][1]][options["goal_cell"][0]]
+                    self.maze.maze_map[options["goal_cell"][0]][options["goal_cell"][1]]
                     != 1
                 ), f"Goal can't be placed in a wall cell, {options['goal_cell']}"
 
@@ -320,11 +326,11 @@ class MazeEnv(GoalEnv):
 
             if "reset_cell" in options and options["reset_cell"] is not None:
                 # assert that goal cell is valid
-                assert self.maze.map_length > options["reset_cell"][1]
-                assert self.maze.map_width > options["reset_cell"][0]
+                assert self.maze.map_length > options["reset_cell"][0]
+                assert self.maze.map_width > options["reset_cell"][1]
                 assert (
-                    self.maze.maze_map[options["reset_cell"][1]][
-                        options["reset_cell"][0]
+                    self.maze.maze_map[options["reset_cell"][0]][
+                        options["reset_cell"][1]
                     ]
                     != 1
                 ), f"Reset can't be placed in a wall cell, {options['reset_cell']}"
