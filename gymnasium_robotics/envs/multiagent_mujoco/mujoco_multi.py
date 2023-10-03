@@ -503,25 +503,18 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return [[]]
 
-        if scenario in ["Ant-v4", "ManySegmentAnt"]:
-            # k_split = ["qpos,qvel,cfrc_ext", "qpos"]  # Gymansium.MuJoCo.Ant-v4 has disabled cfrc_ext by default
-            k_split = ["qpos,qvel", "qpos"]
-        elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
-            k_split = [
-                "qpos,qvel,cinert,cvel,qfrc_actuator,cfrc_ext",
-                "qpos",
-            ]
-        elif scenario in ["CoupledHalfCheetah-v4"]:
-            k_split = ["qpos,qvel,ten_J,ten_length,ten_velocity", "qpos"]
-        elif scenario in ["Reacher-v4"]:
-            k_split = ["qpos,qvel,fingertip_dist", "qpos"]
+        if scenario in ["Ant-v5", "ManySegmentAnt"]:
+            k_categories = [['qpos', 'qvel', 'cfrc_ext'], ['qpos']]
+        elif scenario in ["Humanoid-v5", "HumanoidStandup-v5"]:
+            k_categories = [['qpos', 'qvel', 'cinert', 'cvel', 'qfrc_actuator', 'cfrc_ext'], ['qpos']]
+        elif scenario in ["CoupledHalfCheetah-v5"]:
+            k_categories = [['qpos', 'qvel', 'ten_J', 'ten_length', 'ten_velocity'], ['qpos']]
+        elif scenario in ["Reacher-v5"]:
+            k_categories = [['qpos', 'qvel', 'fingertip_dist'], ['qpos']]
         else:
-            k_split = ["qpos,qvel", "qpos"]
+            k_categories = [['qpos', 'qvel'], ['qpos']]
 
-        categories = [
-            k_split[k if k < len(k_split) else -1].split(",")
-            for k in range(self.agent_obsk + 1)
-        ]
+        categories = [k_categories[k if k < len(k_categories) else -1] for k in range(self.agent_obsk + 1)]
         return categories
 
     def _generate_global_categories(self, scenario: str) -> tuple[str, ...]:
@@ -536,14 +529,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return ()
 
-        if scenario in ["Ant-v4", "ManySegmentAnt"]:
-            return ("qpos", "qvel")
-        elif scenario in ["Humanoid-v4", "HumanoidStandup-v4"]:
-            return ("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")
-        elif scenario in ["CoupledHalfCheetah-v4"]:
-            return ("qpos", "qvel")
-        else:
-            return ("qpos", "qvel")
+        return ("qpos", "qvel")
 
 
 # These are the export functions (for `PettingZoo` style exportations)
