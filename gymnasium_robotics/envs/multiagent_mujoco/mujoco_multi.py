@@ -108,7 +108,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
                 Note: arguments that change the observation space will not work.
 
-            Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values)
+            Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values).
         """
         scenario += "-v4"
 
