@@ -75,7 +75,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         scenario: str,
         agent_conf: str | None,
         agent_obsk: int | None = 1,
-        agent_factorization: dict | None = None,
+        agent_factorization: dict[str, any] | None = None,
         local_categories: list[list[str]] | None = None,
         global_categories: tuple[str, ...] | None = None,
         render_mode: str | None = None,
