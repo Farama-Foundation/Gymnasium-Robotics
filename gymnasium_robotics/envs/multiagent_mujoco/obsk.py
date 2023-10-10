@@ -364,18 +364,17 @@ def get_parts_and_edges(  # noqa: C901
             HyperEdge(hip4, hip1, hip2, hip3),
         ]
 
-        torso = Node(
-            "torso",
+        root = Node(
+            "root",
             0,
             0,
             None,
             extra_obs={
                 "qpos": lambda data: data.qpos[2:7],
                 "qvel": lambda data: data.qvel[:6],
-                "cfrc_ext": lambda data: np.clip(data.cfrc_ext[0:1], -1, 1),
             },
         )
-        globals = [torso]
+        globals = [root]
 
         if partitioning is None:
             parts = [(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]
@@ -546,8 +545,6 @@ def get_parts_and_edges(  # noqa: C901
             extra_obs={
                 "qpos": lambda data: data.qpos[2:7],
                 "qvel": lambda data: data.qvel[:6],
-                "qfrc_actuator": lambda data: data.qfrc_actuator[:6],
-                # "cfrc_ext": lambda data: np.clip(data.cfrc_ext[0:1], -1, 1),
             },
         )
         globals = [root]
