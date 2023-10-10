@@ -42,17 +42,17 @@ from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
 # support other Gymnasium-Robotics MuJoCo environments
 
 _MUJOCO_GYM_ENVIROMENTS = [
-    "Ant-v4",
-    "HalfCheetah-v4",
-    "Hopper-v4",
-    "HumanoidStandup-v4",
-    "Humanoid-v4",
-    "Reacher-v4",
-    "Swimmer-v4",
-    "Pusher-v4",
-    "Walker2d-v4",
-    "InvertedPendulum-v4",
-    "InvertedDoublePendulum-v4",
+    "Ant-v5",
+    "HalfCheetah-v5",
+    "Hopper-v5",
+    "HumanoidStandup-v5",
+    "Humanoid-v5",
+    "Reacher-v5",
+    "Swimmer-v5",
+    "Pusher-v5",
+    "Walker2d-v5",
+    "InvertedPendulum-v5",
+    "InvertedDoublePendulum-v5",
 ]
 
 
@@ -110,14 +110,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
             Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values).
         """
-        scenario += "-v4"
+        scenario += "-v5"
 
         # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             self.single_agent_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv = (
                 gymnasium.make(scenario, **kwargs, render_mode=render_mode)
             )
-        elif scenario in ["ManySegmentAnt-v4"]:
+        elif scenario in ["ManySegmentAnt-v5"]:
             assert isinstance(agent_conf, str)
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
@@ -137,7 +137,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.single_agent_env = TimeLimit(
                 ManySegmentSwimmerEnv(n_segs, render_mode), max_episode_steps=1000
             )
-        elif scenario in ["CoupledHalfCheetah-v4"]:
+        elif scenario in ["CoupledHalfCheetah-v5"]:
             self.single_agent_env = TimeLimit(
                 CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000
             )

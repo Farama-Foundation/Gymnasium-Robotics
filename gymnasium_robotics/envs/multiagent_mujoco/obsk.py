@@ -240,8 +240,7 @@ def get_parts_and_edges(  # noqa: C901
     Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
-    if label in ["HalfCheetah-v4"]:
-
+    if label in ["HalfCheetah-v5"]:
         # define Mujoco graph
         bthigh = Node("bthigh", -6, -6, 0)
         bshin = Node("bshin", -5, -5, 1)
@@ -276,8 +275,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Ant-v4"]:
-
+    elif label in ["Ant-v5"]:
         # define Mujoco graph
         torso = 1
         front_left_leg = 2
@@ -392,8 +390,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Hopper-v4"]:
-
+    elif label in ["Hopper-v5"]:
         # define Mujoco-Graph
         thigh_joint = Node(
             "thigh_joint",
@@ -467,7 +464,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Humanoid-v4", "HumanoidStandup-v4"]:
+    elif label in ["Humanoid-v5", "HumanoidStandup-v5"]:
         # bodies
         # worldbody = 0
         torso = 1
@@ -608,7 +605,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Reacher-v4"]:
+    elif label in ["Reacher-v5"]:
         # define Mujoco-Graph
         # worldbody = 0
         body0 = 1
@@ -679,7 +676,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Pusher-v4"]:
+    elif label in ["Pusher-v5"]:
         # define Mujoco-Graph
         r_shoulder_pan_joint = Node("r_wrist_roll_joint", 0, 0, 0)
         r_shoulder_lift_joint = Node("r_wrist_roll_joint", 1, 1, 1)
@@ -759,7 +756,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Swimmer-v4"]:
+    elif label in ["Swimmer-v5"]:
         # define Mujoco-Graph
         joint0 = Node(
             "rot2",
@@ -794,7 +791,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["Walker2d-v4"]:
+    elif label in ["Walker2d-v5"]:
         # define Mujoco-Graph
         thigh_joint = Node("thigh_joint", -6, -6, 0)
         leg_joint = Node("leg_joint", -5, -5, 1)
@@ -844,7 +841,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["CoupledHalfCheetah-v4"]:
+    elif label in ["CoupledHalfCheetah-v5"]:
         # define Mujoco graph
         tendon = 0
 
@@ -940,7 +937,7 @@ def get_parts_and_edges(  # noqa: C901
 
         return parts, edges, globals
 
-    elif label in ["ManySegmentSwimmer-v4"]:
+    elif label in ["ManySegmentSwimmer-v5"]:
         assert partitioning is not None, "Partitioning, required with " + label
 
         try:
@@ -965,7 +962,7 @@ def get_parts_and_edges(  # noqa: C901
         ]
         return parts, edges, globals
 
-    elif label in ["ManySegmentAnt-v4"]:
+    elif label in ["ManySegmentAnt-v5"]:
         assert partitioning is not None, "Partitioning, required with " + label
 
         try:
