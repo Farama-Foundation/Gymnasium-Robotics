@@ -127,7 +127,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.single_agent_env = TimeLimit(
                 ManySegmentAntEnv(n_segs, render_mode), max_episode_steps=1000
             )
-        elif scenario in ["ManySegmentSwimmer-v4"]:
+        elif scenario in ["ManySegmentSwimmer-v5"]:
             assert isinstance(agent_conf, str)
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
