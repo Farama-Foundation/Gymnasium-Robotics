@@ -162,11 +162,9 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 mujoco_edges = agent_factorization["edges"]
                 self.mujoco_globals = agent_factorization["globals"]
         else:
-            assert self.single_agent_env.action_space.shape is not None
-            dummy_node = Node("dummy_node", None, None, None)
             self.agent_action_partitions = [
                 tuple(
-                    dummy_node
+                    Node("dummy_node", None, None, i)
                     for i in range(self.single_agent_env.action_space.shape[0])
                 )
             ]
