@@ -31,7 +31,6 @@ from gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer import (
 )
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
     Node,
-    _observation_structure,
     build_obs,
     get_joints_at_kdist,
     get_parts_and_edges,
@@ -320,8 +319,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return local_actions
 
     def map_global_state_to_local_observations(
-        self, global_state: np.ndarray
-    ) -> dict[str, np.ndarray]:
+        self, global_state: np.ndarray[np.float64]
+    ) -> dict[str, np.ndarray[np.float64]]:
         """Maps single agent observation into multi agent observation spaces.
 
         Args:
@@ -333,6 +332,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """
         if self.agent_obsk is None:
             return {self.possible_agents[0]: global_state}
+        if not hasattr(self.single_agent_env, "observation_structure"):
+            assert (
+                False
+            ), "to map states the MuJoCo environment must have `observation_structure` member variable"
 
         class data_struct:
             def __init__(self, qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext):
@@ -343,43 +346,50 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 self.qfrc_actuator = qfrc_actuator
                 self.cfrc_ext = cfrc_ext
 
-        obs_struct = _observation_structure(self.single_agent_env.spec.id)
+        obs_struct = self.single_agent_env.unwrapped.observation_structure
         qpos_end_index = obs_struct["qpos"]
         qvel_end_index = qpos_end_index + obs_struct["qvel"]
-        cinert_end_index = qvel_end_index + obs_struct["cinert"]
-        cvel_end_index = cinert_end_index + obs_struct["cvel"]
-        qfrc_actuator_end_index = cvel_end_index + obs_struct["qfrc_actuator"]
-        cfrc_ext_end_index = qfrc_actuator_end_index + obs_struct["cfrc_ext"]
+        cinert_end_index = qvel_end_index + obs_struct.get("cinert", 0)
+        cvel_end_index = cinert_end_index + obs_struct.get("cvel", 0)
+        qfrc_actuator_end_index = cvel_end_index + obs_struct.get("qfrc_actuator", 0)
+        cfrc_ext_end_index = qfrc_actuator_end_index + obs_struct.get("cfrc_ext", 0)
 
-        assert len(global_state) == cfrc_ext_end_index
+        assert len(global_state) == cfrc_ext_end_index, "wrong indexing"
 
         mujoco_data = data_struct(
             qpos=np.concatenate(
-                (
+                [
                     np.zeros(obs_struct["skipped_qpos"]),
                     global_state[0:qpos_end_index],
-                )
+                ]
             ),
             qvel=np.array(global_state[qpos_end_index:qvel_end_index]),
-            cinert=np.array(global_state[qvel_end_index:cinert_end_index]),
-            cvel=np.array(global_state[cinert_end_index:cvel_end_index]),
-            qfrc_actuator=np.array(
-                global_state[cvel_end_index:qfrc_actuator_end_index]
+            cinert=np.concatenate(
+                [np.zeros(10), global_state[qvel_end_index:cinert_end_index]]
             ),
-            cfrc_ext=np.array(global_state[qfrc_actuator_end_index:cfrc_ext_end_index]),
+            cvel=np.concatenate(
+                [np.zeros(6), global_state[cinert_end_index:cvel_end_index]]
+            ),
+            qfrc_actuator=np.concatenate(
+                [np.zeros(6), global_state[cvel_end_index:qfrc_actuator_end_index]]
+            ),
+            cfrc_ext=np.concatenate(
+                [np.zeros(6), global_state[qfrc_actuator_end_index:cfrc_ext_end_index]]
+            ),
         )
 
-        if len(mujoco_data.cinert) != 0:
+        if len(mujoco_data.cinert) > 10:
             mujoco_data.cinert = np.reshape(
-                mujoco_data.cinert, self.single_agent_env.data.cinert.shape
+                mujoco_data.cinert, self.single_agent_env.unwrapped.data.cinert.shape
             )
-        if len(mujoco_data.cvel) != 0:
+        if len(mujoco_data.cvel) > 6:
             mujoco_data.cvel = np.reshape(
-                mujoco_data.cvel, self.single_agent_env.data.cvel.shape
+                mujoco_data.cvel, self.single_agent_env.unwrapped.data.cvel.shape
             )
-        if len(mujoco_data.cfrc_ext) != 0:
+        if len(mujoco_data.cfrc_ext) > 6:
             mujoco_data.cfrc_ext = np.reshape(
-                mujoco_data.cfrc_ext, self.single_agent_env.data.cfrc_ext.shape
+                mujoco_data.cfrc_ext,
+                self.single_agent_env.unwrapped.data.cfrc_ext.shape,
             )
 
         assert len(self.single_agent_env.unwrapped.data.qpos.flat) == len(
@@ -445,7 +455,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return self.single_agent_env.unwrapped._get_obs()
         if data is None:
-            data = self.single_agent_env.data
+            data = self.single_agent_env.unwrapped.data
 
         return build_obs(
             data,
