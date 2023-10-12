@@ -809,7 +809,7 @@ def get_parts_and_edges(  # noqa: C901
         )
         root_z = Node("root_z", 1, 1, None)
         root_y = Node("root_y", 2, 2, None)
-        globals = [root_x, root_x, root_z]
+        globals = [root_x, root_z, root_y]
 
         if partitioning is None:
             parts = [
