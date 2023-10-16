@@ -160,6 +160,7 @@ def build_obs(
     k_categories: list[list[str]],
     global_nodes: list[Node],
     global_categories: tuple[str, ...],
+    ignore_body_fn : bool = False,
 ) -> np.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
@@ -169,6 +170,7 @@ def build_obs(
         k_categories: the categories at every depth level
         global_nodes: The MuJoCo global godes
         global_categories: The observation Categories for the global MuJoCo nodes
+        ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable
 
     Returns:
         observation for the agent (indicated by K_dict)
@@ -195,7 +197,7 @@ def build_obs(
                             body_set_dict[category] = set()
                         if body not in body_set_dict[category]:
                             items = getattr(data, category)[body].tolist()
-                            if node.body_fn is not None:
+                            if node.body_fn is not None and not ignore_body_fn:
                                 items = node.body_fn(body, items)
                             obs_lst.extend(
                                 items if isinstance(items, list) else [items]
@@ -220,7 +222,7 @@ def build_obs(
                         body_set_dict[category] = set()
                     if body not in body_set_dict[category]:
                         items = getattr(data, category)[body].tolist()
-                        if joint.body_fn is not None:
+                        if joint.body_fn is not None and not ignore_body_fn:
                             items = joint.body_fn(body, items)
                         obs_lst.extend(items if isinstance(items, list) else [items])
                         body_set_dict[category].add(body)
