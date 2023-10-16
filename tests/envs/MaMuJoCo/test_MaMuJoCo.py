@@ -90,6 +90,15 @@ def test_action_and_observation_mapping(observation_depth, task):
         local_observations,
     )
 
+    data_equivalence(
+        test_env.map_local_observations_to_global_state(local_observations),
+        global_observations,
+    )
+
+    # sanity check making sure the observation factorizations are sane
+    for agent_obs_factor in test_env.observation_factorization.values():
+        len(agent_obs_factor) != len(set(agent_obs_factor)), "an agent observes the same state value multiple times"
+
 
 @pytest.mark.parametrize("observation_depth", observation_depths)
 @pytest.mark.parametrize("task", sample_configurations)

@@ -197,6 +197,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 for agent_id in range(self.num_agents)
             ]
 
+        self.observation_factorization = self.create_observation_mapping()
+
         # Create observation and action spaces
         self.observation_spaces, self.action_spaces = {}, {}
         for agent_id, partition in enumerate(self.agent_action_partitions):
@@ -330,12 +332,66 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         Returns:
             A dictionary of states that would be observed by each agent given the 'global_state'
         """
+        assert (
+            self.observation_factorization is not None
+        ), "to map states the MuJoCo environment must have `observation_structure` member variable"
+
+        local_observation = {}
+        for agent, partition in self.observation_factorization.items():
+            local_observation[agent] = global_state[partition]
+
+        # assert sizes
+        assert len(local_observation) == len(self.action_spaces)
+        for agent in self.possible_agents:
+            assert len(local_observation[agent]) == self.observation_spaces[agent].shape[0]
+
+        return local_observation
+
+    def map_local_observations_to_global_state(
+        self, local_observation: np.ndarray[np.float64]
+    ) -> np.ndarray[np.float64]:
+        """Maps multi agent observations into single agent observation space.
+
+        Args:
+            local_obserations:
+                the local observation of each agents (generated from MaMuJoCo.step())
+
+        Returns:
+            the global observations that correspond to a single agent (what you would get with MaMuJoCo.state())
+        """
+        assert (
+            self.observation_factorization is not None
+        ), "to map states the MuJoCo environment must have `observation_structure` member variable"
+
+        global_observation = (
+            np.zeros((self.single_agent_env.observation_space.shape[0],)) + np.nan
+        )
+
+        for agent, partition in self.observation_factorization.items():
+            for local_idx, global_idx in enumerate(partition):
+                assert np.isnan(global_observation[global_idx]) or global_observation[global_idx] == local_observation[agent][local_idx], "FATAL: At least one gym_env observation is doubly defined!"
+                global_observation[global_idx] = local_observation[agent][local_idx]
+
+        if np.isnan(global_observation).any():
+            breakpoint()
+        assert not np.isnan(
+            global_observation
+        ).any(), "FATAL: At least one gym_env observation is undefined!"
+        return global_observation
+
+        return None
+
+    def create_observation_mapping(self) -> dict[str, np.ndarray[np.float64]]:
+        """Creates a cache of the observation factorization.
+        The cache is intented to be used with `map_global_state_to_local_observations` & `map_local_observations_to_global_state`.
+
+        Returns:
+            A cache that indexes global osbervations to local.
+        """
         if self.agent_obsk is None:
-            return {self.possible_agents[0]: global_state}
+            return {self.possible_agents[0] : np.arange(self.single_agent_env.observation_space.shape[0])}
         if not hasattr(self.single_agent_env, "observation_structure"):
-            assert (
-                False
-            ), "to map states the MuJoCo environment must have `observation_structure` member variable"
+            return None  # TODO
 
         class data_struct:
             def __init__(self, qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext):
@@ -354,27 +410,28 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         qfrc_actuator_end_index = cvel_end_index + obs_struct.get("qfrc_actuator", 0)
         cfrc_ext_end_index = qfrc_actuator_end_index + obs_struct.get("cfrc_ext", 0)
 
-        assert len(global_state) == cfrc_ext_end_index, "wrong indexing"
+        global_index = np.arange(self.single_agent_env.observation_space.shape[0])
+        assert len(global_index) == cfrc_ext_end_index, "wrong indexing"
 
         mujoco_data = data_struct(
             qpos=np.concatenate(
                 [
-                    np.zeros(obs_struct["skipped_qpos"]),
-                    global_state[0:qpos_end_index],
+                    np.zeros(obs_struct["skipped_qpos"], dtype=np.int64),
+                    global_index[0:qpos_end_index],
                 ]
             ),
-            qvel=np.array(global_state[qpos_end_index:qvel_end_index]),
+            qvel=np.array(global_index[qpos_end_index:qvel_end_index]),
             cinert=np.concatenate(
-                [np.zeros(10), global_state[qvel_end_index:cinert_end_index]]
+                [np.zeros(10, dtype=np.int64), global_index[qvel_end_index:cinert_end_index]]
             ),
             cvel=np.concatenate(
-                [np.zeros(6), global_state[cinert_end_index:cvel_end_index]]
+                [np.zeros(6, dtype=np.int64), global_index[cinert_end_index:cvel_end_index]]
             ),
             qfrc_actuator=np.concatenate(
-                [np.zeros(6), global_state[cvel_end_index:qfrc_actuator_end_index]]
+                [np.zeros(6, dtype=np.int64), global_index[cvel_end_index:qfrc_actuator_end_index]]
             ),
             cfrc_ext=np.concatenate(
-                [np.zeros(6), global_state[qfrc_actuator_end_index:cfrc_ext_end_index]]
+                [np.zeros(6, dtype=np.int64), global_index[qfrc_actuator_end_index:cfrc_ext_end_index]]
             ),
         )
 
@@ -399,28 +456,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             mujoco_data.qvel
         )
 
-        observations = {}
+        local_index = {}
         for agent_id, agent in enumerate(self.possible_agents):
-            observations[agent] = self._get_obs_agent(agent_id, mujoco_data)
-        return observations
-
-    def map_local_observation_to_global_state(
-        self, local_observations: dict[str, np.ndarray]
-    ) -> np.ndarray:
-        """Maps multi agent observations into single agent observation space.
-
-        NOT IMPLEMENTED, try using MaMuJoCo.state() instead
-
-        Args:
-            local_obserations:
-                the local observation of each agents (generated from MaMuJoCo.step())
-
-        Returns:
-            the global observations that correspond to a single agent (what you would get with MaMuJoCo.state())
-        """
-        # Dev notes for anyone who attempts to implement it:
-        # - Depending on the factorization the local observations may not observe the total global observable space, you will need to handle that
-        raise NotImplementedError
+            local_index[agent] = self._get_obs_agent(agent_id, mujoco_data)
+        return local_index
 
     def observation_space(self, agent: str) -> gymnasium.spaces.Box:
         """See [pettingzoo.utils.env.ParallelEnv.observation_space](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.observation_space)."""
@@ -454,8 +493,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """
         if self.agent_obsk is None:
             return self.single_agent_env.unwrapped._get_obs()
+
+        index_only = True
         if data is None:
             data = self.single_agent_env.unwrapped.data
+            index_only = False
 
         return build_obs(
             data,
@@ -463,6 +505,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.k_categories,
             self.mujoco_globals,
             self.global_categories,
+            index_only
         )
 
     def reset(self, seed: int | None = None, options=None):
