@@ -372,11 +372,9 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 assert np.isnan(global_observation[global_idx]) or global_observation[global_idx] == local_observation[agent][local_idx], "FATAL: At least one gym_env observation is doubly defined!"
                 global_observation[global_idx] = local_observation[agent][local_idx]
 
-        if np.isnan(global_observation).any():
-            breakpoint()
         assert not np.isnan(
             global_observation
-        ).any(), "FATAL: At least one gym_env observation is undefined!"
+        ).any(), "FATAL: At least one gym_env observation is undefined, observations can not be mapped."
         return global_observation
 
         return None
