@@ -16,6 +16,7 @@ This project is covered by the Apache 2.0 License.
 
 
 from __future__ import annotations
+import os
 
 import gymnasium
 import numpy as np
@@ -25,10 +26,8 @@ from gymnasium.wrappers.time_limit import TimeLimit
 from gymnasium_robotics.envs.multiagent_mujoco.coupled_half_cheetah import (
     CoupledHalfCheetahEnv,
 )
-from gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant import ManySegmentAntEnv
-from gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer import (
-    ManySegmentSwimmerEnv,
-)
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant as many_segment_ant
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
     Node,
     build_obs,
@@ -123,9 +122,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             except Exception:
                 raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            self.single_agent_env = TimeLimit(
-                ManySegmentAntEnv(n_segs, render_mode), max_episode_steps=1000
+            asset_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "assets",
+                f"many_segment_ant_{n_segs}_segments.auto.xml",
             )
+            many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            self.single_agent_env = gymnasium.make("Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
+            os.remove(asset_path)
         elif scenario in ["ManySegmentSwimmer-v5"]:
             assert isinstance(agent_conf, str)
             try:
@@ -133,9 +137,14 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             except Exception:
                 raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            self.single_agent_env = TimeLimit(
-                ManySegmentSwimmerEnv(n_segs, render_mode), max_episode_steps=1000
+            asset_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "assets",
+                f"many_segment_swimmer_{n_segs}_segments.auto.xml",
             )
+            many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            self.single_agent_env = gymnasium.make("Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
+            os.remove(asset_path)
         elif scenario in ["CoupledHalfCheetah-v5"]:
             self.single_agent_env = TimeLimit(
                 CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000

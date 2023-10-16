@@ -33,11 +33,8 @@ pre_defined_factorizations = [
     scenario_conf("Pusher", None),
     scenario_conf("Walker2d", "2x3"),
     scenario_conf("Walker2d", None),
-]
-
-sample_configurations = [
     scenario_conf("ManySegmentSwimmer", "10x2"),
-    # scenario_conf("ManySegmentSwimmer", "5x4"),
+    scenario_conf("ManySegmentSwimmer", "5x4"),
     scenario_conf("ManySegmentSwimmer", "6x1"),
     scenario_conf("ManySegmentAnt", "2x3"),
     scenario_conf("ManySegmentAnt", "3x1"),
@@ -49,7 +46,7 @@ observation_depths = [None, 0, 1, 2]
 
 
 @pytest.mark.parametrize("observation_depth", observation_depths)
-@pytest.mark.parametrize("task", pre_defined_factorizations + sample_configurations)
+@pytest.mark.parametrize("task", pre_defined_factorizations)
 def test_general(observation_depth, task) -> None:
     """Asserts that the environments are compliant with `pettingzoo.utils.env.ParallelEnv` API."""
     parallel_api_test(
@@ -77,8 +74,8 @@ def test_action_and_observation_mapping(observation_depth, task):
         )
     ).all()
 
-    if task.scenario in ["Reacher", "Pusher"] and task.conf is not None:
-        return  # observation mapping not implemented on "Reacher" and "Pusher" Environment
+    if task.scenario in ["Reacher", "Pusher", "CoupledHalfCheetah"] and task.conf is not None:
+        return  # observation mapping not implemented on those environments
 
     # assert observation mapping
     test_env.reset()
@@ -90,6 +87,9 @@ def test_action_and_observation_mapping(observation_depth, task):
         local_observations,
     )
 
+    if task.scenario in ["ManySegmentSwimmer", "ManySegmentAnt"] and task.conf is not None:
+        return  # mapping local to global observation is not supported on these environments since the local observation do not observe the full environment
+
     data_equivalence(
         test_env.map_local_observations_to_global_state(local_observations),
         global_observations,
@@ -98,23 +98,6 @@ def test_action_and_observation_mapping(observation_depth, task):
     # sanity check making sure the observation factorizations are sane
     for agent_obs_factor in test_env.observation_factorization.values():
         len(agent_obs_factor) != len(set(agent_obs_factor)), "an agent observes the same state value multiple times"
-
-
-@pytest.mark.parametrize("observation_depth", observation_depths)
-@pytest.mark.parametrize("task", sample_configurations)
-def test_action_mapping(observation_depth, task):
-    # observation mapping not implemented non-Gymansium mujoco environments
-    """Assert that converting local <-> global <-> local actions results in the same actions."""
-    test_env = mamujoco_v0.parallel_env(
-        task.scenario, task.conf, agent_obsk=observation_depth
-    )
-    global_action = test_env.single_agent_env.action_space.sample()
-    assert (
-        global_action
-        == test_env.map_local_actions_to_global_action(
-            test_env.map_global_action_to_local_actions(global_action)
-        )
-    ).all()
 
 
 # The black formatter was disabled because it results in `k_dicts_tasks` being an unreadable mess
