@@ -6,7 +6,7 @@ import pytest
 from gymnasium.utils.env_checker import data_equivalence
 from pettingzoo.test import parallel_api_test
 
-from gymnasium_robotics import mamujoco_v0
+from gymnasium_robotics import mamujoco_v1
 
 scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf")
 
@@ -51,7 +51,7 @@ def test_general(observation_depth, task) -> None:
     """Asserts that the environments are compliant with `pettingzoo.utils.env.ParallelEnv` API."""
     parallel_api_test(
         # MultiAgentMujocoEnv(task.scenario, task.conf, agent_obsk=observation_depth),
-        mamujoco_v0.parallel_env(
+        mamujoco_v1.parallel_env(
             task.scenario, task.conf, agent_obsk=observation_depth
         ),
         num_cycles=1_000_000,
@@ -62,7 +62,7 @@ def test_general(observation_depth, task) -> None:
 @pytest.mark.parametrize("task", pre_defined_factorizations)
 def test_action_and_observation_mapping(observation_depth, task):
     """Assert that converting local <-> global <-> local obervations/actions results in the same observation/actions."""
-    test_env = mamujoco_v0.parallel_env(
+    test_env = mamujoco_v1.parallel_env(
         task.scenario, task.conf, agent_obsk=observation_depth
     )
     # assert action mapping
@@ -133,7 +133,7 @@ def test_k_dict(task):
     If this test fails it means either the factorization in `obsk.get_parts_and_edges()` is wrong or that `obsk.get_joints_at_kdist()` generates wrong k_dict
     """
     for k, k_dict in enumerate(task.list_k_dicts):
-        test_env = mamujoco_v0.parallel_env(
+        test_env = mamujoco_v1.parallel_env(
             scenario=task.scenario, agent_conf=task.conf, agent_obsk=k
         )
         assert str(test_env.k_dicts) == k_dict, str(test_env.k_dicts)
