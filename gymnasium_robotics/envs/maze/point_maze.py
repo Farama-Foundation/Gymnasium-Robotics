@@ -279,6 +279,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     * `maze_map` - Optional argument to initialize the environment with a custom maze map.
     * `continuing_task` - If set to `True` the episode won't be terminated when reaching the goal, instead a new goal location will be generated. If `False` the environment is terminated when the ball reaches the final goal.
+    * `reset_target` - If set to `True` and the argument `continuing_task` is also `True`, when the ant reaches the target goal the location of the goal will be kept the same and no new goal location will be generated. If `False` a new goal will be generated when reached.
 
     Note that, the maximum number of timesteps before the episode is `truncated` can be increased or decreased by specifying the `max_episode_steps` argument at initialization. For example,
     to increase the total number of timesteps to 100 make the environment as follows:
@@ -309,6 +310,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
         render_mode: Optional[str] = None,
         reward_type: str = "sparse",
         continuing_task: bool = True,
+        reset_target: bool = False,
         **kwargs,
     ):
         point_xml_file_path = path.join(
@@ -321,6 +323,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
             maze_height=0.4,
             reward_type=reward_type,
             continuing_task=continuing_task,
+            reset_target=reset_target,
             **kwargs,
         )
 
@@ -356,6 +359,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
             render_mode,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 

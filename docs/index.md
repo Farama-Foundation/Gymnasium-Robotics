@@ -26,11 +26,12 @@ envs/MaMuJoCo/index
 ```{toctree}
 :hidden:
 :caption: Development
-release_notes
+
 Github <https://github.com/Farama-Foundation/Gymnasium-Robotics>
+release_notes/index
 ```
 
-```{project-logo} _static/img/robotics-text.svg
+```{project-logo} _static/img/robotics-text.png
 :alt: Gymnasium-Robotics Logo
 ```
 

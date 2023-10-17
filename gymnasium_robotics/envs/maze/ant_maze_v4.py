@@ -183,7 +183,8 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ### Arguments
 
     * `maze_map` - Optional argument to initialize the environment with a custom maze map.
-    * `continuing_task` - If set to `True` the episode won't be terminated when reaching the goal, instead a new goal location will be generated. If `False` the environment is terminated when the ant reaches the final goal.
+    * `continuing_task` - If set to `True` the episode won't be terminated when reaching the goal, instead a new goal location will be generated (unless `reset_target` argument is `True`). If `False` the environment is terminated when the ant reaches the final goal.
+    * `reset_target` - If set to `True` and the argument `continuing_task` is also `True`, when the ant reaches the target goal the location of the goal will be kept the same and no new goal location will be generated. If `False` a new goal will be generated when reached.
     * `use_contact_forces` - If `True` contact forces of the ant are included in the `observation`.
 
     Note that, the maximum number of timesteps before the episode is `truncated` can be increased or decreased by specifying the `max_episode_steps` argument at initialization. For example,
@@ -216,6 +217,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         maze_map: List[List[Union[str, int]]] = U_MAZE,
         reward_type: str = "sparse",
         continuing_task: bool = True,
+        reset_target: bool = False,
         **kwargs,
     ):
         # Get the ant.xml path from the Gymnasium package
@@ -229,6 +231,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
             maze_height=0.5,
             reward_type=reward_type,
             continuing_task=continuing_task,
+            reset_target=reset_target,
             **kwargs,
         )
         # Create the MuJoCo environment, include position observation of the Ant for GoalEnv
@@ -255,13 +258,13 @@ class AntMazeEnv(MazeEnv, EzPickle):
         )
 
         self.render_mode = render_mode
-
         EzPickle.__init__(
             self,
             render_mode,
             maze_map,
             reward_type,
             continuing_task,
+            reset_target,
             **kwargs,
         )
 

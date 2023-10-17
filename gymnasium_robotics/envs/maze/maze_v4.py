@@ -221,6 +221,15 @@ class Maze:
             # If there are no given "r", "g" or "c" cells in the maze data structure,
             # any empty cell can be a reset or goal location at initialization.
             maze._combined_locations = empty_locations
+        elif not maze._unique_reset_locations and not maze._combined_locations:
+            # If there are no given "r" or "c" cells in the maze data structure,
+            # any empty cell can be a reset location at initialization.
+            maze._unique_reset_locations = empty_locations
+        elif not maze._unique_goal_locations and not maze._combined_locations:
+            # If there are no given "g" or "c" cells in the maze data structure,
+            # any empty cell can be a gaol location at initialization.
+            maze._unique_goal_locations = empty_locations
+
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
@@ -238,6 +247,7 @@ class MazeEnv(GoalEnv):
         agent_xml_path: str,
         reward_type: str = "dense",
         continuing_task: bool = True,
+        reset_target: bool = True,
         maze_map: List[List[Union[int, str]]] = U_MAZE,
         maze_size_scaling: float = 1.0,
         maze_height: float = 0.5,
@@ -247,6 +257,7 @@ class MazeEnv(GoalEnv):
 
         self.reward_type = reward_type
         self.continuing_task = continuing_task
+        self.reset_target = reset_target
         self.maze, self.tmp_xml_file_path = Maze.make_maze(
             agent_xml_path, maze_map, maze_size_scaling, maze_height
         )
@@ -282,6 +293,12 @@ class MazeEnv(GoalEnv):
         seed: Optional[int] = None,
         options: Optional[Dict[str, Optional[np.ndarray]]] = None,
     ):
+        """Reset the maze simulation.
+
+        Args:
+            options (dict[str, np.ndarray]): the options dictionary can contain two items, "goal_cell" and "reset_cell" that will set the initial goal and reset location (i,j) in the self.maze.map list of list maze structure.
+
+        """
         super().reset(seed=seed)
 
         if options is None:
@@ -292,10 +309,10 @@ class MazeEnv(GoalEnv):
         else:
             if "goal_cell" in options and options["goal_cell"] is not None:
                 # assert that goal cell is valid
-                assert self.maze.map_length > options["goal_cell"][1]
-                assert self.maze.map_width > options["goal_cell"][0]
+                assert self.maze.map_length > options["goal_cell"][0]
+                assert self.maze.map_width > options["goal_cell"][1]
                 assert (
-                    self.maze.maze_map[options["goal_cell"][1], options["goal_cell"][0]]
+                    self.maze.maze_map[options["goal_cell"][0]][options["goal_cell"][1]]
                     != 1
                 ), f"Goal can't be placed in a wall cell, {options['goal_cell']}"
 
@@ -309,11 +326,11 @@ class MazeEnv(GoalEnv):
 
             if "reset_cell" in options and options["reset_cell"] is not None:
                 # assert that goal cell is valid
-                assert self.maze.map_length > options["reset_cell"][1]
-                assert self.maze.map_width > options["reset_cell"][0]
+                assert self.maze.map_length > options["reset_cell"][0]
+                assert self.maze.map_width > options["reset_cell"][1]
                 assert (
-                    self.maze.maze_map[
-                        options["reset_cell"][1], options["reset_cell"][0]
+                    self.maze.maze_map[options["reset_cell"][0]][
+                        options["reset_cell"][1]
                     ]
                     != 1
                 ), f"Reset can't be placed in a wall cell, {options['reset_cell']}"
@@ -373,8 +390,10 @@ class MazeEnv(GoalEnv):
 
     def update_goal(self, achieved_goal: np.ndarray) -> None:
         """Update goal position if continuing task and within goal radius."""
+
         if (
             self.continuing_task
+            and self.reset_target
             and bool(np.linalg.norm(achieved_goal - self.goal) <= 0.45)
             and len(self.maze.unique_goal_locations) > 1
         ):
