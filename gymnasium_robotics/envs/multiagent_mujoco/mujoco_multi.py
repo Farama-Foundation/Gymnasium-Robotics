@@ -191,7 +191,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             self.k_categories = local_categories
         if global_categories is None:
-            self.global_categories = self._generate_global_categories(scenario)
+            self.global_categories = ("qpos", "qvel")
         else:
             self.global_categories = global_categories
 
@@ -545,10 +545,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """See [pettingzoo.utils.env.ParallelEnv.close](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.close)."""
         self.single_agent_env.close()
 
-    def seed(self, seed: int | None = None):
-        """Not implemented use env.reset(seed=...) instead."""
-        raise NotImplementedError("use env.reset(seed=...) instead")
-
     def _generate_local_categories(self, scenario: str) -> list[list[str]]:
         """Generated the default observation categories for each observation depth.
 
@@ -574,20 +570,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         categories = [k_categories[k if k < len(k_categories) else -1] for k in range(self.agent_obsk + 1)]
         return categories
-
-    def _generate_global_categories(self, scenario: str) -> tuple[str, ...]:
-        """Generates the default global categories of observations.
-
-        Args:
-            scenario: The name of the MuJoCo Task
-
-        Returns:
-            The default Global Categories for the scenario (a list of all observable types for that domain)
-        """
-        if self.agent_obsk is None:
-            return ()
-
-        return ("qpos", "qvel")
 
 
 # These are the export functions (for `PettingZoo` style exportations)
