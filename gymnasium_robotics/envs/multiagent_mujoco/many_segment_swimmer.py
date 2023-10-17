@@ -16,6 +16,10 @@ from jinja2 import Template
 
 
 def gen_asset(n_segs: int, asset_path: str) -> None:
+    """Generates a vartion of the Swimmer environment, but with many segments.
+
+    This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709).
+    """
     template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "assets",
