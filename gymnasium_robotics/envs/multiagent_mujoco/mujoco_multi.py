@@ -77,6 +77,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         local_categories: list[list[str]] | None = None,
         global_categories: tuple[str, ...] | None = None,
         render_mode: str | None = None,
+        gym_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv | None = None,
         **kwargs,
     ):
         """Init.
@@ -103,54 +104,58 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 The default is: Check each environment's page on the "observation space" section.
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
+            gym_env: A custom `MujocoEnv` envinronment.
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
                 Note: arguments that change the observation space will not work.
 
             Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values).
         """
-        scenario += "-v5"
+        if gym_env is None:
+            scenario += "-v5"
 
-        # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
-        if scenario in _MUJOCO_GYM_ENVIROMENTS:
-            self.single_agent_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv = (
-                gymnasium.make(scenario, **kwargs, render_mode=render_mode)
-            )
-        elif scenario in ["ManySegmentAnt-v5"]:
-            assert isinstance(agent_conf, str)
-            try:
-                n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
-            except Exception:
-                raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
+            # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
+            if scenario in _MUJOCO_GYM_ENVIROMENTS:
+                self.single_agent_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv = (
+                    gymnasium.make(scenario, **kwargs, render_mode=render_mode)
+                )
+            elif scenario in ["ManySegmentAnt-v5"]:
+                assert isinstance(agent_conf, str)
+                try:
+                    n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
+                except Exception:
+                    raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            asset_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "assets",
-                f"many_segment_ant_{n_segs}_segments.auto.xml",
-            )
-            many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
-            self.single_agent_env = gymnasium.make("Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
-            os.remove(asset_path)
-        elif scenario in ["ManySegmentSwimmer-v5"]:
-            assert isinstance(agent_conf, str)
-            try:
-                n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
-            except Exception:
-                raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
+                asset_path = os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "assets",
+                    f"many_segment_ant_{n_segs}_segments.auto.xml",
+                )
+                many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
+                self.single_agent_env = gymnasium.make("Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
+                os.remove(asset_path)
+            elif scenario in ["ManySegmentSwimmer-v5"]:
+                assert isinstance(agent_conf, str)
+                try:
+                    n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
+                except Exception:
+                    raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            asset_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "assets",
-                f"many_segment_swimmer_{n_segs}_segments.auto.xml",
-            )
-            many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
-            self.single_agent_env = gymnasium.make("Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
-            os.remove(asset_path)
-        elif scenario in ["CoupledHalfCheetah-v5"]:
-            self.single_agent_env = TimeLimit(
-                CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000
-            )
+                asset_path = os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "assets",
+                    f"many_segment_swimmer_{n_segs}_segments.auto.xml",
+                )
+                many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
+                self.single_agent_env = gymnasium.make("Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
+                os.remove(asset_path)
+            elif scenario in ["CoupledHalfCheetah-v5"]:
+                self.single_agent_env = TimeLimit(
+                    CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000
+                )
+            else:
+                raise NotImplementedError("Custom env not implemented!")
         else:
-            raise NotImplementedError("Custom env not implemented!")
+            self.single_agent_env = gym_env
 
         if agent_conf is None:
             self.agent_obsk = None
