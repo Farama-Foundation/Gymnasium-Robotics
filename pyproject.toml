@@ -68,7 +68,7 @@ gymnasium_robotics = [
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
-    "envs/multiagent_/assets/*.xml*",
+    "envs/multiagent_mujoco/assets/*.xml*",
     "envs/assets/kitchen_franka/franka_assets/*.xml",
     "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
     "envs/assets/kitchen_franka/franka_assets/meshes/collision/*.stl",
