@@ -24,7 +24,7 @@ classifiers = [
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
 ]
 dependencies = [
-    "mujoco>=2.3.3<=3.0",
+    ">=2.3.3<3.0",
     "numpy>=1.21.0",
     "gymnasium>=0.26",
     "PettingZoo>=1.23.0",
@@ -68,7 +68,7 @@ gymnasium_robotics = [
     "envs/assets/stls/fetch/*.stl",
     "envs/assets/stls/hand/*.stl",
     "envs/assets/textures/*.png",
-    "envs/multiagent_mujoco/assets/*.xml*",
+    "envs/multiagent_/assets/*.xml*",
     "envs/assets/kitchen_franka/franka_assets/*.xml",
     "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
     "envs/assets/kitchen_franka/franka_assets/meshes/collision/*.stl",
