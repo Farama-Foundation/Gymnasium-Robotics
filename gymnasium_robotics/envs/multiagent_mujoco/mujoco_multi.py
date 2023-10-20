@@ -402,8 +402,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         """
         if self.agent_obsk is None:
             return {self.possible_agents[0] : np.arange(self.single_agent_env.observation_space.shape[0])}
-        if not hasattr(self.single_agent_env, "observation_structure"):
-            return None  # TODO
+        if not hasattr(self.unwrapped.single_agent_env, "observation_structure"):
+            return None
 
         class data_struct:
             def __init__(self, qpos, qvel, cinert, cvel, qfrc_actuator, cfrc_ext):
