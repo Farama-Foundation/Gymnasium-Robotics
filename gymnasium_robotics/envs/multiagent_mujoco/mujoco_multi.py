@@ -214,11 +214,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 f"many_segment_ant_{n_segs}_segments.auto.xml",
             )
             many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            os.remove(asset_path)
             return gymnasium.make(
                 "Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
             )
-            os.remove(asset_path)
-            breakpoint()
         elif scenario in ["ManySegmentSwimmer"]:
             try:
                 n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
@@ -231,10 +230,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 f"many_segment_swimmer_{n_segs}_segments.auto.xml",
             )
             many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            os.remove(asset_path)
             return gymnasium.make(
                 "Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
             )
-            os.remove(asset_path)
         elif scenario in ["CoupledHalfCheetah"]:
             return TimeLimit(CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000)
         else:
