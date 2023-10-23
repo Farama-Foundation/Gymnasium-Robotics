@@ -16,6 +16,7 @@ This project is covered by the Apache 2.0 License.
 
 
 from __future__ import annotations
+
 import os
 
 import gymnasium
@@ -23,11 +24,11 @@ import numpy as np
 import pettingzoo
 from gymnasium.wrappers.time_limit import TimeLimit
 
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant as many_segment_ant
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
 from gymnasium_robotics.envs.multiagent_mujoco.coupled_half_cheetah import (
     CoupledHalfCheetahEnv,
 )
-import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
-import gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant as many_segment_ant
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
     Node,
     build_obs,
@@ -40,17 +41,17 @@ from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
 # support other Gymnasium-Robotics MuJoCo environments
 
 _MUJOCO_GYM_ENVIROMENTS = [
-    "Ant-v5",
-    "HalfCheetah-v5",
-    "Hopper-v5",
-    "HumanoidStandup-v5",
-    "Humanoid-v5",
-    "Reacher-v5",
-    "Swimmer-v5",
-    "Pusher-v5",
-    "Walker2d-v5",
-    "InvertedPendulum-v5",
-    "InvertedDoublePendulum-v5",
+    "Ant",
+    "HalfCheetah",
+    "Hopper",
+    "HumanoidStandup",
+    "Humanoid",
+    "Reacher",
+    "Swimmer",
+    "Pusher",
+    "Walker2d",
+    "InvertedPendulum",
+    "InvertedDoublePendulum",
 ]
 
 
@@ -104,56 +105,17 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 The default is: Check each environment's page on the "observation space" section.
             render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
-            gym_env: A custom `MujocoEnv` envinronment.
+            gym_env: A custom `MujocoEnv` envinronment, overrides generation of environment by `MaMuJoCo`.
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
                 Note: arguments that change the observation space will not work.
 
             Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values).
         """
+        # Create underlying single agent environment
         if gym_env is None:
-            scenario += "-v5"
-
-            # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
-            if scenario in _MUJOCO_GYM_ENVIROMENTS:
-                self.single_agent_env: gymnasium.envs.mujoco.mujoco_env.MujocoEnv = (
-                    gymnasium.make(scenario, **kwargs, render_mode=render_mode)
-                )
-            elif scenario in ["ManySegmentAnt-v5"]:
-                assert isinstance(agent_conf, str)
-                try:
-                    n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
-                except Exception:
-                    raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
-
-                asset_path = os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "assets",
-                    f"many_segment_ant_{n_segs}_segments.auto.xml",
-                )
-                many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
-                self.single_agent_env = gymnasium.make("Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
-                os.remove(asset_path)
-            elif scenario in ["ManySegmentSwimmer-v5"]:
-                assert isinstance(agent_conf, str)
-                try:
-                    n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
-                except Exception:
-                    raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
-
-                asset_path = os.path.join(
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "assets",
-                    f"many_segment_swimmer_{n_segs}_segments.auto.xml",
-                )
-                many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
-                self.single_agent_env = gymnasium.make("Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode)
-                os.remove(asset_path)
-            elif scenario in ["CoupledHalfCheetah-v5"]:
-                self.single_agent_env = TimeLimit(
-                    CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000
-                )
-            else:
-                raise NotImplementedError("Custom env not implemented!")
+            self.single_agent_env = self._create_base_gym_env(
+                scenario, agent_conf, render_mode, **kwargs
+            )
         else:
             self.single_agent_env = gym_env
 
@@ -230,6 +192,54 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 shape=(len(self._get_obs_agent(agent_id)),),
                 dtype=self.single_agent_env.observation_space.dtype,
             )
+
+    def _create_base_gym_env(
+        self, scenario: str, agent_conf: str, render_mode: str, **kwargs
+    ) -> gymnasium.envs.mujoco.mujoco_env.MujocoEnv:
+        """Creates the single agent environments that is to be factorized."""
+        # scenario += "-v5"
+
+        # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
+        if scenario in _MUJOCO_GYM_ENVIROMENTS:
+            return gymnasium.make(f"{scenario}-v5", **kwargs, render_mode=render_mode)
+        elif scenario in ["ManySegmentAnt"]:
+            try:
+                n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
+            except Exception:
+                raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
+
+            asset_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "assets",
+                f"many_segment_ant_{n_segs}_segments.auto.xml",
+            )
+            many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            return gymnasium.make(
+                "Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
+            )
+            os.remove(asset_path)
+            breakpoint()
+        elif scenario in ["ManySegmentSwimmer"]:
+            try:
+                n_segs = int(agent_conf.split("x")[0]) * int(agent_conf.split("x")[1])
+            except Exception:
+                raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
+
+            asset_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "assets",
+                f"many_segment_swimmer_{n_segs}_segments.auto.xml",
+            )
+            many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
+            return gymnasium.make(
+                "Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
+            )
+            os.remove(asset_path)
+        elif scenario in ["CoupledHalfCheetah"]:
+            return TimeLimit(CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000)
+        else:
+            breakpoint()
+            raise NotImplementedError("Custom env not implemented!")
 
     def step(
         self, actions: dict[str, np.ndarray]
@@ -349,6 +359,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         assert (
             self.observation_factorization is not None
         ), "to map states the MuJoCo environment must have `observation_structure` member variable"
+        global_state = np.array(global_state)
 
         local_observation = {}
         for agent, partition in self.observation_factorization.items():
@@ -357,7 +368,9 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         # assert sizes
         assert len(local_observation) == len(self.action_spaces)
         for agent in self.possible_agents:
-            assert len(local_observation[agent]) == self.observation_spaces[agent].shape[0]
+            assert (
+                len(local_observation[agent]) == self.observation_spaces[agent].shape[0]
+            )
 
         return local_observation
 
@@ -383,7 +396,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
         for agent, partition in self.observation_factorization.items():
             for local_idx, global_idx in enumerate(partition):
-                assert np.isnan(global_observation[global_idx]) or global_observation[global_idx] == local_observation[agent][local_idx], "FATAL: At least one gym_env observation is doubly defined!"
+                assert (
+                    np.isnan(global_observation[global_idx])
+                    or global_observation[global_idx]
+                    == local_observation[agent][local_idx]
+                ), "FATAL: At least one gym_env observation is doubly defined!"
                 global_observation[global_idx] = local_observation[agent][local_idx]
 
         assert not np.isnan(
@@ -395,13 +412,18 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
 
     def create_observation_mapping(self) -> dict[str, np.ndarray[np.float64]]:
         """Creates a cache of the observation factorization.
-        The cache is intented to be used with `map_global_state_to_local_observations` & `map_local_observations_to_global_state`.
+
+        The cache is intended to be used with `map_global_state_to_local_observations` & `map_local_observations_to_global_state`.
 
         Returns:
             A cache that indexes global osbervations to local.
         """
         if self.agent_obsk is None:
-            return {self.possible_agents[0] : np.arange(self.single_agent_env.observation_space.shape[0])}
+            return {
+                self.possible_agents[0]: np.arange(
+                    self.single_agent_env.observation_space.shape[0]
+                )
+            }
         if not hasattr(self.unwrapped.single_agent_env, "observation_structure"):
             return None
 
@@ -434,16 +456,28 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             ),
             qvel=np.array(global_index[qpos_end_index:qvel_end_index]),
             cinert=np.concatenate(
-                [np.zeros(10, dtype=np.int64), global_index[qvel_end_index:cinert_end_index]]
+                [
+                    np.zeros(10, dtype=np.int64),
+                    global_index[qvel_end_index:cinert_end_index],
+                ]
             ),
             cvel=np.concatenate(
-                [np.zeros(6, dtype=np.int64), global_index[cinert_end_index:cvel_end_index]]
+                [
+                    np.zeros(6, dtype=np.int64),
+                    global_index[cinert_end_index:cvel_end_index],
+                ]
             ),
             qfrc_actuator=np.concatenate(
-                [np.zeros(6, dtype=np.int64), global_index[cvel_end_index:qfrc_actuator_end_index]]
+                [
+                    np.zeros(6, dtype=np.int64),
+                    global_index[cvel_end_index:qfrc_actuator_end_index],
+                ]
             ),
             cfrc_ext=np.concatenate(
-                [np.zeros(6, dtype=np.int64), global_index[qfrc_actuator_end_index:cfrc_ext_end_index]]
+                [
+                    np.zeros(6, dtype=np.int64),
+                    global_index[qfrc_actuator_end_index:cfrc_ext_end_index],
+                ]
             ),
         )
 
@@ -517,7 +551,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.k_categories,
             self.mujoco_globals,
             self.global_categories,
-            index_only
+            index_only,
         )
 
     def reset(self, seed: int | None = None, options=None):
@@ -562,18 +596,27 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         if self.agent_obsk is None:
             return [[]]
 
-        if scenario in ["Ant-v5", "ManySegmentAnt"]:
-            k_categories = [['qpos', 'qvel', 'cfrc_ext'], ['qpos']]
-        elif scenario in ["Humanoid-v5", "HumanoidStandup-v5"]:
-            k_categories = [['qpos', 'qvel', 'cinert', 'cvel', 'qfrc_actuator', 'cfrc_ext'], ['qpos']]
-        elif scenario in ["CoupledHalfCheetah-v5"]:
-            k_categories = [['qpos', 'qvel', 'ten_J', 'ten_length', 'ten_velocity'], ['qpos']]
-        elif scenario in ["Reacher-v5"]:
-            k_categories = [['qpos', 'qvel', 'fingertip_dist'], ['qpos']]
+        if scenario in ["Ant", "ManySegmentAnt"]:
+            k_categories = [["qpos", "qvel", "cfrc_ext"], ["qpos"]]
+        elif scenario in ["Humanoid", "HumanoidStandup"]:
+            k_categories = [
+                ["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"],
+                ["qpos"],
+            ]
+        elif scenario in ["CoupledHalfCheetah"]:
+            k_categories = [
+                ["qpos", "qvel", "ten_J", "ten_length", "ten_velocity"],
+                ["qpos"],
+            ]
+        elif scenario in ["Reacher"]:
+            k_categories = [["qpos", "qvel", "fingertip_dist"], ["qpos"]]
         else:
-            k_categories = [['qpos', 'qvel'], ['qpos']]
+            k_categories = [["qpos", "qvel"], ["qpos"]]
 
-        categories = [k_categories[k if k < len(k_categories) else -1] for k in range(self.agent_obsk + 1)]
+        categories = [
+            k_categories[k if k < len(k_categories) else -1]
+            for k in range(self.agent_obsk + 1)
+        ]
         return categories
 
 

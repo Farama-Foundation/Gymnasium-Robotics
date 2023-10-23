@@ -74,7 +74,10 @@ def test_action_and_observation_mapping(observation_depth, task):
         )
     ).all()
 
-    if task.scenario in ["Reacher", "Pusher", "CoupledHalfCheetah"] and task.conf is not None:
+    if (
+        task.scenario in ["Reacher", "Pusher", "CoupledHalfCheetah"]
+        and task.conf is not None
+    ):
         return  # observation mapping not implemented on those environments
 
     # assert observation mapping
@@ -87,7 +90,10 @@ def test_action_and_observation_mapping(observation_depth, task):
         local_observations,
     )
 
-    if task.scenario in ["ManySegmentSwimmer", "ManySegmentAnt"] and task.conf is not None:
+    if (
+        task.scenario in ["ManySegmentSwimmer", "ManySegmentAnt"]
+        and task.conf is not None
+    ):
         return  # mapping local to global observation is not supported on these environments since the local observation do not observe the full environment
 
     data_equivalence(
@@ -97,7 +103,9 @@ def test_action_and_observation_mapping(observation_depth, task):
 
     # sanity check making sure the observation factorizations are sane
     for agent_obs_factor in test_env.observation_factorization.values():
-        len(agent_obs_factor) != len(set(agent_obs_factor)), "an agent observes the same state value multiple times"
+        len(agent_obs_factor) != len(
+            set(agent_obs_factor)
+        ), "an agent observes the same state value multiple times"
 
 
 # The black formatter was disabled because it results in `k_dicts_tasks` being an unreadable mess
