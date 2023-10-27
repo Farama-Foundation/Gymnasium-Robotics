@@ -7,6 +7,10 @@ from gymnasium.utils.env_checker import data_equivalence
 from pettingzoo.test import parallel_api_test
 
 from gymnasium_robotics import mamujoco_v1
+import gymnasium
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
+import os
+from gymnasium.utils.env_match import check_environments_match
 
 scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf")
 
@@ -36,6 +40,7 @@ pre_defined_factorizations = [
     scenario_conf("ManySegmentSwimmer", "10x2"),
     scenario_conf("ManySegmentSwimmer", "5x4"),
     scenario_conf("ManySegmentSwimmer", "6x1"),
+    scenario_conf("ManySegmentSwimmer", "1x2"),
     scenario_conf("ManySegmentAnt", "2x3"),
     scenario_conf("ManySegmentAnt", "3x1"),
     scenario_conf("CoupledHalfCheetah", "1p1"),
@@ -145,3 +150,15 @@ def test_k_dict(task):
             scenario=task.scenario, agent_conf=task.conf, agent_obsk=k
         )
         assert str(test_env.k_dicts) == k_dict, str(test_env.k_dicts)
+
+
+def test_swimmer_gen():
+    """Assert that the many segment swimmer environment is identical to the simple environments."""
+    env = gymnasium.make("Swimmer-v5")
+
+    asset_path = "/tmp/swimmer_2seg.xml"
+    many_segment_swimmer.gen_asset(n_segs=2, asset_path=asset_path)
+    c_env = gymnasium.make("Swimmer-v5", xml_file=asset_path)
+    os.remove(asset_path)
+
+    check_environments_match(env, c_env, num_steps=2000)
