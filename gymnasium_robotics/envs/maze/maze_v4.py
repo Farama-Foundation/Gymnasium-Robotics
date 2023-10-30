@@ -12,6 +12,7 @@ This project is covered by the Apache 2.0 License.
 """
 import math
 import tempfile
+import time
 import xml.etree.ElementTree as ET
 from os import path
 from typing import Dict, List, Optional, Union
@@ -235,7 +236,8 @@ class Maze:
 
         # Save new xml with maze to a temporary file
         with tempfile.TemporaryDirectory() as tmp_dir:
-            temp_xml_path = path.join(path.dirname(tmp_dir), "ant_maze.xml")
+            temp_xml_name = f"ant_maze{str(time.time())}.xml"
+            temp_xml_path = path.join(path.dirname(tmp_dir), temp_xml_name)
             tree.write(temp_xml_path)
 
         return maze, temp_xml_path
