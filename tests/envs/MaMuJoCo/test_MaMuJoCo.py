@@ -1,50 +1,98 @@
 from __future__ import annotations
 
 import collections
+import os
 
+import gymnasium
 import pytest
 from gymnasium.utils.env_checker import data_equivalence
+from gymnasium.utils.env_match import check_environments_match
 from pettingzoo.test import parallel_api_test
 
-from gymnasium_robotics import mamujoco_v1
-import gymnasium
 import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
-import os
-from gymnasium.utils.env_match import check_environments_match
+from gymnasium_robotics import mamujoco_v1
 
-scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf")
+scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf, kwargs")
 
 pre_defined_factorizations = [
-    scenario_conf("InvertedPendulum", None),  # For Debugging
-    scenario_conf("Ant", None),
-    scenario_conf("Ant", "2x4"),
-    scenario_conf("Ant", "2x4d"),
-    scenario_conf("Ant", "4x2"),
-    scenario_conf("HalfCheetah", "2x3"),
-    scenario_conf("HalfCheetah", "6x1"),
-    scenario_conf("HalfCheetah", None),
-    scenario_conf("Hopper", "3x1"),
-    scenario_conf("Hopper", None),
-    scenario_conf("Humanoid", "9|8"),
-    scenario_conf("Humanoid", None),
-    scenario_conf("HumanoidStandup", "9|8"),
-    scenario_conf("HumanoidStandup", None),
-    scenario_conf("Reacher", "2x1"),
-    scenario_conf("Reacher", None),
-    scenario_conf("Swimmer", "2x1"),
-    scenario_conf("Swimmer", None),
-    scenario_conf("Pusher", "3p"),
-    scenario_conf("Pusher", None),
-    scenario_conf("Walker2d", "2x3"),
-    scenario_conf("Walker2d", None),
-    scenario_conf("ManySegmentSwimmer", "10x2"),
-    scenario_conf("ManySegmentSwimmer", "5x4"),
-    scenario_conf("ManySegmentSwimmer", "6x1"),
-    scenario_conf("ManySegmentSwimmer", "1x2"),
-    scenario_conf("ManySegmentAnt", "2x3"),
-    scenario_conf("ManySegmentAnt", "3x1"),
-    scenario_conf("CoupledHalfCheetah", "1p1"),
-    scenario_conf("CoupledHalfCheetah", None),
+    scenario_conf("InvertedPendulum", None, {}),  # For Debugging
+    scenario_conf("Ant", None, {}),
+    scenario_conf("Ant", "2x4", {}),
+    scenario_conf("Ant", "2x4d", {}),
+    scenario_conf("Ant", "4x2", {}),
+    scenario_conf("Ant", "2x4", {}),
+    scenario_conf("Ant", "2x4d", {}),
+    scenario_conf(
+        "Ant",
+        "2x4",
+        {
+            "local_categories": [["qpos", "qvel"], ["qpos"], ["qpos"]],
+            "include_cfrc_ext_in_observation": False,
+        },
+    ),
+    scenario_conf(
+        "Ant",
+        "2x4d",
+        {
+            "local_categories": [["qpos", "qvel"], ["qpos"], ["qpos"]],
+            "include_cfrc_ext_in_observation": False,
+        },
+    ),
+    scenario_conf(
+        "Ant",
+        "4x2",
+        {
+            "local_categories": [["qpos", "qvel"], ["qpos"], ["qpos"]],
+            "include_cfrc_ext_in_observation": False,
+        },
+    ),
+    scenario_conf("HalfCheetah", "2x3", {}),
+    scenario_conf("HalfCheetah", "6x1", {}),
+    scenario_conf("HalfCheetah", None, {}),
+    scenario_conf("Hopper", "3x1", {}),
+    scenario_conf("Hopper", None, {}),
+    scenario_conf("Humanoid", "9|8", {}),
+    scenario_conf(
+        "Humanoid",
+        "9|8",
+        {
+            "local_categories": [["qpos", "qvel"], ["qpos"], ["qpos"]],
+            "include_cinert_in_observation": False,
+            "include_cvel_in_observation": False,
+            "include_qfrc_actuator_in_observation": False,
+            "include_cfrc_ext_in_observation": False,
+        },
+    ),
+    scenario_conf("Humanoid", None, {}),
+    scenario_conf("HumanoidStandup", "9|8", {}),
+    scenario_conf(
+        "HumanoidStandup",
+        "9|8",
+        {
+            "local_categories": [["qpos", "qvel"], ["qpos"], ["qpos"]],
+            "include_cinert_in_observation": False,
+            "include_cvel_in_observation": False,
+            "include_qfrc_actuator_in_observation": False,
+            "include_cfrc_ext_in_observation": False,
+        },
+    ),
+    scenario_conf("HumanoidStandup", None, {}),
+    scenario_conf("Reacher", "2x1", {}),
+    scenario_conf("Reacher", None, {}),
+    scenario_conf("Swimmer", "2x1", {}),
+    scenario_conf("Swimmer", None, {}),
+    scenario_conf("Pusher", "3p", {}),
+    scenario_conf("Pusher", None, {}),
+    scenario_conf("Walker2d", "2x3", {}),
+    scenario_conf("Walker2d", None, {}),
+    scenario_conf("ManySegmentSwimmer", "10x2", {}),
+    scenario_conf("ManySegmentSwimmer", "5x4", {}),
+    scenario_conf("ManySegmentSwimmer", "6x1", {}),
+    scenario_conf("ManySegmentSwimmer", "1x2", {}),
+    scenario_conf("ManySegmentAnt", "2x3", {}),
+    scenario_conf("ManySegmentAnt", "3x1", {}),
+    scenario_conf("CoupledHalfCheetah", "1p1", {}),
+    scenario_conf("CoupledHalfCheetah", None, {}),
 ]
 
 observation_depths = [None, 0, 1, 2]
@@ -57,7 +105,7 @@ def test_general(observation_depth, task) -> None:
     parallel_api_test(
         # MultiAgentMujocoEnv(task.scenario, task.conf, agent_obsk=observation_depth),
         mamujoco_v1.parallel_env(
-            task.scenario, task.conf, agent_obsk=observation_depth
+            task.scenario, task.conf, agent_obsk=observation_depth, **task.kwargs
         ),
         num_cycles=1_000_000,
     )
@@ -68,8 +116,9 @@ def test_general(observation_depth, task) -> None:
 def test_action_and_observation_mapping(observation_depth, task):
     """Assert that converting local <-> global <-> local obervations/actions results in the same observation/actions."""
     test_env = mamujoco_v1.parallel_env(
-        task.scenario, task.conf, agent_obsk=observation_depth
+        task.scenario, task.conf, agent_obsk=observation_depth, **task.kwargs
     )
+
     # assert action mapping
     global_action = test_env.single_agent_env.action_space.sample()
     assert (
