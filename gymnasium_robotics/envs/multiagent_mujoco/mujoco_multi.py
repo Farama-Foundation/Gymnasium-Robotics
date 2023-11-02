@@ -36,7 +36,7 @@ from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
     get_parts_and_edges,
 )
 
-# TODO for future revisions v1?
+# TODO for future revisions v2?
 # color the renderer
 # support other Gymnasium-Robotics MuJoCo environments
 
@@ -86,7 +86,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         Args:
             scenario: The Task/Environment, valid values:
                 "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Pusher", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "ManySegmentSwimmer", "ManySegmentAnt", "CoupledHalfCheetah"
-            agent_conf: '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
+            agent_conf: Typical values:
+                '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
                 If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
             agent_obsk: Number of nearest joints to observe,
                 If set to 0 it only observes local state,
@@ -102,8 +103,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 The default is: Check each environment's page on the "observation space" section.
             global_categories: The categories of observations extracted from the global observable space,
                 For example: if it is set to `("qpos")` out of the globally observable items of the environment, only the position items will be observed.
-                The default is: Check each environment's page on the "observation space" section.
-            render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
+                The default is: `("qpos", "qvel")`
+            render_mode: See [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
             gym_env: A custom `MujocoEnv` envinronment, overrides generation of environment by `MaMuJoCo`.
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
@@ -152,11 +153,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         ]
         self.agents = self.possible_agents
 
-        # load the observation categories
+        # load the observation categories (from init arguments or generate them)
         if local_categories is None:
-            self.k_categories = self._generate_local_categories(scenario)
+            self.local_categories = self._generate_local_categories(scenario)
         else:
-            self.k_categories = local_categories
+            self.local_categories = local_categories
         if global_categories is None:
             self.global_categories = ("qpos", "qvel")
         else:
@@ -197,8 +198,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         self, scenario: str, agent_conf: str, render_mode: str, **kwargs
     ) -> gymnasium.envs.mujoco.mujoco_env.MujocoEnv:
         """Creates the single agent environments that is to be factorized."""
-        # scenario += "-v5"
-
         # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             return gymnasium.make(f"{scenario}-v5", **kwargs, render_mode=render_mode)
@@ -409,8 +408,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         ).any(), "FATAL: At least one gym_env observation is undefined, observations can not be mapped."
         return global_observation
 
-        return None
-
     def create_observation_mapping(self) -> dict[str, np.ndarray[np.float64]]:
         """Creates a cache of the observation factorization.
 
@@ -549,23 +546,23 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         return build_obs(
             data,
             self.k_dicts[agent_id],
-            self.k_categories,
+            self.local_categories,
             self.mujoco_globals,
             self.global_categories,
             index_only,
         )
 
-    def reset(self, seed: int | None = None, options=None):
+    def reset(self, seed: int | None = None, options: dict[str, any] | None = None):
         """Resets the the `single_agent_env`.
 
         Args:
-            seed: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc
-            options: Ignored arguments
+            seed: see [pettingzoo.utils.env.ParallelEnv.reset()](https://pettingzoo.farama.org/api/parallel/#pettingzoo.utils.env.ParallelEnv.reset) doc.
+            options: passed to the single agent env's `reset`.
 
         Returns:
             Initial observations and info
         """
-        _, info_n = self.single_agent_env.reset(seed=seed)
+        _, info_n = self.single_agent_env.reset(seed=seed, options=options)
         info = {}
         for agent in self.possible_agents:
             info[agent] = info_n
@@ -614,7 +611,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             k_categories = [["qpos", "qvel"], ["qpos"]]
 
-        # extend the lenght of categories to match `self.agent_obsk` by repeating the last element
+        # extend the length of categories to match `self.agent_obsk` by repeating the last element
         categories = [
             k_categories[k if k < len(k_categories) else -1]
             for k in range(self.agent_obsk + 1)

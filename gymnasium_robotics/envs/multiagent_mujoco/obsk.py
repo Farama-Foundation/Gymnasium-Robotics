@@ -157,7 +157,7 @@ def get_joints_at_kdist(
 def build_obs(
     data,
     k_dict: dict[int, list[Node]],
-    k_categories: list[list[str]],
+    local_categories: list[list[str]],
     global_nodes: list[Node],
     global_categories: tuple[str, ...],
     ignore_body_fn: bool = False,
@@ -165,12 +165,12 @@ def build_obs(
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
     Args:
-        data: a structure containing the global state of the agent
-        k_dict: the k_dict of an agent
-        k_categories: the categories at every depth level
-        global_nodes: The MuJoCo global godes
-        global_categories: The observation Categories for the global MuJoCo nodes
-        ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable
+        data: a structure containing the global state of the agent.
+        k_dict: the k_dict of an agent.
+        local_categories: the categories at every depth level.
+        global_nodes: The MuJoCo global godes.
+        global_categories: The observation Categories for the global MuJoCo nodes.
+        ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable.
 
     Returns:
         observation for the agent (indicated by K_dict)
@@ -180,7 +180,7 @@ def build_obs(
     # Add local observations
     for k in sorted(list(k_dict.keys())):
         for node in k_dict[k]:
-            for category in k_categories[k]:
+            for category in local_categories[k]:
                 if category in node.extra_obs:
                     items = node.extra_obs[category](data).tolist()
                     obs_lst.extend(items if isinstance(items, list) else [items])
