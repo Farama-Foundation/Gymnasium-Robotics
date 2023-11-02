@@ -614,6 +614,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             k_categories = [["qpos", "qvel"], ["qpos"]]
 
+        # extend the lenght of categories to match `self.agent_obsk` by repeating the last element
         categories = [
             k_categories[k if k < len(k_categories) else -1]
             for k in range(self.agent_obsk + 1)
