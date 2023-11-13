@@ -422,7 +422,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                     self.single_agent_env.observation_space.shape[0]
                 )
             }
-        if not hasattr(self.unwrapped.single_agent_env, "observation_structure"):
+        if not hasattr(self.single_agent_env.unwrapped, "observation_structure"):
             return None
 
         class data_struct:
