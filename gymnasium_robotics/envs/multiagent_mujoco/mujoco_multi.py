@@ -22,7 +22,7 @@ import os
 import gymnasium
 import numpy as np
 import pettingzoo
-from gymnasium.wrappers.time_limit import TimeLimit
+from gymnasium.wrappers import TimeLimit
 
 import gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant as many_segment_ant
 import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
