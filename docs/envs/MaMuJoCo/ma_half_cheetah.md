@@ -24,7 +24,7 @@ The action spaces is depended on the partitioning
     :name: half_cheetah
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", None)`	|
+| Instantiate		| `env = mamujoco_v1.parallel_env("HalfCheetah", None)`	|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -47,7 +47,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
     :name: half_cheetah_2x3
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", "2x3")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("HalfCheetah", "2x3")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`					|
 | Number of Agents	| 2							|
@@ -75,7 +75,7 @@ The environment is partitioned in 2 parts, the front part (containing the front 
     :name: half_cheetah_6x1
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("HalfCheetah", "6x1")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("HalfCheetah", "6x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1', 'agent_2', 'agent_3', 'agent_4', 'agent_5']`			|
 | Number of Agents	| 6							|
@@ -129,7 +129,7 @@ All agents receive the same [Gymnasium's Half Cheetah](https://gymnasium.farama.
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#starting-state).
 
 
 
@@ -138,6 +138,8 @@ All agent terminate and truncate at the same time, given the same conditions as 
 
 
 ## Version History
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Cheetah's front tip: `rootx`, `rooty`, `rootz`) not being observed.

@@ -24,7 +24,7 @@ The action spaces is depended on the partitioning
     :name: pusher
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Pusher", None)`	|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Pusher", None)`	|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -50,7 +50,7 @@ If partitioning, is None then the environment contains a single agent with the s
     :name: pusher_3p
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Pusher", "3p")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Pusher", "3p")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
 | Number of Agents	| 3							|
@@ -98,7 +98,7 @@ All agents receive the same [Gymnasium's Pusher](https://gymnasium.farama.org/en
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/#starting-state).
 
 
 
@@ -107,4 +107,6 @@ All agent terminate and truncate at same time given the same conditions as [Gymn
 
 
 ## Version History
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), first implemented here.

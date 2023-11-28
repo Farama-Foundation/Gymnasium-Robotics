@@ -24,7 +24,7 @@ The action spaces is depended on the partitioning
     :name: swimmer
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Swimmer", None)`	|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Swimmer", None)`	|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -45,7 +45,7 @@ If partitioning, is `None` then the environment contains a single agent with the
     :name: swimmer_2x1
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Swimmer", "2x1")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Swimmer", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
 | Number of Agents	| 2							|
@@ -83,7 +83,7 @@ All agents receive the same [Gymnasium's Swimmer](https://gymnasium.farama.org/e
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Swimmer](https://gymnasium.farama.org/environments/mujoco/swimmer/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Swimmer](https://gymnasium.farama.org/environments/mujoco/swimmer/#starting-state).
 
 
 
@@ -92,6 +92,8 @@ All agent terminate and truncate at the same time, given the same conditions as 
 
 
 ## Version History
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Swimmer's front tip: `free_body_rot`) not being observed.

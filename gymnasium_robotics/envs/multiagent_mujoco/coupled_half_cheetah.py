@@ -129,7 +129,7 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
     No additional arguments are currently supported in pre-release.
 
     ## Version History
-    * pre_release: part of `Gymnasium-Robotics/mamujoco`
+    * pre_release: part of `Gymnasium-Robotics/MaMuJoCo`
     """
 
     metadata = {

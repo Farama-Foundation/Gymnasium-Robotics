@@ -9,7 +9,8 @@ changes:
  - General code cleanup, factorization, type hinting, adding documentation and comments
  - Now uses PettingZoo APIs instead of a propriatery API
  - Now supports custom factorizations
- - Added new functions MultiAgentMujocoEnv.map_global_action_to_local_actions, MultiAgentMujocoEnv.map_local_actions_to_global_action, MultiAgentMujocoEnv.map_local_observation_to_global_state, MultiAgentMujocoEnv.map_local_observation_to_global_state
+ - Added new functions MultiAgentMujocoEnv.map_global_action_to_local_actions, MultiAgentMujocoEnv.map_local_actions_to_global_action, MultiAgentMujocoEnv.map_global_state_to_local_observations, MultiAgentMujocoEnv.map_local_observations_to_global_state
+ - Added `gym_env` argument, which can be used to load third party `Gymansium.MujocoEnv` environments.
 
 This project is covered by the Apache 2.0 License.
 """

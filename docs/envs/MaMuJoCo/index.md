@@ -19,20 +19,19 @@ Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for rese
 MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/parallel/), but also supports a few extra functions:
 
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_actions_to_global_action
-```
-
-```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_global_action_to_local_actions
+.. autofunction:: gymnasium_robotics.mamujoco_v1.parallel_env.map_local_actions_to_global_action
 ```
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_global_state_to_local_observations
+.. autofunction:: gymnasium_robotics.mamujoco_v1.parallel_env.map_global_action_to_local_actions
 ```
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.map_local_observation_to_global_state
+.. autofunction:: gymnasium_robotics.mamujoco_v1.parallel_env.map_global_state_to_local_observations
 ```
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.get_parts_and_edges
+.. autofunction:: gymnasium_robotics.mamujoco_v1.parallel_env.map_local_observations_to_global_state
+```
+```{eval-rst}
+.. autofunction:: gymnasium_robotics.mamujoco_v1.get_parts_and_edges
 ```
 
 MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api/aec/) but does not expose extra functions.
@@ -41,7 +40,7 @@ MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api
 
 ### Arguments
 ```{eval-rst}
-.. autofunction:: gymnasium_robotics.mamujoco_v0.parallel_env.__init__
+.. autofunction:: gymnasium_robotics.mamujoco_v1.parallel_env.__init__
 ```
 
 
@@ -52,7 +51,7 @@ In this example, we will create an agent factorization not present in Gymnasium-
 
 first we will load the graph of MaMuJoCo:
 ```python
->>> from gymnasium_robotics.mamujoco_v0 import get_parts_and_edges
+>>> from gymnasium_robotics.mamujoco_v1 import get_parts_and_edges
 >>> unpartioned_nodes, edges, global_nodes = get_parts_and_edges('Ant-v4', None)
 ```
 The `unpartioned_nodes` contain the nodes of the MaMuJoCo graph.
@@ -63,18 +62,23 @@ To create our '8x1' partition we will need to partition the `unpartioned_nodes`:
 ```python
 >>> unpartioned_nodes
 [(hip1, ankle1, hip2, ankle2, hip3, ankle3, hip4, ankle4)]
->>> partioned_nodes = [(unpartioned_nodes[0][0],), (unpartioned_nodes[0][1],), (unpartioned_nodes[0][2],), (unpartioned_nodes[0][3],), (unpartioned_nodes[0][4],), (unpartioned_nodes[0][5],), (unpartioned_nodes[0][6],), (unpartioned_nodes[0][7],)]>>> partioned_nodes
+>>> partioned_nodes = [(unpartioned_nodes[0][0],), (unpartioned_nodes[0][1],), (unpartioned_nodes[0][2],), (unpartioned_nodes[0][3],), (unpartioned_nodes[0][4],), (unpartioned_nodes[0][5],), (unpartioned_nodes[0][6],), (unpartioned_nodes[0][7],)]
 >>> partioned_nodes
 [(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]
 ```
 Finally package the partitions and create our environment:
 ```python
 >>> my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
->>> gym_env = mamujoco_v0('Ant', '8x1', agent_factorization=my_agent_factorization)
+>>> gym_env = mamujoco_v1('Ant', '8x1', agent_factorization=my_agent_factorization)
 ```
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
+	- When `factorizatoion=None`, the `env.gent_action_partitions.dummy_node` now contains `action_id` (it used to be `None`).
+	- Added `map_local_observations_to_global_state` & optimized runtime performance of `map_global_state_to_local_observations`.
+	- Added `gym_env` argument which can be used to load third-party `Gymansium.MujocoEnv` environments.
+* v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
 
 ```{toctree}
 :hidden:
@@ -84,6 +88,7 @@ ma_half_cheetah.md
 ma_hopper.md
 ma_humanoid_standup.md
 ma_humanoid.md
+ma_multiagentswimmer.md
 ma_reacher.md
 ma_swimmer.md
 ma_pusher.md

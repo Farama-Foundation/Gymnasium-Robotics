@@ -5,9 +5,7 @@ This file is originally from the `schroederdewitt/multiagent_mujoco` repository 
 Original Author: Schroeder de Witt
 
  - General code cleanup, factorization, type hinting, adding documentation and comments
- - updated API to Gymnasium.MuJoCo v4
- - increase returned info
- - renamed ManyAgentSwimmerEnv -> ManySegmentSwimmerEnv (and changed the __init__ arguments accordingly)
+ - Removed the class (but kept the `gen_asset` function)
 """
 
 

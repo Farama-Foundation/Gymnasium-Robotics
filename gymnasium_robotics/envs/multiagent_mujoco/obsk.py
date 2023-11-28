@@ -17,7 +17,6 @@ changes:
  - `Walker2D`: Added missing Global Observations
  - `CoupledHalfCheetah`: improved node naming, fixed tendon Jacobian observations, fixed action mapping of the second cheetah, added missing global observationsm, fixed action ordering
  - `ManySegmentAnt`: Fixed Global Observations
- - added new functions: `_observation_structure`
 
 This project is covered by the Apache 2.0 License.
 """

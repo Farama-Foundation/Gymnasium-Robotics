@@ -1,3 +1,9 @@
+<!--
+Template model for `MultiSegmentAnt`, based on the work of de Witt
+modified by @kallinteris-andreas
+  - `option.timestep` set to `0.01` (same as `Gymnasium/Swimmer`).
+  - Updated to work with `mujoco>=3.0.0`
+-->
 <mujoco model="swimmer">
   <compiler angle="degree" coordinate="local" inertiafromgeom="true"/>
   <option density="4000" integrator="RK4" timestep="0.01" viscosity="0.1"/>
