@@ -10,7 +10,7 @@ Original Author: Schroeder de Witt
 
 import os
 
-from jinja2 import Template
+import gymnasium
 
 
 def gen_asset(n_segs: int, asset_path: str) -> None:
@@ -18,13 +18,23 @@ def gen_asset(n_segs: int, asset_path: str) -> None:
 
     This environment was first introduced ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709).
     """
+    try:
+        import jinja2
+    except ImportError as e:
+        raise gymnasium.error.dependencynotinstalled(
+            f"{e}. "
+            "(hint: you need to install jinja, run `pip install gymnasium_robotics[mamujoco]`.)"
+        )
+
     template_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
         "assets",
         "many_segment_ant.xml.template",
     )
+
     with open(template_path) as file:
-        template = Template(file.read())
+        template = jinja2.Template(file.read())
+
     body_str_template = """
     <body name="torso_{:d}" pos="-1 0 0">
        <!--<joint axis="0 1 0" name="nnn_{:d}" pos="0.0 0.0 0.0" range="-1 1" type="hinge"/>-->
