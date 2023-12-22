@@ -1,4 +1,4 @@
-repos:
+Jrepos:
   - repo: https://github.com/python/black
     rev: 22.3.0
     hooks:
@@ -39,7 +39,7 @@ repos:
         language: node
         pass_filenames: false
         types: [python]
-        additional_dependencies: ["pyright"]
+        additional_dependencies: ["pyright@1.1.342"]
         args:
           - --project=pyproject.toml
   - repo: https://github.com/pycqa/pydocstyle
