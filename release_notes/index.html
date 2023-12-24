@@ -325,8 +325,38 @@
           </div>
           <article role="main">
             
-            <section id="release-notes">
+            <section class="tex2jax_ignore mathjax_ignore" id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">#</a></h1>
+<section id="release-v1-2-4">
+<h2>v1.2.4<a class="headerlink" href="#release-v1-2-4" title="Link to this heading">#</a></h2>
+<p><em>Released on 2023-12-24 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.4">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.4/">PyPI</a></em></p>
+<h2>Release Notes:</h2>
+<p>A minor release bringing a bug fix and registering and pre-existing environment. This is the first release since <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> became the project manager.</p>
+<h2>What's Changed</h2>
+
+<h3>New Features:</h3>
+<ul>
+<li>Register <code>PointMaze_Open_Diverse_GR</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/dtch1997/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/dtch1997">@dtch1997</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2036562591" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/195" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/195/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/195">#195</a></li>
+</ul>
+<h3>Bug Fixes:</h3>
+<ul>
+<li>randomize maze environments temporary <code>xml</code> file name by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1935914335" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/185" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/185/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/185">#185</a></li>
+</ul>
+<h3>Dependency Updates:</h3>
+<ul>
+<li>limit <code>mujoco&lt;3.0</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1952152029" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/187" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/187/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/187">#187</a></li>
+</ul>
+<h3>Minor Changes:</h3>
+<ul>
+<li>Update to <code>pyright==1.1.339</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2029091152" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/191" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/191/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/191">#191</a></li>
+<li>Update <code>pyproject.toml</code> python version to 3.8 by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2029091152" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/191" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/191/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/191">#191</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>update observation space docstring: obs[6:8] is actually block - gripper for <code>fetch</code> <code>pick_and_place</code> <code>push</code> <code>slide</code> environments by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/SethPate/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/SethPate">@SethPate</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2053098757" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/197" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/197/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/197">#197</a></li>
+<li>remove py3.7 from installation.md documentation by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2053679397" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/199" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/199/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/199">#199</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.3...v1.2.4"><tt>v1.2.3...v1.2.4</tt></a></p></section>
 <section id="release-v1-2-3">
 <h2>v1.2.3<a class="headerlink" href="#release-v1-2-3" title="Link to this heading">#</a></h2>
 <p><em>Released on 2023-09-18 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.3">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.3/">PyPI</a></em></p>
@@ -420,7 +450,7 @@
 <li>Fix issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629307561" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/128" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/128/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/128">#128</a> . Use <code>jnt_doafdr</code> instead of <code>nt_qposadr</code> for the <code> mujoco_utils.get_joint_qvel()</code> utility function. by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629557056" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/129" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/129/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/129">#129</a></li>
 <li>Correct x, y scaling for Maze environments <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1580668275" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/110" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/110/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/110">#110</a></li>
 <li>Fix door state space key by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629584947" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/130" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/130/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/130">#130</a></li>
-<li>Make getter functions for qpos / qvel return copies by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/hueds/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/hueds">@hueds</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1644611993" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/136" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/136/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/136">#136</a></li>
+<li>Make getter functions for qpos / qvel return copies by @hueds in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1644611993" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/136" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/136/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/136">#136</a></li>
 </ul>
 <h3>Minor Changes</h3>
 <ul>
@@ -579,6 +609,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1
             <div class="toc-tree">
               <ul>
 <li><a class="reference internal" href="#">Release Notes</a><ul>
+<li><a class="reference internal" href="#release-v1-2-4">v1.2.4</a></li>
 <li><a class="reference internal" href="#release-v1-2-3">v1.2.3</a></li>
 <li><a class="reference internal" href="#release-v1-2-2">v1.2.2</a></li>
 <li><a class="reference internal" href="#release-v1-2-1">v1.2.1</a></li>
@@ -673,7 +704,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1
         })()
       </script>
 
-    <script src="../_static/documentation_options.js?v=c9fd93b6"></script>
+    <script src="../_static/documentation_options.js?v=563e25a7"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=7660844c"></script>
