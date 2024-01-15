@@ -282,7 +282,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
         # compute the sparse reward variant first
         goal_distance = self.data.qpos[self.door_hinge_addrs]
-        goal_achieved = True if goal_distance >= 1.35 else False
+        goal_achieved = goal_distance >= 1.35
         reward = 10.0 if goal_achieved else -0.1
 
         # override reward if not sparse reward

@@ -296,7 +296,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
         # compute the sparse reward variant first
         goal_distance = np.linalg.norm(nail_pos - goal_pos)
-        goal_achieved = True if goal_distance < 0.01 else False
+        goal_achieved = goal_distance < 0.01
         reward = 10.0 if goal_achieved else -0.1
 
         # override reward if not sparse reward
