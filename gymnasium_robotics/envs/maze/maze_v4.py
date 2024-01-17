@@ -12,7 +12,6 @@ This project is covered by the Apache 2.0 License.
 """
 import math
 import tempfile
-import time
 import xml.etree.ElementTree as ET
 from os import path
 from typing import Dict, List, Optional, Union
