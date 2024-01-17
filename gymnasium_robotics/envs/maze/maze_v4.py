@@ -233,13 +233,19 @@ class Maze:
         maze._unique_reset_locations += maze._combined_locations
 
         # Save new xml with maze to a temporary file
+        # Make temporary file object and make the string path to our new file
         tmp_dir = tempfile.TemporaryDirectory()
         temp_xml_path = path.join(tmp_dir.name, "ant_maze.xml")
 
+        # Write the new xml to the temporary file
         with open(temp_xml_path, "wb") as xml_file:
             tree.write(xml_file)
 
-        return maze, temp_xml_path, tmp_dir
+        return (
+            maze,
+            temp_xml_path,
+            tmp_dir,  # The tmp_dir object is returned to keep it alive
+        )
 
 
 class MazeEnv(GoalEnv):
