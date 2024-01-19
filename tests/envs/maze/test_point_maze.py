@@ -41,8 +41,8 @@ def test_goal_cell():
     np.testing.assert_almost_equal(desired_goal, obs["desired_goal"], decimal=4)
 
 
-def test_multiprocessing():
-    """Check that the environment can be used in a multiprocessing environment."""
+def test_multiprocessing_not_crash():
+    """Check that the environment does not crash in a multiprocessing environment."""
     import multiprocessing as mp
 
     def run_env():
