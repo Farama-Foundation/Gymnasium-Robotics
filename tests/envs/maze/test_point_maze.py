@@ -39,3 +39,23 @@ def test_goal_cell():
     obs = env.reset(options={"goal_cell": [2, 1]}, seed=42)[0]
     desired_goal = np.array([-0.36302198, -0.53056078])
     np.testing.assert_almost_equal(desired_goal, obs["desired_goal"], decimal=4)
+
+
+def test_multiprocessing():
+    """Check that the environment can be used in a multiprocessing environment."""
+    import multiprocessing as mp
+
+    def run_env():
+        env = gym.make("PointMaze_UMaze-v3")
+        env.reset()
+        for _ in range(100):
+            env.step(env.action_space.sample())
+
+    processes = []
+    for _ in range(4):
+        p = mp.Process(target=run_env)
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()
