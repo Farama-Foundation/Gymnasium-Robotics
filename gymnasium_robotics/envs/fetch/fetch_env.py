@@ -376,6 +376,10 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         self.data.time = self.initial_time
         self.data.qpos[:] = np.copy(self.initial_qpos)
         self.data.qvel[:] = np.copy(self.initial_qvel)
+        self.data.qacc_warmstart[:] = np.copy(self.initial_qacc_warmstart)
+        self.data.ctrl[:] = np.copy(self.initial_ctrl)
+        self.data.mocap_pos[:] = np.copy(self.initial_mocap_pos)
+        self.data.mocap_quat[:] = np.copy(self.initial_mocap_quat)
         if self.model.na != 0:
             self.data.act[:] = None
 
