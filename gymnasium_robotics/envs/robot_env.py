@@ -297,12 +297,10 @@ class MujocoRobotEnv(BaseRobotEnv):
         self.initial_time = self.data.time
         self.initial_qpos = np.copy(self.data.qpos)
         self.initial_qvel = np.copy(self.data.qvel)
-        self.initial_ctrl = np.copy(self.data.ctrl)
-        self.initial_qacc_warmstart = np.copy(self.data.qacc_warmstart)
-        self.initial_mocap_pos = np.copy(self.data.mocap_pos)
-        self.initial_mocap_quat = np.copy(self.data.mocap_quat)
 
     def _reset_sim(self):
+        # Reset warm-start buffers, control buffers etc.
+        mujoco.mj_resetData(self.model, self.data)
         self.data.time = self.initial_time
         self.data.qpos[:] = np.copy(self.initial_qpos)
         self.data.qvel[:] = np.copy(self.initial_qvel)
@@ -381,6 +379,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
         self.initial_state = copy.deepcopy(self.sim.get_state())
 
     def _reset_sim(self):
+        self.sim.reset()  # Reset warm-start buffers, control buffers etc.
         self.sim.set_state(self.initial_state)
         self.sim.forward()
         return super()._reset_sim()
