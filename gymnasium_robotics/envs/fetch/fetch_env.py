@@ -249,7 +249,6 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
                 setattr(self.viewer.cam, key, value)
 
     def _reset_sim(self):
-        self.sim.reset()  # Reset warm-start buffers, control buffers etc.
         self.sim.set_state(self.initial_state)
 
         # Randomize start position of object.
@@ -374,13 +373,8 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         self._mujoco.mj_forward(self.model, self.data)
 
     def _reset_sim(self):
-        self.data.time = self.initial_time
-        self.data.qpos[:] = np.copy(self.initial_qpos)
-        self.data.qvel[:] = np.copy(self.initial_qvel)
-        # Reset buffers for warm-start, control buffers etc.
+        # Reset buffers for joint states, actuators, warm-start, control buffers etc.
         self._mujoco.mj_resetData(self.model, self.data)
-        if self.model.na != 0:
-            self.data.act[:] = None
 
         # Randomize start position of object.
         if self.has_object:
