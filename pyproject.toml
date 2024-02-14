@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "mujoco>=2.3.3, <3.0",
     "numpy>=1.21.0",
-    "gymnasium>=0.26",
+    "gymnasium>=1.0.0a",
     "PettingZoo>=1.23.0",
     "Jinja2>=3.0.3",
     "imageio"
