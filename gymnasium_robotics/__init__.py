@@ -1112,6 +1112,18 @@ def register_robotics_envs():
         )
 
         register(
+            id=f"PointMaze_Open_Diverse_GR{suffix}-v3",
+            entry_point="gymnasium_robotics.envs.maze.point_maze:PointMazeEnv",
+            kwargs=_merge(
+                {
+                    "maze_map": maps.OPEN_DIVERSE_GR,
+                },
+                kwargs,
+            ),
+            max_episode_steps=300,
+        )
+
+        register(
             id=f"PointMaze_Medium{suffix}-v3",
             entry_point="gymnasium_robotics.envs.maze.point_maze:PointMazeEnv",
             kwargs=_merge(
@@ -1225,7 +1237,7 @@ def register_robotics_envs():
     )
 
 
-__version__ = "1.2.3"
+__version__ = "1.2.4"
 
 
 try:
