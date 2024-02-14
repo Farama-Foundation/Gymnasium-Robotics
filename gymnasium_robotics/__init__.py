@@ -5,6 +5,7 @@ from gymnasium_robotics.core import GoalEnv
 from gymnasium_robotics.envs.maze import maps
 from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v0
 
+__version__ = "1.2.4"
 
 def register_robotics_envs():
     """Register all environment ID's to Gymnasium."""
@@ -1236,8 +1237,8 @@ def register_robotics_envs():
         max_episode_steps=280,
     )
 
+register_robotics_envs()
 
-__version__ = "1.2.4"
 
 
 try:
