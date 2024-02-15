@@ -301,7 +301,6 @@ class MujocoRobotEnv(BaseRobotEnv):
     def _reset_sim(self):
         # Reset buffers for joint states, warm-start, control buffers etc.
         mujoco.mj_resetData(self.model, self.data)
-        mujoco.mj_forward(self.model, self.data)
         return super()._reset_sim()
 
     def render(self):
