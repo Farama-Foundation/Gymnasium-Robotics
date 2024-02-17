@@ -7,6 +7,8 @@ from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v1
 
 __version__ = "1.2.4"
 
+__version__ = "1.2.4"
+
 
 def register_robotics_envs():
     """Register all environment ID's to Gymnasium."""

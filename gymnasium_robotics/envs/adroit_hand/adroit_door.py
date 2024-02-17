@@ -163,6 +163,9 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('AdroitHandDoor-v1', max_episode_steps=400)
     ```

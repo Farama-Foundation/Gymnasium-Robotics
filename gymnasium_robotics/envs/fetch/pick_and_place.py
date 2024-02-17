@@ -92,6 +92,9 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('FetchPickAndPlaceDense-v2')
     ```
@@ -118,6 +121,9 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('FetchPickAndPlace-v2', max_episode_steps=100)
     ```
