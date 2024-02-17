@@ -424,3 +424,11 @@ class PointMazeEnv(MazeEnv, EzPickle):
     def close(self):
         super().close()
         self.point_env.close()
+
+    @property
+    def model(self):
+        return self.point_env.model
+
+    @property
+    def data(self):
+        return self.point_env.data
