@@ -8,7 +8,7 @@ def test_serialize_deserialize():
     env1.reset()
     env2 = pickle.loads(pickle.dumps(env1))
 
-    assert env1.distance_threshold == env2.distance_threshold, (
+    assert env1.unwrapped.distance_threshold == env2.unwrapped.distance_threshold, (
         env1.distance_threshold,
         env2.distance_threshold,
     )

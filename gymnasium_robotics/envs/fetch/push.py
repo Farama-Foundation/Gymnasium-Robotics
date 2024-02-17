@@ -120,6 +120,9 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('FetchPushDense-v2')
     ```
@@ -146,6 +149,9 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('FetchPush-v2', max_episode_steps=100)
     ```
