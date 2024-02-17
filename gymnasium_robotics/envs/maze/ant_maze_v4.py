@@ -65,6 +65,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     example_map = [[1, 1, 1, 1, 1],
            [1, C, 0, C, 1],
@@ -158,6 +161,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('AntMaze_UMaze-v4')
     ```
@@ -192,6 +198,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('AntMaze_UMaze-v4', max_episode_steps=100)
     ```
@@ -319,3 +328,11 @@ class AntMazeEnv(MazeEnv, EzPickle):
     def close(self):
         super().close()
         self.ant_env.close()
+
+    @property
+    def model(self):
+        return self.ant_env.model
+
+    @property
+    def data(self):
+        return self.ant_env.data

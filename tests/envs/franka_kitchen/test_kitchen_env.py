@@ -47,7 +47,7 @@ def test_task_completion(remove_task_when_completed, terminate_on_tasks_complete
         # Complete a task sequentially for each environment step
         for task in TASKS:
             # Force task to be achieved
-            env.data.qpos[OBS_ELEMENT_INDICES[task]] = OBS_ELEMENT_GOALS[task]
+            env.unwrapped.data.qpos[OBS_ELEMENT_INDICES[task]] = OBS_ELEMENT_GOALS[task]
             _, _, terminated, _, info = env.step(env.action_space.sample())
             completed_tasks.add(task)
 
@@ -91,7 +91,7 @@ def test_task_completion(remove_task_when_completed, terminate_on_tasks_complete
         # Complete a task sequentially for each environment step
         for task in TASKS:
             # Force task to be achieved
-            env.data.qpos[OBS_ELEMENT_INDICES[task]] = OBS_ELEMENT_GOALS[task]
+            env.unwrapped.data.qpos[OBS_ELEMENT_INDICES[task]] = OBS_ELEMENT_GOALS[task]
             completed_tasks.add(task)
 
         _, _, terminated, _, info = env.step(env.action_space.sample())
