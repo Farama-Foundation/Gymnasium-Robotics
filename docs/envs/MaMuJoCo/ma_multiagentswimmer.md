@@ -17,8 +17,7 @@ The task was first introduced by Christian A. Schroeder de Witt in ["FACMAC: Fac
 
 
 ## Action Space
-The action spaces is depended on the partitioning
-the partionioning takes the form: `${Number Of Agents}x${Number Of Segments per Agent}`
+The shape of the action space depends on the partitioning. The partitioning has the following form: `${Number Of Agents}x${Number Of Segments per Agent}`
 
 | Instantiate		| `env = mamujoco_v1.parallel_env("ManySegmentSwimmer", ${Number Of Agents}x${Number Of Segments per Agent})`	|
 |-----------------------|------------------------------------------------------|
