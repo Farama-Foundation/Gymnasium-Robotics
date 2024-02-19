@@ -32,6 +32,8 @@ The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now avail
 The different tasks involve hammering a nail, opening a door, twirling a pen, or picking up and moving a ball.
 * [Franka Kitchen](https://robotics.farama.org/envs/franka_kitchen/) - Multitask environment in which a 9-DoF Franka robot is placed in a kitchen containing several common household items. The goal of each task is to interact with the items in order to reach a desired goal configuration.
 
+* [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) - A collection of multi agent factorizations of the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environments and a framework for factorizing robotic environments, uses the [pettingzoo.ParallelEnv](https://pettingzoo.farama.org/api/parallel/) API. 
+
 **WIP**: generate new `D4RL` environment datasets with [Minari](https://github.com/Farama-Foundation/Minari).
 
 ## Multi-goal API
