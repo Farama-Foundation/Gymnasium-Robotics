@@ -8,7 +8,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning" />
     <meta property="og:url" content="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Reacher" href="../ma_reacher/" /><link rel="prev" title="Humanoid Standup" href="../ma_humanoid_standup/" />
+<link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Swimmer" href="../ma_multiagentswimmer/" /><link rel="prev" title="Humanoid Standup" href="../ma_humanoid_standup/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_humanoid.html" />
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
@@ -239,6 +239,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../ma_hopper/">Hopper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ma_humanoid_standup/">Humanoid Standup</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ma_multiagentswimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ma_reacher/">Reacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ma_swimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../ma_pusher/">Pusher</a></li>
@@ -318,7 +319,7 @@
 The task is <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/">Gymansium’s MuJoCo/Humanoid</a>.</p>
 <section id="action-space">
 <h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
-<p>The action spaces is depended on the partitioning</p>
+<p>The shape of the action space depends on the partitioning. The partitioning has the following form:</p>
 <section id="if-partitioning-is-none">
 <h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Link to this heading">#</a></h3>
 <figure class="align-default" id="id1">
@@ -328,7 +329,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Instantiate</p></th>
-<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;Humanoid&quot;,</span> <span class="pre">None)</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v1.parallel_env(&quot;Humanoid&quot;,</span> <span class="pre">None)</span></code></p></th>
 </tr>
 </thead>
 <tbody>
@@ -510,7 +511,7 @@ The task is <a class="reference external" href="https://gymnasium.farama.org/env
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Instantiate</p></th>
-<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;Humanoid&quot;,</span> <span class="pre">&quot;3x1&quot;)</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v1.parallel_env(&quot;Humanoid&quot;,</span> <span class="pre">&quot;3x1&quot;)</span></code></p></th>
 </tr>
 </thead>
 <tbody>
@@ -737,7 +738,7 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 </section>
 <section id="starting-state">
 <h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
-<p>The starting state of the environment is the as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/#starting-state">Gymnasium’s Humanoid</a>.</p>
+<p>The starting state of the environment is the same as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/humanoid/#starting-state">Gymnasium’s Humanoid</a>.</p>
 </section>
 <section id="episode-end">
 <h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
@@ -745,6 +746,14 @@ See more at the <a class="reference external" href="https://gymnasium.farama.org
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>v1:</p>
+<ul>
+<li><p>Now based on <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v5</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v4</span></code> (https://github.com/Farama-Foundation/Gymnasium/pull/572).</p></li>
+<li><p>No longer observes <code class="docutils literal notranslate"><span class="pre">qfrc_actuator</span></code> of <code class="docutils literal notranslate"><span class="pre">root</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">cinert</span></code>, <code class="docutils literal notranslate"><span class="pre">cvel</span></code>, <code class="docutils literal notranslate"><span class="pre">qfrc_actuator</span></code>, <code class="docutils literal notranslate"><span class="pre">cfrc_ext</span></code> of <code class="docutils literal notranslate"><span class="pre">worldbody</span></code> (same as <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v5/Humanoid</span></code>).</p></li>
+</ul>
+</li>
+</ul>
 <ul class="simple">
 <li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of the original MaMuJoCo <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>.
 Changes from the original <code class="docutils literal notranslate"><span class="pre">MaMuJoCo</span></code> (<a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">schroederdewitt/multiagent_mujoco</a>):</p>
@@ -907,7 +916,7 @@ Changes from the original <code class="docutils literal notranslate"><span class
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=563e25a7"></script>
+    <script src="../../../_static/documentation_options.js?v=6ab9a223"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
