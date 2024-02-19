@@ -3,9 +3,9 @@ from gymnasium.envs.registration import register
 
 from gymnasium_robotics.core import GoalEnv
 from gymnasium_robotics.envs.maze import maps
-from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v0
+from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v1
 
-__version__ = "1.2.4"
+__version__ = "1.3.0a1"
 
 
 def register_robotics_envs():

@@ -15,7 +15,7 @@ This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo
 The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
 
 
-| Defaults		| `env = mamujoco_v0.parallel_env("Ant", None)`		|
+| Defaults		| `env = mamujoco_v1.parallel_env("Ant", None)`		|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -23,14 +23,14 @@ The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/m
 | Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
 
 ## Action Space
-The action spaces is depended on the partitioning
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/ant.png
     :name: ant
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Ant", None)`		|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Ant", None)`		|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -56,7 +56,7 @@ If partitioning, is None then the environment contains a single agent with the s
     :name: ant_2x4
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "2x4")`		|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Ant", "2x4")`		|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`					|
 | Number of Agents	| 2							|
@@ -86,7 +86,7 @@ The environment is partitioned in 2 parts, the front part (containing the front 
     :name: ant_2x4d
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "2x4d")`		|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Ant", "2x4d")`		|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`					|
 | Number of Agents	| 2							|
@@ -114,7 +114,7 @@ The environment is partitioned in 2 parts, split diagonally.
     :name: ant_4x2
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Ant", "4x2")`		|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Ant", "4x2")`		|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1', 'agent_2', 'agent_3']`			|
 | Number of Agents	| 4							|
@@ -168,7 +168,7 @@ All agents receive the same [Gymnasium's Ant](https://gymnasium.farama.org/envir
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Ant](https://gymnasium.farama.org/environments/mujoco/ant/#starting-state).
 
 
 
@@ -178,7 +178,11 @@ All agent terminate and truncate at the same time given the same conditions as [
 
 
 ## Version History
-- v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
+	- Now observes `local_categories` of `cfrc_ext` by default (same as `Gymnasium/MuJoCo-v5/Ant`).
+	- Renamed global node `torso` → `root`.
+* v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Fixed diagonal factorization ("2x4d") not being diagonal.
 	- Fixed Global observations (The Ant's Torso: `rootx`, `rooty`, `rootz`) not being observed.
