@@ -23,7 +23,7 @@ The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/m
 | Part partition	| `[(hip4, ankle4, hip1, ankle1, hip2, ankle2, hip3, ankle3)]`	|
 
 ## Action Space
-The action spaces is depended on the partitioning
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/ant.png
