@@ -11,7 +11,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.
 
 
 ## Action Space
-The action spaces is depended on the partitioning.
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/coupled_half_cheetah.png
