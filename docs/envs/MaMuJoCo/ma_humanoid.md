@@ -17,7 +17,7 @@ The task is [Gymansium's MuJoCo/Humanoid](https://gymnasium.farama.org/environme
 
 
 ## Action Space
-The action spaces is depended on the partitioning
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/humanoid.png
