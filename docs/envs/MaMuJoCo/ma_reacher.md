@@ -17,14 +17,14 @@ The task is [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environmen
 
 
 ## Action Space
-The action spaces is depended on the partitioning
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/reacher.png
     :name: reacher
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Reacher", None)`	|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Reacher", None)`	|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -45,7 +45,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
     :name: reacher_2x1
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Reacher", "2x1")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Reacher", "2x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1']`			|
 | Number of Agents	| 2							|
@@ -84,7 +84,7 @@ All agents receive the same [Gymnasium's Reacher](https://gymnasium.farama.org/e
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/#starting-state).
 
 
 
@@ -93,6 +93,8 @@ All agent terminate and truncate at the same time, given the same conditions as 
 
 
 ## Version History
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Targets's coordinates: `targetx`, `targety`) not being observed.
