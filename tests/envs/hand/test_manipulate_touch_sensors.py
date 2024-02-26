@@ -16,7 +16,7 @@ def test_serialize_deserialize(environment_id):
     env1.reset()
     env2 = pickle.loads(pickle.dumps(env1))
 
-    assert env1.target_position == env2.target_position, (
+    assert env1.unwrapped.target_position == env2.unwrapped.target_position, (
         env1.target_position,
         env2.target_position,
     )

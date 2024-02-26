@@ -22,6 +22,9 @@ These environments are instanceated by adding the following strings to the Hand 
 
 ```python
 import gymnasium as gym
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
 
 env = gym.make('HandManipulateEgg_BooleanTouchSensors-v1')
 ```

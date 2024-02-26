@@ -52,6 +52,10 @@ The creation and interaction with the robotic environments follow the Gymnasium 
 ```{code-block} python
 
 import gymnasium as gym
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 env = gym.make("FetchPickAndPlace-v2", render_mode="human")
 observation, info = env.reset(seed=42)
 for _ in range(1000):

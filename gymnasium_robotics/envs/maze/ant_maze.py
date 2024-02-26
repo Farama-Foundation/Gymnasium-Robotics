@@ -122,3 +122,11 @@ class AntMazeEnv(MazeEnv, EzPickle):
     def close(self):
         super().close()
         self.ant_env.close()
+
+    @property
+    def model(self):
+        return self.ant_env.model
+
+    @property
+    def data(self):
+        return self.ant_env.data

@@ -17,14 +17,14 @@ The task is [Gymansium's MuJoCo/Hopper](https://gymnasium.farama.org/environment
 
 
 ## Action Space
-The action spaces is depended on the partitioning
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ### if partitioning is None:
 ```{figure} figures/hopper.png
     :name: hopper
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Hopper", None)`	|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Hopper", None)`	|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0']`					|
 | Number of Agents	| 1							|
@@ -47,7 +47,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
     :name: hopper_3x1
 ```
 
-| Instantiate		| `env = mamujoco_v0.parallel_env("Hopper", "3x1")`|
+| Instantiate		| `env = mamujoco_v1.parallel_env("Hopper", "3x1")`|
 |-----------------------|------------------------------------------------------|
 | Agents		| `agents= ['agent_0', 'agent_1', 'agent_2']`			|
 | Number of Agents	| 3							|
@@ -89,7 +89,7 @@ All agents receive the same [Gymnasium's Hopper](https://gymnasium.farama.org/en
 
 
 ## Starting state
-The starting state of the environment is the as [Gymnasium's Hopper](https://gymnasium.farama.org/environments/mujoco/hopper/#starting-state).
+The starting state of the environment is the same as [Gymnasium's Hopper](https://gymnasium.farama.org/environments/mujoco/hopper/#starting-state).
 
 
 
@@ -98,6 +98,8 @@ All agent terminate and truncate at same time given the same conditions as [Gymn
 
 
 ## Version History
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Fixed Global observations (The Hopper's top: `rootx`, `rooty`, `rootz`) not being observed.

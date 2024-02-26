@@ -196,6 +196,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     example_map = [[1, 1, 1, 1, 1],
            [1, C, 0, C, 1],
@@ -253,6 +256,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('PointMaze_UMazeDense-v3')
     ```
@@ -286,6 +292,9 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     ```python
     import gymnasium as gym
+    import gymnasium_robotics
+
+    gym.register_envs(gymnasium_robotics)
 
     env = gym.make('PointMaze_UMaze-v3', max_episode_steps=100)
     ```
@@ -415,3 +424,11 @@ class PointMazeEnv(MazeEnv, EzPickle):
     def close(self):
         super().close()
         self.point_env.close()
+
+    @property
+    def model(self):
+        return self.point_env.model
+
+    @property
+    def data(self):
+        return self.point_env.data
