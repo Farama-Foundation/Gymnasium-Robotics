@@ -20,7 +20,7 @@ The Purpose of these is to allow researchers to debug multi-agent learning algor
 
 
 ## Action Space
-The action spaces is depended on the partitioning.
+The shape of the action space depends on the partitioning. The partitioning has the following form:
 
 ## Observation Space
 The agent receives the same observations as the single agent Gymnasium environment.
@@ -43,6 +43,8 @@ The agent terminates and truncates at the same time, given the same conditions a
 
 
 ## Version History
-v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco).
+* v1:
+	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
+* v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco).
 No Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)).
 
