@@ -306,13 +306,13 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     the achieved goal vector and the desired goal vector is lower than 0.01).
     - *dense*: the returned reward is the negative 2-norm distance between the achieved goal vector and the desired goal vector.
 
-    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `HandReach-v1`.
-    However, for `dense` reward the id must be modified to `HandReachDense-v1` and initialized as follows:
+    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `HandReach-v2`.
+    However, for `dense` reward the id must be modified to `HandReachDense-v2` and initialized as follows:
 
     ```
     import gymnasium as gym
 
-    env = gym.make('HandReachDense-v1')
+    env = gym.make('HandReachDense-v2')
     ```
 
     ## Starting State
@@ -383,11 +383,12 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     ```
     import gymnasium as gym
 
-    env = gym.make('HandReach-v1', max_episode_steps=100)
+    env = gym.make('HandReach-v2', max_episode_steps=100)
     ```
 
     ## Version History
 
+    * v2: Fix slight differences between rollouts of the same environment when reset with the same seed.
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
 

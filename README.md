@@ -54,7 +54,7 @@ goal, e.g. state derived from the simulation.
 ```python
 import gymnasium as gym
 
-env = gym.make("FetchReach-v2")
+env = gym.make("FetchReach-v3")
 env.reset()
 obs, reward, terminated, truncated, info = env.step(env.action_space.sample())
 
