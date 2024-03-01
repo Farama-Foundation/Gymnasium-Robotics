@@ -157,7 +157,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
 
     ## Version History
 
-    * v3: Fix slight differences between rollouts of the same environment when reset with the same seed.
+    * v3: Fixed bug: Environments did not yield reproducible results if the same instance was reset with seeding after several steps. MuJoCo environments now properly reset their state (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207)).
     * v2: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v1: the environment depends on `mujoco_py` which is no longer maintained.
     """
