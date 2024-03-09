@@ -2,9 +2,9 @@
 firstpage:
 lastpage:
 ---
-ManySegmentSwimmer
 
-# Swimmer
+
+# ManySegmentSwimmer
 ```{figure} figures/many_segment_swimmer.png
     :name: many_segment_swimmer
 ```
