@@ -17,7 +17,7 @@ from typing import Dict, List, Optional, Union
 
 import numpy as np
 from gymnasium import spaces
-from gymnasium.envs.mujoco.ant_v4 import AntEnv
+from gymnasium.envs.mujoco.ant_v5 import AntEnv
 from gymnasium.utils.ezpickle import EzPickle
 
 from gymnasium_robotics.envs.maze.maps import U_MAZE
@@ -227,12 +227,16 @@ class AntMazeEnv(MazeEnv, EzPickle):
         reward_type: str = "sparse",
         continuing_task: bool = True,
         reset_target: bool = False,
+        xml_file: str | None = None,
         **kwargs,
     ):
-        # Get the ant.xml path from the Gymnasium package
-        ant_xml_file_path = path.join(
-            path.dirname(sys.modules[AntEnv.__module__].__file__), "assets/ant.xml"
-        )
+        if xml_file is None:
+            # Get the ant.xml path from the Gymnasium package
+            ant_xml_file_path = path.join(
+                path.dirname(sys.modules[AntEnv.__module__].__file__), "assets/ant.xml"
+            )
+        else:
+            ant_xml_file_path = xml_file
         super().__init__(
             agent_xml_path=ant_xml_file_path,
             maze_map=maze_map,
