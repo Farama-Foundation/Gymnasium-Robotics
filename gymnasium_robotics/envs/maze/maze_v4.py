@@ -423,3 +423,7 @@ class MazeEnv(GoalEnv):
         """Override this method to update the site qpos in the MuJoCo simulation
         after a new goal is selected. This is mainly for visualization purposes."""
         raise NotImplementedError
+    
+    def __del__(self):
+        self.tmp_dir.cleanup()
+        super().__del__()
