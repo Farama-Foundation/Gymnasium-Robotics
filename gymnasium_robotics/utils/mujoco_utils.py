@@ -130,6 +130,7 @@ def get_site_jacr(model, data, site_id):
 def set_joint_qpos(model, data, name, value):
     """Set the joint positions (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_qposadr[joint_id]
 
@@ -154,6 +155,7 @@ def set_joint_qpos(model, data, name, value):
 def set_joint_qvel(model, data, name, value):
     """Set the joints linear and angular (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_dofadr[joint_id]
 
@@ -178,6 +180,7 @@ def set_joint_qvel(model, data, name, value):
 def get_joint_qpos(model, data, name):
     """Return the joints position and orientation (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_qposadr[joint_id]
 
@@ -198,6 +201,7 @@ def get_joint_qpos(model, data, name):
 def get_joint_qvel(model, data, name):
     """Return the joints linear and angular velocities (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
+    assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
     joint_type = model.jnt_type[joint_id]
     joint_addr = model.jnt_dofadr[joint_id]
 
@@ -217,11 +221,13 @@ def get_joint_qvel(model, data, name):
 
 def get_site_xpos(model, data, name):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    assert site_id != -1, f"Site with name '{name}' is not part of the model!"
     return data.site_xpos[site_id]
 
 
 def get_site_xvelp(model, data, name):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    assert site_id != -1, f"Site with name '{name}' is not part of the model!"
     jacp = get_site_jacp(model, data, site_id)
     xvelp = jacp @ data.qvel
     return xvelp
@@ -229,6 +235,7 @@ def get_site_xvelp(model, data, name):
 
 def get_site_xvelr(model, data, name):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    assert site_id != -1, f"Site with name '{name}' is not part of the model!"
     jacp = get_site_jacr(model, data, site_id)
     xvelp = jacp @ data.qvel
     return xvelp
@@ -236,18 +243,21 @@ def get_site_xvelr(model, data, name):
 
 def set_mocap_pos(model, data, name, value):
     body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
+    assert body_id != -1, f"Body with name '{name}' is not part of the model!"
     mocap_id = model.body_mocapid[body_id]
     data.mocap_pos[mocap_id] = value
 
 
 def set_mocap_quat(model: MjModel, data: MjData, name: str, value):
     body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, name)
+    assert body_id != -1, f"Body with name '{name}' is not part of the model!"
     mocap_id = model.body_mocapid[body_id]
     data.mocap_quat[mocap_id] = value
 
 
 def get_site_xmat(model: MjModel, data: MjData, name: str):
     site_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SITE, name)
+    assert site_id != -1, f"Site with name '{name}' is not part of the model!"
     return data.site_xmat[site_id].reshape(3, 3)
 
 
