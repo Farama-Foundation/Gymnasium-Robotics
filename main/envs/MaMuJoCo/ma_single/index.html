@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Release Notes" href="../../../release_notes/" /><link rel="prev" title="Walker2d" href="../ma_walker2d/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_single.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.3.7 and Furo 2023.08.19.dev1 -->
         <title>Single Action Environments - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -309,7 +309,7 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="single-action-environments">
-<h1>Single Action Environments<a class="headerlink" href="#single-action-environments" title="Link to this heading">#</a></h1>
+<h1>Single Action Environments<a class="headerlink" href="#single-action-environments" title="Link to this heading">¶</a></h1>
 <p>MaMuJoCo also supports single action <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymansium/MuJoCo/</a> environments such as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_pendulum/">Gymnasium/Mujoco/InvertedPendulum</a> and <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/inverted_double_pendulum/">Gymnasium/Mujoco/InvertedDoublePendulum</a>.</p>
 <p>And can be instantiated (without a partition):</p>
 <p><code class="docutils literal notranslate"><span class="pre">env</span> <span class="pre">=</span> <span class="pre">mamujoco_v0.parallel_env(&quot;InvertedDoublePendulum&quot;,</span> <span class="pre">None)</span></code></p>
@@ -317,27 +317,27 @@
 <p>In which case, they simply are the same environments with a single agent using the <code class="docutils literal notranslate"><span class="pre">PettingZoo</span></code> APIs.</p>
 <p>The Purpose of these is to allow researchers to debug multi-agent learning algorithms.</p>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">¶</a></h2>
 <p>The shape of the action space depends on the partitioning. The partitioning has the following form:</p>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <p>The agent receives the same observations as the single agent Gymnasium environment.</p>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">¶</a></h2>
 <p>The agent receive the same reward as the single agent Gymnasium environment.</p>
 </section>
 <section id="starting-state">
-<h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
+<h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">¶</a></h2>
 <p>The starting state of the environment is the same as single agent Gymnasium environment.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">¶</a></h2>
 <p>The agent terminates and truncates at the same time, given the same conditions as the single agent Gymnasium environment.</p>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>v1:</p>
 <ul>
@@ -491,7 +491,7 @@ No Changes from the original <code class="docutils literal notranslate"><span cl
       </script>
 
     <script src="../../../_static/documentation_options.js?v=6ab9a223"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
