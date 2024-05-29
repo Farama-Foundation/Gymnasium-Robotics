@@ -373,11 +373,8 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         self._mujoco.mj_forward(self.model, self.data)
 
     def _reset_sim(self):
-        self.data.time = self.initial_time
-        self.data.qpos[:] = np.copy(self.initial_qpos)
-        self.data.qvel[:] = np.copy(self.initial_qvel)
-        if self.model.na != 0:
-            self.data.act[:] = None
+        # Reset buffers for joint states, actuators, warm-start, control buffers etc.
+        self._mujoco.mj_resetData(self.model, self.data)
 
         # Randomize start position of object.
         if self.has_object:
