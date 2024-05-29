@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Half Cheetah" href="../ma_half_cheetah/" /><link rel="prev" title="Ant" href="../ma_ant/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/MaMuJoCo/ma_coupled_half_cheetah.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.3.7 and Furo 2023.08.19.dev1 -->
         <title>Coupled Half Cheetah - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -309,14 +309,14 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="coupled-half-cheetah">
-<h1>Coupled Half Cheetah<a class="headerlink" href="#coupled-half-cheetah" title="Link to this heading">#</a></h1>
+<h1>Coupled Half Cheetah<a class="headerlink" href="#coupled-half-cheetah" title="Link to this heading">¶</a></h1>
 <p>This Environment is one of the new environments introduced with MaMuJoCo.
 The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">¶</a></h2>
 <p>The shape of the action space depends on the partitioning. The partitioning has the following form:</p>
 <section id="if-partitioning-is-none">
-<h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Link to this heading">#</a></h3>
+<h3>if partitioning is None:<a class="headerlink" href="#if-partitioning-is-none" title="Link to this heading">¶</a></h3>
 <figure class="align-default" id="id1">
 <img alt="../../../_images/coupled_half_cheetah.png" src="../../../_images/coupled_half_cheetah.png" />
 </figure>
@@ -458,7 +458,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </div>
 </section>
 <section id="if-partitioning-1p1-isolate-the-cheetahs">
-<h3>if partitioning == “1p1”:  # isolate the cheetahs<a class="headerlink" href="#if-partitioning-1p1-isolate-the-cheetahs" title="Link to this heading">#</a></h3>
+<h3>if partitioning == “1p1”:  # isolate the cheetahs<a class="headerlink" href="#if-partitioning-1p1-isolate-the-cheetahs" title="Link to this heading">¶</a></h3>
 <figure class="align-default" id="coupled-half-cheetah-1p1">
 <img alt="../../../_images/coupled_half_cheetah_1p1.png" src="../../../_images/coupled_half_cheetah_1p1.png" />
 </figure>
@@ -487,7 +487,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </div>
 <p>The environment is partitioned in 2 parts, one part corresponding to the first cheetah and second part corresponding to the second cheetah.</p>
 <section id="agent-0-action-space-first-cheetah">
-<h4>Agent 0 action space (first cheetah)<a class="headerlink" href="#agent-0-action-space-first-cheetah" title="Link to this heading">#</a></h4>
+<h4>Agent 0 action space (first cheetah)<a class="headerlink" href="#agent-0-action-space-first-cheetah" title="Link to this heading">¶</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -554,7 +554,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </div>
 </section>
 <section id="agent-1-action-space-second-cheetah">
-<h4>Agent 1 action space (second cheetah)<a class="headerlink" href="#agent-1-action-space-second-cheetah" title="Link to this heading">#</a></h4>
+<h4>Agent 1 action space (second cheetah)<a class="headerlink" href="#agent-1-action-space-second-cheetah" title="Link to this heading">¶</a></h4>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -623,7 +623,7 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 </section>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -647,19 +647,19 @@ The environment consists of 2 half cheetahs coupled by an elastic tendon.</p>
 <p>Besides the local observation of each agent (which depend on their parts of the agent, the observation categories and the observation depth), each agent also observes the position and velocity items in each cheetah’s top.</p>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">¶</a></h2>
 <p>All agents receive the same average reward of each cheetah.</p>
 </section>
 <section id="starting-state">
-<h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
+<h2>Starting state<a class="headerlink" href="#starting-state" title="Link to this heading">¶</a></h2>
 <p>The starting state of the environment is the same as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/#starting-state">Gymnasium’s Half Cheetah</a> (but with 2 cheetahs).</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">¶</a></h2>
 <p>All agent terminate and truncate at the same time, given the same conditions as <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end">Gymnasium’s Half Cheetah</a>.</p>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>v1:</p>
 <ul>
@@ -831,7 +831,7 @@ Changes from the original <code class="docutils literal notranslate"><span class
       </script>
 
     <script src="../../../_static/documentation_options.js?v=6ab9a223"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
