@@ -2,6 +2,7 @@ import gymnasium as gym
 import numpy as np
 import pytest
 
+
 @pytest.mark.parametrize("version", ["v3", "v4", "v5"])
 def test_reset(version):
     """Check that AntMaze does not reset into a success state."""
