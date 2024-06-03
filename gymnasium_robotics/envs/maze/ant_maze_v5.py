@@ -227,7 +227,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         reward_type: str = "sparse",
         continuing_task: bool = True,
         reset_target: bool = False,
-        xml_file: str | None = None,
+        xml_file: Union[str, None] = None,
         **kwargs,
     ):
         if xml_file is None:
