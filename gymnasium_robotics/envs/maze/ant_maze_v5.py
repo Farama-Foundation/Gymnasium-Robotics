@@ -77,7 +77,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ```
 
     ### Action Space
-
     The action space is a `Box(-1, 1, (8,), float32)`. An action represents the torques applied at the hinge joints.
 
     | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
@@ -92,7 +91,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
     | 7   | Torque applied on the rotor between the back right two links      | -1          | 1           | angle_4 (right_back_leg)         | hinge | torque (N m) |
 
     ### Observation Space
-
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's position and goal. The dictionary consists of the following 3 keys:
 
     * `observation`: Observations consist of positional values of different body parts of the ant, followed by the velocities of those individual parts (their derivatives) with all
@@ -165,11 +163,10 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('AntMaze_UMaze-v4')
+    env = gym.make('AntMaze_UMaze-v5')
     ```
 
     ### Starting State
-
     The goal and initial placement of the ant in the maze follows the same structure for all environments. A discrete cell `(i,j)` is selected for the goal and agent's initial position as previously menitoned in the **Maze** section.
     Then this cell index is converted to its cell center as an `(x,y)` continuous Cartesian coordinates in the MuJoCo simulation. Finally, a sampled noise from a uniform distribution with range `[-0.25,0.25]m` is added to the
     cell's center x and y coordinates. This allows to create a richer goal distribution.
@@ -181,17 +178,16 @@ class AntMazeEnv(MazeEnv, EzPickle):
     * `reset_cell`: `numpy.ndarray, shape=(2,0), type=int` - Specifies the desired `(i,j)` cell location of the reset initial agent position. A uniform sampled noise will be added to the continuous coordinates of the center of the cell.
 
     ### Episode End
-
     * `truncated` - The episode will be `truncated` when the duration reaches a total of `max_episode_steps`.
     * `terminated` - The task can be set to be continuing with the `continuing_task` argument. In this case the episode will never terminate, instead the goal location is randomly selected again. If the task is set not to be continuing the
     episode will be terminated when the Euclidean distance to the goal is less or equal to 0.5.
 
     ### Arguments
-
     * `maze_map` - Optional argument to initialize the environment with a custom maze map.
     * `continuing_task` - If set to `True` the episode won't be terminated when reaching the goal, instead a new goal location will be generated (unless `reset_target` argument is `True`). If `False` the environment is terminated when the ant reaches the final goal.
     * `reset_target` - If set to `True` and the argument `continuing_task` is also `True`, when the ant reaches the target goal the location of the goal will be kept the same and no new goal location will be generated. If `False` a new goal will be generated when reached.
-    * `use_contact_forces` - If `True` contact forces of the ant are included in the `observation`.
+    * `xml_file` - Optional argument to Path of robot model.
+    * Optionally any other [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#arguments/) argument like `ctrl_cost_weight`.
 
     Note that, the maximum number of timesteps before the episode is `truncated` can be increased or decreased by specifying the `max_episode_steps` argument at initialization. For example,
     to increase the total number of timesteps to 100 make the environment as follows:
@@ -206,9 +202,10 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ```
 
     ### Version History
-    * v4: Update to maze_v4. Refactor compute_terminated in MazeEnv into a pure function compute_terminated and a new function update_goal which resets the goal position. Ant bug fix: Reward is now computed before reset (i.e. sparse reward is not always zero). Maze bug fix: Ant can no longer reset within the goal radius 0.45 due to maze_size_scaling factor missing in MazeEnv. info['success'] key added.
-    * v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
-    * v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
+    - v5: Added `xml_file` argument enabling the loading of third party environments.
+    - v4: Refactor compute_terminated in MazeEnv into a pure function compute_terminated and a new function update_goal which resets the goal position. Ant bug fix: Reward is now computed before reset (i.e. sparse reward is not always zero). Maze bug fix: Ant can no longer reset within the goal radius 0.45 due to maze_size_scaling factor missing in MazeEnv. info['success'] key added.
+    - v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
+    - v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
 
     metadata = {
