@@ -38,7 +38,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ### Maze Variations
 
     #### Maze size
-
     The map variations for the mazes are the same as for `PointMaze`. The ant environments with fixed goal and reset locations are the following:
 
     * `AntMaze_UMaze-v4`
@@ -46,7 +45,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
     * `AntMaze_HardestMaze-v4`
 
     #### Diverse goal mazes
-
     The environments with fixed reset position for the ant and randomly selected goals, also known as diverse goal, are:
 
     * `AntMaze_BigMaze_DG-v4`
@@ -60,7 +58,6 @@ class AntMazeEnv(MazeEnv, EzPickle):
     * `AntMaze_HardestMaze_DGR-v4`
 
     #### Custom maze
-
     Also, any of the `AntMaze` environments can be initialized with a custom maze map by setting the `maze_map` argument like follows:
 
     ```python
@@ -77,18 +74,20 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ```
 
     ### Action Space
+    The action space is the action space of [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#action-space):
+
     The action space is a `Box(-1, 1, (8,), float32)`. An action represents the torques applied at the hinge joints.
 
-    | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Unit         |
+    | Num | Action                                                            | Control Min | Control Max | Name (in corresponding XML file) | Joint | Type (Unit)  |
     | --- | ----------------------------------------------------------------- | ----------- | ----------- | -------------------------------- | ----- | ------------ |
-    | 0   | Torque applied on the rotor between the torso and front left hip  | -1          | 1           | hip_1 (front_left_leg)           | hinge | torque (N m) |
-    | 1   | Torque applied on the rotor between the front left two links      | -1          | 1           | angle_1 (front_left_leg)         | hinge | torque (N m) |
-    | 2   | Torque applied on the rotor between the torso and front right hip | -1          | 1           | hip_2 (front_right_leg)          | hinge | torque (N m) |
-    | 3   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
-    | 4   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
-    | 5   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
-    | 6   | Torque applied on the rotor between the torso and back right hip  | -1          | 1           | hip_4 (right_back_leg)           | hinge | torque (N m) |
-    | 7   | Torque applied on the rotor between the back right two links      | -1          | 1           | angle_4 (right_back_leg)         | hinge | torque (N m) |
+    | 0   | Torque applied on the rotor between the torso and back right hip  | -1          | 1           | hip_4 (right_back_leg)           | hinge | torque (N m) |
+    | 1   | Torque applied on the rotor between the back right two links      | -1          | 1           | angle_4 (right_back_leg)         | hinge | torque (N m) |
+    | 2   | Torque applied on the rotor between the torso and front left hip  | -1          | 1           | hip_1 (front_left_leg)           | hinge | torque (N m) |
+    | 3   | Torque applied on the rotor between the front left two links      | -1          | 1           | angle_1 (front_left_leg)         | hinge | torque (N m) |
+    | 4   | Torque applied on the rotor between the torso and front right hip | -1          | 1           | hip_2 (front_right_leg)          | hinge | torque (N m) |
+    | 5   | Torque applied on the rotor between the front right two links     | -1          | 1           | angle_2 (front_right_leg)        | hinge | torque (N m) |
+    | 6   | Torque applied on the rotor between the torso and back left hip   | -1          | 1           | hip_3 (back_leg)                 | hinge | torque (N m) |
+    | 7   | Torque applied on the rotor between the back left two links       | -1          | 1           | angle_3 (back_leg)               | hinge | torque (N m) |
 
     ### Observation Space
     The observation is a `goal-aware observation space`. It consists of a dictionary with information about the robot's position and goal. The dictionary consists of the following 3 keys:
@@ -187,7 +186,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
     * `continuing_task` - If set to `True` the episode won't be terminated when reaching the goal, instead a new goal location will be generated (unless `reset_target` argument is `True`). If `False` the environment is terminated when the ant reaches the final goal.
     * `reset_target` - If set to `True` and the argument `continuing_task` is also `True`, when the ant reaches the target goal the location of the goal will be kept the same and no new goal location will be generated. If `False` a new goal will be generated when reached.
     * `xml_file` - Optional argument to Path of robot model.
-    * Optionally any other [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#arguments/) argument like `ctrl_cost_weight`.
+    * Optionally any other [Gymnasium/MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/#arguments/) argument such `ctrl_cost_weight`.
 
     Note that, the maximum number of timesteps before the episode is `truncated` can be increased or decreased by specifying the `max_episode_steps` argument at initialization. For example,
     to increase the total number of timesteps to 100 make the environment as follows:
