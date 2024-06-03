@@ -1,10 +1,10 @@
 import gymnasium as gym
 import numpy as np
 
-
-def test_reset():
+@pytest.mark.parametrize("version", ["v3", "v4", "v5"])
+def test_reset(version):
     """Check that AntMaze does not reset into a success state."""
-    env = gym.make("AntMaze_UMaze-v4", continuing_task=True)
+    env = gym.make(f"AntMaze_UMaze-{version}", continuing_task=True)
 
     for _ in range(1000):
         obs, info = env.reset()
