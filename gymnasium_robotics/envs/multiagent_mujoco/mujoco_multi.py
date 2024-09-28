@@ -30,7 +30,6 @@ from gymnasium_robotics.envs.multiagent_mujoco.coupled_half_cheetah import (
     CoupledHalfCheetahEnv,
 )
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import (
-    Node,
     build_obs,
     get_joints_at_kdist,
     get_parts_and_edges,
