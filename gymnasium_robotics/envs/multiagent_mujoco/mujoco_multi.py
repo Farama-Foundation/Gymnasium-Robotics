@@ -93,7 +93,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 If set to 0 it only observes local state,
                 If set to 1 it observes local state + 1 joint over,
                 If set to 2 it observes local state + 2 joints over,
-                If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
+                If it set to None the task becomes single agent (the agents observe the entire environment)
                 The Default value is: 1
             agent_factorization: A custom factorization of the MuJoCo environment (overwrites agent_conf),
                 see DOC [how to create new agent factorizations](https://robotics.farama.org/envs/MaMuJoCo/index.html#how-to-create-new-agent-factorizations).
