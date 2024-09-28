@@ -15,7 +15,6 @@ changes:
 This project is covered by the Apache 2.0 License.
 """
 
-
 from __future__ import annotations
 
 import os
@@ -127,25 +126,16 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.agent_obsk = agent_obsk  # if None, fully observable else k>=0 implies observe nearest k agents or joints
 
         # load the agent factorization
-        if self.agent_obsk is not None:
-            if agent_factorization is None:
-                (
-                    self.agent_action_partitions,
-                    mujoco_edges,
-                    self.mujoco_globals,
-                ) = get_parts_and_edges(scenario, agent_conf)
-            else:
-                self.agent_action_partitions = agent_factorization["partition"]
-                mujoco_edges = agent_factorization["edges"]
-                self.mujoco_globals = agent_factorization["globals"]
+        if agent_factorization is None:
+            (
+                self.agent_action_partitions,
+                mujoco_edges,
+                self.mujoco_globals,
+            ) = get_parts_and_edges(scenario, agent_conf)
         else:
-            self.agent_action_partitions = [
-                tuple(
-                    Node("dummy_node", None, None, i)
-                    for i in range(self.single_agent_env.action_space.shape[0])
-                )
-            ]
-            mujoco_edges = []
+            self.agent_action_partitions = agent_factorization["partition"]
+            mujoco_edges = agent_factorization["edges"]
+            self.mujoco_globals = agent_factorization["globals"]
 
         # Create agent lists
         self.possible_agents = [
@@ -293,9 +283,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             AssertionError:
                 If the Agent action factorization is badly defined (if an action is double defined or not defined at all)
         """
-        if self.agent_obsk is None:
-            return actions[self.possible_agents[0]]
-
         assert self.single_agent_env.action_space.shape is not None
         global_action = (
             np.zeros((self.single_agent_env.action_space.shape[0],)) + np.nan
@@ -329,9 +316,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             AssertionError:
                 If the Agent action factorization sizes are badly defined
         """
-        if self.agent_obsk is None:
-            return {self.possible_agents[0]: action}
-
         local_actions = {}
         for agent_id, partition in enumerate(self.agent_action_partitions):
             local_actions[self.possible_agents[agent_id]] = np.array(
@@ -417,12 +401,6 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         Returns:
             A cache that indexes global osbervations to local.
         """
-        if self.agent_obsk is None:
-            return {
-                self.possible_agents[0]: np.arange(
-                    self.single_agent_env.observation_space.shape[0]
-                )
-            }
         if not hasattr(self.single_agent_env.unwrapped, "observation_structure"):
             return None
 
