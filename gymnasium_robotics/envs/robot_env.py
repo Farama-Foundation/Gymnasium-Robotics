@@ -190,7 +190,7 @@ class BaseRobotEnv(GoalEnv):
     def _mujoco_step(self, action):
         """Advance the mujoco simulation.
 
-        Override depending on the python binginds, either mujoco or mujoco_py
+        Override depending on the python bindings, either mujoco or mujoco_py
         """
         raise NotImplementedError
 
