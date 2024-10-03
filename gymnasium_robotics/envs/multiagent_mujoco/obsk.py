@@ -6,12 +6,12 @@ Original Author: Schroeder de Witt
 
 Then Modified by @Kallinteris-Andreas for this project
 changes:
- - General code cleanup, factorization, type hinting, adding documentation and comments
+ -  General code cleanup, factorization, type hinting, adding documentation and code comments
  - `build_obs`: fixed global observations, fixed body observations (cvel, cinert, cfrc_ext), how uses mujoco.data, instead of gym.env
  - `HalfCheetah`: fix action ordering
  - `Ant`: Fix global observation, fix "2x4d" factorization how having diagonal observations
  - `Humanoid`s: Added Body support, fixed abdomen observations, added/fixed missing global torso observations, fixed action ordering
- - `Reacher`: Fixxed body mapping
+ - `Reacher`: Fixed body mapping
  - `Pusher`: Added support for `Pusher`
  - `Swimmer`: Added Front tip to global observations
  - `Walker2D`: Added missing Global Observations
