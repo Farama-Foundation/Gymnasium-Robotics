@@ -67,18 +67,33 @@ To create our '8x1' partition we will need to partition the `unpartioned_nodes`:
 [(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]
 ```
 Finally package the partitions and create our environment:
+We are using the robot model from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot).
 ```python
 >>> my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
 >>> gym_env = mamujoco_v1('Ant', '8x1', agent_factorization=my_agent_factorization)
 ```
 
+
+### example 'boston dynamics spot arm', 'quadruped|arm'
+```python
+```
+
+
+
 ## Version History
 * v1:
-	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
+	- Based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 	- When `factorizatoion=None`, the `env.gent_action_partitions.dummy_node` now contains `action_id` (it used to be `None`).
 	- Added `map_local_observations_to_global_state` & optimized runtime performance of `map_global_state_to_local_observations`.
 	- Added `gym_env` argument which can be used to load third-party `Gymansium.MujocoEnv` environments.
-* v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+ 	- Added function `MultiAgentMujocoEnv.map_local_observations_to_global_state`.
+* v0: Initial version release on gymnasium, and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco),
+	- Based on `Gymnasium/MuJoCo-v4` instead of `Gym/MuJoCo-v2`.
+	- Uses PettingZoo APIs instead of an original API.
+	- Added support for custom agent factorizations.
+	- Added new functions `MultiAgentMujocoEnv.map_global_action_to_local_actions`, `MultiAgentMujocoEnv.map_local_actions_to_global_action`, `MultiAgentMujocoEnv.map_global_state_to_local_observations`.
+
+
 
 ```{toctree}
 :hidden:
