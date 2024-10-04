@@ -45,9 +45,14 @@ MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api
 
 
 
-## How to create new agent factorizations 
+## How to create new agent factorizations
+MaMuJoCo-v1 not only supports the existing factorization, but also supports creating new factorizations.
 ### example 'Ant-v5', '8x1'
 In this example, we will create an agent factorization not present in Gymnasium-Robotics/MaMuJoCo the "Ant"/'8x1', where each agent controls a single joint/action (first implemented by [safe-MaMuJoCo](https://github.com/chauncygu/Safe-Multi-Agent-Mujoco)).
+
+```{figure} figures/ant_8x1.png
+    :name: Ant 8 way factorization
+```
 
 first we will load the graph of MaMuJoCo:
 ```python
