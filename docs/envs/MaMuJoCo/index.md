@@ -74,8 +74,104 @@ We are using the robot model from [MuJoCo Menagerie](https://github.com/google-d
 ```
 
 
-### example 'boston dynamics spot arm', 'quadruped|arm'
+### example 'boston dynamics spot arm' with  custom 'quadruped|arm' factorization
+Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynamics.com/products/spot/arm/)" robot with the robot model from [Menagarie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot), into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
+
+```{figure} figures/boston_dymanics_spot_arm.png
+    :name: 
+```
+
 ```python
+from gymnasium_robotics import mamujoco_v1
+from gymnasium_robotics.envs.multiagent_mujoco.obsk import Node, HyperEdge
+
+freejoint = Node(
+    "freejoint",
+    None,
+    None,
+    None,
+    extra_obs={
+        "qpos": lambda data: data.qpos[2:7],
+        "qvel": lambda data: data.qvel[:6],
+    },
+)
+fl_hx = Node("fl_hx", -19, -19, 0)
+fl_hy = Node("fl_hy", -18, -18, 1)
+fl_kn = Node("fl_kn", -17, -17, 2)
+fr_hx = Node("fr_hx", -16, -16, 3)
+fr_hy = Node("fr_hy", -15, -15, 4)
+fr_kn = Node("fr_kn", -14, -14, 5)
+hl_hx = Node("hl_hx", -13, -13, 6)
+hl_hy = Node("hl_hy", -12, -12, 7)
+hl_kn = Node("hl_kn", -11, -11, 8)
+hr_hx = Node("hr_hx", -10, -10, 9)
+hr_hy = Node("hr_hy", -9, -9, 10)
+hr_kn = Node("hr_kn", -8, -8, 11)
+arm_sh0 = Node("arm_sh0", -7, -7, 12)
+arm_sh1 = Node("arm_sh1", -6, -6, 13)
+arm_el0 = Node("arm_el0", -5, -5, 14)
+arm_el1 = Node("arm_el1", -4, -4, 15)
+arm_wr0 = Node("arm_wr0", -3, -3, 16)
+arm_wr1 = Node("arm_wr1", -2, -2, 17)
+arm_f1x = Node("arm_f1x", -1, -1, 18)
+
+parts = [
+    (  # Locomoting Quadruped Component
+        fl_hx,
+        fl_hy,
+        fl_kn,
+        fr_hx,
+        fr_hy,
+        fr_kn,
+        hl_hx,
+        hl_hy,
+        hl_kn,
+        hr_hx,
+        hr_hy,
+        hr_kn,
+    ),
+    (  # Arm Manipulator Component
+        arm_sh0,
+        arm_sh1,
+        arm_el0,
+        arm_el1,
+        arm_wr0,
+        arm_wr1,
+        arm_f1x,
+    ),
+]
+
+edges = [
+    HyperEdge(fl_hx, fl_hy, fl_kn),
+    HyperEdge(fr_hx, fr_hy, fr_kn),
+    HyperEdge(hl_hx, hl_hy, hl_kn),
+    HyperEdge(hr_hx, hr_hy, hr_kn),
+    HyperEdge(  # Main "body" connections
+        fl_hx,
+        fl_hy,
+        fr_hx,
+        fr_hy,
+        hl_hx,
+        hl_hy,
+        hr_hx,
+        hr_hy,
+        arm_sh0,
+        arm_sh1,
+    ),
+    HyperEdge(arm_sh0, arm_sh1, arm_el0, arm_el1),
+    HyperEdge(arm_el0, arm_el1, arm_wr0, arm_wr1),
+    HyperEdge(arm_wr0, arm_wr1, arm_f1x),
+]
+
+global_nodes = [freejoint]
+
+my_agent_factorization = {"partition": parts, "edges": edges, "globals": global_nodes}
+env = mamujoco_v1.parallel_env(
+    "Ant",
+    "quadruped|arm",
+    agent_factorization=my_agent_factorization,
+    xml_file="./mujoco_menagerie/boston_dynamics_spot/scene_arm.xml",
+)
 ```
 
 
