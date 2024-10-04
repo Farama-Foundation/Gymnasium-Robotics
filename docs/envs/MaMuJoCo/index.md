@@ -78,7 +78,7 @@ We are using the robot model from [MuJoCo Menagerie](https://github.com/google-d
 Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynamics.com/products/spot/arm/)" robot with the robot model from [Menagarie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot), into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
 
 ```{figure} figures/boston_dymanics_spot_arm.png
-    :name: 
+    :name: Boston Dymanics Spot Arm factorization
 ```
 
 ```python
