@@ -9,7 +9,8 @@ ENVIRONMENT_IDS = (
     #  "HandManipulateBlock-v0",
     "HandManipulateEgg-v1",
     "HandManipulatePen-v1",
-    "HandManipulateBlock-v1",)
+    "HandManipulateBlock-v1",
+)
 
 
 @pytest.mark.parametrize("environment_id", ENVIRONMENT_IDS)
