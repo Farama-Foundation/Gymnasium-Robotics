@@ -90,6 +90,7 @@ Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynam
 from gymnasium_robotics import mamujoco_v1
 from gymnasium_robotics.envs.multiagent_mujoco.obsk import Node, HyperEdge
 
+# Define the factorization graph
 freejoint = Node(
     "freejoint",
     None,
