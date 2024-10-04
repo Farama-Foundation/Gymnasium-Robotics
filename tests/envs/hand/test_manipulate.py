@@ -4,10 +4,12 @@ import gymnasium as gym
 import pytest
 
 ENVIRONMENT_IDS = (
-    "HandManipulateEgg-v0",
-    "HandManipulatePen-v0",
-    "HandManipulateBlock-v0",
-)
+    #  "HandManipulateEgg-v0",
+    #  "HandManipulatePen-v0",
+    #  "HandManipulateBlock-v0",
+    "HandManipulateEgg-v1",
+    "HandManipulatePen-v1",
+    "HandManipulateBlock-v1",)
 
 
 @pytest.mark.parametrize("environment_id", ENVIRONMENT_IDS)
