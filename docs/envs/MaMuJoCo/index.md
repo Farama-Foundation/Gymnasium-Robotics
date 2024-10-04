@@ -45,9 +45,14 @@ MaMuJoCo also supports the [PettingZoo.AECAPI](https://pettingzoo.farama.org/api
 
 
 
-## How to create new agent factorizations 
+## How to create new agent factorizations
+MaMuJoCo-v1 not only supports the existing factorization, but also supports creating new factorizations.
 ### example 'Ant-v5', '8x1'
 In this example, we will create an agent factorization not present in Gymnasium-Robotics/MaMuJoCo the "Ant"/'8x1', where each agent controls a single joint/action (first implemented by [safe-MaMuJoCo](https://github.com/chauncygu/Safe-Multi-Agent-Mujoco)).
+
+```{figure} figures/ant_8x1.png
+    :name: Ant 8 way factorization
+```
 
 first we will load the graph of MaMuJoCo:
 ```python
@@ -72,13 +77,125 @@ Finally package the partitions and create our environment:
 >>> gym_env = mamujoco_v1('Ant', '8x1', agent_factorization=my_agent_factorization)
 ```
 
+
+### example 'boston dynamics spot arm' with  custom 'quadruped|arm' factorization
+Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynamics.com/products/spot/arm/)" robot with the robot model from [Menagarie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot), into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
+We are using the robot model from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot).
+
+```{figure} figures/boston_dymanics_spot_arm.png
+    :name: Boston Dymanics Spot Arm factorization
+```
+
+```python
+from gymnasium_robotics import mamujoco_v1
+from gymnasium_robotics.envs.multiagent_mujoco.obsk import Node, HyperEdge
+
+# Define the factorization graph
+freejoint = Node(
+    "freejoint",
+    None,
+    None,
+    None,
+    extra_obs={
+        "qpos": lambda data: data.qpos[2:7],
+        "qvel": lambda data: data.qvel[:6],
+    },
+)
+fl_hx = Node("fl_hx", -19, -19, 0)
+fl_hy = Node("fl_hy", -18, -18, 1)
+fl_kn = Node("fl_kn", -17, -17, 2)
+fr_hx = Node("fr_hx", -16, -16, 3)
+fr_hy = Node("fr_hy", -15, -15, 4)
+fr_kn = Node("fr_kn", -14, -14, 5)
+hl_hx = Node("hl_hx", -13, -13, 6)
+hl_hy = Node("hl_hy", -12, -12, 7)
+hl_kn = Node("hl_kn", -11, -11, 8)
+hr_hx = Node("hr_hx", -10, -10, 9)
+hr_hy = Node("hr_hy", -9, -9, 10)
+hr_kn = Node("hr_kn", -8, -8, 11)
+arm_sh0 = Node("arm_sh0", -7, -7, 12)
+arm_sh1 = Node("arm_sh1", -6, -6, 13)
+arm_el0 = Node("arm_el0", -5, -5, 14)
+arm_el1 = Node("arm_el1", -4, -4, 15)
+arm_wr0 = Node("arm_wr0", -3, -3, 16)
+arm_wr1 = Node("arm_wr1", -2, -2, 17)
+arm_f1x = Node("arm_f1x", -1, -1, 18)
+
+parts = [
+    (  # Locomoting Quadruped Component
+        fl_hx,
+        fl_hy,
+        fl_kn,
+        fr_hx,
+        fr_hy,
+        fr_kn,
+        hl_hx,
+        hl_hy,
+        hl_kn,
+        hr_hx,
+        hr_hy,
+        hr_kn,
+    ),
+    (  # Arm Manipulator Component
+        arm_sh0,
+        arm_sh1,
+        arm_el0,
+        arm_el1,
+        arm_wr0,
+        arm_wr1,
+        arm_f1x,
+    ),
+]
+
+edges = [
+    HyperEdge(fl_hx, fl_hy, fl_kn),
+    HyperEdge(fr_hx, fr_hy, fr_kn),
+    HyperEdge(hl_hx, hl_hy, hl_kn),
+    HyperEdge(hr_hx, hr_hy, hr_kn),
+    HyperEdge(  # Main "body" connections
+        fl_hx,
+        fl_hy,
+        fr_hx,
+        fr_hy,
+        hl_hx,
+        hl_hy,
+        hr_hx,
+        hr_hy,
+        arm_sh0,
+        arm_sh1,
+    ),
+    HyperEdge(arm_sh0, arm_sh1, arm_el0, arm_el1),
+    HyperEdge(arm_el0, arm_el1, arm_wr0, arm_wr1),
+    HyperEdge(arm_wr0, arm_wr1, arm_f1x),
+]
+
+global_nodes = [freejoint]
+
+my_agent_factorization = {"partition": parts, "edges": edges, "globals": global_nodes}
+env = mamujoco_v1.parallel_env(
+    "Ant",
+    "quadruped|arm",
+    agent_factorization=my_agent_factorization,
+    xml_file="./mujoco_menagerie/boston_dynamics_spot/scene_arm.xml",
+)
+```
+
+
+
 ## Version History
 * v1:
-	- Now based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
+	- Based on `Gymnasium/MuJoCo-v5` instead of `Gymnasium/MuJoCo-v4` (https://github.com/Farama-Foundation/Gymnasium/pull/572).
 	- When `factorizatoion=None`, the `env.gent_action_partitions.dummy_node` now contains `action_id` (it used to be `None`).
 	- Added `map_local_observations_to_global_state` & optimized runtime performance of `map_global_state_to_local_observations`.
 	- Added `gym_env` argument which can be used to load third-party `Gymansium.MujocoEnv` environments.
-* v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco)
+ 	- Added function `MultiAgentMujocoEnv.map_local_observations_to_global_state`.
+* v0: Initial version release on gymnasium, and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco),
+	- Based on `Gymnasium/MuJoCo-v4` instead of `Gym/MuJoCo-v2`.
+	- Uses PettingZoo APIs instead of an original API.
+	- Added support for custom agent factorizations.
+	- Added new functions `MultiAgentMujocoEnv.map_global_action_to_local_actions`, `MultiAgentMujocoEnv.map_local_actions_to_global_action`, `MultiAgentMujocoEnv.map_global_state_to_local_observations`.
+
+
 
 ```{toctree}
 :hidden:
