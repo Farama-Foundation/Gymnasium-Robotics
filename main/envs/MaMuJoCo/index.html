@@ -443,9 +443,13 @@ Note: arguments that change the observation space will not work.</p></li>
 </section>
 <section id="how-to-create-new-agent-factorizations">
 <h2>How to create new agent factorizations<a class="headerlink" href="#how-to-create-new-agent-factorizations" title="Link to this heading">¶</a></h2>
+<p>MaMuJoCo-v1 not only supports the existing factorization, but also supports creating new factorizations.</p>
 <section id="example-ant-v5-8x1">
 <h3>example ‘Ant-v5’, ‘8x1’<a class="headerlink" href="#example-ant-v5-8x1" title="Link to this heading">¶</a></h3>
 <p>In this example, we will create an agent factorization not present in Gymnasium-Robotics/MaMuJoCo the “Ant”/’8x1’, where each agent controls a single joint/action (first implemented by <a class="reference external" href="https://github.com/chauncygu/Safe-Multi-Agent-Mujoco">safe-MaMuJoCo</a>).</p>
+<figure class="align-default" id="ant-8-way-factorization">
+<img alt="../../_images/ant_8x1.png" src="../../_images/ant_8x1.png" />
+</figure>
 <p>first we will load the graph of MaMuJoCo:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gymnasium_robotics.mamujoco_v1</span> <span class="kn">import</span> <span class="n">get_parts_and_edges</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unpartioned_nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">global_nodes</span> <span class="o">=</span> <span class="n">get_parts_and_edges</span><span class="p">(</span><span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -468,19 +472,128 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
 </pre></div>
 </div>
 </section>
+<section id="example-boston-dynamics-spot-arm-with-custom-quadruped-arm-factorization">
+<h3>example ‘boston dynamics spot arm’ with  custom ‘quadruped|arm’ factorization<a class="headerlink" href="#example-boston-dynamics-spot-arm-with-custom-quadruped-arm-factorization" title="Link to this heading">¶</a></h3>
+<p>Here we are Factorizing the “<a class="reference external" href="https://bostondynamics.com/products/spot/arm/">Boston Dynamics Spot with arm</a>” robot with the robot model from <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot">Menagarie</a>, into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
+We are using the robot model from <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot">MuJoCo Menagerie</a>.</p>
+<figure class="align-default" id="boston-dymanics-spot-arm-factorization">
+<img alt="../../_images/boston_dymanics_spot_arm.png" src="../../_images/boston_dymanics_spot_arm.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gymnasium_robotics</span> <span class="kn">import</span> <span class="n">mamujoco_v1</span>
+<span class="kn">from</span> <span class="nn">gymnasium_robotics.envs.multiagent_mujoco.obsk</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">HyperEdge</span>
+
+<span class="c1"># Define the factorization graph</span>
+<span class="n">freejoint</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+    <span class="s2">&quot;freejoint&quot;</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">,</span>
+    <span class="kc">None</span><span class="p">,</span>
+    <span class="n">extra_obs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;qpos&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">qpos</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">],</span>
+        <span class="s2">&quot;qvel&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">data</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">qvel</span><span class="p">[:</span><span class="mi">6</span><span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">fl_hx</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fl_hx&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">fl_hy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fl_hy&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">fl_kn</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fl_kn&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">fr_hx</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fr_hx&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">fr_hy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fr_hy&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">fr_kn</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;fr_kn&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">hl_hx</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hl_hx&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="o">-</span><span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">hl_hy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hl_hy&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+<span class="n">hl_kn</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hl_kn&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">hr_hx</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hr_hx&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">hr_hy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hr_hy&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">hr_kn</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;hr_kn&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">arm_sh0</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_sh0&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">arm_sh1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_sh1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">arm_el0</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_el0&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">arm_el1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_el1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">arm_wr0</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_wr0&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+<span class="n">arm_wr1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_wr1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+<span class="n">arm_f1x</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;arm_f1x&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+
+<span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span>  <span class="c1"># Locomoting Quadruped Component</span>
+        <span class="n">fl_hx</span><span class="p">,</span>
+        <span class="n">fl_hy</span><span class="p">,</span>
+        <span class="n">fl_kn</span><span class="p">,</span>
+        <span class="n">fr_hx</span><span class="p">,</span>
+        <span class="n">fr_hy</span><span class="p">,</span>
+        <span class="n">fr_kn</span><span class="p">,</span>
+        <span class="n">hl_hx</span><span class="p">,</span>
+        <span class="n">hl_hy</span><span class="p">,</span>
+        <span class="n">hl_kn</span><span class="p">,</span>
+        <span class="n">hr_hx</span><span class="p">,</span>
+        <span class="n">hr_hy</span><span class="p">,</span>
+        <span class="n">hr_kn</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>  <span class="c1"># Arm Manipulator Component</span>
+        <span class="n">arm_sh0</span><span class="p">,</span>
+        <span class="n">arm_sh1</span><span class="p">,</span>
+        <span class="n">arm_el0</span><span class="p">,</span>
+        <span class="n">arm_el1</span><span class="p">,</span>
+        <span class="n">arm_wr0</span><span class="p">,</span>
+        <span class="n">arm_wr1</span><span class="p">,</span>
+        <span class="n">arm_f1x</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">edges</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">fl_hx</span><span class="p">,</span> <span class="n">fl_hy</span><span class="p">,</span> <span class="n">fl_kn</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">fr_hx</span><span class="p">,</span> <span class="n">fr_hy</span><span class="p">,</span> <span class="n">fr_kn</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">hl_hx</span><span class="p">,</span> <span class="n">hl_hy</span><span class="p">,</span> <span class="n">hl_kn</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">hr_hx</span><span class="p">,</span> <span class="n">hr_hy</span><span class="p">,</span> <span class="n">hr_kn</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span>  <span class="c1"># Main &quot;body&quot; connections</span>
+        <span class="n">fl_hx</span><span class="p">,</span>
+        <span class="n">fl_hy</span><span class="p">,</span>
+        <span class="n">fr_hx</span><span class="p">,</span>
+        <span class="n">fr_hy</span><span class="p">,</span>
+        <span class="n">hl_hx</span><span class="p">,</span>
+        <span class="n">hl_hy</span><span class="p">,</span>
+        <span class="n">hr_hx</span><span class="p">,</span>
+        <span class="n">hr_hy</span><span class="p">,</span>
+        <span class="n">arm_sh0</span><span class="p">,</span>
+        <span class="n">arm_sh1</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">arm_sh0</span><span class="p">,</span> <span class="n">arm_sh1</span><span class="p">,</span> <span class="n">arm_el0</span><span class="p">,</span> <span class="n">arm_el1</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">arm_el0</span><span class="p">,</span> <span class="n">arm_el1</span><span class="p">,</span> <span class="n">arm_wr0</span><span class="p">,</span> <span class="n">arm_wr1</span><span class="p">),</span>
+    <span class="n">HyperEdge</span><span class="p">(</span><span class="n">arm_wr0</span><span class="p">,</span> <span class="n">arm_wr1</span><span class="p">,</span> <span class="n">arm_f1x</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">global_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">freejoint</span><span class="p">]</span>
+
+<span class="n">my_agent_factorization</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;partition&quot;</span><span class="p">:</span> <span class="n">parts</span><span class="p">,</span> <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="n">edges</span><span class="p">,</span> <span class="s2">&quot;globals&quot;</span><span class="p">:</span> <span class="n">global_nodes</span><span class="p">}</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">mamujoco_v1</span><span class="o">.</span><span class="n">parallel_env</span><span class="p">(</span>
+    <span class="s2">&quot;Ant&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;quadruped|arm&quot;</span><span class="p">,</span>
+    <span class="n">agent_factorization</span><span class="o">=</span><span class="n">my_agent_factorization</span><span class="p">,</span>
+    <span class="n">xml_file</span><span class="o">=</span><span class="s2">&quot;./mujoco_menagerie/boston_dynamics_spot/scene_arm.xml&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>v1:</p>
 <ul>
-<li><p>Now based on <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v5</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v4</span></code> (https://github.com/Farama-Foundation/Gymnasium/pull/572).</p></li>
+<li><p>Based on <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v5</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v4</span></code> (https://github.com/Farama-Foundation/Gymnasium/pull/572).</p></li>
 <li><p>When <code class="docutils literal notranslate"><span class="pre">factorizatoion=None</span></code>, the <code class="docutils literal notranslate"><span class="pre">env.gent_action_partitions.dummy_node</span></code> now contains <code class="docutils literal notranslate"><span class="pre">action_id</span></code> (it used to be <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">map_local_observations_to_global_state</span></code> &amp; optimized runtime performance of <code class="docutils literal notranslate"><span class="pre">map_global_state_to_local_observations</span></code>.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">gym_env</span></code> argument which can be used to load third-party <code class="docutils literal notranslate"><span class="pre">Gymansium.MujocoEnv</span></code> environments.</p></li>
+<li><p>Added function <code class="docutils literal notranslate"><span class="pre">MultiAgentMujocoEnv.map_local_observations_to_global_state</span></code>.</p></li>
 </ul>
 </li>
-<li><p>v0: Initial version release, uses <a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">Gymnasium.MuJoCo-v4</a>, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a></p></li>
+<li><p>v0: Initial version release on gymnasium, and is a fork of <a class="reference external" href="https://github.com/schroederdewitt/multiagent_mujoco">the original multiagent_mujuco</a>,</p>
+<ul>
+<li><p>Based on <code class="docutils literal notranslate"><span class="pre">Gymnasium/MuJoCo-v4</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Gym/MuJoCo-v2</span></code>.</p></li>
+<li><p>Uses PettingZoo APIs instead of an original API.</p></li>
+<li><p>Added support for custom agent factorizations.</p></li>
+<li><p>Added new functions <code class="docutils literal notranslate"><span class="pre">MultiAgentMujocoEnv.map_global_action_to_local_actions</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiAgentMujocoEnv.map_local_actions_to_global_action</span></code>, <code class="docutils literal notranslate"><span class="pre">MultiAgentMujocoEnv.map_global_state_to_local_observations</span></code>.</p></li>
+</ul>
+</li>
 </ul>
 <div class="toctree-wrapper compound">
 </div>
@@ -549,6 +662,7 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
 </li>
 <li><a class="reference internal" href="#how-to-create-new-agent-factorizations">How to create new agent factorizations</a><ul>
 <li><a class="reference internal" href="#example-ant-v5-8x1">example ‘Ant-v5’, ‘8x1’</a></li>
+<li><a class="reference internal" href="#example-boston-dynamics-spot-arm-with-custom-quadruped-arm-factorization">example ‘boston dynamics spot arm’ with  custom ‘quadruped|arm’ factorization</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#version-history">Version History</a></li>
