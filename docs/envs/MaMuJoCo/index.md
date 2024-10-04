@@ -72,7 +72,6 @@ To create our '8x1' partition we will need to partition the `unpartioned_nodes`:
 [(hip1,), (ankle1,), (hip2,), (ankle2,), (hip3,), (ankle3,), (hip4,), (ankle4,)]
 ```
 Finally package the partitions and create our environment:
-We are using the robot model from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot).
 ```python
 >>> my_agent_factorization = {"partition": partioned_nodes, "edges": edges, "globals": global_nodes}
 >>> gym_env = mamujoco_v1('Ant', '8x1', agent_factorization=my_agent_factorization)
@@ -81,6 +80,7 @@ We are using the robot model from [MuJoCo Menagerie](https://github.com/google-d
 
 ### example 'boston dynamics spot arm' with  custom 'quadruped|arm' factorization
 Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynamics.com/products/spot/arm/)" robot with the robot model from [Menagarie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot), into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
+We are using the robot model from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot).
 
 ```{figure} figures/boston_dymanics_spot_arm.png
     :name: Boston Dymanics Spot Arm factorization
