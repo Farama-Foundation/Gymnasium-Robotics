@@ -188,7 +188,6 @@ env = mamujoco_v1.parallel_env(
 	- When `factorizatoion=None`, the `env.gent_action_partitions.dummy_node` now contains `action_id` (it used to be `None`).
 	- Added `map_local_observations_to_global_state` & optimized runtime performance of `map_global_state_to_local_observations`.
 	- Added `gym_env` argument which can be used to load third-party `Gymansium.MujocoEnv` environments.
- 	- Added function `MultiAgentMujocoEnv.map_local_observations_to_global_state`.
 * v0: Initial version release on gymnasium, and is a fork of [the original multiagent_mujuco](https://github.com/schroederdewitt/multiagent_mujoco),
 	- Based on `Gymnasium/MuJoCo-v4` instead of `Gym/MuJoCo-v2`.
 	- Uses PettingZoo APIs instead of an original API.
