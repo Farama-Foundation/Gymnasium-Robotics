@@ -8,7 +8,10 @@ from gymnasium.envs.registration import EnvSpec
 from gymnasium.error import Error
 from gymnasium.utils.env_checker import check_env, data_equivalence
 
+import gymnasium_robotics
 from tests.utils import all_testing_env_specs, assert_equals
+
+gym.register_envs(gymnasium_robotics)
 
 CHECK_ENV_IGNORE_WARNINGS = [
     f"\x1b[33mWARN: {message}\x1b[0m"
@@ -27,7 +30,7 @@ non_mujoco_py_env_specs = [
 
 
 @pytest.mark.parametrize(
-    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
+    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
 )
 def test_env(spec):
     # Capture warnings
@@ -50,7 +53,7 @@ NUM_STEPS = 50
 
 
 @pytest.mark.parametrize(
-    "env_spec", all_testing_env_specs, ids=[env.id for env in all_testing_env_specs]
+    "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
 )
 def test_env_determinism_rollout(env_spec: EnvSpec):
     """Run a rollout with two environments and assert equality.
