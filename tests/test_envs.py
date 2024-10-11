@@ -8,7 +8,10 @@ from gymnasium.envs.registration import EnvSpec
 from gymnasium.error import Error
 from gymnasium.utils.env_checker import check_env, data_equivalence
 
+import gymnasium_robotics
 from tests.utils import all_testing_env_specs, assert_equals
+
+gym.register_envs(gymnasium_robotics)
 
 CHECK_ENV_IGNORE_WARNINGS = [
     f"\x1b[33mWARN: {message}\x1b[0m"
