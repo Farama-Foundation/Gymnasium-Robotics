@@ -17,5 +17,5 @@ jobs:
       - uses: actions/setup-python@v5
       - run: pipx install pre-commit
       - run: pre-commit --version
-      - run: pre-commit install
+      # - run: pre-commit install
       - run: pre-commit run --all-files
