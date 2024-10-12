@@ -179,6 +179,7 @@ env = mamujoco_v1.parallel_env(
     xml_file="./mujoco_menagerie/boston_dynamics_spot/scene_arm.xml",
 )
 ```
+Of course, you also need to add new elements to the environment and define your task, to do something useful. 
 
 
 
