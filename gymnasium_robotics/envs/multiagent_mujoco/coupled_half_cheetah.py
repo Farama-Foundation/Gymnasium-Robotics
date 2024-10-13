@@ -10,6 +10,7 @@ Original Author: Schroeder de Witt
 - fixed `_get_obs()` (now also returns tendon related observations)
 - renamed CoupledHalfCheetah -> CoupledHalfCheetahEnv
 """
+
 import os
 import typing
 

@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/humanoid_standup.gif" alt="Humanoid Standup" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Humanoid Standup](https://gymnasium.farama.org/environments/mujoco/humanoid_standup/).
@@ -98,7 +98,7 @@ The environment is partitioned in 2 parts, one part corresponding to the upper b
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")` |
 | Supported observation categories | `"qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"` |
