@@ -430,7 +430,7 @@ For example: if it is set to <cite>(“qpos”)</cite> out of the globally obser
 The default is: <cite>(“qpos”, “qvel”)</cite></p></li>
 <li><p><strong>render_mode</strong> – See [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>),
 valid values: ‘human’, ‘rgb_array’, ‘depth_array’</p></li>
-<li><p><strong>gym_env</strong> – A custom <cite>MujocoEnv</cite> envinronment, overrides generation of environment by <cite>MaMuJoCo</cite>.</p></li>
+<li><p><strong>gym_env</strong> – A custom <cite>MujocoEnv</cite> environment, overrides generation of environment by <cite>MaMuJoCo</cite>.</p></li>
 <li><p><strong>kwargs</strong> – Additional arguments passed to the [Gymansium/MuJoCo](<a class="reference external" href="https://gymnasium.farama.org/environments/mujoco/">https://gymnasium.farama.org/environments/mujoco/</a>) environment,
 Note: arguments that change the observation space will not work.</p></li>
 <li><p><strong>Raises</strong> – NotImplementedError: When the scenario is not supported (not part of of the valid values).</p></li>
@@ -476,7 +476,7 @@ And the <code class="docutils literal notranslate"><span class="pre">global_node
 <h3>example ‘boston dynamics spot arm’ with  custom ‘quadruped|arm’ factorization<a class="headerlink" href="#example-boston-dynamics-spot-arm-with-custom-quadruped-arm-factorization" title="Link to this heading">¶</a></h3>
 <p>Here we are Factorizing the “<a class="reference external" href="https://bostondynamics.com/products/spot/arm/">Boston Dynamics Spot with arm</a>” robot with the robot model from <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot">Menagarie</a>, into 1 agent for the locomoting quadruped component and 1 agent for the manipulator arm component.
 We are using the robot model from <a class="reference external" href="https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot">MuJoCo Menagerie</a>.</p>
-<figure class="align-default" id="boston-dymanics-spot-arm-factorization">
+<figure class="align-default" id="boston-dynamics-spot-arm-factorization">
 <img alt="../../_images/boston_dymanics_spot_arm.png" src="../../_images/boston_dymanics_spot_arm.png" />
 </figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gymnasium_robotics</span> <span class="kn">import</span> <span class="n">mamujoco_v1</span>
