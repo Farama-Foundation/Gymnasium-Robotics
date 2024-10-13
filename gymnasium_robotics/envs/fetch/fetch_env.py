@@ -37,7 +37,7 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
             target_range,
             distance_threshold,
             reward_type,
-            **kwargs
+            **kwargs,
         ):
             """Initializes a new Fetch environment.
 
@@ -205,9 +205,9 @@ class MujocoPyFetchEnv(get_base_fetch_env(MujocoPyRobotEnv)):
             object_rel_pos = object_pos - grip_pos
             object_velp -= grip_velp
         else:
-            object_pos = (
-                object_rot
-            ) = object_velp = object_velr = object_rel_pos = np.zeros(0)
+            object_pos = object_rot = object_velp = object_velr = object_rel_pos = (
+                np.zeros(0)
+            )
         gripper_state = robot_qpos[-2:]
 
         gripper_vel = (
@@ -338,9 +338,9 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
             object_rel_pos = object_pos - grip_pos
             object_velp -= grip_velp
         else:
-            object_pos = (
-                object_rot
-            ) = object_velp = object_velr = object_rel_pos = np.zeros(0)
+            object_pos = object_rot = object_velp = object_velr = object_rel_pos = (
+                np.zeros(0)
+            )
         gripper_state = robot_qpos[-2:]
 
         gripper_vel = (

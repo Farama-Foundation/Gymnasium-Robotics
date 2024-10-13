@@ -16,7 +16,7 @@ The documentation website is at [robotics.farama.org](https://robotics.farama.or
 
 To install the Gymnasium-Robotics environments use `pip install gymnasium-robotics`
 
-These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).  
+These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).
 
 Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depend on [mujoco-py](https://github.com/openai/mujoco-py), please install this library with `pip install gymnasium-robotics[mujoco-py]`
 
@@ -28,7 +28,7 @@ We support and test for Linux and macOS. We will accept PRs related to Windows, 
 
 * [Fetch](https://robotics.farama.org/envs/fetch/) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
 * [Shadow Dexterous Hand](https://robotics.farama.org/envs/shadow_dexterous_hand/) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen. There are variations of these environments that also include data from 92 touch sensors in the observation space.
-* [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) - A collection of multi agent factorizations of the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environments and a framework for factorizing robotic environments, uses the [pettingzoo.ParallelEnv](https://pettingzoo.farama.org/api/parallel/) API. 
+* [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) - A collection of multi agent factorizations of the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environments and a framework for factorizing robotic environments, uses the [pettingzoo.ParallelEnv](https://pettingzoo.farama.org/api/parallel/) API.
 
 The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the same action/observation spaces as the original, please read their documentation:
 
@@ -76,7 +76,7 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 The `GoalEnv` class can also be used for custom environments.
 
 ## Project Maintainers
-Main Contributors: [Rodrigo Perez-Vicente](https://github.com/rodrigodelazcano), [Kallinteris Andreas](https://github.com/Kallinteris-Andreas), [Jet Tai](https://github.com/jjshoots) 
+Main Contributors: [Rodrigo Perez-Vicente](https://github.com/rodrigodelazcano), [Kallinteris Andreas](https://github.com/Kallinteris-Andreas), [Jet Tai](https://github.com/jjshoots)
 
 Maintenance for this project is also contributed by the broader Farama team: [farama.org/team](https://farama.org/team).
 

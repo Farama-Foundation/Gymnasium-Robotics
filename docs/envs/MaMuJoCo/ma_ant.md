@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/ant.gif" alt="ant" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Ant](https://gymnasium.farama.org/environments/mujoco/ant/).
@@ -151,7 +151,7 @@ The environment is partitioned in 4 parts, with each part corresponding to a leg
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel", "cfrc_ext"` |

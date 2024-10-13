@@ -1,16 +1,30 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
 repos:
-  - repo: https://github.com/python/black
-    rev: 22.3.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
     hooks:
-      - id: black
+      - id: check-symlinks
+      - id: destroyed-symlinks
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-ast
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+      - id: debug-statements
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.1.0
+    rev: v2.3.0
     hooks:
       - id: codespell
         exclude: .svg
         args:
           - --ignore-words-list=nd,reacher,thist,ths, arry
-  - repo: https://github.com/pycqa/flake8
+  - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
@@ -21,16 +35,31 @@ repos:
           - --max-line-length=456
           - --show-source
           - --statistics
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        args: ["--profile", "black"]
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.32.0
+    rev: v3.18.0
     hooks:
       - id: pyupgrade
         args: ["--py38-plus"]
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+  - repo: https://github.com/python/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        exclude: ^(tests/envs/hand)|(tests/test_envs.py)|(tests/__init__.py)|(tests/utils.py)|(tests/envs/__init__.py)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/fetch)|(gymnasium_robotics/envs/shadow_dexterous_hand)|(gymnasium_robotics/envs/maze)|(gymnasium_robotics/envs/adroit_hand)|(gymnasium_robotics/envs/franka_kitchen)
+        args:
+          - --convention=google
+          - --add-ignore=D100
+          - --source
+          - --explain
+        additional_dependencies: ["tomli"]
   - repo: local
     hooks:
       - id: pyright
@@ -42,11 +71,3 @@ repos:
         additional_dependencies: ["pyright@1.1.347"]
         args:
           - --project=pyproject.toml
-  - repo: https://github.com/pycqa/pydocstyle
-    rev: 6.1.1
-    hooks:
-      - id: pydocstyle
-        exclude: ^(tests/envs/hand)|(tests/test_envs.py)|(tests/__init__.py)|(tests/utils.py)|(tests/envs/__init__.py)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/fetch)|(gymnasium_robotics/envs/shadow_dexterous_hand)|(gymnasium_robotics/envs/maze)|(gymnasium_robotics/envs/adroit_hand)|(gymnasium_robotics/envs/franka_kitchen)
-        args:
-          - --convention=google
-          - --add-ignore=D100

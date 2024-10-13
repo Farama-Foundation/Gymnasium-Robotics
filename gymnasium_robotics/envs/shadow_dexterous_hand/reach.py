@@ -346,7 +346,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     | robot0:THJ1                            | -0.0015229223564485414 |
     | robot0:THJ0                            | -0.7894883021600622    |
 
-    For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinete perido of time.
+    For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinite period of time.
     The initial position of the finger tips will then be:
 
     | Finger Tip | Coordinate | Position (m) |

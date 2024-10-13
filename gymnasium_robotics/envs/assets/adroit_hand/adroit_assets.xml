@@ -1,5 +1,5 @@
  <mujocoinclude>
-     <compiler angle="radian" meshdir='resources/meshes/' texturedir='resources/textures/' /> 
+     <compiler angle="radian" meshdir='resources/meshes/' texturedir='resources/textures/' />
     <option apirate="200" iterations="20" noslip_iterations="20"/>
     <size njmax="500" nconmax="100" nstack="600000" nuser_body="9" nuser_jnt="1" nuser_site="1" nuser_tendon="1" nuser_actuator="16" nuser_sensor="1" />
     <visual>
@@ -238,7 +238,7 @@
             <joint joint="THJ0" coef="-0.009" />
         </fixed>
     </tendon>
-   
+
    <actuator>
         <general name="A_WRJ1" joint="WRJ1" ctrlrange="-0.524 0.175" biastype="affine" gainprm="10 0 0" biasprm="0 -10 0" user="1002 0 2001 -0.02 0.02 0 0 0 0 0 0 0 0 0 0 0" />
         <general name="A_WRJ0" joint="WRJ0" ctrlrange="-0.79 0.61" biastype="affine" gainprm="10 0 0" biasprm="0 -10 0" user="1002 0 2001 -0.02 0.02 0 0 0 0 0 0 0 0 0 0 0" />
@@ -287,7 +287,7 @@
         <actuatorfrc actuator="A_THJ2" name="Saf_A_THJ2" />
         <actuatorfrc actuator="A_THJ1" name="Saf_A_THJ1" />
         <actuatorfrc actuator="A_THJ0" name="Saf_A_THJ0" />
-        
+
         <!-- ======= Touch Sensors ======= -->
         <touch name="ST_Tch_fftip"  site="Tch_fftip"/>
         <touch name="ST_Tch_mftip"  site="Tch_mftip"/>
@@ -312,9 +312,9 @@
         <touch name="ST_Tch_rfmetacarpal"   site="Tch_rfmetacarpal"/>
         <touch name="ST_Tch_lfmetacarpal"   site="Tch_lfmetacarpal"/>
         <touch name="ST_Tch_thmetacarpal"   site="Tch_thmetacarpal"/>
-        
+
         <touch name="ST_Tch_palm"   site="Tch_palm"/>
-        
+
         <jointpos joint="WRJ1" name="Sjp_WRJ1" />
         <jointpos joint="WRJ0" name="Sjp_WRJ0" />
         <jointpos joint="FFJ3" name="Sjp_FFJ3" />

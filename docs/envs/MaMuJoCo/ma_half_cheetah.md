@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/half_cheetah.gif" alt="Half Cheetah" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Half Cheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/).
@@ -42,7 +42,7 @@ If partitioning, is `None`, then the environment contains a single agent with th
 | 4   | Torque applied on the front shin rotor  | -1          | 1           | fshin                            | hinge | torque (N m) |
 | 5   | Torque applied on the front foot rotor  | -1          | 1           | ffoot                            | hinge | torque (N m) |
 
-### if partitioning == "2x3":  # front and back 
+### if partitioning == "2x3":  # front and back
 ```{figure} figures/half_cheetah_2x3.png
     :name: half_cheetah_2x3
 ```
@@ -113,7 +113,7 @@ The environment is partitioned in 6 parts, each part corresponding to a single j
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel"` |
@@ -144,5 +144,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Cheetah's front tip: `rootx`, `rooty`, `rootz`) not being observed.
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#action-space)
-
-
