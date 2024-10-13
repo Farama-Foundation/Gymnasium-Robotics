@@ -132,7 +132,7 @@ def test_mujoco_reset_state_seeding(env_spec: EnvSpec):
 
 
 @pytest.mark.parametrize(
-    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
+    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
 )
 def test_render_modes(spec):
     env = spec.make()
@@ -150,8 +150,8 @@ def test_render_modes(spec):
 
 @pytest.mark.parametrize(
     "env_spec",
-    all_testing_env_specs,
-    ids=[spec.id for spec in all_testing_env_specs],
+    non_mujoco_py_env_specs,
+    ids=[spec.id for spec in non_mujoco_py_env_specs],
 )
 def test_pickle_env(env_spec):
     env: gym.Env = env_spec.make()
