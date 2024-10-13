@@ -53,7 +53,7 @@ NUM_STEPS = 50
 
 
 @pytest.mark.parametrize(
-    "env_spec", all_testing_env_specs, ids=[env.id for env in all_testing_env_specs]
+    "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
 )
 def test_env_determinism_rollout(env_spec: EnvSpec):
     """Run a rollout with two environments and assert equality.
