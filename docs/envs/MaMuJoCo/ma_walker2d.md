@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/walker2d.gif" alt="Walker2D" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Walker2D](https://gymnasium.farama.org/environments/mujoco/walker2d/).
@@ -76,7 +76,7 @@ The environment is partitioned in 2 parts, one part corresponding to the right l
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel"` |

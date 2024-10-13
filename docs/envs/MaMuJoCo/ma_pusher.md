@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/pusher.gif" alt="Pusher" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Pusher](https://gymnasium.farama.org/environments/mujoco/pusher/).
@@ -82,7 +82,7 @@ The environment is partitioned in 3 parts, one part corresponding to the shoulde
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel"` |

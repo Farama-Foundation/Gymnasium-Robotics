@@ -1,11 +1,11 @@
 <!-- ======================================================
     Model       :: ADROIT Door
- 
+
     Mujoco      :: Advanced physics simulation engine
         Source      : www.roboti.us
         Version     : 1.50
         Released    : 17Jan'17
-        
+
     Author      :: Vikash Kumar
         Contacts    : vikash@cs.washington.edu
         Last edits  : 17Jan'17
@@ -17,7 +17,7 @@
 ====================================================== -->
 
 <mujoco model='ADROIT-door(v1.5)'>
-    
+
     <!-- ======= WORLD ======= -->
     <worldbody>
         <light directional='false' diffuse='.7 .7 .7' specular='0.03 0.03 0.03' pos='-1 -1.0 4.0' dir='1 1.0 -4'/>
@@ -25,7 +25,7 @@
         <camera name="fixed" pos="0 -0.7 0.7" quat="0.92388 0.382683 0 0" />
         <!-- Camera for the VIL paper -->
         <camera name="vil_camera" pos="0 -1.2 1.2" quat="0.92388 0.382683 0 0" />
- 
+
         <!-- ======= TABLE ======= -->
         <body name="table">
             <!-- <geom size="0.5 0.5 0.025" type="plane" material="table2d" /> --> <!-- Plane has better contacts -->
@@ -35,7 +35,7 @@
             <geom size="0.04 0.5" pos="0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
             <geom size="0.04 0.5" pos="-0.4 -0.4 -0.501" quat="0 1 0 0" type="cylinder" contype="0" conaffinity="0" />
         </body>
-        
+
         <!-- ======= MOCAP ======= -->
         <body name="vive_tracker" pos="0 -0.35 0.25" mocap="true">
             <inertial pos="0 0 0" mass="0.064" diaginertia="1.70667e-05 1.70667e-05 1.70667e-05" />
@@ -51,7 +51,7 @@
             <joint name="ARRz" pos="0 0 0" axis="0 0 1" range="-1 2" damping="20" />
             <geom name="V_forearm" class="D_Vizual" pos="0 -.01 .181" euler="0 0 -1.57"  mesh="forearm_simple" />
             <geom name="C_forearm1" class="DC_Hand" size="0.05 0.033" pos="0 0 0.29" type="capsule" rgba="0.4 0.5 0.6 0.1" />
-            
+
             <!-- ======= Adroit ======= -->
             <include file="adroit_model.xml"/>
         </body>
@@ -78,9 +78,9 @@
                 </body>
             </body>
         </body>
-        
+
     </worldbody>
-    
+
     <actuator>
         <general name="A_ARTz" joint="ARTz" ctrlrange="-0.3 0.5" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />
         <general name="A_ARRx" joint="ARRx" ctrlrange="-.75 .75" biastype="affine" gainprm="500 0 0" biasprm="0 -200 0" />

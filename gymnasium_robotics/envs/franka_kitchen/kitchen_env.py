@@ -9,7 +9,7 @@ Abhishek Gupta, Vikash Kumar, Corey Lynch, Sergey Levine, Karol Hausman.
 
 Original Author of the code: Abhishek Gupta & Justin Fu
 
-The modifications made involve separatin the Kitchen environment from the Franka environment and addint support for compatibility with
+The modifications made involve separating the Kitchen environment from the Franka environment and addint support for compatibility with
 the Gymnasium and Multi-goal API's.
 
 This project is covered by the Apache 2.0 License.

@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/reacher.gif" alt="Reacher" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Reacher](https://gymnasium.farama.org/environments/mujoco/reacher/).
@@ -68,7 +68,7 @@ The environment is partitioned in 2 parts, one part corresponding to the first j
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel", "fingertip_dist"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel", "fingertip_dist"` |
@@ -98,4 +98,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 - v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
 Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco)):
 	- Added/Fixed Global observations (The Targets's coordinates: `targetx`, `targety`) not being observed.
-

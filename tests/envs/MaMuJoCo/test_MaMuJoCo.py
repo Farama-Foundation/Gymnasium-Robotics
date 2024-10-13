@@ -114,7 +114,7 @@ def test_general(observation_depth, task) -> None:
 @pytest.mark.parametrize("observation_depth", observation_depths)
 @pytest.mark.parametrize("task", pre_defined_factorizations)
 def test_action_and_observation_mapping(observation_depth, task):
-    """Assert that converting local <-> global <-> local obervations/actions results in the same observation/actions."""
+    """Assert that converting local <-> global <-> local observations/actions results in the same observation/actions."""
     test_env = mamujoco_v1.parallel_env(
         task.scenario, task.conf, agent_obsk=observation_depth, **task.kwargs
     )

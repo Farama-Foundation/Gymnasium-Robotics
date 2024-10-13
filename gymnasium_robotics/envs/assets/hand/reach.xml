@@ -28,7 +28,7 @@
         </body>
 
         <include file="robot.xml"></include>
-        
+
         <light directional="true" ambient="0.2 0.2 0.2" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3" castshadow="false" pos="0 0 4" dir="0 0 -1" name="light0"></light>
     </worldbody>
 </mujoco>

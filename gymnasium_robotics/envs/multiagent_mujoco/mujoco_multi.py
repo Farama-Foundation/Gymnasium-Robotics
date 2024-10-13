@@ -14,7 +14,6 @@ changes:
 This project is covered by the Apache 2.0 License.
 """
 
-
 from __future__ import annotations
 
 import os
@@ -106,7 +105,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 The default is: `("qpos", "qvel")`
             render_mode: See [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
-            gym_env: A custom `MujocoEnv` envinronment, overrides generation of environment by `MaMuJoCo`.
+            gym_env: A custom `MujocoEnv` environment, overrides generation of environment by `MaMuJoCo`.
             kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
                 Note: arguments that change the observation space will not work.
 
@@ -185,13 +184,13 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 shape=(len(partition),),
                 dtype=np.float32,
             )
-            self.observation_spaces[
-                self.possible_agents[agent_id]
-            ] = gymnasium.spaces.Box(
-                low=-np.inf,
-                high=np.inf,
-                shape=(len(self._get_obs_agent(agent_id)),),
-                dtype=self.single_agent_env.observation_space.dtype,
+            self.observation_spaces[self.possible_agents[agent_id]] = (
+                gymnasium.spaces.Box(
+                    low=-np.inf,
+                    high=np.inf,
+                    shape=(len(self._get_obs_agent(agent_id)),),
+                    dtype=self.single_agent_env.observation_space.dtype,
+                )
             )
 
     def _create_base_gym_env(
@@ -238,12 +237,9 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         elif scenario in ["CoupledHalfCheetah"]:
             return TimeLimit(CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000)
         else:
-            breakpoint()
             raise NotImplementedError("Custom env not implemented!")
 
-    def step(
-        self, actions: dict[str, np.ndarray]
-    ) -> tuple[
+    def step(self, actions: dict[str, np.ndarray]) -> tuple[
         dict[str, np.ndarray],
         dict[str, np.ndarray],
         dict[str, np.ndarray],

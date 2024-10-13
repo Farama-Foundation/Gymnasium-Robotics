@@ -83,7 +83,7 @@ The environment is partitioned in 2 parts, one part corresponding to the first c
 ## Observation Space
 
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel", "ten_J", "ten_length,ten_velocity"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel", "ten_J", "ten_length,ten_velocity"` |
@@ -117,4 +117,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Added/Fixed Global observations (The Cheetahes's front tips: `rootx`s, `rooty`s, `rootz`s) not being observed.
  	- Improved node naming
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/#action-space)
-
