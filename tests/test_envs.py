@@ -30,7 +30,7 @@ non_mujoco_py_env_specs = [
 
 
 @pytest.mark.parametrize(
-    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
+    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
 )
 def test_env(spec):
     # Capture warnings

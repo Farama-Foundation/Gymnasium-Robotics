@@ -43,7 +43,7 @@ class PointEnv(MujocoEnv):
             model_path=xml_file,
             frame_skip=1,
             observation_space=observation_space,
-            **kwargs
+            **kwargs,
         )
 
     def reset_model(self) -> np.ndarray:

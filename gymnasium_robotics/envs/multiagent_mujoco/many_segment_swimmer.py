@@ -8,7 +8,6 @@ Original Author: Schroeder de Witt
  - Removed the class (but kept the `gen_asset` function)
 """
 
-
 import os
 
 import gymnasium

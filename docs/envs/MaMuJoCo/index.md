@@ -83,7 +83,7 @@ Here we are Factorizing the "[Boston Dynamics Spot with arm](https://bostondynam
 We are using the robot model from [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie/tree/main/boston_dynamics_spot).
 
 ```{figure} figures/boston_dymanics_spot_arm.png
-    :name: Boston Dymanics Spot Arm factorization
+    :name: Boston Dynamics Spot Arm factorization
 ```
 
 ```python
@@ -179,7 +179,7 @@ env = mamujoco_v1.parallel_env(
     xml_file="./mujoco_menagerie/boston_dynamics_spot/scene_arm.xml",
 )
 ```
-Of course, you also need to add new elements to the environment and define your task, to do something useful. 
+Of course, you also need to add new elements to the environment and define your task, to do something useful.
 
 
 

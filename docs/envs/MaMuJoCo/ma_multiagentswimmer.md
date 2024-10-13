@@ -48,7 +48,7 @@ The environment is partitioned in `${Number Of Agents}` parts, with each part co
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel")` |
 | Supported observation categories | `"qpos", "qvel"` |
@@ -78,4 +78,3 @@ All agent terminate and truncate at the same time, given the same conditions as 
 	- Now uses the same `option.timestep` as `Gymansum/Swimmer` (0.01).
 	- Updated model to work with `mujoco>=3.0.0`.
 * v0: Initial version release, uses [Gymnasium.MuJoCo-v4](https://gymnasium.farama.org/environments/mujoco/), and is a fork of the original MaMuJoCo [schroederdewitt/multiagent_mujoco](https://github.com/schroederdewitt/multiagent_mujoco).
-

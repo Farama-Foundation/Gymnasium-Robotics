@@ -34,7 +34,7 @@
             <site name="target:bottom" pos="0 0 -0.1" rgba="0 1 0 0.5" size="0.0081"></site>
             <joint name="target:joint" type="free" damping="0.01"></joint>
         </body>
-        
+
         <light directional="true" ambient="0.2 0.2 0.2" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3" castshadow="false" pos="0 1 4" dir="0 0 -1" name="light0"></light>
     </worldbody>
 </mujoco>
