@@ -30,7 +30,7 @@ non_mujoco_py_env_specs = [
 
 
 @pytest.mark.parametrize(
-    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
+    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
 )
 def test_env(spec):
     # Capture warnings
@@ -53,7 +53,7 @@ NUM_STEPS = 50
 
 
 @pytest.mark.parametrize(
-    "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
+    "env_spec", all_testing_env_specs, ids=[env.id for env in all_testing_env_specs]
 )
 def test_env_determinism_rollout(env_spec: EnvSpec):
     """Run a rollout with two environments and assert equality.
@@ -132,7 +132,7 @@ def test_mujoco_reset_state_seeding(env_spec: EnvSpec):
 
 
 @pytest.mark.parametrize(
-    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
+    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
 )
 def test_render_modes(spec):
     env = spec.make()
@@ -150,8 +150,8 @@ def test_render_modes(spec):
 
 @pytest.mark.parametrize(
     "env_spec",
-    non_mujoco_py_env_specs,
-    ids=[spec.id for spec in non_mujoco_py_env_specs],
+    all_testing_env_specs,
+    ids=[spec.id for spec in all_testing_env_specs],
 )
 def test_pickle_env(env_spec):
     env: gym.Env = env_spec.make()
