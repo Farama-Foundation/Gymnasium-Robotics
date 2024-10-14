@@ -1,6 +1,10 @@
 import gymnasium as gym
 import numpy as np
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 
 def test_reset():
     """Check that PointMaze does not reset into a success state."""
