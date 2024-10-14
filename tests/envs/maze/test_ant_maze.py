@@ -2,6 +2,10 @@ import gymnasium as gym
 import numpy as np
 import pytest
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 
 @pytest.mark.parametrize("version", ["v4", "v5"])
 def test_reset(version):
