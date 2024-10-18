@@ -18,11 +18,12 @@
 # -- Project information -----------------------------------------------------
 import os
 import sys
+import time
 
 import gymnasium_robotics
 
 project = "Gymnasium-Robotics"
-copyright = "2023 Farama Foundation"
+copyright = f"{time.localtime().tm_year} Farama Foundation"
 author = "Farama Foundation"
 
 # The full version, including alpha/beta/rc tags
