@@ -146,7 +146,7 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
         """Init.
 
         Args:
-            render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
+            render_mode: see [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
         """
         self._forward_reward_weight = 1
         self._ctrl_cost_weight = 0.1
