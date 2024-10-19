@@ -11,9 +11,9 @@ lastpage:
 
 MaMuJoCo was introduced in ["FACMAC: Factored Multi-Agent Centralised Policy Gradients"](https://arxiv.org/abs/2003.06709).
 
-There are 2 types of Environments, included (1) multi-agent factorizations of [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms.
+There are 2 types of Environments, included (1) multi-agent factorizations of [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) tasks and (2) new complex MuJoCo tasks meant to me solved with multi-agent Algorithms.
 
-Gymansium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization.
+Gymnasium-Robotics/MaMuJoCo Represents the first, easy to use Framework for research of agent factorization.
 
 ## API
 MaMuJoCo mainly uses the [PettingZoo.ParallelAPI](https://pettingzoo.farama.org/api/parallel/), but also supports a few extra functions:

@@ -201,7 +201,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
     ```
 
     ### Version History
-    - v5: Is now based on `Gymansium/MuJoCoAnt-v5/`, and inherits all features from it such as the `xml_file` argument for the loading of third party model.
+    - v5: Is now based on `Gymnasium/MuJoCoAnt-v5/`, and inherits all features from it such as the `xml_file` argument for the loading of third party model.
     - v4: Refactor compute_terminated in MazeEnv into a pure function compute_terminated and a new function update_goal which resets the goal position. Ant bug fix: Reward is now computed before reset (i.e. sparse reward is not always zero). Maze bug fix: Ant can no longer reset within the goal radius 0.45 due to maze_size_scaling factor missing in MazeEnv. info['success'] key added.
     - v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     - v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
