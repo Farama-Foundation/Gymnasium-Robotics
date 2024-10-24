@@ -9,7 +9,7 @@ changes:
  - General code cleanup, factorization, type hinting, adding documentation and code comments.
  - Now uses PettingZoo APIs instead of an original API.
  - Now supports custom agent factorizations.
- - Added `gym_env` argument, which can be used to load third party `Gymansium.MujocoEnv` environments.
+ - Added `gym_env` argument, which can be used to load third party `Gymnasium.MujocoEnv` environments.
 
 This project is covered by the Apache 2.0 License.
 """
@@ -103,10 +103,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             global_categories: The categories of observations extracted from the global observable space,
                 For example: if it is set to `("qpos")` out of the globally observable items of the environment, only the position items will be observed.
                 The default is: `("qpos", "qvel")`
-            render_mode: See [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
+            render_mode: See [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/),
                 valid values: 'human', 'rgb_array', 'depth_array'
             gym_env: A custom `MujocoEnv` environment, overrides generation of environment by `MaMuJoCo`.
-            kwargs: Additional arguments passed to the [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
+            kwargs: Additional arguments passed to the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environment,
                 Note: arguments that change the observation space will not work.
 
             Raises: NotImplementedError: When the scenario is not supported (not part of of the valid values).
@@ -197,7 +197,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         self, scenario: str, agent_conf: str, render_mode: str, **kwargs
     ) -> gymnasium.envs.mujoco.mujoco_env.MujocoEnv:
         """Creates the single agent environments that is to be factorized."""
-        # load the underlying single agent Gymansium MuJoCo Environment in `self.single_agent_env`
+        # load the underlying single agent Gymnasium MuJoCo Environment in `self.single_agent_env`
         if scenario in _MUJOCO_GYM_ENVIROMENTS:
             return gymnasium.make(f"{scenario}-v5", **kwargs, render_mode=render_mode)
         elif scenario in ["ManySegmentAnt"]:
