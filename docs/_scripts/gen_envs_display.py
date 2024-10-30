@@ -2,7 +2,10 @@ import os
 import re
 
 import gymnasium as gym
+import gymnasium_robotics
 from tqdm import tqdm
+
+gym.register_envs(gymnasium_robotics)
 
 if __name__ == "__main__":
     """
