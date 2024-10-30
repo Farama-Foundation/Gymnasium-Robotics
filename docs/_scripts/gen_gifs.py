@@ -1,9 +1,10 @@
 import os
 
 import gymnasium as gym
-import gymnasium_robotics
 from PIL import Image
 from tqdm import tqdm
+
+import gymnasium_robotics
 
 gym.register_envs(gymnasium_robotics)
 
