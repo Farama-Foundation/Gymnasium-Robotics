@@ -249,7 +249,7 @@ class PointMazeEnv(MazeEnv, EzPickle):
 
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `0` if the ball hasn't reached its final target position, and `1` if the ball is in the final target position (the ball is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).
-    - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
+    - *dense*: the returned reward is the exponential negative Euclidean distance between the achieved goal position and the desired goal.
 
     To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `PointMaze_UMaze-v3`. However, for `dense`
     reward the id must be modified to `PointMaze_UMazeDense-v3` and initialized as follows:
