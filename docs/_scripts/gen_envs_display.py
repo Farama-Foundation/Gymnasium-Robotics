@@ -4,6 +4,10 @@ import re
 import gymnasium as gym
 from tqdm import tqdm
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 if __name__ == "__main__":
     """
     python gen_envs_display

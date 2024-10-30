@@ -4,6 +4,10 @@ import gymnasium as gym
 from PIL import Image
 from tqdm import tqdm
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 # how many steps to record an env for
 LENGTH = 300
 
