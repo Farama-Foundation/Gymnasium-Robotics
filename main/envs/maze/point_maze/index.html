@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Adroit Hand" href="../../adroit_hand/" /><link rel="prev" title="Ant Maze" href="../ant_maze/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/maze/point_maze.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Point Maze - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -257,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_hopper/">Hopper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_multiagentswimmer/">ManySegmentSwimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_reacher/">Reacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_swimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_pusher/">Pusher</a></li>
@@ -317,12 +318,13 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="point-maze">
-<h1>Point Maze<a class="headerlink" href="#point-maze" title="Link to this heading">#</a></h1>
+<h1>Point Maze<a class="headerlink" href="#point-maze" title="Link to this heading">¶</a></h1>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/point_maze.gif"><img alt="../../../_images/point_maze.gif" src="../../../_images/point_maze.gif" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/point_maze.gif"><img alt="../../../_images/point_maze.gif" src="../../../_images/point_maze.gif" style="width: 200px;" />
+</a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
 <p>This environment was refactored from the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a> repository, introduced by Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, and Sergey Levine
 in <a class="reference external" href="https://arxiv.org/abs/2004.07219">“D4RL: Datasets for Deep Data-Driven Reinforcement Learning”</a>.</p>
 <p>The task in the environment is for a 2-DoF ball that is force-actuated in the cartesian directions x and y, to reach a target goal in a closed maze. The variations of this environment
@@ -331,7 +333,7 @@ ball is green.</p>
 <p>The control frequency of the ball is of <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">10</span> <span class="pre">Hz</span></code>.</p>
 </section>
 <section id="maze-variations">
-<h2>Maze Variations<a class="headerlink" href="#maze-variations" title="Link to this heading">#</a></h2>
+<h2>Maze Variations<a class="headerlink" href="#maze-variations" title="Link to this heading">¶</a></h2>
 <p>The data structure to represent the mazes is a list of lists (<code class="docutils literal notranslate"><span class="pre">list[list]</span></code>) that contains the encoding of the discrete cell positions <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> of the maze. Each list inside the main list
 represents a row <code class="docutils literal notranslate"><span class="pre">i</span></code> of the maze, while the elements of the row are the intersections with the column index <code class="docutils literal notranslate"><span class="pre">j</span></code>.
 The cell encoding can have 5 different values:</p>
@@ -346,7 +348,7 @@ The cell encoding can have 5 different values:</p>
 will be randomly chosen from the empty cells with value <code class="docutils literal notranslate"><span class="pre">0</span></code>. Also, the maze data structure is discrete. However the observations are continuous and variance is added to the goal and the
 agent’s initial pose by adding a sammpled noise from a uniform distribution to the cell’s <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> coordinates in the MuJoCo simulation.</p>
 <section id="maze-size">
-<h3>Maze size<a class="headerlink" href="#maze-size" title="Link to this heading">#</a></h3>
+<h3>Maze size<a class="headerlink" href="#maze-size" title="Link to this heading">¶</a></h3>
 <p>There are three types of environment variations depending on the maze size configuration:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">PointMaze_UMaze-v3</span></code></p>
@@ -395,7 +397,7 @@ agent’s initial pose by adding a sammpled noise from a uniform distribution to
 </ul>
 </section>
 <section id="diverse-goal-mazes">
-<h3>Diverse goal mazes<a class="headerlink" href="#diverse-goal-mazes" title="Link to this heading">#</a></h3>
+<h3>Diverse goal mazes<a class="headerlink" href="#diverse-goal-mazes" title="Link to this heading">¶</a></h3>
 <p>Environment variations can also be found with multi-goal configurations, also referred to as <code class="docutils literal notranslate"><span class="pre">diverse</span></code>. Their <code class="docutils literal notranslate"><span class="pre">id</span></code> is the same as their
 default but adding the <code class="docutils literal notranslate"><span class="pre">_Diverse_G</span></code> string (<code class="docutils literal notranslate"><span class="pre">G</span></code> stands for Goal) to it:</p>
 <ul>
@@ -436,7 +438,7 @@ default but adding the <code class="docutils literal notranslate"><span class="p
 </ul>
 </section>
 <section id="diverse-goal-and-reset-mazes">
-<h3>Diverse goal and reset mazes<a class="headerlink" href="#diverse-goal-and-reset-mazes" title="Link to this heading">#</a></h3>
+<h3>Diverse goal and reset mazes<a class="headerlink" href="#diverse-goal-and-reset-mazes" title="Link to this heading">¶</a></h3>
 <p>The last group of environment variations instantiates another type of <code class="docutils literal notranslate"><span class="pre">diverse</span></code> maze for which the goals and agent initialization locations are randomly selected at reset. The <code class="docutils literal notranslate"><span class="pre">id</span></code> of this environments is the same as their
 default but adding the <code class="docutils literal notranslate"><span class="pre">_Diverse_GR</span></code> string (<code class="docutils literal notranslate"><span class="pre">GR</span></code> stands for Goal and Reset) to it:</p>
 <ul>
@@ -477,9 +479,12 @@ default but adding the <code class="docutils literal notranslate"><span class="p
 </ul>
 </section>
 <section id="custom-maze">
-<h3>Custom maze<a class="headerlink" href="#custom-maze" title="Link to this heading">#</a></h3>
+<h3>Custom maze<a class="headerlink" href="#custom-maze" title="Link to this heading">¶</a></h3>
 <p>Finally, any <code class="docutils literal notranslate"><span class="pre">Point</span> <span class="pre">Maze</span></code> environment can be initialized with a custom maze map by setting the <code class="docutils literal notranslate"><span class="pre">maze_map</span></code> argument like follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+
+<span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
 <span class="n">example_map</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
@@ -491,7 +496,7 @@ default but adding the <code class="docutils literal notranslate"><span class="p
 </section>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">¶</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(2,),</span> <span class="pre">float32)</span></code>. An action represents the linear force exerted on the green ball in the x and y directions.
 In addition, the ball velocity is clipped in a range of <code class="docutils literal notranslate"><span class="pre">[-5,</span> <span class="pre">5]</span> <span class="pre">m/s</span></code> in order for it not to grow unbounded.</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -528,7 +533,7 @@ In addition, the ball velocity is clipped in a range of <code class="docutils li
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s position and goal. The dictionary consists of the following 3 keys:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: its value is an <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(4,)</span></code>. It consists of kinematic information of the force-actuated ball. The elements of the array correspond to the following:</p>
@@ -647,22 +652,25 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </ul>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">¶</a></h2>
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">0</span></code> if the ball hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">1</span></code> if the ball is in the final target position (the ball is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).</p></li>
-<li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
+<li><p><em>dense</em>: the returned reward is the exponential negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
 </ul>
 <p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">PointMaze_UMaze-v3</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
 reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">PointMaze_UMazeDense-v3</span></code> and initialized as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+
+<span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;PointMaze_UMazeDense-v3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">¶</a></h2>
 <p>The goal and initial placement of the ball in the maze follows the same structure for all environments. A discrete cell <code class="docutils literal notranslate"><span class="pre">(i,j)</span></code> is selected for the goal and agent’s initial position as previously menitoned in the <strong>Maze</strong> section.
 Then this cell index is converted to its cell center as an <code class="docutils literal notranslate"><span class="pre">(x,y)</span></code> continuous Cartesian coordinates in the MuJoCo simulation. Finally, a sampled noise from a uniform distribution with range <code class="docutils literal notranslate"><span class="pre">[-0.25,0.25]m</span></code> is added to the
 cell’s center x and y coordinates. This allows to create a richer goal distribution.</p>
@@ -674,7 +682,7 @@ the following keys:</p>
 </ul>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">truncated</span></code> - The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">terminated</span></code> - The task can be set to be continuing with the <code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> argument. In this case the episode will never terminate, instead the goal location is randomly selected again. If the task is set not to be continuing the
@@ -682,7 +690,7 @@ episode will be terminated when the Euclidean distance to the goal is less or eq
 </ul>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">maze_map</span></code> - Optional argument to initialize the environment with a custom maze map.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">continuing_task</span></code> - If set to <code class="docutils literal notranslate"><span class="pre">True</span></code> the episode won’t be terminated when reaching the goal, instead a new goal location will be generated. If <code class="docutils literal notranslate"><span class="pre">False</span></code> the environment is terminated when the ball reaches the final goal.</p></li>
@@ -691,13 +699,16 @@ episode will be terminated when the Euclidean distance to the goal is less or eq
 <p>Note that, the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> can be increased or decreased by specifying the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument at initialization. For example,
 to increase the total number of timesteps to 100 make the environment as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+
+<span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
 <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;PointMaze_UMaze-v3&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>v3: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v2 &amp; v1: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
@@ -738,7 +749,7 @@ to increase the total number of timesteps to 100 make the environment as follows
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2023 Farama Foundation
+                Copyright &#169; 2024 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -876,8 +887,8 @@ to increase the total number of timesteps to 100 make the environment as follows
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=563e25a7"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=f829d3b5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     

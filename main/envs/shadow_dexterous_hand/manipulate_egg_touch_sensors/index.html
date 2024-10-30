@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Manipulate Pen" href="../manipulate_pen/" /><link rel="prev" title="Manipulate Egg" href="../manipulate_egg/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/shadow_dexterous_hand/manipulate_egg_touch_sensors.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Manipulate Egg Touch Sensors - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -257,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_hopper/">Hopper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_multiagentswimmer/">ManySegmentSwimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_reacher/">Reacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_swimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_pusher/">Pusher</a></li>
@@ -317,12 +318,13 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="manipulate-egg-touch-sensors">
-<h1>Manipulate Egg Touch Sensors<a class="headerlink" href="#manipulate-egg-touch-sensors" title="Link to this heading">#</a></h1>
+<h1>Manipulate Egg Touch Sensors<a class="headerlink" href="#manipulate-egg-touch-sensors" title="Link to this heading">¶</a></h1>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/manipulate_egg_touch_sensors.gif"><img alt="../../../_images/manipulate_egg_touch_sensors.gif" src="../../../_images/manipulate_egg_touch_sensors.gif" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/manipulate_egg_touch_sensors.gif"><img alt="../../../_images/manipulate_egg_touch_sensors.gif" src="../../../_images/manipulate_egg_touch_sensors.gif" style="width: 200px;" />
+</a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://www.frontiersin.org/articles/10.3389/frobt.2021.538773/full">“Using Tactile Sensing to Improve the Sample Efficiency and Performance of Deep Deterministic Policy Gradients for Simulated In-Hand Manipulation Tasks”</a>.</p>
 <p>The environment is based on the same robot hand as in the <code class="docutils literal notranslate"><span class="pre">HandReach</span></code> environment, the <a class="reference external" href="https://www.shadowrobot.com/">Shadow Dexterous Hand</a>. The task to be solved is the same as in the <code class="docutils literal notranslate"><span class="pre">HandManipulateEgg</span></code> environment. However, in this case the environment observation also includes tactile sensory information.
 This is achieved by placing a total of 92 MuJoCo <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=touch#sensor-touch">touch sensors</a> in the palm and finger phalanxes of the hand. The sensors are created by specifying the tactile sensors’ active zones by so-called sites. Each site can be represented
@@ -372,7 +374,7 @@ touch sensors has a non-negative scalar value.</p>
 <p>When adding the sensors to the <code class="docutils literal notranslate"><span class="pre">HandManipulateEgg</span></code> environment there are two possible environment initializations depending on the type of data returned by the touch sensors. This data can be continuous values of external forces or a boolean value which is <code class="docutils literal notranslate"><span class="pre">True</span></code> if the sensor detects any contact force and <code class="docutils literal notranslate"><span class="pre">False</span></code> if not.
 This two types of environments can be initialized from the environment id variations of <code class="docutils literal notranslate"><span class="pre">HandManipulateEgg</span></code> by adding the <code class="docutils literal notranslate"><span class="pre">_ContinuousTouchSensors</span></code> string to the id if the touch sensors return continuous force values or <code class="docutils literal notranslate"><span class="pre">_BooleanTouchSensors</span></code> if the values are boolean.</p>
 <section id="continuous-touch-sensor-environments">
-<h3>Continuous Touch Sensor Environments:<a class="headerlink" href="#continuous-touch-sensor-environments" title="Link to this heading">#</a></h3>
+<h3>Continuous Touch Sensor Environments:<a class="headerlink" href="#continuous-touch-sensor-environments" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateEgg_ContinuousTouchSensors-v1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateEggRotate_ContinuousTouchSensors-v1</span></code></p></li>
@@ -380,7 +382,7 @@ This two types of environments can be initialized from the environment id variat
 </ul>
 </section>
 <section id="boolean-touch-sensor-environments">
-<h3>Boolean Touch Sensor Environments:<a class="headerlink" href="#boolean-touch-sensor-environments" title="Link to this heading">#</a></h3>
+<h3>Boolean Touch Sensor Environments:<a class="headerlink" href="#boolean-touch-sensor-environments" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateEgg_BooleanTouchSensors-v1</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">HandManipulateEggRotate_BooleanTouchSensors-v1</span></code></p></li>
@@ -390,12 +392,12 @@ This two types of environments can be initialized from the environment id variat
 </section>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s joint and egg states, as well as information about the goal and touch sensors. The dictionary consists of the same 3 keys as the <code class="docutils literal notranslate"><span class="pre">HandManipulateEgg</span></code> environments (<code class="docutils literal notranslate"><span class="pre">observation</span></code>,<code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>, and <code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code>).
 However, the <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of the observation is now of shape <code class="docutils literal notranslate"><span class="pre">(153,</span> <span class="pre">)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">(61,</span> <span class="pre">)</span></code> since the touch sensor information is added at the end of the array with shape <code class="docutils literal notranslate"><span class="pre">(92,)</span></code>.</p>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>v1: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
@@ -436,7 +438,7 @@ However, the <code class="docutils literal notranslate"><span class="pre">ndarra
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2023 Farama Foundation
+                Copyright &#169; 2024 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -566,8 +568,8 @@ However, the <code class="docutils literal notranslate"><span class="pre">ndarra
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=563e25a7"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=f829d3b5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     

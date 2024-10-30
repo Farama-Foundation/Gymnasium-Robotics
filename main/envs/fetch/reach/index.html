@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Slide" href="../slide/" /><link rel="prev" title="Push" href="../push/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/fetch/reach.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Reach - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -257,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_hopper/">Hopper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_multiagentswimmer/">ManySegmentSwimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_reacher/">Reacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_swimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_pusher/">Pusher</a></li>
@@ -317,12 +318,13 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="reach">
-<h1>Reach<a class="headerlink" href="#reach" title="Link to this heading">#</a></h1>
+<h1>Reach<a class="headerlink" href="#reach" title="Link to this heading">¶</a></h1>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/reach.gif"><img alt="../../../_images/reach.gif" src="../../../_images/reach.gif" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/reach.gif"><img alt="../../../_images/reach.gif" src="../../../_images/reach.gif" style="width: 200px;" />
+</a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1802.09464">“Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research”</a>.</p>
 <p>The task in the environment is for a manipulator to move the end effector to a randomly selected position in the robot’s workspace. The robot is a 7-DoF <a class="reference external" href="https://fetchrobotics.com/">Fetch Mobile Manipulator</a> with a two-fingered parallel gripper.
 The robot is controlled by small displacements of the gripper in Cartesian coordinates and the inverse kinematics are computed internally by the MuJoCo framework. The task is also continuing which means that the robot has to maintain the end effector’s
@@ -330,7 +332,7 @@ position for an indefinite period of time.</p>
 <p>The control frequency of the robot is of <code class="docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">25</span> <span class="pre">Hz</span></code>. This is achieved by applying the same action in 20 subsequent simulator step (with a time step of <code class="docutils literal notranslate"><span class="pre">dt</span> <span class="pre">=</span> <span class="pre">0.002</span> <span class="pre">s</span></code>) before returning the control to the robot.</p>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">¶</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(4,),</span> <span class="pre">float32)</span></code>. An action represents the Cartesian displacement dx, dy, and dz of the end effector. In addition to a last action that controls closing and opening of the gripper. This last action is not required since
 there is no object to be manipulated, thus its value won’t generate any control output.</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -383,7 +385,7 @@ there is no object to be manipulated, thus its value won’t generate any contro
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s end effector state and goal. The kinematics observations are derived from Mujoco bodies known as <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site">sites</a>
 attached to the body of interest, the end effector. Also to take into account the temporal influence of the step time, velocity values are multiplied by the step time dt=number_of_sub_steps*sub_step_time. The dictionary consists of the following 3 keys:</p>
 <ul class="simple">
@@ -577,44 +579,51 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </div>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">¶</a></h2>
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the end effector hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">0</span></code> if the end effector is in the final target position (the robot is considered to have reached the goal if the Euclidean distance between
 the end effector and the goal is lower than 0.05 m).</p></li>
 <li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
 </ul>
-<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">FetchReach-v2</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
-reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">FetchReachDense-v2</span></code> and initialized as follows:</p>
+<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">FetchReach-v3</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
+reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">FetchReachDense-v3</span></code> and initialized as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReachDense-v2&#39;</span><span class="p">)</span>
+<span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReachDense-v3&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">¶</a></h2>
 <p>When the environment is reset the gripper is placed in the following global cartesian coordinates <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span> <span class="pre">=</span> <span class="pre">[1.3419</span> <span class="pre">0.7491</span> <span class="pre">0.555]</span> <span class="pre">m</span></code>, and its orientation in quaternions is <code class="docutils literal notranslate"><span class="pre">(w,x,y,z)</span> <span class="pre">=</span> <span class="pre">[1.0,</span> <span class="pre">0.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0]</span></code>. The joint positions are computed by inverse kinematics
 internally by MuJoCo. The base of the robot will always be fixed at <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span> <span class="pre">=</span> <span class="pre">[0.405,</span> <span class="pre">0.48,</span> <span class="pre">0]</span></code> in global coordinates.</p>
 <p>The gripper’s target position is randomly selected by adding an offset to the initial grippers position <code class="docutils literal notranslate"><span class="pre">(x,y,z)</span></code> sampled from a uniform distribution with a range of <code class="docutils literal notranslate"><span class="pre">[-0.15,</span> <span class="pre">0.15]</span> <span class="pre">m</span></code>.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">¶</a></h2>
 <p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 50 timesteps.
 The episode is never <code class="docutils literal notranslate"><span class="pre">terminated</span></code> since the task is continuing with infinite horizon.</p>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">¶</a></h2>
 <p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReach-v2&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;FetchReach-v3&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v3: Fixed bug: <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> not properly resetting the internal state. Fetch environments now properly reset their state (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207">GitHub issue</a>).</p></li>
 <li><p>v2: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v1: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
 </ul>
@@ -654,7 +663,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2023 Farama Foundation
+                Copyright &#169; 2024 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -785,8 +794,8 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=563e25a7"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=f829d3b5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
