@@ -11,7 +11,7 @@
 <link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" /><link rel="next" title="Maze" href="../../maze/" /><link rel="prev" title="Manipulate Pen Touch Sensors" href="../manipulate_pen_touch_sensors/" />
         <link rel="canonical" href="https://robotics.farama.org/envs/shadow_dexterous_hand/reach.html" />
 
-    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.2.6 and Furo 2023.08.19.dev1 -->
+    <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Reach - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
@@ -257,6 +257,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_hopper/">Hopper</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_multiagentswimmer/">ManySegmentSwimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_reacher/">Reacher</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_swimmer/">Swimmer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../MaMuJoCo/ma_pusher/">Pusher</a></li>
@@ -317,12 +318,13 @@
           <article role="main">
             
             <section class="tex2jax_ignore mathjax_ignore" id="reach">
-<h1>Reach<a class="headerlink" href="#reach" title="Link to this heading">#</a></h1>
+<h1>Reach<a class="headerlink" href="#reach" title="Link to this heading">¶</a></h1>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../../../_images/reach1.gif"><img alt="../../../_images/reach1.gif" src="../../../_images/reach1.gif" style="width: 200px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/reach1.gif"><img alt="../../../_images/reach1.gif" src="../../../_images/reach1.gif" style="width: 200px;" />
+</a>
 </figure>
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading">¶</a></h2>
 <p>This environment was introduced in <a class="reference external" href="https://arxiv.org/abs/1802.09464">“Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research”</a>.</p>
 <p>The environment is based on the <a class="reference external" href="https://www.shadowrobot.com/">Shadow Dexterous Hand</a>, which is an antropomorphic robotic hand with 24 joints. The goal of the task is for the fingertips of the hand to reach a predefined target Cartesian position.
 The hand has a total of 20 motor controlled degrees of freedom out of the 24 joints. The thumb has 5 joints and 5 DoF while the rest of the fingers have 4 joints and 3 DoF (each finger’s distal joint is coupled with a tendon to its middle joint
@@ -337,7 +339,7 @@ This joint is not actuated but coupled to the PIP joints by tendons in MuJoCo.</
 to the palm area, <code class="docutils literal notranslate"><span class="pre">THJ4</span></code> and <code class="docutils literal notranslate"><span class="pre">THJ3</span></code>in the robot. And the <em>interphalangeal</em> joint which is in the same location as the DIP but in this case actuated. This joint is the <code class="docutils literal notranslate"><span class="pre">THJ0</span></code> in the robot hand.</p>
 </section>
 <section id="action-space">
-<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">#</a></h2>
+<h2>Action Space<a class="headerlink" href="#action-space" title="Link to this heading">¶</a></h2>
 <p>The action space is a <code class="docutils literal notranslate"><span class="pre">Box(-1.0,</span> <span class="pre">1.0,</span> <span class="pre">(20,),</span> <span class="pre">float32)</span></code>. The control actions are absolute angular positions of the actuated joints (non-coupled). The input of the control actions is set to a range between -1 and 1 by scaling the actual actuator angle ranges.
 The elements of the action array are the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -560,7 +562,7 @@ The elements of the action array are the following:</p>
 </div>
 </section>
 <section id="observation-space">
-<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">#</a></h2>
+<h2>Observation Space<a class="headerlink" href="#observation-space" title="Link to this heading">¶</a></h2>
 <p>The observation is a <code class="docutils literal notranslate"><span class="pre">goal-aware</span> <span class="pre">observation</span> <span class="pre">space</span></code>. It consists of a dictionary with information about the robot’s joint and finger states, as well as information about the goal. The finger tip observations are derived from
 Mujoco bodies known as <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/XMLreference.html?highlight=site#body-site">sites</a> attached to the body of interest such as the finger tips. The dictionary consists of the following 3 keys:</p>
 <ul class="simple">
@@ -1400,23 +1402,23 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </div>
 </section>
 <section id="rewards">
-<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h2>
+<h2>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">¶</a></h2>
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the fingers haven’t reached their final target position, and <code class="docutils literal notranslate"><span class="pre">0</span></code> if the fingers are in their final target position (the fingers are considered to have reached their goal if the 2-nom between
 the achieved goal vector and the desired goal vector is lower than 0.01).</p></li>
 <li><p><em>dense</em>: the returned reward is the negative 2-norm distance between the achieved goal vector and the desired goal vector.</p></li>
 </ul>
-<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">HandReach-v1</span></code>.
-However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code> reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">HandReachDense-v1</span></code> and initialized as follows:</p>
+<p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">HandReach-v2</span></code>.
+However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code> reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">HandReachDense-v2</span></code> and initialized as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;HandReachDense-v1&#39;</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;HandReachDense-v2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="starting-state">
-<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">#</a></h2>
+<h2>Starting State<a class="headerlink" href="#starting-state" title="Link to this heading">¶</a></h2>
 <p>When the environment is reset the joints of the hand are initialized with the following angles (rad):</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -1501,7 +1503,7 @@ However, for <code class="docutils literal notranslate"><span class="pre">dense<
 </tbody>
 </table>
 </div>
-<p>For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinete perido of time.
+<p>For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinite period of time.
 The initial position of the finger tips will then be:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -1578,23 +1580,24 @@ The initial position of the finger tips will then be:</p>
 <p>In the other possible episode intializaitons one of the fingers is randomly selected to meet the tip of the thumb over the palm of the hand. The rest of the finger tips must maintain the initial positions mentioned before.</p>
 </section>
 <section id="episode-end">
-<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">#</a></h2>
+<h2>Episode End<a class="headerlink" href="#episode-end" title="Link to this heading">¶</a></h2>
 <p>The episode will be <code class="docutils literal notranslate"><span class="pre">truncated</span></code> when the duration reaches a total of <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> which by default is set to 50 timesteps.
 The episode is never <code class="docutils literal notranslate"><span class="pre">terminated</span></code> since the task is continuing with infinite horizon.</p>
 </section>
 <section id="arguments">
-<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h2>
+<h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">¶</a></h2>
 <p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example,
 to increase the total number of timesteps to 100 make the environment as follows:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;HandReach-v1&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;HandReach-v2&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
-<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">#</a></h2>
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v2: Fixed bug: <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> not properly resetting the internal state. Fetch environments now properly reset their state (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207">GitHub issue</a>).</p></li>
 <li><p>v1: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
 </ul>
@@ -1634,7 +1637,7 @@ to increase the total number of timesteps to 100 make the environment as follows
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2023 Farama Foundation
+                Copyright &#169; 2024 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -1765,8 +1768,8 @@ to increase the total number of timesteps to 100 make the environment as follows
         })()
       </script>
 
-    <script src="../../../_static/documentation_options.js?v=563e25a7"></script>
-    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/documentation_options.js?v=f829d3b5"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=7660844c"></script>
     
