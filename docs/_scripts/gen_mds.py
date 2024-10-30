@@ -7,10 +7,14 @@ import os
 from tqdm import tqdm
 
 import gymnasium as gym
+import gymnasium_robotics
 
 from importlib import import_module
 from utils import trim
 import re
+
+
+gym.register_envs(gymnasium_robotics)
 
 
 # REWRITE: generate md's for new environments that don't belong to Fetch or Shadow Hand
