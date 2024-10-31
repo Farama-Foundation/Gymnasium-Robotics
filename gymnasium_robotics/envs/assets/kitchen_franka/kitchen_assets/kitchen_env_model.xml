@@ -12,7 +12,7 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mujoco>
+<mujoco model="franka_kitchen">
 
     <size njmax='1000' nconmax='1000'/>
 
