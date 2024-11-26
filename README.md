@@ -5,7 +5,7 @@
 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
+  <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Roobotics/main/gymrobotics-revised-text.png" width="500px"/>
 </p>
 
 This library contains a collection of Reinforcement Learning robotic environments that use the [Gymnasium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
