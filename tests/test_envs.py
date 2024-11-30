@@ -194,7 +194,6 @@ def test_robot_env_reset(spec):
         })
 
         # exclude object location from environments
-        # if spec.id[:-3] in ['FetchPush', 'FetchPickAndPlace', 'FetchSlide',]:
         if np.any([tar in spec.id for tar in ['FetchPush', 'FetchPickAndPlace', 'FetchSlide',]]):
             diag_dict['qpos'] = np.delete(diag_dict['qpos'], np.s_[-7:-5])
             diag_dict['init_qpos'] = np.delete(diag_dict['init_qpos'], np.s_[-7:-5])
