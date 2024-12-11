@@ -387,6 +387,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     ```
 
     ## Version History
+    * v3: Fixed bug: the initial state not matching the initial state description in the documentation. Fetch environments' initial states after reset now align with the documentation.(related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251))
     * v2: Fixed bug: `env.reset()` not properly resetting the internal state. Fetch environments now properly reset their state (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207)).
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
