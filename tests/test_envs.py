@@ -1,9 +1,8 @@
 import pickle
 import warnings
 
-import numpy as np
-
 import gymnasium as gym
+import numpy as np
 import pytest
 from gymnasium.envs.mujoco.utils import check_mujoco_reset_state
 from gymnasium.envs.registration import EnvSpec
@@ -166,43 +165,64 @@ def test_pickle_env(env_spec):
     env.close()
     pickled_env.close()
 
-_test_robot_env_reset_list = ['Fetch', 'HandReach']
+
+_test_robot_env_reset_list = ["Fetch", "HandReach"]
+
 
 @pytest.mark.parametrize(
-    "spec", 
-    [spec for spec in non_mujoco_py_env_specs if np.any([tar in spec.id for tar in _test_robot_env_reset_list])], 
-    ids=[spec.id for spec in non_mujoco_py_env_specs if np.any([tar in spec.id for tar in _test_robot_env_reset_list])]
+    "spec",
+    [
+        spec
+        for spec in non_mujoco_py_env_specs
+        if np.any([tar in spec.id for tar in _test_robot_env_reset_list])
+    ],
+    ids=[
+        spec.id
+        for spec in non_mujoco_py_env_specs
+        if np.any([tar in spec.id for tar in _test_robot_env_reset_list])
+    ],
 )
 def test_robot_env_reset(spec):
-    """Checks initial state of robotic environment, i.e. Fetch and Shadow Dexterous Hand Reach, 
-    whether their initial states align with the document."""
+    """Check initial state of robotic environment, i.e. Fetch and Shadow Dexterous Hand Reach,
+    whether their initial states match the description in the documentation."""
 
     def _test_initial_states(env, seed=None):
         diag_dict = {}
 
-        init_obs = env.reset(seed = seed)
+        init_obs = env.reset(seed=seed)
 
         if isinstance(init_obs[0], dict):
             diag_dict.update(**init_obs[0])
         elif isinstance(init_obs[0], np.ndarray):
-            diag_dict.update({'observation': init_obs[0]})
-        diag_dict.update({
-            'qpos': env.unwrapped.data.qpos,
-            'qvel': env.unwrapped.data.qvel,
-            'init_qpos': env.unwrapped.initial_qpos,
-            'init_qvel': env.unwrapped.initial_qvel
-        })
+            diag_dict.update({"observation": init_obs[0]})
+        diag_dict.update(
+            {
+                "qpos": env.unwrapped.data.qpos,
+                "qvel": env.unwrapped.data.qvel,
+                "init_qpos": env.unwrapped.initial_qpos,
+                "init_qvel": env.unwrapped.initial_qvel,
+            }
+        )
 
         # exclude object location from environments
-        if np.any([tar in spec.id for tar in ['FetchPush', 'FetchPickAndPlace', 'FetchSlide',]]):
-            diag_dict['qpos'] = np.delete(diag_dict['qpos'], np.s_[-7:-5])
-            diag_dict['init_qpos'] = np.delete(diag_dict['init_qpos'], np.s_[-7:-5])
+        if np.any(
+            [
+                tar in spec.id
+                for tar in [
+                    "FetchPush",
+                    "FetchPickAndPlace",
+                    "FetchSlide",
+                ]
+            ]
+        ):
+            diag_dict["qpos"] = np.delete(diag_dict["qpos"], np.s_[-7:-5])
+            diag_dict["init_qpos"] = np.delete(diag_dict["init_qpos"], np.s_[-7:-5])
 
         # testing
-        assert np.allclose(diag_dict['qpos'], diag_dict['init_qpos'])
-        assert np.allclose(diag_dict['qvel'], diag_dict['init_qvel'])
+        assert np.allclose(diag_dict["qpos"], diag_dict["init_qpos"])
+        assert np.allclose(diag_dict["qvel"], diag_dict["init_qvel"])
         return diag_dict
-    
+
     cur_env: gym.Env = spec.make()
 
     _test_initial_states(cur_env, seed=24)
