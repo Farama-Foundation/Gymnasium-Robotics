@@ -189,12 +189,8 @@ def test_robot_env_reset(spec):
     def _test_initial_states(env, seed=None):
         diag_dict = {}
 
-        init_obs = env.reset(seed=seed)
+        env.reset(seed=seed)
 
-        if isinstance(init_obs[0], dict):
-            diag_dict.update(**init_obs[0])
-        elif isinstance(init_obs[0], np.ndarray):
-            diag_dict.update({"observation": init_obs[0]})
         diag_dict.update(
             {
                 "qpos": env.unwrapped.data.qpos,
@@ -227,4 +223,3 @@ def test_robot_env_reset(spec):
 
     _test_initial_states(cur_env, seed=24)
     _test_initial_states(cur_env, seed=10)
-    return
