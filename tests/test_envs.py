@@ -215,8 +215,8 @@ def test_robot_env_reset(spec):
             diag_dict["init_qpos"] = np.delete(diag_dict["init_qpos"], np.s_[-7:-5])
 
         # testing
-        assert np.allclose(diag_dict["qpos"], diag_dict["init_qpos"])
-        assert np.allclose(diag_dict["qvel"], diag_dict["init_qvel"])
+        assert np.all(diag_dict["qpos"] == diag_dict["init_qpos"])
+        assert np.all(diag_dict["qvel"] == diag_dict["init_qvel"])
         return diag_dict
 
     cur_env: gym.Env = spec.make()
