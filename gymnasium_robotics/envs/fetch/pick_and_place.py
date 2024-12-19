@@ -130,6 +130,7 @@ class MujocoFetchPickAndPlaceEnv(MujocoFetchEnv, EzPickle):
 
     ## Version History
 
+    * v4: Fixed bug where initial state did not match initial state description in documentation. Fetch environments' initial states after reset now match the documentation (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251)).
     * v3: Fixed bug: `env.reset()` not properly resetting the internal state. Fetch environments now properly reset their state (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207)).
     * v2: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v1: the environment depends on `mujoco_py` which is no longer maintained.
