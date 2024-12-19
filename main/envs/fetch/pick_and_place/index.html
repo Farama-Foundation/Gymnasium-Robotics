@@ -756,6 +756,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v4: Fixed bug where initial state did not match initial state description in documentation. Fetch environments’ initial states after reset now match the documentation (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251">GitHub issue</a>).</p></li>
 <li><p>v3: Fixed bug: <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> not properly resetting the internal state. Fetch environments now properly reset their state (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207">GitHub issue</a>).</p></li>
 <li><p>v2: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v1: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
