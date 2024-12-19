@@ -376,6 +376,12 @@ class MujocoFetchEnv(get_base_fetch_env(MujocoRobotEnv)):
         # Reset buffers for joint states, actuators, warm-start, control buffers etc.
         self._mujoco.mj_resetData(self.model, self.data)
 
+        self.data.time = self.initial_time
+        self.data.qpos[:] = np.copy(self.initial_qpos)
+        self.data.qvel[:] = np.copy(self.initial_qvel)
+        if self.model.na != 0:
+            self.data.act[:] = None
+
         # Randomize start position of object.
         if self.has_object:
             object_xpos = self.initial_gripper_xpos[:2]
