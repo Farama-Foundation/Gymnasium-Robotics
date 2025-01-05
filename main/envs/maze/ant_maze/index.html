@@ -13,9 +13,9 @@
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Ant Maze - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=82c8b628" />
     
     
 
@@ -360,8 +360,8 @@ The control frequency of the ant is of <code class="docutils literal notranslate
 <section id="custom-maze">
 <h3>Custom maze<a class="headerlink" href="#custom-maze" title="Link to this heading">¶</a></h3>
 <p>Also, any of the <code class="docutils literal notranslate"><span class="pre">AntMaze</span></code> environments can be initialized with a custom maze map by setting the <code class="docutils literal notranslate"><span class="pre">maze_map</span></code> argument like follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium_robotics</span>
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
@@ -777,8 +777,8 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 </ul>
 <p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v5</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
 reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">AntMaze_UMazeDense-v5</span></code> and initialized as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium_robotics</span>
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
@@ -817,8 +817,8 @@ episode will be terminated when the Euclidean distance to the goal is less or eq
 </ul>
 <p>Note that, the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> can be increased or decreased by specifying the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument at initialization. For example,
 to increase the total number of timesteps to 100 make the environment as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium_robotics</span>
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
@@ -870,7 +870,7 @@ to increase the total number of timesteps to 100 make the environment as follows
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2024 Farama Foundation
+                Copyright &#169; 2025 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
