@@ -20,7 +20,7 @@
         <material name="oven_wood" texture="T_oven_wood" texrepeat="3 3" reflectance="0.7" shininess=".4" texuniform="false"/>
         <material name="oven_metal" rgba="1 1 1 1" texture="T_oven_metal" texrepeat="3 3" reflectance="1" shininess="1" texuniform="false"/>
         <material name="oven_black" rgba=".15 .15 .15 1" reflectance=".2" shininess=".2" />
-        <material name="oven_burner" rgba="2 0 0 1" reflectance=".2" shininess=".2" />
+        <material name="oven_burner" rgba="1 0 0 1" reflectance=".2" shininess=".2" />
         <material name="oven_block" rgba=".1 .1 .1 1"/>
         <material name="oven_collision_blue" rgba="0.3 0.3 1.0 0.5" shininess="0" specular="0"/>
     </asset>
