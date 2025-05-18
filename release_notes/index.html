@@ -13,9 +13,9 @@
 
     <link rel="shortcut icon" href="../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Release Notes - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=3e7f4c72" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=49cbaffd" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=82c8b628" />
     
     
 
@@ -328,6 +328,28 @@
             
             <section class="tex2jax_ignore mathjax_ignore" id="release-notes">
 <h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">¶</a></h1>
+<section id="release-1-3-2">
+<h2>1.3.2<a class="headerlink" href="#release-1-3-2" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2025-05-18 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/1.3.2">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/1.3.2/">PyPI</a></em></p>
+<h2>Release Notes:</h2>
+<p>Added <code>Fetch*-v4</code> and <code>HandReach-v3</code> environments, fixing the state initialization bug found in the previous version</p>
+<p>And fixed a few bugs</p>
+<h2>What's Changed</h2>
+<h3>Bug Fixes:</h3>
+<ul>
+<li>Fix bugs in <code>kettle_asset.xml</code> to ensure compatibility with the latest MuJoCo versions <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2645502926" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/255" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/255/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/255">#255</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Josh00-Lu/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Josh00-Lu">@Josh00-Lu</a> (validation by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a>)</li>
+<li>Fixes Fetch and Robotic environments initial state issues in 1.3.0 <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2693039814" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/256" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/256/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/256">#256</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/wjxgeorge/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/wjxgeorge">@wjxgeorge</a></li>
+<li>Fix rgba value in <code>oven_asset.xml</code> to be in <code>[0,1]</code> <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2783638421" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/262" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/262/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/262">#262</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RussTedrake/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RussTedrake">@RussTedrake</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>set copyright year in documentation page automatically <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2596706642" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/249" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/249/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/249">#249</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>typo fixes MaMuJoCo changelog <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2598959818" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/250" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/250/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/250">#250</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>Fixed reward description of <code>PointMaze</code> dense environments <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2624340926" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/253" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/253/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/253">#253</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/HridayM25/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/HridayM25">@HridayM25</a></li>
+<li>Fix Documentation toctrees menus <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2624773995" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/254" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/254/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/254">#254</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/younik/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/younik">@younik</a></li>
+<li>Make logo image in <code>README.md</code> link to documentation <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2768229179" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/261" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/261/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/261">#261</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.3.1...v1.3.2"><tt>v1.3.1...v1.3.2</tt></a></p></section>
 <section id="release-v1-3-1">
 <h2>v1.3.1: 1.3.1<a class="headerlink" href="#release-v1-3-1" title="Link to this heading">¶</a></h2>
 <p><em>Released on 2024-10-14 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.3.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.3.1/">PyPI</a></em></p>
@@ -633,11 +655,11 @@ tar -xzf mujoco210-linux-x86_64.tar.gz -C ~/.mujoco
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1">pip</span> <span class="pl-s1">install</span> <span class="pl-s1">gym</span><span class="pl-c1">-</span><span class="pl-s1">robotics</span>
 <span class="pl-s1">pip</span> <span class="pl-s1">install</span> <span class="pl-s1">mujoco_py</span>
-<span class="pl-s1">wget</span> <span class="pl-s1">https</span>:<span class="pl-c1">//</span><span class="pl-s1">mujoco</span>.<span class="pl-s1">org</span><span class="pl-c1">/</span><span class="pl-s1">download</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-s1">tar</span>.<span class="pl-s1">gz</span>
-<span class="pl-s1">mkdir</span> <span class="pl-c1">-</span><span class="pl-s1">p</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-s1">mujoco</span>
-<span class="pl-s1">tar</span> <span class="pl-c1">-</span><span class="pl-s1">xzf</span> <span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-s1">tar</span>.<span class="pl-s1">gz</span> <span class="pl-c1">-</span><span class="pl-v">C</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-s1">mujoco</span>
-<span class="pl-s1">export</span> <span class="pl-v">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-v">LD_LIBRARY_PATH</span>:<span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-s1">mujoco</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">/</span><span class="pl-s1">bin</span>
-<span class="pl-s1">export</span> <span class="pl-v">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-v">LD_LIBRARY_PATH</span>:<span class="pl-c1">/</span><span class="pl-s1">usr</span><span class="pl-c1">/</span><span class="pl-s1">lib</span><span class="pl-c1">/</span><span class="pl-s1">nvidia</span></pre></div>
+<span class="pl-s1">wget</span> <span class="pl-s1">https</span>:<span class="pl-c1">//</span><span class="pl-s1">mujoco</span>.<span class="pl-c1">org</span><span class="pl-c1">/</span><span class="pl-s1">download</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-c1">tar</span>.<span class="pl-c1">gz</span>
+<span class="pl-s1">mkdir</span> <span class="pl-c1">-</span><span class="pl-s1">p</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-c1">mujoco</span>
+<span class="pl-s1">tar</span> <span class="pl-c1">-</span><span class="pl-s1">xzf</span> <span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-c1">tar</span>.<span class="pl-c1">gz</span> <span class="pl-c1">-</span><span class="pl-c1">C</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-c1">mujoco</span>
+<span class="pl-s1">export</span> <span class="pl-c1">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-c1">LD_LIBRARY_PATH</span>:<span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-s1">mujoco</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">/</span><span class="pl-s1">bin</span>
+<span class="pl-s1">export</span> <span class="pl-c1">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-c1">LD_LIBRARY_PATH</span>:<span class="pl-c1">/</span><span class="pl-s1">usr</span><span class="pl-c1">/</span><span class="pl-s1">lib</span><span class="pl-c1">/</span><span class="pl-s1">nvidia</span></pre></div>
 <p><a href="https://asciinema.org/a/471679" rel="nofollow"><img src="https://camo.githubusercontent.com/b877c96aeee3a57f21ff264a7ed6fa264916aefac61c01a03bf274dcd73b3311/68747470733a2f2f61736369696e656d612e6f72672f612f3437313637392e737667" alt="asciicast" data-canonical-src="https://asciinema.org/a/471679.svg" style="max-width: 100%;"></a></p>
 <p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v0.0.2...v0.1.0"><tt>v0.0.2...v0.1.0</tt></a></p></section>
 <section id="release-v0-0-2">
@@ -669,7 +691,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2024 Farama Foundation
+                Copyright &#169; 2025 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
@@ -706,6 +728,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1
             <div class="toc-tree">
               <ul>
 <li><a class="reference internal" href="#">Release Notes</a><ul>
+<li><a class="reference internal" href="#release-1-3-2">1.3.2</a></li>
 <li><a class="reference internal" href="#release-v1-3-1">v1.3.1: 1.3.1</a></li>
 <li><a class="reference internal" href="#release-v1-3-0">v1.3.0: v1.3</a></li>
 <li><a class="reference internal" href="#release-v1-2-4">v1.2.4</a></li>

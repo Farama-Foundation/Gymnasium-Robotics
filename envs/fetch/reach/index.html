@@ -13,9 +13,9 @@
 
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Reach - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=49cbaffd" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=82c8b628" />
     
     
 
@@ -588,8 +588,8 @@ the end effector and the goal is lower than 0.05 m).</p></li>
 </ul>
 <p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">FetchReach-v3</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
 reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">FetchReachDense-v3</span></code> and initialized as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium_robotics</span>
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
@@ -611,8 +611,8 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 <section id="arguments">
 <h2>Arguments<a class="headerlink" href="#arguments" title="Link to this heading">¶</a></h2>
 <p>To increase/decrease the maximum number of timesteps before the episode is <code class="docutils literal notranslate"><span class="pre">truncated</span></code> the <code class="docutils literal notranslate"><span class="pre">max_episode_steps</span></code> argument can be set at initialization. The default value is 50. For example, to increase the total number of timesteps to 100 make the environment as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gymnasium</span> <span class="k">as</span> <span class="nn">gym</span>
-<span class="kn">import</span> <span class="nn">gymnasium_robotics</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gym</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gymnasium_robotics</span>
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
@@ -623,6 +623,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v4: Fixed bug where initial state did not match initial state description in documentation. Fetch environments’ initial states after reset now match the documentation (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251">GitHub issue</a>).</p></li>
 <li><p>v3: Fixed bug: <code class="docutils literal notranslate"><span class="pre">env.reset()</span></code> not properly resetting the internal state. Fetch environments now properly reset their state (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207">GitHub issue</a>).</p></li>
 <li><p>v2: the environment depends on the newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v1: the environment depends on <code class="docutils literal notranslate"><span class="pre">mujoco_py</span></code> which is no longer maintained.</p></li>
@@ -663,7 +664,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2024 Farama Foundation
+                Copyright &#169; 2025 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
