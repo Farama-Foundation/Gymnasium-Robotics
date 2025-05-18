@@ -13,9 +13,9 @@
 
     <link rel="shortcut icon" href="../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>MaMuJoCo (Multi-Agent MuJoCo) - Gymnasium-Robotics Documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=3e7f4c72" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=49cbaffd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=82c8b628" />
     
     
 
@@ -469,7 +469,7 @@ Note: arguments that change the observation space will not work.</p></li>
 <img alt="../../_images/ant_8x1.png" src="../../_images/ant_8x1.png" />
 </figure>
 <p>first we will load the graph of MaMuJoCo:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gymnasium_robotics.mamujoco_v1</span> <span class="kn">import</span> <span class="n">get_parts_and_edges</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gymnasium_robotics.mamujoco_v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_parts_and_edges</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unpartioned_nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">global_nodes</span> <span class="o">=</span> <span class="n">get_parts_and_edges</span><span class="p">(</span><span class="s1">&#39;Ant-v5&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -497,8 +497,8 @@ We are using the robot model from <a class="reference external" href="https://gi
 <figure class="align-default" id="boston-dynamics-spot-arm-factorization">
 <img alt="../../_images/boston_dymanics_spot_arm.png" src="../../_images/boston_dymanics_spot_arm.png" />
 </figure>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gymnasium_robotics</span> <span class="kn">import</span> <span class="n">mamujoco_v1</span>
-<span class="kn">from</span> <span class="nn">gymnasium_robotics.envs.multiagent_mujoco.obsk</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">HyperEdge</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gymnasium_robotics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mamujoco_v1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gymnasium_robotics.envs.multiagent_mujoco.obsk</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">HyperEdge</span>
 
 <span class="c1"># Define the factorization graph</span>
 <span class="n">freejoint</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
@@ -629,7 +629,7 @@ We are using the robot model from <a class="reference external" href="https://gi
           <div class="bottom-of-page">
             <div class="left-details">
               <div class="copyright">
-                Copyright &#169; 2024 Farama Foundation
+                Copyright &#169; 2025 Farama Foundation
               </div>
               <!--
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
