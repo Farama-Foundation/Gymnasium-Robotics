@@ -39,6 +39,7 @@ dynamic = ["version"]
 testing = [
 	"pytest==7.0.1",
 	#"mujoco_py<2.2,>=2.1",
+<<<<<<< HEAD
  	"mujoco_py_cython3",
 	"cython<3",
 	"PettingZoo>=1.23.0",
@@ -47,6 +48,14 @@ testing = [
 
 
 mujoco_py = ["mujoco_py_cython3"]
+=======
+    "mujoco-py-cython3",
+    "cython<3",
+    "PettingZoo>=1.23.0",
+    "Jinja2>=3.0.3",
+]
+mujoco_py = ["mujoco-py-cython3"]
+>>>>>>> 0c8fdda (change mujoco_py version)
 mujoco_py_og = ["mujoco_py<2.2,>=2.1", "cython<3"]
 
 [project.urls]
