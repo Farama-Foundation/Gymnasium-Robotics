@@ -1,8 +1,10 @@
-import pytest
-import numpy as np
 import gymnasium as gym
+import numpy as np
+import pytest
+
 import gymnasium_robotics
 
+gym.register_envs(gymnasium_robotics)
 
 EPS = 1e-6
 
@@ -62,13 +64,13 @@ MUJOCO_PY_ENVS = [
 ]
 
 MUJOCO_V2_V3_ENVS = [
-    "ant"
-    "halfcheetah",
+    "ant" "halfcheetah",
     "hopper",
     "humanoid",
     "swimmer",
     "walker2d",
 ]
+
 
 @pytest.mark.parametrize("env_name", MUJOCO_V2_V3_ENVS)
 def test_mujoco_v2_to_v3_conversion(env_name: str):

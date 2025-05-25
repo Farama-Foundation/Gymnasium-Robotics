@@ -1,8 +1,9 @@
-import gymnasium_robotics
 import gymnasium as gym
 import numpy as np
 import pytest
 from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
+
+import gymnasium_robotics
 from gymnasium_robotics.envs.mujoco.mujoco_py_env import BaseMujocoPyEnv
 
 gym.register_envs(gymnasium_robotics)
@@ -59,18 +60,6 @@ def test_verify_info_y_position(env_id: str):
     obs, _, _, _, info = env.step(env.action_space.sample())
 
     assert obs[1] == info["y_position"]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Note: "HumnanoidStandup-v4" does not have `info`
@@ -169,9 +158,7 @@ def test_set_state(version: str):
 # Note: Ant-v4/v3 fails this test
 # Note: Humanoid-v4/v3 fails this test
 # Note: v2 does not have `info`
-@pytest.mark.parametrize(
-    "env_id", ["Swimmer-v3"]
-)
+@pytest.mark.parametrize("env_id", ["Swimmer-v3"])
 def test_distance_from_origin_info(env_id: str):
     """Verify that `info"distance_from_origin"` is correct."""
     env = gym.make(env_id).unwrapped
@@ -182,6 +169,7 @@ def test_distance_from_origin_info(env_id: str):
     assert info["distance_from_origin"] == np.linalg.norm(
         env.data.qpos[0:2] - env.init_qpos[0:2]
     )
+
 
 # note: fails with `mujoco-mjx==3.0.1`
 @pytest.mark.parametrize("version", ["v3", "v2"])
@@ -202,6 +190,7 @@ def test_model_sensors(version: str):
         assert env.data.cvel.shape == (14, 6)
         assert env.data.qfrc_actuator.shape == (23,)
         assert env.data.cfrc_ext.shape == (14, 6)
+
 
 @pytest.mark.parametrize(
     "env_id",
