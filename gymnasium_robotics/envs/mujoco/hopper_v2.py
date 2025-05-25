@@ -1,7 +1,8 @@
 import numpy as np
 from gymnasium import utils
-from gymnasium_robotics.envs.mujoco.mujoco_py_env import MuJocoPyEnv
 from gymnasium.spaces import Box
+
+from gymnasium_robotics.envs.mujoco.mujoco_py_env import MuJocoPyEnv
 
 
 class HopperEnv(MuJocoPyEnv, utils.EzPickle):
