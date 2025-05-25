@@ -53,7 +53,7 @@ repos:
     rev: 6.3.0
     hooks:
       - id: pydocstyle
-        exclude: ^(tests/envs/hand)|(tests/test_envs.py)|(tests/__init__.py)|(tests/utils.py)|(tests/envs/__init__.py)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/fetch)|(gymnasium_robotics/envs/shadow_dexterous_hand)|(gymnasium_robotics/envs/maze)|(gymnasium_robotics/envs/adroit_hand)|(gymnasium_robotics/envs/franka_kitchen)
+        exclude: ^(tests/envs/hand)|(tests/test_envs.py)|(tests/__init__.py)|(tests/utils.py)|(tests/envs/__init__.py)|(docs)|(gymnasium_robotics/utils)|(gymnasium_robotics/envs/fetch)|(gymnasium_robotics/envs/shadow_dexterous_hand)|(gymnasium_robotics/envs/maze)|(gymnasium_robotics/envs/adroit_hand)|(gymnasium_robotics/envs/franka_kitchen)|(gymnasium_robotics/envs/mujoco)
         args:
           - --convention=google
           - --add-ignore=D100

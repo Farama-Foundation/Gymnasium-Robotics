@@ -1,13 +1,11 @@
 from os import path
 from typing import Any, Dict, Optional, Tuple, Union
 
-import numpy as np
-from numpy.typing import NDArray
-
 import gymnasium as gym
+import numpy as np
 from gymnasium import error, logger, spaces
 from gymnasium.spaces import Space
-
+from numpy.typing import NDArray
 
 try:
     import mujoco_py
