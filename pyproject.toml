@@ -43,7 +43,7 @@ testing = [
  	"mujoco_py_cython3",
 	#"cython<3",
 	"PettingZoo>=1.23.0",
-	"Jinja2>=3.0.3",
+	#"Jinja2>=3.0.3",
 ]
 
 
