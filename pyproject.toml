@@ -43,6 +43,7 @@ testing = [
  	"mujoco_py_cython3",
 	"Cython==3.0.0",
 	#"cython<3",
+	"distutils",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
