@@ -30,7 +30,8 @@ dependencies = [
     "gymnasium @ git+https://github.com/Farama-Foundation/Gymnasium.git@main#egg=gymnasium",
     "PettingZoo>=1.23.0",
     "Jinja2>=3.0.3",
-    "imageio"
+    "imageio",
+    "setuptools",
 ]
 dynamic = ["version"]
 
