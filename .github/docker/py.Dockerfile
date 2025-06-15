@@ -24,4 +24,4 @@ WORKDIR /usr/local/gymnasium-robotics/
 
 RUN pip install .[testing] --no-cache-dir
 
-ENTRYPOINT ["/usr/local/gymnasium-robotics/bin/docker_entrypoint"]
+ENTRYPOINT ["/usr/local/gymnasium-robotics/.github/docker/entrypoint"]

@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 name = "gymnasium-robotics"
 description = "Robotics environments for the Gymnasium repo."
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.10"
 authors = [{ name = "Farama Foundation", email = "contact@farama.org" }]
 license = { text = "MIT License" }
 keywords = ["Reinforcement Learning", "Gymnasium", "RL", "AI", "Robotics"]
@@ -16,18 +16,17 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
 ]
 dependencies = [
     "mujoco>=2.2.0",
     "numpy>=1.21.0",
-    #"gymnasium>=1.0.0",
+    # "gymnasium>=1.0.0",
     "gymnasium @ git+https://github.com/Farama-Foundation/Gymnasium.git@main#egg=gymnasium",
     "PettingZoo>=1.23.0",
     "Jinja2>=3.0.3",
@@ -39,16 +38,13 @@ dynamic = ["version"]
 # Update dependencies in `all` if any are added or removed
 testing = [
 	"pytest==7.0.1",
-	#"mujoco_py<2.2,>=2.1",
- 	"mujoco_py_cython3",
+	# "mujoco_py<2.2,>=2.1",
+    # "mujoco_py_cython3",
 	"Cython==3.0.0",
-	#"cython<3",
-	"distutils",
+	# "cython<3",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
-
-
 mujoco_py = ["mujoco_py_cython3"]
 mujoco_py_original = ["mujoco_py<2.2,>=2.1", "cython<3"]
 
@@ -58,34 +54,17 @@ Repository = "https://github.com/Farama-Foundation/Gymnasium-Robotics"
 Documentation = "https://robotics.farama.org"
 "Bug Report" = "https://github.com/Farama-Foundation/Gymnasium-Robotics/issues"
 
-[project.entry-points."gymnasium.envs"]
-__root__ = "gymnasium_robotics.__init__:register_robotics_envs"
-
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.package-data]
 gymnasium_robotics = [
     "envs/assets/LICENSE.md",
-    "envs/assets/fetch/*.xml",
-    "envs/assets/hand/*.xml",
-    "envs/assets/point/*.xml",
-    "envs/assets/adroit_hand/*.xml",
-    "envs/assets/adroit_hand/resources/meshes/*.stl",
-    "envs/assets/adroit_hand/resources/textures/*.png",
-    "envs/assets/stls/fetch/*.stl",
-    "envs/assets/stls/hand/*.stl",
-    "envs/assets/textures/*.png",
+    "envs/assets/**/*.xml",
+    "envs/assets/**/*.stl",
+    "envs/assets/**/*.png",
     "envs/multiagent_mujoco/assets/*.xml*",
-    "envs/assets/kitchen_franka/franka_assets/*.xml",
-    "envs/assets/kitchen_franka/franka_assets/LICENSE.md",
-    "envs/assets/kitchen_franka/franka_assets/meshes/collision/*.stl",
-    "envs/assets/kitchen_franka/franka_assets/meshes/visual/*.stl",
-    "envs/assets/kitchen_franka/kitchen_assets/*.xml",
-    "envs/assets/kitchen_franka/kitchen_assets/LICENSE.md",
-    "envs/assets/kitchen_franka/kitchen_assets/item_assets/*.xml",
-    "envs/assets/kitchen_franka/kitchen_assets/meshes/*.stl",
-    "envs/assets/kitchen_franka/kitchen_assets/textures/*.png",
+    "envs/mujoco/assets/*.xml",
 ]
 
 # Linters and Test tools #######################################################
@@ -114,7 +93,7 @@ exclude = [
 strict = []
 
 typeCheckingMode = "basic"
-pythonVersion = "3.8"
+pythonVersion = "3.10"
 pythonPlatform = "All"
 typeshedPath = "typeshed"
 enableTypeIgnoreComments = true
