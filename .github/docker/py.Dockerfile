@@ -6,9 +6,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get -y update && apt-get install -y unzip libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev xvfb patchelf ffmpeg cmake swig gcc-9 g++-9
 
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 100 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 100
-
 # Download mujoco
 RUN mkdir /root/.mujoco \
     && cd /root/.mujoco \
@@ -20,7 +17,7 @@ ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 # Thus generating the following error https://github.com/cython/cython/pull/4428
 RUN git clone https://github.com/Kallinteris-Andreas/mujoco-py\
     && cd mujoco-py \
-    && pip install -e .
+    && CC=gcc-9 CXX=g++-9 pip install -e .
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
