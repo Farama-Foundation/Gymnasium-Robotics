@@ -223,7 +223,7 @@ class MuJocoPyEnv(BaseMujocoPyEnv):
             "on the mujoco-py bindings, which are no longer maintained "
             "and may stop working. Please upgrade to the v5 or v4 versions of "
             "the environments (which depend on the mujoco python bindings instead), unless "
-            "you are trying to precisely replicate previous works)."
+            "you are trying to precisely replicate previous works."
         )
 
         self.viewer = None

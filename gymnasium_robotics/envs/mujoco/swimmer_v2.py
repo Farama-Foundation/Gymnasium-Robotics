@@ -58,3 +58,7 @@ class SwimmerEnv(MuJocoPyEnv, utils.EzPickle):
             + self.np_random.uniform(low=-0.1, high=0.1, size=self.model.nv),
         )
         return self._get_obs()
+
+    def viewer_setup(self):
+        assert self.viewer is not None
+        self.viewer.cam.trackbodyid = 1

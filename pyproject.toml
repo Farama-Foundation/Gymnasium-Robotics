@@ -39,10 +39,7 @@ dynamic = ["version"]
 # Update dependencies in `all` if any are added or removed
 testing = [
 	"pytest==7.0.1",
-	# "mujoco_py<2.2,>=2.1",
-	"mujoco_py_cython3",
-	"Cython==3.0.0",
-	# "cython<3",
+    "mujoco-py-cython3 @ git+https://github.com/Kallinteris-Andreas/mujoco-py",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
@@ -83,14 +80,10 @@ include = [
     "gymnasium_robotics/**",
     "tests/**"
 ]
-
-
 exclude = [
     "**/node_modules",
     "**/__pycache__",
 ]
-
-
 strict = []
 
 typeCheckingMode = "basic"

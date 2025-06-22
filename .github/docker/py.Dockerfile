@@ -4,7 +4,7 @@ FROM python:$PYTHON_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt update -y && apt install -y software-properties-common && add-apt-repository ppa:ubuntu-toolchain-r/test && apt-get -y update && apt-get install -y unzip libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev xvfb patchelf ffmpeg cmake swig gcc-9 g++-9
+RUN apt-get -y update && apt-get install -y unzip libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev xvfb patchelf ffmpeg cmake swig
 
 # Download mujoco
 RUN mkdir /root/.mujoco \
@@ -15,9 +15,10 @@ ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
-RUN git clone https://github.com/Kallinteris-Andreas/mujoco-py\
+RUN git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
+# RUN git clone https://github.com/OpenAI/mujoco-py.git \
     && cd mujoco-py \
-    && CC=gcc-9 CXX=g++-9 pip install -e .
+    && pip install -e .
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
