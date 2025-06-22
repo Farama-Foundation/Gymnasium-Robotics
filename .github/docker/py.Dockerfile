@@ -4,7 +4,7 @@ FROM python:$PYTHON_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt install software-properties-common && add-apt-repository ppa:ubuntu-toolchain-r/test && apt-get -y update && apt-get install -y unzip libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev xvfb patchelf ffmpeg cmake swig gcc-9 g++-9
+RUN apt update && apt install software-properties-common && add-apt-repository ppa:ubuntu-toolchain-r/test && apt-get -y update && apt-get install -y unzip libglu1-mesa-dev libgl1-mesa-dev libosmesa6-dev xvfb patchelf ffmpeg cmake swig gcc-9 g++-9
 
 # Download mujoco
 RUN mkdir /root/.mujoco \
