@@ -17,7 +17,8 @@ gym.register_envs(gymnasium_robotics)
 CHECK_ENV_IGNORE_WARNINGS = [
     f"\x1b[33mWARN: {message}\x1b[0m"
     for message in [
-        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works).",
+        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works.",
+        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v5 or v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works.",
         "A Box observation space minimum value is -infinity. This is probably too low.",
         "A Box observation space maximum value is infinity. This is probably too high.",
         "For Box action spaces, we recommend using a symmetric and normalized space (range=[-1, 1] or [0, 1]). See https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html for more information.",
@@ -26,7 +27,12 @@ CHECK_ENV_IGNORE_WARNINGS = [
 
 # Exclude mujoco_py environments in test_render_modes test due to OpenGL error.
 non_mujoco_py_env_specs = [
-    spec for spec in all_testing_env_specs if "MujocoPy" not in spec.entry_point
+    spec
+    for spec in all_testing_env_specs
+    if "MujocoPy" not in spec.entry_point
+    and not spec.entry_point.startswith(
+        "gymnasium_robotics.envs.mujoco."
+    )  # Exclude version 2 and version 3 of the "mujoco" environments
 ]
 
 

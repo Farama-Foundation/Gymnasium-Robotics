@@ -42,3 +42,5 @@ vizdoom.ini
 docs/envs/**/*.*
 !docs/envs/**/index.md
 _build/
+.gitignore
+.history
