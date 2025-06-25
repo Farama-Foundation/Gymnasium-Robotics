@@ -4,8 +4,7 @@ import warnings
 import gymnasium as gym
 import numpy as np
 import pytest
-
-# from gymnasium.envs.mujoco.utils import check_mujoco_reset_state
+from gymnasium.envs.mujoco.utils import check_mujoco_reset_state
 from gymnasium.envs.registration import EnvSpec
 from gymnasium.error import Error
 from gymnasium.utils.env_checker import check_env, data_equivalence
@@ -28,7 +27,12 @@ CHECK_ENV_IGNORE_WARNINGS = [
 
 # Exclude mujoco_py environments in test_render_modes test due to OpenGL error.
 non_mujoco_py_env_specs = [
-    spec for spec in all_testing_env_specs if "MujocoPy" not in spec.entry_point
+    spec
+    for spec in all_testing_env_specs
+    if "MujocoPy" not in spec.entry_point
+    and not spec.entry_point.startswith(
+        "gymnasium_robotics.envs.mujoco."
+    )  # Exclude version 2 and version 3 of the "mujoco" environments
 ]
 
 
