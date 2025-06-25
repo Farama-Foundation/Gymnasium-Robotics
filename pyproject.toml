@@ -26,7 +26,7 @@ classifiers = [
 dependencies = [
     "mujoco>=2.2.0",
     "numpy>=1.21.0",
-    # "gymnasium>=1.0.0",
+    # "gymnasium>=1.2.0",
     "gymnasium @ git+https://github.com/Farama-Foundation/Gymnasium.git@main#egg=gymnasium",
     "PettingZoo>=1.23.0",
     "Jinja2>=3.0.3",
@@ -39,7 +39,6 @@ dynamic = ["version"]
 # Update dependencies in `all` if any are added or removed
 testing = [
 	"pytest==7.0.1",
-	#"mujoco-py-cython3 @ git+https://github.com/Kallinteris-Andreas/mujoco-py",
 	"mujoco_py_cython3",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
