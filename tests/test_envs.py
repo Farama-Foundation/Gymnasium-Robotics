@@ -113,25 +113,25 @@ def test_env_determinism_rollout(env_spec: EnvSpec):
     env_2.close()
 
 
-# @pytest.mark.parametrize(
-#     "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
-# )
-# def test_mujoco_reset_state_seeding(env_spec: EnvSpec):
-#     """Check if the reset method of mujoco environments is deterministic for the same seed.
-#
-#     Note:
-#         We exclude mujoco_py environments because they are deprecated and their implementation is
-#         frozen at this point. They are affected by a subtle bug in their reset method producing
-#         slightly different results for the same seed on subsequent resets of the same environment.
-#         This will not be fixed and tests are expected to fail.
-#     """
-#     # Don't check rollout equality if it's a nondeterministic environment.
-#     if env_spec.nondeterministic is True:
-#         return
-#
-#     env = env_spec.make(disable_env_checker=True)
-#
-#     check_mujoco_reset_state(env)
+@pytest.mark.parametrize(
+    "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
+)
+def test_mujoco_reset_state_seeding(env_spec: EnvSpec):
+    """Check if the reset method of mujoco environments is deterministic for the same seed.
+
+    Note:
+        We exclude mujoco_py environments because they are deprecated and their implementation is
+        frozen at this point. They are affected by a subtle bug in their reset method producing
+        slightly different results for the same seed on subsequent resets of the same environment.
+        This will not be fixed and tests are expected to fail.
+    """
+    # Don't check rollout equality if it's a nondeterministic environment.
+    if env_spec.nondeterministic is True:
+        return
+
+    env = env_spec.make(disable_env_checker=True)
+
+    check_mujoco_reset_state(env)
 
 
 @pytest.mark.parametrize(
