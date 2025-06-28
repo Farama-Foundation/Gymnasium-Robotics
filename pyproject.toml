@@ -26,8 +26,7 @@ classifiers = [
 dependencies = [
     "mujoco>=2.2.0",
     "numpy>=1.21.0",
-    # "gymnasium>=1.2.0",
-    "gymnasium @ git+https://github.com/Farama-Foundation/Gymnasium.git@main#egg=gymnasium",
+    "gymnasium>=1.2.0",
     "PettingZoo>=1.23.0",
     "Jinja2>=3.0.3",
     "imageio",

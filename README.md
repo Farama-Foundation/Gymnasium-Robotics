@@ -88,7 +88,7 @@ If you use this in your research, please cite:
   author = {Rodrigo de Lazcano and Kallinteris Andreas and Jun Jet Tai and Seungjae Ryan Lee and Jordan Terry},
   title = {Gymnasium Robotics},
   url = {http://github.com/Farama-Foundation/Gymnasium-Robotics},
-  version = {1.3.1},
+  version = {1.4.0},
   year = {2024},
 }
 ```
