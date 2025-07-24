@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gymnasium-robotics"
-description = "Robotics environments for the Gymnasium repo."
+description = "RL Robotics environments with Gymnasium API."
 readme = "README.md"
 requires-python = ">= 3.10"
 authors = [{ name = "Farama Foundation", email = "contact@farama.org" }]
@@ -31,6 +31,7 @@ dependencies = [
     "Jinja2>=3.0.3",
     "imageio",
     "setuptools",
+    "packaging",
 ]
 dynamic = ["version"]
 

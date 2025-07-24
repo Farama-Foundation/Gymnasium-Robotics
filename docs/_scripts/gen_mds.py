@@ -1,5 +1,5 @@
 """
-   isort:skip_file
+isort:skip_file
 """
 
 import os
@@ -25,7 +25,8 @@ for env_spec in gym.envs.registry.values():
     if isinstance(env_spec.entry_point, str):
         if (
             env_spec.entry_point.startswith("gymnasium_robotics.envs")
-            and "MujocoPy" not in env_spec.entry_point
+            # and "MujocoPy" not in env_spec.entry_point
+            and "gymnasium_robotics.envs.mujoco" not in env_spec.entry_point
         ):
             all_envs.append(env_spec)  # Exclude Fetch and Shadow Hand environments
 

@@ -1,11 +1,12 @@
 # noqa: D104
-from gymnasium.envs.registration import register
+import gymnasium
+from gymnasium import register
 
 from gymnasium_robotics.core import GoalEnv
 from gymnasium_robotics.envs.maze import maps
 from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v1
 
-__version__ = "1.4.0"
+__version__ = "1.4.1"
 
 
 def register_robotics_envs():
@@ -1124,6 +1125,7 @@ def register_robotics_envs():
 
     # manipulation
 
+    gymnasium.registry.pop("Reacher-v2")
     register(
         id="Reacher-v2",
         entry_point="gymnasium_robotics.envs.mujoco.reacher_v2:ReacherEnv",
@@ -1131,6 +1133,7 @@ def register_robotics_envs():
         reward_threshold=-3.75,
     )
 
+    gymnasium.registry.pop("Pusher-v2")
     register(
         id="Pusher-v2",
         entry_point="gymnasium_robotics.envs.mujoco.pusher_v2:PusherEnv",
@@ -1140,6 +1143,7 @@ def register_robotics_envs():
 
     # balance
 
+    gymnasium.registry.pop("InvertedPendulum-v2")
     register(
         id="InvertedPendulum-v2",
         entry_point="gymnasium_robotics.envs.mujoco.inverted_pendulum_v2:InvertedPendulumEnv",
@@ -1147,6 +1151,7 @@ def register_robotics_envs():
         reward_threshold=950.0,
     )
 
+    gymnasium.registry.pop("InvertedDoublePendulum-v2")
     register(
         id="InvertedDoublePendulum-v2",
         entry_point="gymnasium_robotics.envs.mujoco.inverted_double_pendulum_v2:InvertedDoublePendulumEnv",
@@ -1156,6 +1161,7 @@ def register_robotics_envs():
 
     # runners
 
+    gymnasium.registry.pop("HalfCheetah-v2")
     register(
         id="HalfCheetah-v2",
         entry_point="gymnasium_robotics.envs.mujoco.half_cheetah_v2:HalfCheetahEnv",
@@ -1163,6 +1169,7 @@ def register_robotics_envs():
         reward_threshold=4800.0,
     )
 
+    gymnasium.registry.pop("HalfCheetah-v3")
     register(
         id="HalfCheetah-v3",
         entry_point="gymnasium_robotics.envs.mujoco.half_cheetah_v3:HalfCheetahEnv",
@@ -1170,6 +1177,7 @@ def register_robotics_envs():
         reward_threshold=4800.0,
     )
 
+    gymnasium.registry.pop("Hopper-v2")
     register(
         id="Hopper-v2",
         entry_point="gymnasium_robotics.envs.mujoco.hopper_v2:HopperEnv",
@@ -1177,6 +1185,7 @@ def register_robotics_envs():
         reward_threshold=3800.0,
     )
 
+    gymnasium.registry.pop("Hopper-v3")
     register(
         id="Hopper-v3",
         entry_point="gymnasium_robotics.envs.mujoco.hopper_v3:HopperEnv",
@@ -1184,6 +1193,7 @@ def register_robotics_envs():
         reward_threshold=3800.0,
     )
 
+    gymnasium.registry.pop("Swimmer-v2")
     register(
         id="Swimmer-v2",
         entry_point="gymnasium_robotics.envs.mujoco.swimmer_v2:SwimmerEnv",
@@ -1191,6 +1201,7 @@ def register_robotics_envs():
         reward_threshold=360.0,
     )
 
+    gymnasium.registry.pop("Swimmer-v3")
     register(
         id="Swimmer-v3",
         entry_point="gymnasium_robotics.envs.mujoco.swimmer_v3:SwimmerEnv",
@@ -1198,18 +1209,21 @@ def register_robotics_envs():
         reward_threshold=360.0,
     )
 
+    gymnasium.registry.pop("Walker2d-v2")
     register(
         id="Walker2d-v2",
         max_episode_steps=1000,
         entry_point="gymnasium_robotics.envs.mujoco.walker2d_v2:Walker2dEnv",
     )
 
+    gymnasium.registry.pop("Walker2d-v3")
     register(
         id="Walker2d-v3",
         max_episode_steps=1000,
         entry_point="gymnasium_robotics.envs.mujoco.walker2d_v3:Walker2dEnv",
     )
 
+    gymnasium.registry.pop("Ant-v2")
     register(
         id="Ant-v2",
         entry_point="gymnasium_robotics.envs.mujoco.ant_v2:AntEnv",
@@ -1217,6 +1231,7 @@ def register_robotics_envs():
         reward_threshold=6000.0,
     )
 
+    gymnasium.registry.pop("Ant-v3")
     register(
         id="Ant-v3",
         entry_point="gymnasium_robotics.envs.mujoco.ant_v3:AntEnv",
@@ -1224,18 +1239,21 @@ def register_robotics_envs():
         reward_threshold=6000.0,
     )
 
+    gymnasium.registry.pop("Humanoid-v2")
     register(
         id="Humanoid-v2",
         entry_point="gymnasium_robotics.envs.mujoco.humanoid_v2:HumanoidEnv",
         max_episode_steps=1000,
     )
 
+    gymnasium.registry.pop("Humanoid-v3")
     register(
         id="Humanoid-v3",
         entry_point="gymnasium_robotics.envs.mujoco.humanoid_v3:HumanoidEnv",
         max_episode_steps=1000,
     )
 
+    gymnasium.registry.pop("HumanoidStandup-v2")
     register(
         id="HumanoidStandup-v2",
         entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v2:HumanoidStandupEnv",

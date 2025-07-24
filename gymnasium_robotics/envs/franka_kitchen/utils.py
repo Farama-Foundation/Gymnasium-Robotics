@@ -1,5 +1,4 @@
-"""Utility functions to read the file with the joints configuration of the Franka robot located at '../assets/kitchen_franka/franka_assets/franka_config.xml'.
-"""
+"""Utility functions to read the file with the joints configuration of the Franka robot located at '../assets/kitchen_franka/franka_assets/franka_config.xml'."""
 
 import xml.etree.ElementTree as ET
 
