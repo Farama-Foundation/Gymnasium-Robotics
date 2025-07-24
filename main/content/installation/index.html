@@ -191,7 +191,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -317,7 +317,7 @@
                 </svg>
               </button>
             </div>
-            <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
               <div class="visually-hidden">Toggle table of contents sidebar</div>
               <i class="icon"><svg>
                   <use href="#svg-toc"></use>
@@ -330,8 +330,21 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>To install the Gymnasium-Robotics environments use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gymnasium-robotics</span></code></p>
 <p>These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the <a class="reference external" href="https://mujoco.org/">MuJoCo website</a> and the <a class="reference external" href="https://github.com/deepmind/mujoco">MuJoCo Github repository</a>.</p>
-<p>Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depend on <a class="reference external" href="https://github.com/openai/mujoco-py">mujoco-py</a>, please install this library with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gymnasium-robotics[mujoco-py]</span></code></p>
-<p>We support and test for Python 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.</p>
+<section id="legacy-environments">
+<h2>Legacy environments<a class="headerlink" href="#legacy-environments" title="Link to this heading">¶</a></h2>
+<p>Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team.
+If you wish to use the old versions of the environments that depend on <a class="reference external" href="https://github.com/openai/mujoco-py">mujoco-py</a></p>
+<p>We provide 2 ways of installing the <code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code> bindings</p>
+<p>You can install the latest version of <code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code> bindings with:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>gymnasium-robotics<span class="o">[</span>mujoco-py<span class="o">]</span>
+</pre></div>
+</div>
+<p>If you need to use older <code class="docutils literal notranslate"><span class="pre">mujoco-py</span></code> versions for your work (does not support <code class="docutils literal notranslate"><span class="pre">cython&gt;=3</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>gymnasium-robotics<span class="o">[</span>mujoco-py-original<span class="o">]</span>
+</pre></div>
+</div>
+<p>We support and test for Python 3.10, 3.11, 3.12 and 3.13 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.</p>
+</section>
 </section>
 
           </article>
@@ -369,8 +382,27 @@
           
         </footer>
       </div>
-      <aside class="toc-drawer no-toc">
+      <aside class="toc-drawer">
         
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#legacy-environments">Legacy environments</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+          </div>
+        </div>
         
         
       </aside>
@@ -450,7 +482,7 @@
         })()
       </script>
 
-    <script src="../../_static/documentation_options.js?v=f829d3b5"></script>
+    <script src="../../_static/documentation_options.js?v=89f279df"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=7660844c"></script>
