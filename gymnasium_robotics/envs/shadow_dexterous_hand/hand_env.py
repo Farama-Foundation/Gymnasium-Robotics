@@ -13,7 +13,7 @@ DEFAULT_CAMERA_CONFIG = {
 
 
 def get_base_hand_env(
-    RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]
+    RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv],
 ) -> Union[MujocoPyRobotEnv, MujocoRobotEnv]:
     """Factory function that returns a BaseHandEnv class that inherits from MujocoPyRobotEnv or MujocoRobotEnv depending on the mujoco python bindings."""
 
