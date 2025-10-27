@@ -56,6 +56,9 @@ goal, e.g. state derived from the simulation.
 
 ```python
 import gymnasium as gym
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
 
 env = gym.make("FetchReach-v4")
 env.reset()
