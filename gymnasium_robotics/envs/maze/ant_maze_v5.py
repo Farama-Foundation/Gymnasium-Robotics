@@ -96,7 +96,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
                 the positions ordered before all the velocities.
 
                 By default, observations do not include the x- and y-coordinates of the ant's torso. These values are included in the `achieved_goal` key of the observation.
-                However, by default, an observation is a `ndarray` with shape `(105,)` if the external contact forces are included with the `use_contact_forces` arguments. Otherwise, the shape will be `(27, )`
+                However, by default, an observation is a `ndarray` with shape `(105,)`.
                 The elements of the array correspond to the following:
 
                 | Num | Observation                                                  | Min    | Max    | Name (in corresponding XML file)       | Joint | Unit                     |
@@ -130,7 +130,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
                 | 26  |angular velocity of the angle between back right links        | -Inf   | Inf    | ankle_4 (right_back_leg)               | hinge | angle (rad)              |
 
                 The remaining 13*6 = 78 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 13 links are
-                the torso link, and 3 links for each leg (1 + 3*4) with the 6 external forces. These elements are included only if at the environments initialization the argument `use_contact_forces` is set to `True`.
+                the torso link, and 3 links for each leg (1 + 3*4) with the 6 external forces.
                 In the previous AntMaze versions, there were 6 additional contact forces representing the ground link, but they have been removed in this version.
 
             * `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 2-dimensional `ndarray`, `(2,)`, that consists of the two cartesian coordinates of the desired final ant torso position `[x,y]`. The elements of the array are the following:
