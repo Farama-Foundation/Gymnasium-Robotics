@@ -15,8 +15,9 @@ ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
-RUN git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
-# RUN git clone https://github.com/OpenAI/mujoco-py.git \
+# NOTE: mujoco-py requires numpy<2.0 due to incompatible C API changes and stricter GCC type checking
+RUN pip install "numpy<2.0" "cython<3.0" \
+    && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
     && pip install -e .
 
