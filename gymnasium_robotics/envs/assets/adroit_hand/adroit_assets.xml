@@ -1,6 +1,6 @@
  <mujocoinclude>
      <compiler angle="radian" meshdir='resources/meshes/' texturedir='resources/textures/' />
-    <option apirate="200" iterations="20" noslip_iterations="20"/>
+    <option iterations="20" noslip_iterations="20"/>
     <size njmax="500" nconmax="100" nstack="600000" nuser_body="9" nuser_jnt="1" nuser_site="1" nuser_tendon="1" nuser_actuator="16" nuser_sensor="1" />
     <visual>
         <global offwidth="3024" offheight="1680" />
