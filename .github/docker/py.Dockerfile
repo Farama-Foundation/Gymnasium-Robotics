@@ -14,6 +14,10 @@ RUN mkdir /root/.mujoco \
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 # Use OSMesa for headless OpenGL rendering in MuJoCo
 ENV MUJOCO_GL="osmesa"
+# mujoco-py does JIT compilation at runtime, so CFLAGS must persist as an env var
+# GCC 14+ treats pointer type mismatches and implicit declarations as hard errors
+# -fpermissive doesn't work for C, so we must explicitly disable these
+ENV CFLAGS="-Wno-incompatible-pointer-types -Wno-implicit-function-declaration -Wno-int-conversion -w"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
@@ -23,7 +27,8 @@ ENV MUJOCO_GL="osmesa"
 RUN pip install "numpy<2.0" setuptools \
     && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
-    && pip install -e .
+    && pip install -e . \
+    && python -c "import mujoco_py"  # Pre-compile Cython extensions
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
