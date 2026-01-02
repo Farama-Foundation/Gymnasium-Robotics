@@ -24,7 +24,7 @@ ENV CFLAGS="-Wno-incompatible-pointer-types -Wno-implicit-function-declaration -
 # NOTE: mujoco-py requires:
 #   - numpy<2.0 due to incompatible C API changes
 #   - setuptools for distutils (removed in Python 3.12)
-RUN pip install "numpy<2.0" "cython<3.0" setuptools \
+RUN pip install "numpy<2.0" setuptools \
     && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
     && pip install -e . \
