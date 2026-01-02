@@ -18,8 +18,10 @@ ENV CFLAGS="-Wno-error=incompatible-pointer-types"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
-# NOTE: mujoco-py requires numpy<2.0 due to incompatible C API changes
-RUN pip install "numpy<2.0" "cython<3.0" \
+# NOTE: mujoco-py requires:
+#   - numpy<2.0 due to incompatible C API changes
+#   - setuptools for distutils (removed in Python 3.12)
+RUN pip install "numpy<2.0" "cython<3.0" setuptools \
     && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
     && pip install -e . \
