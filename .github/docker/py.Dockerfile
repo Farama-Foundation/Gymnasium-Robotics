@@ -12,14 +12,18 @@ RUN mkdir /root/.mujoco \
     && wget -qO- 'https://github.com/deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz' | tar -xzvf -
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
+# mujoco-py does JIT compilation at runtime, so CFLAGS must persist as an env var
+# This disables GCC 14+ treating incompatible-pointer-types as an error
+ENV CFLAGS="-Wno-error=incompatible-pointer-types"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
-# NOTE: mujoco-py requires numpy<2.0 due to incompatible C API changes and stricter GCC type checking
+# NOTE: mujoco-py requires numpy<2.0 due to incompatible C API changes
 RUN pip install "numpy<2.0" "cython<3.0" \
     && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
-    && pip install -e .
+    && pip install -e . \
+    && python -c "import mujoco_py"  # Pre-compile Cython extensions
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
