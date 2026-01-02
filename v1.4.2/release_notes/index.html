@@ -1,0 +1,1076 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark">
+    <meta name="description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning">
+    <meta property="og:title" content="Gymnasium-Robotics Documentation" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Gymnasium-Robotics is a collection of robotics simulation environments for Reinforcement Learning" />
+    <meta property="og:url" content="https://robotics.farama.org/release_notes/index.html" /><meta property="og:image" content="https://robotics.farama.org//_static/img/robotics-github.png" /><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="prev" title="Single Action Environments" href="../envs/MaMuJoCo/ma_single/" />
+        <link rel="canonical" href="https://robotics.farama.org/release_notes/index.html" />
+
+    <link rel="shortcut icon" href="../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
+        <title>Release Notes - Gymnasium-Robotics Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=82c8b628" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    <header class="farama-header" aria-label="Farama header">
+      <div class="farama-header__container">
+        <div class="farama-header__left--mobile">
+          <label class="nav-overlay-icon" for="__navigation">
+            <div class="visually-hidden">Toggle site navigation sidebar</div>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <defs></defs>
+              <line x1="0.5" y1="4" x2="23.5" y2="4"></line>
+              <line x1="0.232" y1="12" x2="23.5" y2="12"></line>
+              <line x1="0.232" y1="20" x2="23.5" y2="20"></line>
+            </svg>
+          </label>
+        </div>
+        <div class="farama-header__left farama-header__center--mobile">
+          <a href="../">
+              <img class="farama-header__logo only-light" src="../_static/img/robotics.png" alt="Light Logo"/>
+              <img class="farama-header__logo only-dark" src="../_static/img/robotics-white.png" alt="Dark Logo"/>
+            <span class="farama-header__title">Gymnasium-Robotics Documentation</span>
+          </a>
+        </div>
+        <div class="farama-header__right">
+          <div class="farama-header-menu">
+            <button class="farama-header-menu__btn" aria-label="Open Farama Menu" aria-expanded="false" aria-haspopup="true" aria-controls="farama-menu">
+              <img class="farama-black-logo-invert" src="../_static/img/farama-logo-header.svg">
+              <svg viewBox="0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <polyline style="stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 2px;" points="1 7 12 18 23 7"></polyline>
+              </svg>
+            </button>
+            <div class="farama-header-menu-container farama-hidden" aria-hidden="true" id="farama-menu">
+              <div class="farama-header-menu__header">
+                <a href="https://farama.org">
+                  <img class="farama-header-menu__logo farama-white-logo-invert" src="../_static/img/farama_solid_white.svg" alt="Farama Foundation logo">
+                  <span>Farama Foundation</span>
+                </a>
+                <div class="farama-header-menu-header__right">
+                  <button id="farama-close-menu">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-close">
+                      <line x1="3" y1="21" x2="21" y2="3"></line>
+                      <line x1="3" y1="3" x2="21" y2="21"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="farama-header-menu__body">
+                <!-- Response from farama.org/api/projects.json -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<div class="page">
+  <!--<header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Gymnasium-Robotics Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>-->
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="farama-sidebar__title" href="../">
+      <img class="farama-header__logo only-light" src="../_static/img/robotics.png" alt="Light Logo"/>
+      <img class="farama-header__logo only-dark" src="../_static/img/robotics-white.png" alt="Dark Logo"/>
+    <span class="farama-header__title">Gymnasium-Robotics Documentation</span>
+  </a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../content/installation/">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../content/multi-goal_api/">Multi-goal API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Environments</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/fetch/">Fetch</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Fetch</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/fetch/pick_and_place/">Pick And Place</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/fetch/push/">Push</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/fetch/reach/">Reach</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/fetch/slide/">Slide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/shadow_dexterous_hand/">Shadow Dexterous Hand</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Shadow Dexterous Hand</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_block/">Manipulate Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_block_touch_sensors/">Manipulate Block Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_egg/">Manipulate Egg</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_egg_touch_sensors/">Manipulate Egg Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_pen/">Manipulate Pen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/manipulate_pen_touch_sensors/">Manipulate Pen Touch Sensors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/shadow_dexterous_hand/reach/">Reach</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/maze/">Maze</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Maze</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/maze/ant_maze/">Ant Maze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/maze/point_maze/">Point Maze</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/adroit_hand/">Adroit Hand</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Adroit Hand</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/adroit_hand/adroit_door/">Adroit Door</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/adroit_hand/adroit_hammer/">Adroit Hammer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/adroit_hand/adroit_pen/">Adroit Pen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/adroit_hand/adroit_relocate/">Adroit Relocate</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/franka_kitchen/">Franka Kitchen</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Franka Kitchen</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/franka_kitchen/franka_kitchen/">Franka Kitchen</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../envs/MaMuJoCo/">MaMuJoCo (Multi-Agent MuJoCo)</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of MaMuJoCo (Multi-Agent MuJoCo)</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_ant/">Ant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_coupled_half_cheetah/">Coupled Half Cheetah</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_half_cheetah/">Half Cheetah</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_hopper/">Hopper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_humanoid_standup/">Humanoid Standup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_humanoid/">Humanoid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_multiagentswimmer/">ManySegmentSwimmer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_reacher/">Reacher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_swimmer/">Swimmer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_pusher/">Pusher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_walker2d/">Walker2d</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../envs/MaMuJoCo/ma_single/">Single Action Environments</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics">Github</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Release Notes</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main-container">
+
+    
+
+    
+
+    <div class="main">
+      <div class="content">
+        <div class="article-container">
+          <a href="#" class="back-to-top muted-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+            </svg>
+            <span>Back to top</span>
+          </a>
+          <div class="content-icon-container"><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/edit/master/docs/release_notes/index.md" title="Edit this page">
+    <svg aria-hidden="true" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+      <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+    </svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+              <button class="theme-toggle" title="Toggle color theme">
+                <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+                <svg class="theme-icon-when-auto">
+                  <use href="#svg-sun-half"></use>
+                </svg>
+                <svg class="theme-icon-when-dark">
+                  <use href="#svg-moon"></use>
+                </svg>
+                <svg class="theme-icon-when-light">
+                  <use href="#svg-sun"></use>
+                </svg>
+              </button>
+            </div>
+            <label class="toc-overlay-icon toc-content-icon" for="__toc">
+              <div class="visually-hidden">Toggle table of contents sidebar</div>
+              <i class="icon"><svg>
+                  <use href="#svg-toc"></use>
+                </svg></i>
+            </label>
+          </div>
+          <article role="main">
+            
+            <section class="tex2jax_ignore mathjax_ignore" id="release-notes">
+<h1>Release Notes<a class="headerlink" href="#release-notes" title="Link to this heading">¶</a></h1>
+<section id="release-v1-4-2">
+<h2>v1.4.2: 1.4.2<a class="headerlink" href="#release-v1-4-2" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2026-01-02 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.4.2">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.4.2/">PyPI</a></em></p>
+<p>Hot fixes for MuJoCo 3</p>
+<h2>What's Changed</h2>
+<ul>
+<li>Remove apirate by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/younik/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/younik">@younik</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3776953875" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/294" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/294/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/294">#294</a></li>
+<li>bump version by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/younik/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/younik">@younik</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3777294127" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/295" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/295/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/295">#295</a></li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/younik/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/younik">@younik</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3776953875" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/294" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/294/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/294">#294</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.4.1...v1.4.2"><tt>v1.4.1...v1.4.2</tt></a></p></section>
+<section id="release-v1-4-1">
+<h2>v1.4.1: 1.4.1<a class="headerlink" href="#release-v1-4-1" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2025-07-24 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.4.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.4.1/">PyPI</a></em></p>
+<ul>
+<li>
+<p>Fixes the environment overwrite warnings raised for the Mujoco v2 and v3 environments added in 1.4.0</p>
+</li>
+<li>
+<p>Fixes the website build process</p>
+</li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.4.0...v1.4.1"><tt>v1.4.0...v1.4.1</tt></a></p></section>
+<section id="release-v1-4-0">
+<h2>v1.4.0: 1.4<a class="headerlink" href="#release-v1-4-0" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2025-06-28 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.4.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.4.0/">PyPI</a></em></p>
+<h2>Release Notes</h2>
+<h3>Highlights</h3>
+<p>This release focuses on updating dependencies, refining Python version support, and migrating legacy <code>MuJoCo</code> environments to a new package.</p>
+<h3>What's Changed</h3>
+<ul>
+<li><strong>Dependency Update:</strong> <code>gymnasium</code> is now required to be version <code>1.2</code> or higher.</li>
+<li><strong>Python Support:</strong>
+<ul>
+<li>Added support for Python 3.13.</li>
+<li>Dropped support for Python 3.8 and 3.9.</li>
+</ul>
+</li>
+<li><strong>MuJoCo Environments v2 &amp; v3 Migration:</strong> The <code>Gymnasium/MuJoCo</code> environments (v2 and v3), which were based on the legacy <code>mujoco_py</code> library, have been moved to the <code>Gymnasium-Robotics</code> package. This move was completed in pull request <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="3071467849" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/271" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/271/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/271">#271</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> and <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/pseudo-rnd-thoughts/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/pseudo-rnd-thoughts">@pseudo-rnd-thoughts</a></li>
+</ul>
+<h3>For Users of Legacy <code>mujoco-py</code> Environments:</h3>
+<p>To ensure compatibility, the legacy environments now rely on the <code>mujoco-py-cython3</code> package. You can install the necessary extras with:</p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="pip install gymnasium-robotics[mujoco_py]"><pre>pip install gymnasium-robotics[mujoco_py]</pre></div>
+<p>If you need to use older <code>mujoco-py</code> versions for your work, you can now use the <code>mujoco-py-original</code> extra:</p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="pip install gymnasium-robotics[mujoco_py_original]"><pre>pip install gymnasium-robotics[mujoco_py_original]</pre></div></section>
+<section id="release-1-3-2">
+<h2>1.3.2<a class="headerlink" href="#release-1-3-2" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2025-05-18 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/1.3.2">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/1.3.2/">PyPI</a></em></p>
+<h2>Release Notes:</h2>
+<p>Added <code>Fetch*-v4</code> and <code>HandReach-v3</code> environments, fixing the state initialization bug found in the previous version</p>
+<p>And fixed a few bugs</p>
+<h2>What's Changed</h2>
+<h3>Bug Fixes:</h3>
+<ul>
+<li>Fix bugs in <code>kettle_asset.xml</code> to ensure compatibility with the latest MuJoCo versions <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2645502926" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/255" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/255/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/255">#255</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Josh00-Lu/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Josh00-Lu">@Josh00-Lu</a> (validation by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a>)</li>
+<li>Fixes Fetch and Robotic environments initial state issues in 1.3.0 <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2693039814" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/256" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/256/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/256">#256</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/wjxgeorge/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/wjxgeorge">@wjxgeorge</a></li>
+<li>Fix rgba value in <code>oven_asset.xml</code> to be in <code>[0,1]</code> <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2783638421" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/262" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/262/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/262">#262</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RussTedrake/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RussTedrake">@RussTedrake</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>set copyright year in documentation page automatically <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2596706642" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/249" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/249/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/249">#249</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>typo fixes MaMuJoCo changelog <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2598959818" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/250" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/250/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/250">#250</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>Fixed reward description of <code>PointMaze</code> dense environments <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2624340926" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/253" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/253/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/253">#253</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/HridayM25/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/HridayM25">@HridayM25</a></li>
+<li>Fix Documentation toctrees menus <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2624773995" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/254" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/254/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/254">#254</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/younik/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/younik">@younik</a></li>
+<li>Make logo image in <code>README.md</code> link to documentation <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2768229179" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/261" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/261/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/261">#261</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.3.1...v1.3.2"><tt>v1.3.1...v1.3.2</tt></a></p></section>
+<section id="release-v1-3-1">
+<h2>v1.3.1: 1.3.1<a class="headerlink" href="#release-v1-3-1" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2024-10-14 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.3.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.3.1/">PyPI</a></em></p>
+<h2>Release Notes:</h2>
+<p>A few bug fixes and fixes the internal testing</p>
+<h3>Bug Fixes:</h3>
+<ul>
+<li>Fix rendering bug by setting frame height and width <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2579710850" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/236" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/236/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/236">#236</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/violasox/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/violasox">@violasox</a></li>
+<li>Re-enable disabled  <code>test_envs.py</code> (<code>mujoco</code> only) <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2581616365" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/243" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/243/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/243">#243</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>Re-enable environment specific tests <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2584428506" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/247" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/247/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/247">#247</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>Fix MazeAnt-v5 environments having incorrect entry points <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2580310351" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/240" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/240/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/240">#240</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+</ul>
+<h3>Minor Changes:</h3>
+<ul>
+<li>Update pre-commit <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2584203177" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/246" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/246/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/246">#246</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+<li>Use <code>pipx</code> for CI <code>pre-commit</code> <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2580320622" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/241" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/241/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/241">#241</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>update MaMuJoCo doc "quadruped|arm" by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2582558141" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/244" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/244/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/244">#244</a></li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/violasox/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/violasox">@violasox</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2579710850" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/236" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/236/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/236">#236</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.3.0...v1.3.1"><tt>v1.3.0...v1.3.1</tt></a></p></section>
+<section id="release-v1-3-0">
+<h2>v1.3.0: v1.3<a class="headerlink" href="#release-v1-3-0" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2024-10-08 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.3.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.3.0/">PyPI</a></em></p>
+<h1>Release Notes:</h1>
+<p>1.3 Is a Major Release, adding new versions of the environments and supporting <code>gymnasium==1.0.0</code></p>
+<h1>New Environments:</h1>
+<ul>
+<li>Add <code>MaMuJoCo-v1</code> Environments <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2044951996" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/196" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/196/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/196">#196</a>)</li>
+<li>Added Fetch-v3 and HandReach-v2 environments that fix reproducibility issues <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/amacati/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/amacati">@amacati</a> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2128268342" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/208" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/208/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/208">#208</a>)</li>
+<li>Add <code>AntMaze_*-v5</code> environments, featuring support for loading Third party robot models to Maze  <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2255264902" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/217" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/217/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/217">#217</a>)</li>
+</ul>
+
+<h2>MaMuJoCo-V1</h2>
+<ul>
+<li>Now based on <code>Gymnasium/MuJoCo-v5</code> instead of <code>Gymnasium/MuJoCo-v4</code> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1777621447" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium/issues/572" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium/pull/572/hovercard" href="https://github.com/Farama-Foundation/Gymnasium/pull/572">Farama-Foundation/Gymnasium#572</a>).</li>
+<li>When <code>factorizatoion=None</code>, the <code>env.gent_action_partitions.dummy_node</code> now contains <code>action_id</code> (it used to be <code>None</code>).</li>
+<li>Added <code>map_local_observations_to_global_state</code> &amp; optimized runtime performance of <code>map_global_state_to_local_observations</code>.</li>
+<li>Added <code>gym_env</code> argument, which can be used to load third-party <code>Gymansium.MujocoEnv</code> environments.</li>
+</ul>
+<h3>Ant</h3>
+<ul>
+<li>Now observes <code>local_categories</code> of <code>cfrc_ext</code> by default (same as <code>Gymnasium/MuJoCo-v5/Ant</code>).</li>
+<li>Renamed global node <code>torso</code> → <code>root</code>.</li>
+</ul>
+<h3>Humanoid(-Standup)</h3>
+<ul>
+<li>No longer observes <code>qfrc_actuator</code> of <code>root</code> &amp; <code>cinert</code>, <code>cvel</code>, <code>qfrc_actuator</code>, <code>cfrc_ext</code> of <code>worldbody</code> (same as <code>Gymnasium/MuJoCo-v5/Humanoid(-Standup)</code>).</li>
+</ul>
+<h3>Walker2d</h3>
+<ul>
+<li>Fixed bug: global nodes are now <code>[root_x, root_z, root_y]</code> (used to be <code>[root_x, root_x, root_z]</code>).</li>
+</ul>
+<h3>ManySegmentAnt</h3>
+<ul>
+<li><code>frame_skip</code> default set to <code>5</code> (same as <code>Gymnasium/Ant</code>).</li>
+<li><code>option.timestep</code> set to <code>0.01</code> (same as <code>Gymnasium/Ant</code>).</li>
+<li>Now uses the same reward function as <code>Gymnasium/Ant</code>.</li>
+<li>Now observes <code>cfrc_ext</code> by default, (same as Gymnasium/MuJoCo-v5).</li>
+</ul>
+<h3>ManySegmentSwimmer</h3>
+<ul>
+<li>Now uses the same <code>option.timestep</code> as <code>Gymansum/Swimmer</code> (0.01).</li>
+<li>Updated model to work with <code>mujoco&gt;=3.0.0</code>.</li>
+</ul>
+<h3>Breaking changes:</h3>
+<ul>
+<li>Now supports and requires <code>gymnasium&gt;=1.0</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2133495020" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/211" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/211/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/211">#211</a>)</li>
+</ul>
+<h3>Bug Fixes:</h3>
+<h3>Dependency Updates:</h3>
+<ul>
+<li>Added support for <code>python==3.12</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a>  (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2566689464" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/231" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/231/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/231">#231</a>)</li>
+</ul>
+<h3>Minor Changes:</h3>
+<ul>
+<li>[adroit environments] Minor Cleanup: assignment of <code>goal_achieved</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2069907829" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/205" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/205/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/205">#205</a>)</li>
+<li>Add asserts for <code>mj_id2name</code> calls in <code>mujoco_utils</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/DavidPL1/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/DavidPL1">@DavidPL1</a> <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2322789714" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/218" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/218/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/218">#218</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>minor typo fix <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2405482343" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/221" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/221/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/221">#221</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/timofriedl/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/timofriedl">@timofriedl</a></li>
+<li>many Documentation updates and fixes by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/amacati/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/amacati">@amacati</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2128268342" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/208" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/208/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/208">#208</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/DavidPL1/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/DavidPL1">@DavidPL1</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2322789714" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/218" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/218/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/218">#218</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/timofriedl/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/timofriedl">@timofriedl</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2405482343" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/221" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/221/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/221">#221</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.4...v1.3.0"><tt>v1.2.4...v1.3.0</tt></a></p></section>
+<section id="release-v1-2-4">
+<h2>v1.2.4<a class="headerlink" href="#release-v1-2-4" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2023-12-24 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.4">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.4/">PyPI</a></em></p>
+<h2>Release Notes:</h2>
+<p>A minor release bringing a bug fix and registering and pre-existing environment. This is the first release since <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> became the project manager.</p>
+<h2>What's Changed</h2>
+
+<h3>New Features:</h3>
+<ul>
+<li>Register <code>PointMaze_Open_Diverse_GR</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/dtch1997/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/dtch1997">@dtch1997</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2036562591" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/195" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/195/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/195">#195</a></li>
+</ul>
+<h3>Bug Fixes:</h3>
+<ul>
+<li>randomize maze environments temporary <code>xml</code> file name by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1935914335" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/185" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/185/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/185">#185</a></li>
+</ul>
+<h3>Dependency Updates:</h3>
+<ul>
+<li>limit <code>mujoco&lt;3.0</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1952152029" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/187" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/187/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/187">#187</a></li>
+</ul>
+<h3>Minor Changes:</h3>
+<ul>
+<li>Update to <code>pyright==1.1.339</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2029091152" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/191" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/191/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/191">#191</a></li>
+<li>Update <code>pyproject.toml</code> python version to 3.8 by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2029091152" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/191" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/191/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/191">#191</a></li>
+</ul>
+<h3>Documentation Updates:</h3>
+<ul>
+<li>update observation space docstring: obs[6:8] is actually block - gripper for <code>fetch</code> <code>pick_and_place</code> <code>push</code> <code>slide</code> environments by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/SethPate/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/SethPate">@SethPate</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2053098757" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/197" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/197/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/197">#197</a></li>
+<li>remove py3.7 from installation.md documentation by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="2053679397" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/199" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/199/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/199">#199</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.3...v1.2.4"><tt>v1.2.3...v1.2.4</tt></a></p></section>
+<section id="release-v1-2-3">
+<h2>v1.2.3<a class="headerlink" href="#release-v1-2-3" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2023-09-18 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.3">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.3/">PyPI</a></em></p>
+<h1>Gymnasium-Robotics v1.2.3 Release Notes:</h1>
+<h2>Breaking changes:</h2>
+<ul>
+<li>Drop support for Python 3.7 which has reached its end of life. (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1777627763" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/159" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/159/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/159">#159</a>)</li>
+<li>New <code>v4</code> version for the  <code>AntMaze</code> environments that fix the following issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1759508465" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/155" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/155/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/155">#155</a>. (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1766308464" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/156" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/156/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/156">#156</a>)</li>
+</ul>
+<h2>Bug Fixes:</h2>
+<ul>
+<li>Allow to compute rewards from batched observations in maze environments (<code>PointMaze</code>/<code>AntMaze</code>) (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1716561084" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/153" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/153/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/153">#153</a>, <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1767768931" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/158" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/158/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/158">#158</a>)</li>
+<li>Bump <code>AntMaze</code> environments version to <code>v4</code> which fix issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1759508465" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/155" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/155/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/155">#155</a>. The following new files have been added to the source code: <code>ant_maze_v4.py</code> and <code>maze_v4.py</code>. (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1766308464" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/156" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/156/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/156">#156</a>). The fixes involve:
+<ul>
+<li>When the environment is initialized with <code>continuing_task=True</code>, the reward is now calculated before resetting the goal location. Previously the reward was always zero whether the ant reached the goal or not during the full episode.</li>
+<li>Fix the ant agent being reset into a terminal state. The <code>maze_size_scaling</code> factor was missing in the distance check in <code>MazeEnv.generate_reset_pos()</code>.</li>
+<li>Add <code>success</code> item to <code>info</code> return. <code>info["success"]</code>.</li>
+</ul>
+</li>
+<li>Fix <code>goal_cell</code> and <code>reset_cell</code> assertions when reset maze environments (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1832346176" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/164" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/164/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/164">#164</a>, <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1899483040" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/179" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/179/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/179">#179</a>)</li>
+<li>Fix issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1853585618" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/166" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/166/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/166">#166</a> in <code>FrankaKitchen</code> environment. <code>info["tasks_to_complete"]</code> was not giving the correct values. (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1880579893" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/169" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/169/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/169">#169</a>)</li>
+</ul>
+<h2>New Features</h2>
+<ul>
+<li>Add <code>reset_target</code> boolean argument for initializing maze environments. If <code>reset_target=True</code> and <code>continuing_task=True</code>, the goal will be automatically placed in a new location when the agent reaches it in the same episode. If <code>reset_target=False</code> and <code>continuing_task=True</code>, the goal location won't be updated when reached by the agent and reward will be accumulated as long as the agent stays around the goal threshold.  (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1878862086" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/167" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/167/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/167">#167</a>, <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1882809436" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/170" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/170/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/170">#170</a>)</li>
+<li>For maze environments, if the goal and reset cell locations are not given in the maze map structuree, they will be chosen automatically among empty cells. (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1882809436" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/170" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/170/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/170">#170</a>)</li>
+</ul>
+<h2>Dependency Updates</h2>
+<ul>
+<li>Remove restrictions on numpy version, <code>numpy&gt;=1.21.0</code> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1727953286" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/154" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/154/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/154">#154</a>)</li>
+<li>Remove restrictions on mujoco version, <code>mujoco&gt;=2.3.3</code> (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1884890798" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/171" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/171/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/171">#171</a>)</li>
+<li>Restrict cython version to <code>cython&lt;3</code> due to the following issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1808633255" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium/issues/616" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium/pull/616/hovercard" href="https://github.com/Farama-Foundation/Gymnasium/pull/616">Farama-Foundation/Gymnasium#616</a>, (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1810189388" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/162" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/162/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/162">#162</a>)</li>
+</ul>
+<h2>Documentation Updates</h2>
+<ul>
+<li>Replace main logo svg format with png (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1808065507" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/160" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/160/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/160">#160</a>)</li>
+<li>Update sphinx to latest version (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1767064205" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/157" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/157/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/157">#157</a>)</li>
+<li>Add release notes changelog (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1888794801" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/174" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/174/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/174">#174</a>)</li>
+<li>Remove versioning for included environments in documentation and update gifs for maze environments (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1886878365" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/172" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/172/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/172">#172</a>, <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1899474640" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/177" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/177/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/177">#177</a>)</li>
+<li>Fix table format for Shadow Dexterous Hand - Reach environment (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1899476725" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/178" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/178/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/178">#178</a>)</li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.2...v1.2.3"><tt>v1.2.2...v1.2.3</tt></a></p></section>
+<section id="release-v1-2-2">
+<h2>v1.2.2<a class="headerlink" href="#release-v1-2-2" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2023-05-17 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.2">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.2/">PyPI</a></em></p>
+<h2>Release Notes</h2>
+<p>This minor release updates MaMuJoCo to follow the latest PettingZoo version <code>1.23.0</code> and some minor bug fixes in the Github PyPI publish workflow.</p>
+<h3>New Features</h3>
+<ul>
+<li>Update MaMujoco to PettingZoo <code>1.23.0</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1712495594" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/150" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/150/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/150">#150</a></li>
+</ul>
+<h3>Bug Fix</h3>
+<ul>
+<li>Include Franka mesh files in the <code>setuptools.package-data</code> parameter of <code>pyproject.toml</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> <a class="commit-link" data-hovercard-type="commit" data-hovercard-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/commit/9db9196a0d1a927fa61443d7c6b906a10804b1ec/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/commit/9db9196a0d1a927fa61443d7c6b906a10804b1ec"><tt>9db9196</tt></a></li>
+</ul>
+<h3>Documentation Updates</h3>
+<ul>
+<li><code>MaMuJoCo</code> documentation, remove install from source instructions by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1713212942" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/151" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/151/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/151">#151</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.1...v1.2.2"><tt>v1.2.1...v1.2.2</tt></a></p></section>
+<section id="release-v1-2-1">
+<h2>v1.2.1<a class="headerlink" href="#release-v1-2-1" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2023-05-16 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.1/">PyPI</a></em></p>
+<h2>Gymnasium-Robotics 1.2.1 Release Notes:</h2>
+<p>This minor release adds new Multi-agent environments from the <a href="https://github.com/schroederdewitt/multiagent_mujoco">MaMuJoCo</a> project. These environments have been updated to follow the <a href="https://pettingzoo.farama.org" rel="nofollow">PettingZoo</a> API and use the latest mujoco bindings. In addition, the updates made for the first release of <a href="https://robotics.farama.org/envs/franka_kitchen/" rel="nofollow"><code>FrankaKitchen-v1</code></a> environment have been reverted in order for the environment to resemble more its original version in <a href="https://github.com/google-research/relay-policy-learning">relay-policy-learning</a> and <a href="https://github.com/Farama-Foundation/D4RL">D4RL</a>. This will solve existing confusion with the action space (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1640503884" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/135" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/135/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/135">#135</a>) and facilitate the re-creation of datasets in <a href="https://github.com/Farama-Foundation/Minari">Minari</a>.</p>
+<p>We are also pining the mujoco version to <code>v2.3.3</code> until we address the following issue (<a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1681228404" data-permission-text="Title is private" data-url="https://github.com/google-deepmind/mujoco/issues/833" data-hovercard-type="issue" data-hovercard-url="/google-deepmind/mujoco/issues/833/hovercard" href="https://github.com/google-deepmind/mujoco/issues/833">google-deepmind/mujoco#833</a>).</p>
+<h3>Breaking Changes</h3>
+<ul>
+<li>Revert <code>FrankaKitchen-v1</code> environment to original. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1708806934" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/145" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/145/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/145">#145</a>. These changes involve:
+<ul>
+<li><strong>robot model</strong>: use the <a href="https://github.com/vikashplus/franka_sim">Franka robot model</a> of the original environment  instead of the model provided in <a href="https://github.com/deepmind/mujoco_menagerie">mujoco_menagerie</a></li>
+<li><strong>action space</strong>: remove the Inverse Kinematic control option and maintain a single action space, the original joint velocity control.</li>
+<li><strong>goal tasks</strong>: some task have been removed which were not present in the original environment (top_right_burner and bottom_right_burner). Also the tasks name now match the original naming.</li>
+</ul>
+</li>
+</ul>
+<h3>New Features</h3>
+<ul>
+<li>Add MaMuJoCo (Multi-agent mujoco) environments by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1459787349" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/53" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/53/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/53">#53</a>. Documentation has been also included at <a href="https://robotics.farama.org/envs/MaMuJoCo/" rel="nofollow">https://robotics.farama.org/envs/MaMuJoCo/</a>. <strong>NOTE</strong>: we are currently in the process of validating this environments <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1686554960" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/141" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/141/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/141">#141</a></li>
+<li>Initialize <code>PointMaze</code> and <code>AntMaze</code> environments with random goal and reset position by default . <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1580668275" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/110" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/110/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/110">#110</a>, <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1588336211" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/114" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/114/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/114">#114</a></li>
+<li>Add <code>success</code> key to infos return dictionary in all <code>Maze</code> environments. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1580668275" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/110" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/110/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/110">#110</a></li>
+<li>Recover the <code>set_env_state(state_dict={})</code> method of the Adroit hand environments from <a href="https://github.com/vikashplus/mj_envs">https://github.com/vikashplus/mj_envs</a> . The initial state of the simulation can also be set by passing the dictionary argument <code>initial_state_dict</code> when calling <code>env.reset(options={'initial_state_dict': Dict)</code>. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1599897023" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/119" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/119/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/119">#119</a>, <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1588351946" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/115" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/115/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/115">#115</a></li>
+<li>Resparsify adroit hand envs by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1581363205" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/111" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/111/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/111">#111</a></li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+<li>Add missing underscore to fix rendering by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/frankroeder/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/frankroeder">@frankroeder</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1536105377" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/102" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/102/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/102">#102</a></li>
+<li>Correct <code>point_obs</code> slicing for <code>achieved_goal</code> in <code>PointMaze</code> environments by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/dohmjan/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/dohmjan">@dohmjan</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1575750002" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/105" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/105/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/105">#105</a></li>
+<li>Update the position of the goal every reset in <code>AntMaze</code> environment by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/nicehiro/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/nicehiro">@nicehiro</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1578927330" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/106" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/106/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/106">#106</a></li>
+<li>Correct <code>FetchReach</code> environment versioning from <code>v3</code> to <code>v2</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/aalmuzairee/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/aalmuzairee">@aalmuzairee</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1602643691" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/121" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/121/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/121">#121</a></li>
+<li>Fix issue <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629307561" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/128" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/128/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/128">#128</a> . Use <code>jnt_doafdr</code> instead of <code>nt_qposadr</code> for the <code> mujoco_utils.get_joint_qvel()</code> utility function. by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629557056" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/129" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/129/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/129">#129</a></li>
+<li>Correct x, y scaling for Maze environments <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1580668275" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/110" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/110/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/110">#110</a></li>
+<li>Fix door state space key by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1629584947" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/130" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/130/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/130">#130</a></li>
+<li>Make getter functions for qpos / qvel return copies by @hueds in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1644611993" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/136" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/136/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/136">#136</a></li>
+</ul>
+<h3>Minor Changes</h3>
+<ul>
+<li>Enable <code>pyright.reportOptionalMemberAccess</code> by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1527625488" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/93" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/93/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/93">#93</a></li>
+<li>Add Farama Notifications by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1601535499" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/120" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/120/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/120">#120</a></li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+<li>Fix observation space table in <code>FetchSlide</code> docs. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1580609871" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/109" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/109/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/109">#109</a></li>
+<li>Update docs/README.md to link to a new CONTRIBUTING.md for docs by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1590657624" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/117" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/117/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/117">#117</a></li>
+<li>Add docs versioning and release notes by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1611133590" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/124" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/124/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/124">#124</a></li>
+<li>Fix missing edit button  by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1655449252" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/138" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/138/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/138">#138</a></li>
+<li>Add missing docs requirement by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1621539239" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/125" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/125/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/125">#125</a></li>
+<li>Add sparse reward variant for <code>AdroitHand</code> environments by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1606929444" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/123" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/123/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/123">#123</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v1.2.0...v1.2.1"><tt>v1.2.0...v1.2.1</tt></a></p></section>
+<section id="release-v1-2-0">
+<h2>v1.2.0: Version 1.2.0<a class="headerlink" href="#release-v1-2-0" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2023-01-09 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.2.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.2.0/">PyPI</a></em></p>
+<h1>Finally here! 🥳 🤖</h1>
+<p>Refactored versions of the <a href="https://github.com/Farama-Foundation/D4RL">D4RL</a> MuJoCo environments are now available in Gymnasium-Robotics (<code>PointMaze</code>, <code>AntMaze</code>, <code>AdroitHand</code>, and <code>FrankaKitchen</code>). The configuration of these environments is not identically to the originals, please read the new details in the documentation webpage at <a href="https://robotics.farama.org/" rel="nofollow">https://robotics.farama.org/</a></p>
+<p>Moving forward, we are recreating the offline datasets with <a href="https://minari.farama.org/" rel="nofollow">Minari</a> and evaluating the environments. If you have any questions or would like to contribute please don't hesitate to reach out to us through the following discord channel. <a href="https://discord.com/channels/961771112864313344/1017088934238498837" rel="nofollow">https://discord.com/channels/961771112864313344/1017088934238498837</a></p>
+<h2>What's Changed</h2>
+<ul>
+<li>Add three different refactored environment types from MuJoCo <a href="https://github.com/Farama-Foundation/D4RL">D4RL</a> and update to the Gymnasium API standards version <code>0.27.0</code>. <a href="https://robotics.farama.org/envs/maze/point_maze/" rel="nofollow">Point Maze</a>, <a href="https://robotics.farama.org/envs/maze/ant_maze/" rel="nofollow">Ant Maze</a>, <a href="https://robotics.farama.org/envs/adroit_hand/" rel="nofollow">Adroit Hand</a>, and <a href="https://robotics.farama.org/envs/franka_kitchen/" rel="nofollow">FrankaKitchen</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>Add <code>sparse</code> reward option to the Adroit Hand environments <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1513884546" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/69" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/69/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/69">#69</a></li>
+<li>Standardize file tree structure to facilitate automatic documentation generation. The environment file structure should look as follows: <code>gymnasium_robotics.envs.env_type.env_name:EnvClass</code>. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1525015741" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/83" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/83/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/83">#83</a></li>
+<li>Update to new Gymnasium <code>MujocoRenderer</code> class <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1435316881" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium/issues/112" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium/pull/112/hovercard" href="https://github.com/Farama-Foundation/Gymnasium/pull/112">Farama-Foundation/Gymnasium#112</a> for rendering <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>Add <code>pydocstyle</code> to pre-commit <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+</ul>
+<h2>Other contributions</h2>
+<ul>
+<li>Miscellaneous documentation webpage fixes <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a>, @SiddarGu, <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a></li>
+<li>Pin numpy to <code>numpy&lt;1.24.0</code> due to <a href="https://github.com/Farama-Foundation/Gymnasium/pull/221" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium/pull/221/hovercard">#221</a> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>Move dependency installs and setuptools to <code>pyproject.toml</code>. Remove <code>requirements.txt</code> and <code>test_requirements.txt</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/jjshoots/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/jjshoots">@jjshoots</a></li>
+<li>Add google analytics to webpage <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a></li>
+<li>Switch flake8 from gitlab to github <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RedTachyon/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RedTachyon">@RedTachyon</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1448889028" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/52" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/52/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/52">#52</a></li>
+<li>Code/Documentation typo fixes <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/araffin/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/araffin">@araffin</a> , <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a></li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/mgoulao/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/mgoulao">@mgoulao</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1411753403" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/35" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/35/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/35">#35</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/araffin/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/araffin">@araffin</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1412113316" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/39" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/39/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/39">#39</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/RedTachyon/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/RedTachyon">@RedTachyon</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1448889028" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/52" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/52/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/52">#52</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/Kallinteris-Andreas/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/Kallinteris-Andreas">@Kallinteris-Andreas</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1468214480" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/54" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/54/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/54">#54</a></li>
+</ul></section>
+<section id="release-v1-0-1">
+<h2>v1.0.1: Deprecate package name (`gym_robotics`-&gt;`gymnasium_robotics`)<a class="headerlink" href="#release-v1-0-1" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2022-10-03 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.0.1">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.0.1/">PyPI</a></em></p>
+<h2>What's Changed</h2>
+<p>The PyPi package name for this repository will be changed in future releases and integration with <a href="https://github.com/Farama-Foundation/Gymnasium">Gymnasium</a>. The new name will be <code>gymnasium_robotics</code> and installation will be done with <code>pip install gymnasium_robotics</code> instead of <code>pip install gym_robotics</code>.</p>
+<p>The code for <code>gym_robotics</code> will be kept in the repository branch <code>gym-robotics-legacy</code></p>
+<h2>Bug Fix</h2>
+<ul>
+<li>Remove the warning of duplicated registration of the environment MujocoHandBlockEnv <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/leonasting/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/leonasting">@leonasting</a></li>
+</ul></section>
+<section id="release-v1-0-0">
+<h2>v1.0.0: Update to Gym v0.26 and new mujoco bindings<a class="headerlink" href="#release-v1-0-0" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2022-09-15 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v1.0.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v1.0.0/">PyPI</a></em></p>
+<p>This new release comes with the following changes:</p>
+<ul>
+<li>Compatibility with gym v0.26. Previous gym versions won't be compatible with this release. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>Added new environment versions that depend on the new <a href="https://mujoco.readthedocs.io/en/latest/python.html" rel="nofollow">mujoco</a> python bindings. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>Old environment versions that depend on <code>mujoco_py</code> are still kept but will be unmaintained moving forward. <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+<li>New utility methods for <code>GoalEnv</code> class as suggested in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1270836915" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/16" data-hovercard-type="issue" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/issues/16/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/16">#16</a> . <code>compute_terminated</code> and <code>compute_truncated</code> <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/rodrigodelazcano/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/rodrigodelazcano">@rodrigodelazcano</a></li>
+</ul>
+<p>The new versions of the environments that depend on <code>mujoco</code> bindings were validated with respect to the old versions of <code>mujoco_py</code>. The benchmark was performed using TQC + HER (sb3 implementation) with the same hyperparameters for both environment versions. The results can be seen here: <a href="https://wandb.ai/rodrigodelazcano/gym_robotics/reports/Benchmark-Gym-Robotics-SB3--VmlldzoyMjc3Mzkw" rel="nofollow">https://wandb.ai/rodrigodelazcano/gym_robotics/reports/Benchmark-Gym-Robotics-SB3--VmlldzoyMjc3Mzkw</a></p></section>
+<section id="release-v0-1-0">
+<h2>v0.1.0: Gym update<a class="headerlink" href="#release-v0-1-0" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2022-02-25 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v0.1.0">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v0.1.0/">PyPI</a></em></p>
+<h2>What's Changed</h2>
+<ul>
+<li>Change workflow name by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/vwxyzjn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/vwxyzjn">@vwxyzjn</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1096625118" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/4" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/4/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/4">#4</a></li>
+<li>Adopt <code>gym&gt;=0.22</code> reset signature by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/vwxyzjn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/vwxyzjn">@vwxyzjn</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1150538289" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/8" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/8/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/8">#8</a></li>
+<li>Use <code>gym&gt;=0.22</code> as the core dependency by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/vwxyzjn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/vwxyzjn">@vwxyzjn</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1150549001" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/9" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/9/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/9">#9</a></li>
+</ul>
+<h2>Installation Demo</h2>
+<div class="highlight highlight-source-python notranslate position-relative overflow-auto" data-snippet-clipboard-copy-content="pip install gym-robotics
+pip install mujoco_py
+wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz
+mkdir -p ~/.mujoco
+tar -xzf mujoco210-linux-x86_64.tar.gz -C ~/.mujoco
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia"><pre><span class="pl-s1">pip</span> <span class="pl-s1">install</span> <span class="pl-s1">gym</span><span class="pl-c1">-</span><span class="pl-s1">robotics</span>
+<span class="pl-s1">pip</span> <span class="pl-s1">install</span> <span class="pl-s1">mujoco_py</span>
+<span class="pl-s1">wget</span> <span class="pl-s1">https</span>:<span class="pl-c1">//</span><span class="pl-s1">mujoco</span>.<span class="pl-c1">org</span><span class="pl-c1">/</span><span class="pl-s1">download</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-c1">tar</span>.<span class="pl-c1">gz</span>
+<span class="pl-s1">mkdir</span> <span class="pl-c1">-</span><span class="pl-s1">p</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-c1">mujoco</span>
+<span class="pl-s1">tar</span> <span class="pl-c1">-</span><span class="pl-s1">xzf</span> <span class="pl-s1">mujoco210</span><span class="pl-c1">-</span><span class="pl-s1">linux</span><span class="pl-c1">-</span><span class="pl-s1">x86_64</span>.<span class="pl-c1">tar</span>.<span class="pl-c1">gz</span> <span class="pl-c1">-</span><span class="pl-c1">C</span> <span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-c1">mujoco</span>
+<span class="pl-s1">export</span> <span class="pl-c1">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-c1">LD_LIBRARY_PATH</span>:<span class="pl-c1">~</span><span class="pl-c1">/</span>.<span class="pl-s1">mujoco</span><span class="pl-c1">/</span><span class="pl-s1">mujoco210</span><span class="pl-c1">/</span><span class="pl-s1">bin</span>
+<span class="pl-s1">export</span> <span class="pl-c1">LD_LIBRARY_PATH</span><span class="pl-c1">=</span>$<span class="pl-c1">LD_LIBRARY_PATH</span>:<span class="pl-c1">/</span><span class="pl-s1">usr</span><span class="pl-c1">/</span><span class="pl-s1">lib</span><span class="pl-c1">/</span><span class="pl-s1">nvidia</span></pre></div>
+<p><a href="https://asciinema.org/a/471679" rel="nofollow"><img src="https://camo.githubusercontent.com/b5e9a30e8a64c079edcf688e3ba286a2e3f8432b2e83680ffc37f26060bbb9e5/68747470733a2f2f61736369696e656d612e6f72672f612f3437313637392e737667" alt="asciicast" data-canonical-src="https://asciinema.org/a/471679.svg" style="max-width: 100%;"></a></p>
+<p><strong>Full Changelog</strong>: <a class="commit-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/compare/v0.0.2...v0.1.0"><tt>v0.0.2...v0.1.0</tt></a></p></section>
+<section id="release-v0-0-2">
+<h2>v0.0.2<a class="headerlink" href="#release-v0-0-2" title="Link to this heading">¶</a></h2>
+<p><em>Released on 2022-01-07 - <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/releases/tag/v0.0.2">GitHub</a> - <a class="reference external" href="https://pypi.org/project/gymnasium-robotics/v0.0.2/">PyPI</a></em></p>
+<h2>What's Changed</h2>
+<ul>
+<li>Migrate robotics environments from OpenAI Gym by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/seungjaeryanlee/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/seungjaeryanlee">@seungjaeryanlee</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1076374215" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/1" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/1/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/1">#1</a></li>
+<li>Use Gym plugin system by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/JesseFarebro/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/JesseFarebro">@JesseFarebro</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1086961322" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/2" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/2/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/2">#2</a></li>
+<li>Setup github actions to publish on PyPi by <a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/vwxyzjn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/vwxyzjn">@vwxyzjn</a> in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1096496928" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/3" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/3/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/3">#3</a></li>
+</ul>
+<h2>New Contributors</h2>
+<ul>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/seungjaeryanlee/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/seungjaeryanlee">@seungjaeryanlee</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1076374215" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/1" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/1/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/1">#1</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/JesseFarebro/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/JesseFarebro">@JesseFarebro</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1086961322" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/2" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/2/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/2">#2</a></li>
+<li><a class="user-mention notranslate" data-hovercard-type="user" data-hovercard-url="/users/vwxyzjn/hovercard" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="https://github.com/vwxyzjn">@vwxyzjn</a> made their first contribution in <a class="issue-link js-issue-link" data-error-text="Failed to load title" data-id="1096496928" data-permission-text="Title is private" data-url="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/3" data-hovercard-type="pull_request" data-hovercard-url="/Farama-Foundation/Gymnasium-Robotics/pull/3/hovercard" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/3">#3</a></li>
+</ul>
+<p><strong>Full Changelog</strong>: <a href="https://github.com/Farama-Foundation/gym-robotics/commits/v0.0.2">https://github.com/Farama-Foundation/gym-robotics/commits/v0.0.2</a></p></section>
+</section>
+
+          </article>
+        </div>
+        <footer>
+          
+          <div class="related-pages">
+            
+            
+          </div>
+          <div class="bottom-of-page">
+            <div class="left-details">
+              <div class="copyright">
+                Copyright &#169; 2026 Farama Foundation
+              </div>
+              <!--
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            -->
+            </div>
+            <div class="right-details">
+              <div class="icons">
+                <a class="muted-link" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/"
+                  aria-label="On GitHub">
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                    </path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+        </footer>
+      </div>
+      <aside class="toc-drawer">
+        
+        
+        <div class="toc-sticky toc-scroll">
+          <div class="toc-title-container">
+            <span class="toc-title">
+              On this page
+            </span>
+          </div>
+          <div class="toc-tree-container">
+            <div class="toc-tree">
+              <ul>
+<li><a class="reference internal" href="#">Release Notes</a><ul>
+<li><a class="reference internal" href="#release-v1-4-2">v1.4.2: 1.4.2</a></li>
+<li><a class="reference internal" href="#release-v1-4-1">v1.4.1: 1.4.1</a></li>
+<li><a class="reference internal" href="#release-v1-4-0">v1.4.0: 1.4</a></li>
+<li><a class="reference internal" href="#release-1-3-2">1.3.2</a></li>
+<li><a class="reference internal" href="#release-v1-3-1">v1.3.1: 1.3.1</a></li>
+<li><a class="reference internal" href="#release-v1-3-0">v1.3.0: v1.3</a></li>
+<li><a class="reference internal" href="#release-v1-2-4">v1.2.4</a></li>
+<li><a class="reference internal" href="#release-v1-2-3">v1.2.3</a></li>
+<li><a class="reference internal" href="#release-v1-2-2">v1.2.2</a></li>
+<li><a class="reference internal" href="#release-v1-2-1">v1.2.1</a></li>
+<li><a class="reference internal" href="#release-v1-2-0">v1.2.0: Version 1.2.0</a></li>
+<li><a class="reference internal" href="#release-v1-0-1">v1.0.1: Deprecate package name (`gym_robotics`-&gt;`gymnasium_robotics`)</a></li>
+<li><a class="reference internal" href="#release-v1-0-0">v1.0.0: Update to Gym v0.26 and new mujoco bindings</a></li>
+<li><a class="reference internal" href="#release-v0-1-0">v0.1.0: Gym update</a></li>
+<li><a class="reference internal" href="#release-v0-0-2">v0.0.2</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+          </div>
+        </div>
+        
+        
+      </aside>
+    </div>
+  </div>
+</div>
+    <script>
+      const toggleMenu = () => {
+        const menuBtn = document.querySelector(".farama-header-menu__btn");
+        const menuContainer = document.querySelector(".farama-header-menu-container");
+        if (document.querySelector(".farama-header-menu").classList.contains("active")) {
+          menuBtn.setAttribute("aria-expanded", "false");
+          menuContainer.setAttribute("aria-hidden", "true");
+        } else {
+          menuBtn.setAttribute("aria-expanded", "true");
+          menuContainer.setAttribute("aria-hidden", "false");
+        }
+        document.querySelector(".farama-header-menu").classList.toggle("active");
+      }
+
+      document.querySelector(".farama-header-menu__btn").addEventListener("click", toggleMenu);
+      document.getElementById("farama-close-menu").addEventListener("click", toggleMenu);
+    </script>
+
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M37ZN7PPMN"></script>
+      <script>
+        const enableGtag = () => {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-M37ZN7PPMN');
+        }
+        (() => {
+            if (!localStorage.getItem("acceptedCookieAlert")) {
+                const boxElem = document.createElement("div");
+                boxElem.classList.add("cookie-alert");
+                const containerElem = document.createElement("div");
+                containerElem.classList.add("cookie-alert__container");
+                const textElem = document.createElement("p");
+                textElem.innerHTML = `This page uses <a href="https://analytics.google.com/">
+                                    Google Analytics</a> to collect statistics.`;
+                                    containerElem.appendChild(textElem);
+
+                const declineBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Deny",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__decline",
+                  }
+                );
+                declineBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", false);
+                  boxElem.remove();
+                });
+
+                const acceptBtn = Object.assign(document.createElement("button"),
+                  {
+                    innerText: "Allow",
+                    className: "farama-btn cookie-alert__button",
+                    id: "cookie-alert__accept",
+                  }
+                );
+                acceptBtn.addEventListener("click", () => {
+                  localStorage.setItem("acceptedCookieAlert", true);
+                  boxElem.remove();
+                  enableGtag();
+                });
+
+                containerElem.appendChild(declineBtn);
+                containerElem.appendChild(acceptBtn);
+                boxElem.appendChild(containerElem);
+                document.body.appendChild(boxElem);
+            } else if (localStorage.getItem("acceptedCookieAlert") === "true") {
+              enableGtag();
+            }
+        })()
+      </script>
+
+    <script src="../_static/documentation_options.js?v=55133e54"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=7660844c"></script>
+    
+    <script>
+
+      const createProjectsList = (projects, displayImages) => {
+        const ulElem = Object.assign(document.createElement('ul'),
+          {
+            className:'farama-header-menu-list',
+          }
+        )
+        for (let project of projects) {
+          const liElem = document.createElement("li");
+          const aElem = Object.assign(document.createElement("a"),
+            {
+              href: project.link
+            }
+          );
+          liElem.appendChild(aElem);
+          if (displayImages) {
+            const imgElem = Object.assign(document.createElement("img"),
+              {
+                src: project.image ? imagesBasepath + project.image : imagesBasepath + "/farama_black.svg",
+                alt: `${project.name} logo`,
+                className: "farama-black-logo-invert"
+              }
+            );
+            aElem.appendChild(imgElem);
+          }
+          aElem.appendChild(document.createTextNode(project.name));
+          ulElem.appendChild(liElem);
+        }
+        return ulElem;
+      }
+
+      // Create menu with Farama projects by using the API at farama.org/api/projects.json
+      const createCORSRequest = (method, url) => {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = 'json';
+
+        if ("withCredentials" in xhr) {
+          xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+          // IE8 & IE9
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          // CORS not supported.
+          xhr = null;
+        }
+        return xhr;
+      };
+
+      const url = 'https://farama.org/api/projects.json';
+      const imagesBasepath = "https://farama.org/assets/images"
+      const method = 'GET';
+      let xhr = createCORSRequest(method, url);
+
+      xhr.onload = () => {
+        const jsonResponse = xhr.response;
+        const sections = {
+          "Core Projects": [],
+          "Mature Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
+          "Incubating Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          },
+          "Foundation": [
+            {
+              name: "About",
+              link: "https://farama.org/about"
+            },
+            {
+              name: "Standards",
+              link: "https://farama.org/project_standards",
+            },
+            {
+              name: "Donate",
+              link: "https://farama.org/donations"
+            }
+          ]
+        }
+
+        // Categorize projects
+        Object.keys(jsonResponse).forEach(key => {
+          projectJson = jsonResponse[key];
+          if (projectJson.website !== null) {
+            projectJson.link = projectJson.website;
+          } else {
+            projectJson.link = projectJson.github;
+          }
+          if (projectJson.type === "core") {
+            sections["Core Projects"].push(projectJson)
+          } else if (projectJson.type == "mature") {
+            if (projectJson.website !== null) {
+              sections["Mature Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Mature Projects"]["Repositories"].push(projectJson)
+            }
+          } else {
+            if (projectJson.website !== null) {
+              sections["Incubating Projects"]["Documentation"].push(projectJson)
+            } else {
+              sections["Incubating Projects"]["Repositories"].push(projectJson)
+            }
+          }
+        })
+
+        const menuContainer = document.querySelector(".farama-header-menu__body");
+
+        Object.keys(sections).forEach((key, i) => {
+          const sectionElem = Object.assign(
+            document.createElement('div'), {
+              className:'farama-header-menu__section',
+            }
+          )
+          sectionElem.appendChild(Object.assign(document.createElement('span'),
+            {
+              className:'farama-header-menu__section-title' ,
+              innerText: key
+            }
+          ))
+          // is not a list
+          if (sections[key].constructor !== Array) {
+            const subSections = sections[key];
+            const subSectionContainerElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsections-container',
+                  style: 'display: flex'
+                }
+            )
+            Object.keys(subSections).forEach((subKey, i) => {
+              const subSectionElem = Object.assign(
+                document.createElement('div'), {
+                  className:'farama-header-menu__subsection',
+                }
+              )
+              subSectionElem.appendChild(Object.assign(document.createElement('span'),
+                {
+                  className:'farama-header-menu__subsection-title' ,
+                  innerText: subKey
+                }
+              ))
+              const ulElem = createProjectsList(subSections[subKey], key !== 'Foundation');
+              subSectionElem.appendChild(ulElem);
+              subSectionContainerElem.appendChild(subSectionElem);
+            })
+            sectionElem.appendChild(subSectionContainerElem);
+          } else {
+            const projects = sections[key];
+            const ulElem = createProjectsList(projects, true);
+            sectionElem.appendChild(ulElem);
+          }
+          menuContainer.appendChild(sectionElem)
+        });
+      }
+
+      xhr.onerror = function() {
+        console.error("Unable to load projects");
+      };
+
+      xhr.send();
+    </script>
+
+    
+    <script>
+      const versioningConfig = {
+        githubUser: 'Farama-Foundation',
+        githubRepo: 'Gymnasium-Robotics',
+      };
+      fetch('/main/_static/versioning/versioning_menu.html').then(response => {
+        if (response.status === 200) {
+            response.text().then(text => {
+                const container = document.createElement("div");
+                container.innerHTML = text;
+                document.querySelector("body").appendChild(container);
+                // innerHtml doenst evaluate scripts, we need to add them dynamically
+                Array.from(container.querySelectorAll("script")).forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+        } else {
+            console.warn("Unable to load versioning menu", response);
+        }
+      });
+    </script>
+
+    </body>
+</html>
