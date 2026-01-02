@@ -13,8 +13,9 @@ RUN mkdir /root/.mujoco \
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
 # mujoco-py does JIT compilation at runtime, so CFLAGS must persist as an env var
-# This disables GCC 14+ treating incompatible-pointer-types as an error
-ENV CFLAGS="-Wno-error=incompatible-pointer-types"
+# GCC 14+ treats many warnings as errors by default - disable all warnings-as-errors for mujoco-py
+# (mujoco-py has many C coding issues that older compilers tolerated)
+ENV CFLAGS="-w"
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
