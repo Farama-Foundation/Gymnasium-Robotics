@@ -12,6 +12,8 @@ RUN mkdir /root/.mujoco \
     && wget -qO- 'https://github.com/deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz' | tar -xzvf -
 
 ENV LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/root/.mujoco/mujoco210/bin"
+# Use OSMesa for headless OpenGL rendering in MuJoCo
+ENV MUJOCO_GL="osmesa"
 # mujoco-py does JIT compilation at runtime, so CFLAGS must persist as an env var
 # GCC 14+ treats pointer type mismatches and implicit declarations as hard errors
 # -fpermissive doesn't work for C, so we must explicitly disable these
