@@ -116,7 +116,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
     - *sparse*: the returned reward can have two values: `-1` if the puck hasn't reached its final target position, and `0` if the puck is in the final target position (the puck is considered to have reached the goal if the Euclidean distance between both is lower than 0.05 m).
     - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
 
-    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchSlide-v3`. However, for `dense` reward the id must be modified to `FetchSlideDense-v3` and initialized as follows:
+    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchSlide-v4`. However, for `dense` reward the id must be modified to `FetchSlideDense-v4` and initialized as follows:
 
     ```python
     import gymnasium as gym
@@ -124,7 +124,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchSlideDense-v3')
+    env = gym.make('FetchSlideDense-v4')
     ```
 
     ## Starting State
@@ -152,7 +152,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchSlide-v3', max_episode_steps=100)
+    env = gym.make('FetchSlide-v4', max_episode_steps=100)
     ```
 
     ## Version History
