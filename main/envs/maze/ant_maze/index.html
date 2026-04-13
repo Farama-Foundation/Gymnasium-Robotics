@@ -466,7 +466,7 @@ The control frequency of the ant is of <code class="docutils literal notranslate
 <li><p><code class="docutils literal notranslate"><span class="pre">observation</span></code>: Observations consist of positional values of different body parts of the ant, followed by the velocities of those individual parts (their derivatives) with all
 the positions ordered before all the velocities.</p>
 <p>By default, observations do not include the x- and y-coordinates of the ant’s torso. These values are included in the <code class="docutils literal notranslate"><span class="pre">achieved_goal</span></code> key of the observation.
-However, by default, an observation is a <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(111,)</span></code> if the external contact forces are included with the <code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> arguments. Otherwise, the shape will be <code class="docutils literal notranslate"><span class="pre">(27,</span> <span class="pre">)</span></code>
+However, by default, an observation is a <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> with shape <code class="docutils literal notranslate"><span class="pre">(105,)</span></code>.
 The elements of the array correspond to the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -700,8 +700,9 @@ The elements of the array correspond to the following:</p>
 </tbody>
 </table>
 </div>
-<p>The remaining 14*6 = 84 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 14 links are: the ground link,
-the torso link, and 3 links for each leg (1 + 1 + 12) with the 6 external forces. These elements are included only if at the environments initialization the argument <code class="docutils literal notranslate"><span class="pre">use_contact_forces</span></code> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>The remaining 13<em>6 = 78 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 13 links are
+the torso link, and 3 links for each leg (1 + 3</em>4) with the 6 external forces.
+In the previous AntMaze versions, there were 6 additional contact forces representing the ground link, but they have been removed in this version.</p>
 </li>
 <li><p><code class="docutils literal notranslate"><span class="pre">desired_goal</span></code>: this key represents the final goal to be achieved. In this environment it is a 2-dimensional <code class="docutils literal notranslate"><span class="pre">ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">(2,)</span></code>, that consists of the two cartesian coordinates of the desired final ant torso position <code class="docutils literal notranslate"><span class="pre">[x,y]</span></code>. The elements of the array are the following:</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -773,7 +774,7 @@ The value is an <code class="docutils literal notranslate"><span class="pre">nda
 <p>The reward can be initialized as <code class="docutils literal notranslate"><span class="pre">sparse</span></code> or <code class="docutils literal notranslate"><span class="pre">dense</span></code>:</p>
 <ul class="simple">
 <li><p><em>sparse</em>: the returned reward can have two values: <code class="docutils literal notranslate"><span class="pre">0</span></code> if the ant hasn’t reached its final target position, and <code class="docutils literal notranslate"><span class="pre">1</span></code> if the ant is in the final target position (the ant is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).</p></li>
-<li><p><em>dense</em>: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.</p></li>
+<li><p><em>dense</em>: the returned reward is <code class="docutils literal notranslate"><span class="pre">exp(-distance)</span></code>, where <code class="docutils literal notranslate"><span class="pre">distance</span></code> is the Euclidean distance between the achieved goal and the desired goal. This keeps the reward in the (0, 1] range and makes it comparable to the “sparse” reward.</p></li>
 </ul>
 <p>To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward the id is the default of the environment, <code class="docutils literal notranslate"><span class="pre">AntMaze_UMaze-v5</span></code>. However, for <code class="docutils literal notranslate"><span class="pre">dense</span></code>
 reward the id must be modified to <code class="docutils literal notranslate"><span class="pre">AntMaze_UMazeDense-v5</span></code> and initialized as follows:</p>
