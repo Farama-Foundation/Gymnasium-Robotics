@@ -14,8 +14,6 @@ The documentation website is at [robotics.farama.org](https://robotics.farama.or
 
 ## Installation
 
-Test.
-
 To install the Gymnasium-Robotics environments use `pip install gymnasium-robotics`
 
 These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).
