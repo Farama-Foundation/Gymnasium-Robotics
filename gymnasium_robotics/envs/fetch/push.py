@@ -116,7 +116,7 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
     - *sparse*: the returned reward can have two values: `-1` if the block hasn't reached its final target position, and `0` if the block is in the final target position (the block is considered to have reached the goal if the Euclidean distance between both is lower than 0.05 m).
     - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
 
-    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchPush-v3`. However, for `dense` reward the id must be modified to `FetchPushDense-v3` and initialized as follows:
+    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchPush-v4`. However, for `dense` reward the id must be modified to `FetchPushDense-v4` and initialized as follows:
 
     ```python
     import gymnasium as gym
@@ -124,7 +124,7 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchPushDense-v3')
+    env = gym.make('FetchPushDense-v4')
     ```
 
     ## Starting State
@@ -153,7 +153,7 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchPush-v3', max_episode_steps=100)
+    env = gym.make('FetchPush-v4', max_episode_steps=100)
     ```
 
     ## Version History
