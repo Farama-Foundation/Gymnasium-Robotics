@@ -96,7 +96,7 @@ class AntMazeEnv(MazeEnv, EzPickle):
         the positions ordered before all the velocities.
 
         By default, observations do not include the x- and y-coordinates of the ant's torso. These values are included in the `achieved_goal` key of the observation.
-        However, by default, an observation is a `ndarray` with shape `(111,)` if the external contact forces are included with the `use_contact_forces` arguments. Otherwise, the shape will be `(27, )`
+        However, by default, an observation is a `ndarray` with shape `(105,)`.
         The elements of the array correspond to the following:
 
         | Num | Observation                                                  | Min    | Max    | Name (in corresponding XML file)       | Joint | Unit                     |
@@ -129,8 +129,9 @@ class AntMazeEnv(MazeEnv, EzPickle):
         | 25  | angular velocity of angle between torso and back right link  | -Inf   | Inf    | hip_4 (right_back_leg)                 | hinge | angle (rad)              |
         | 26  |angular velocity of the angle between back right links        | -Inf   | Inf    | ankle_4 (right_back_leg)               | hinge | angle (rad)              |
 
-        The remaining 14*6 = 84 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 14 links are: the ground link,
-        the torso link, and 3 links for each leg (1 + 1 + 12) with the 6 external forces. These elements are included only if at the environments initialization the argument `use_contact_forces` is set to `True`.
+        The remaining 13*6 = 78 elements of the observation are contact forces (external forces - force x, y, z and torque x, y, z) applied to the center of mass of each of the links. The 13 links are
+        the torso link, and 3 links for each leg (1 + 3*4) with the 6 external forces.
+        In the previous AntMaze versions, there were 6 additional contact forces representing the ground link, but they have been removed in this version.
 
     * `desired_goal`: this key represents the final goal to be achieved. In this environment it is a 2-dimensional `ndarray`, `(2,)`, that consists of the two cartesian coordinates of the desired final ant torso position `[x,y]`. The elements of the array are the following:
 
@@ -151,7 +152,8 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     The reward can be initialized as `sparse` or `dense`:
     - *sparse*: the returned reward can have two values: `0` if the ant hasn't reached its final target position, and `1` if the ant is in the final target position (the ant is considered to have reached the goal if the Euclidean distance between both is lower than 0.5 m).
-    - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
+    - *dense*: the returned reward is `exp(-distance)`, where `distance` is the Euclidean distance between the achieved goal and the desired goal. This keeps the reward in the (0, 1] range and makes it comparable to the "sparse" reward.
+
 
     To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `AntMaze_UMaze-v5`. However, for `dense`
     reward the id must be modified to `AntMaze_UMazeDense-v5` and initialized as follows:
