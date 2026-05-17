@@ -142,7 +142,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
-    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
@@ -176,7 +176,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('AdroitHandHammer-v1', max_episode_steps=400)
+    env = gym.make('AdroitHandHammer-v2', max_episode_steps=400)
     ```
 
     ## Version History

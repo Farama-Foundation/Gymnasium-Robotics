@@ -1081,7 +1081,7 @@ def register_robotics_envs():
 
     for reward_type in ["sparse", "dense"]:
         suffix = "Sparse" if reward_type == "sparse" else ""
-        version = "v1"
+        version = "v2"
         kwargs = {
             "reward_type": reward_type,
         }

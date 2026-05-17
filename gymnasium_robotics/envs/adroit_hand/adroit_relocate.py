@@ -134,7 +134,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         -` make_ball_go_to_target`: negative reward equal to the 3 dimensional Euclidean distance from the ball to its target position. This reward is also scaled by a factor of `0.5`.
     - `ball_close_to_target`: bonus of `10` if the ball's Euclidean distance to its target is less than `0.1` meters. Bonus of `20` if the distance is less than `0.05` meters.
 
-    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandReloateSparse-v1')`.
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandRelocateSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
@@ -169,7 +169,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('AdroitHandRelocate-v1', max_episode_steps=400)
+    env = gym.make('AdroitHandRelocate-v2', max_episode_steps=400)
     ```
 
     ## Version History
