@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="../../../_static/robotics-favicon.png"/><!-- Generated with Sphinx 7.4.7 and Furo 2023.08.19.dev1 -->
         <title>Adroit Relocate - Gymnasium-Robotics Documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=3e7f4c72" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=5b1a364e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=82c8b628" />
     
     
@@ -1313,14 +1313,6 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         const jsonResponse = xhr.response;
         const sections = {
           "Core Projects": [],
-          "Mature Projects": {
-            "Documentation": [],
-            "Repositories": [],
-          },
-          "Incubating Projects": {
-            "Documentation": [],
-            "Repositories": [],
-          },
           "Foundation": [
             {
               name: "About",
@@ -1334,7 +1326,14 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
               name: "Donate",
               link: "https://farama.org/donations"
             }
-          ]
+          ],
+          "Mature Projects": {
+            "Documentation": [],
+          },
+          "Incubating Projects": {
+            "Documentation": [],
+            "Repositories": [],
+          }
         }
 
         // Categorize projects
@@ -1350,8 +1349,6 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
           } else if (projectJson.type == "mature") {
             if (projectJson.website !== null) {
               sections["Mature Projects"]["Documentation"].push(projectJson)
-            } else {
-              sections["Mature Projects"]["Repositories"].push(projectJson)
             }
           } else {
             if (projectJson.website !== null) {
@@ -1363,6 +1360,13 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
         })
 
         const menuContainer = document.querySelector(".farama-header-menu__body");
+
+        const stackedColumnElem = Object.assign(
+          document.createElement('div'), {
+            style: 'display: flex; flex-direction: column;'
+          }
+        );
+        const stackedKeys = new Set(["Core Projects", "Foundation"]);
 
         Object.keys(sections).forEach((key, i) => {
           const sectionElem = Object.assign(
@@ -1407,7 +1411,14 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
             const ulElem = createProjectsList(projects, true);
             sectionElem.appendChild(ulElem);
           }
-          menuContainer.appendChild(sectionElem)
+          if (stackedKeys.has(key)) {
+            if (!stackedColumnElem.parentNode) {
+              menuContainer.appendChild(stackedColumnElem);
+            }
+            stackedColumnElem.appendChild(sectionElem);
+          } else {
+            menuContainer.appendChild(sectionElem);
+          }
         });
       }
 
