@@ -174,6 +174,8 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     ## Version History
 
+    * v2:
+        - No functional changes were made to this environment. The version was bumped to keep the Adroit Hand environment versions aligned after the `v2` fixes to Door, Hammer, and Relocate (related [GitHub PR #220](https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220)).
     * v1: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
