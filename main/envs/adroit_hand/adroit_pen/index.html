@@ -1032,7 +1032,7 @@ This penalty is scaled by a factor of <code class="docutils literal notranslate"
 distance less than <code class="docutils literal notranslate"><span class="pre">0.075</span></code> add a <code class="docutils literal notranslate"><span class="pre">10</span></code> reward, if the same distance holds and the orientation dot product is greater than <code class="docutils literal notranslate"><span class="pre">0.95</span></code> add <code class="docutils literal notranslate"><span class="pre">50</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dropping_pen</span></code>: If the pen drops from the hand (pen’s height less than <code class="docutils literal notranslate"><span class="pre">0.075</span></code>) add a negative reward of <code class="docutils literal notranslate"><span class="pre">5</span></code>.</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandPenSparse-v1')</span></code>.
+<p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandPenSparse-v2')</span></code>.
 In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
@@ -1063,13 +1063,18 @@ is greater than <code class="docutils literal notranslate"><span class="pre">0.9
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AdroitHandPen-v1&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AdroitHandPen-v2&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v2:</p>
+<ul>
+<li><p>No functional changes were made to this environment. The version was bumped to keep the Adroit Hand environment versions aligned after the <code class="docutils literal notranslate"><span class="pre">v2</span></code> fixes to Door, Hammer, and Relocate (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220">GitHub PR #220</a>).</p></li>
+</ul>
+</li>
 <li><p>v1: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
 </ul>
