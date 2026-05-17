@@ -1065,7 +1065,7 @@ It equals the norm of all the joint velocities. This penalty is scaled by a fact
 <li><p><code class="docutils literal notranslate"><span class="pre">lift_hammer</span></code>: adds a positive reward of <code class="docutils literal notranslate"><span class="pre">2</span></code> if the hammer is lifted a greater distance than <code class="docutils literal notranslate"><span class="pre">0.04</span></code> meters in the z direction.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">hammer_nail</span></code>: adds a positive reward the closer the head of the nail is to the board. <code class="docutils literal notranslate"><span class="pre">25</span></code> if the distance is less than <code class="docutils literal notranslate"><span class="pre">0.02</span></code> meters and <code class="docutils literal notranslate"><span class="pre">75</span></code> if it is less than <code class="docutils literal notranslate"><span class="pre">0.01</span></code> meters.</p></li>
 </ul>
-<p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandHammerSparse-v1')</span></code>.
+<p>The <code class="docutils literal notranslate"><span class="pre">sparse</span></code> reward variant of the environment can be initialized by calling <code class="docutils literal notranslate"><span class="pre">gym.make('AdroitHandHammerSparse-v2')</span></code>.
 In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.</p>
 </section>
 <section id="starting-state">
@@ -1095,13 +1095,18 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 
 <span class="n">gym</span><span class="o">.</span><span class="n">register_envs</span><span class="p">(</span><span class="n">gymnasium_robotics</span><span class="p">)</span>
 
-<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AdroitHandHammer-v1&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s1">&#39;AdroitHandHammer-v2&#39;</span><span class="p">,</span> <span class="n">max_episode_steps</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="version-history">
 <h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading">¶</a></h2>
 <ul class="simple">
+<li><p>v2:</p>
+<ul>
+<li><p>Fixed the sign of the dense <code class="docutils literal notranslate"><span class="pre">get_to_hammer</span></code> reward term. In <code class="docutils literal notranslate"><span class="pre">v1</span></code>, this term encouraged the hand to move away from the hammer instead of towards it (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220">GitHub PR #220</a>).</p></li>
+</ul>
+</li>
 <li><p>v1: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
 <li><p>v0: legacy versions in the <a class="reference external" href="https://github.com/Farama-Foundation/D4RL">D4RL</a>.</p></li>
 </ul>
