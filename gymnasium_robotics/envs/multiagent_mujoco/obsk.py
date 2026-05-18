@@ -45,8 +45,8 @@ def _tendon_jacobian(data: object, tendon: int = 0) -> np.ndarray:
     return np.concatenate([ten_j[tendon][:2], ten_j[tendon][3:5]])
 
 
-def _tendon_scalar(values: object, tendon: int = 0) -> float:
-    return np.asarray(values).reshape(-1)[tendon].item()
+def _tendon_scalar(values: object, tendon: int = 0) -> np.ndarray:
+    return np.atleast_1d(np.asarray(values).reshape(-1)[tendon])
 
 
 class Node:
