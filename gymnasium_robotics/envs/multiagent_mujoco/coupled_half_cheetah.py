@@ -21,7 +21,6 @@ from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
 from packaging.version import Version
 
-
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
