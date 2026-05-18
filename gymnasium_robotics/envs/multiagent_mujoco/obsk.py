@@ -27,15 +27,22 @@ import itertools
 import typing
 from copy import deepcopy
 
+import mujoco
 import numpy as np
+from packaging.version import Version
 
 
 def _tendon_jacobian(data: object, tendon: int = 0) -> np.ndarray:
     """Return a stable tendon jacobian observation for a single tendon."""
     ten_j = np.asarray(data.ten_J)
+    if Version(mujoco.__version__) <= Version("3.5.0"):
+        if ten_j.ndim == 1:
+            return np.concatenate([ten_j[:2], ten_j[9:11]])
+        return np.concatenate([ten_j[tendon][:2], ten_j[tendon][9:11]])
+
     if ten_j.ndim == 1:
-        return np.concatenate([ten_j[:2], ten_j[9:11]])
-    return np.concatenate([ten_j[tendon][:2], ten_j[tendon][9:11]])
+        return np.concatenate([ten_j[:2], ten_j[3:5]])
+    return np.concatenate([ten_j[tendon][:2], ten_j[tendon][3:5]])
 
 
 def _tendon_scalar(values: object, tendon: int = 0) -> float:

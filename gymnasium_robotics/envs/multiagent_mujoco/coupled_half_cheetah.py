@@ -15,16 +15,23 @@ import os
 import typing
 
 import gymnasium
+import mujoco
 import numpy as np
 from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
+from packaging.version import Version
 
 
 def _tendon_jacobian(data) -> np.ndarray:
     ten_j = np.asarray(data.ten_J)
+    if Version(mujoco.__version__) <= Version("3.5.0"):
+        if ten_j.ndim == 1:
+            return np.concatenate([ten_j[:2], ten_j[9:11]])
+        return np.concatenate([ten_j[0][:2], ten_j[0][9:11]])
+
     if ten_j.ndim == 1:
-        return np.concatenate([ten_j[:2], ten_j[9:11]])
-    return np.concatenate([ten_j[0][:2], ten_j[0][9:11]])
+        return np.concatenate([ten_j[:2], ten_j[3:5]])
+    return np.concatenate([ten_j[0][:2], ten_j[0][3:5]])
 
 
 DEFAULT_CAMERA_CONFIG = {
