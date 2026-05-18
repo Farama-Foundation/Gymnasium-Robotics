@@ -21,11 +21,10 @@ from gymnasium.utils.ezpickle import EzPickle
 
 
 def _tendon_jacobian(data) -> np.ndarray:
-    ten_J = np.asarray(data.ten_J)
-    if ten_J.ndim == 1:
-        return np.concatenate([ten_J[:2], ten_J[9:11]])
-    return np.concatenate([ten_J[0][:2], ten_J[0][9:11]])
-
+    ten_j = np.asarray(data.ten_J)
+    if ten_j.ndim == 1:
+        return np.concatenate([ten_j[:2], ten_j[9:11]])
+    return np.concatenate([ten_j[0][:2], ten_j[0][9:11]])
 
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
