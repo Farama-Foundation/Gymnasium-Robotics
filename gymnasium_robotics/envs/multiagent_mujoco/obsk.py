@@ -1,9 +1,7 @@
 """file Containing utily functions for MaMuJoCo.
-
 This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
 (https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/obsk.py)
 Original Author: Schroeder de Witt
-
 Then Modified by @Kallinteris-Andreas for this project
 changes:
  -  General code cleanup, factorization, type hinting, adding documentation and code comments
@@ -17,7 +15,6 @@ changes:
  - `Walker2D`: Added missing Global Observations
  - `CoupledHalfCheetah`: improved node naming, fixed tendon Jacobian observations, fixed action mapping of the second cheetah, added missing global observationsm, fixed action ordering
  - `ManySegmentAnt`: Fixed Global Observations
-
 This project is covered by the Apache 2.0 License.
 """
 
@@ -45,7 +42,6 @@ class Node:
         tendons: tuple[int, ...] = (),
     ):
         """Init.
-
         Args:
             label: the name of the node
             qpos_ids: the corresponding position ID,
@@ -76,15 +72,12 @@ class Node:
 
 class HyperEdge:
     """A collection of nodes, that are fully connected (with edges).
-
     If a HyperEdge consists of 2 Nodes, then it is simply an Edge of those Nodes.
-
     More at: https://en.wikipedia.org/wiki/Hypergraph
     """
 
     def __init__(self, *nodes: Node):
         """Init.
-
         Args:
             nodes: the nodes that are fully connected
         """
@@ -109,7 +102,6 @@ def get_joints_at_kdist(
     k: int,
 ) -> dict[int, list[Node]]:
     """Identify all joints at distance <= k from agent.
-
     Args:
         agent_partition:
             tuples of nodes of an agent
@@ -117,7 +109,6 @@ def get_joints_at_kdist(
             hyperedges of the graph
         k:
             kth degree (number of nearest joints to observe)
-
     Returns:
         dict with k as key, and list of joints/nodes at that distance
     """
@@ -162,7 +153,6 @@ def build_obs(
     ignore_body_fn: bool = False,
 ) -> np.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
-
     Args:
         data: a structure containing the global state of the agent.
         k_dict: the k_dict of an agent.
@@ -170,7 +160,6 @@ def build_obs(
         global_nodes: The MuJoCo global godes.
         global_categories: The observation Categories for the global MuJoCo nodes.
         ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable.
-
     Returns:
         observation for the agent (indicated by K_dict)
     """
@@ -233,11 +222,9 @@ def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
 ) -> tuple[list[tuple[Node, ...]], list[HyperEdge], list[Node]]:
     """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
-
     Args:
         label: the mujoco task to partition
         partitioning: the partioneing scheme
-
     Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
@@ -853,8 +840,8 @@ def get_parts_and_edges(  # noqa: C901
                 "ten_J": lambda data: np.concatenate(
                     [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
                 ),
-                "ten_length": lambda data: np.array([data.ten_length[tendon]]),
-                "ten_velocity": lambda data: np.array([data.ten_velocity[tendon]]),
+                "ten_length": lambda data: data.ten_length[tendon],
+                "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
         )
         bshin0 = Node("bshin0", -5, -5, 1)
@@ -873,8 +860,8 @@ def get_parts_and_edges(  # noqa: C901
                 "ten_J": lambda data: np.concatenate(
                     [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
                 ),
-                "ten_length": lambda data: np.array([data.ten_length[tendon]]),
-                "ten_velocity": lambda data: np.array([data.ten_velocity[tendon]]),
+                "ten_length": lambda data: data.ten_length[tendon],
+                "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
         )
         bshin1 = Node("bshin1", -5, -5, 7)

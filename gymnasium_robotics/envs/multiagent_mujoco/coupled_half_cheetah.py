@@ -227,7 +227,8 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
                 self.data.qpos.flat[1:9],  # exclude rootx0
                 self.data.qpos.flat[10:18],  # exclude rootx1
                 self.data.qvel.flat,
-                np.concatenate([self.data.ten_J[0][:2], self.data.ten_J[0][9:11]]),
+                self.data.ten_J[0][:2],
+                self.data.ten_J[0][9:11],
                 self.data.ten_length,
                 self.data.ten_velocity,
             ]
