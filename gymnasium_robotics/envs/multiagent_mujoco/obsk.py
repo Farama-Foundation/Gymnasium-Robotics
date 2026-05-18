@@ -3,7 +3,6 @@
 This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
 (https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/obsk.py)
 Original Author: Schroeder de Witt
-
 Then Modified by @Kallinteris-Andreas for this project
 changes:
  -  General code cleanup, factorization, type hinting, adding documentation and code comments
@@ -17,7 +16,6 @@ changes:
  - `Walker2D`: Added missing Global Observations
  - `CoupledHalfCheetah`: improved node naming, fixed tendon Jacobian observations, fixed action mapping of the second cheetah, added missing global observationsm, fixed action ordering
  - `ManySegmentAnt`: Fixed Global Observations
-
 This project is covered by the Apache 2.0 License.
 """
 
@@ -66,11 +64,11 @@ class Node:
         self.tendons = tendons
 
     def __str__(self):
-        """Returns a string of the node using the provided label."""
+        """Return a string of the node using the provided label."""
         return self.label
 
     def __repr__(self):
-        """Returns a string of the node using the provided label."""
+        """Return a string of the node using the provided label."""
         return self.label
 
 
@@ -78,7 +76,6 @@ class HyperEdge:
     """A collection of nodes, that are fully connected (with edges).
 
     If a HyperEdge consists of 2 Nodes, then it is simply an Edge of those Nodes.
-
     More at: https://en.wikipedia.org/wiki/Hypergraph
     """
 
@@ -91,15 +88,15 @@ class HyperEdge:
         self.nodes = set(nodes)
 
     def __contains__(self, item: Node):
-        """Checks if Item is in the edge."""
+        """Check if item is in the edge."""
         return item in self.nodes
 
     def __str__(self):
-        """Returns a string of the HyperEdge showing all the nodes in it."""
+        """Return a string of the HyperEdge showing all the nodes in it."""
         return f"HyperEdge({self.nodes})"
 
     def __repr__(self):
-        """Returns a string of the HyperEdge showing all the nodes in it."""
+        """Return a string of the HyperEdge showing all the nodes in it."""
         return f"HyperEdge({self.nodes})"
 
 
@@ -232,7 +229,7 @@ def build_obs(
 def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
 ) -> tuple[list[tuple[Node, ...]], list[HyperEdge], list[Node]]:
-    """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
+    """Get the mujoco Graph (nodes & edges) given an optional partitioning.
 
     Args:
         label: the mujoco task to partition
