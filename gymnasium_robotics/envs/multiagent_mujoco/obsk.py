@@ -30,6 +30,18 @@ from copy import deepcopy
 import numpy as np
 
 
+def _tendon_jacobian(data: object, tendon: int = 0) -> np.ndarray:
+    """Return a stable tendon jacobian observation for a single tendon."""
+    ten_j = np.asarray(data.ten_J)
+    if ten_j.ndim == 1:
+        return np.concatenate([ten_j[:2], ten_j[9:11]])
+    return np.concatenate([ten_j[tendon][:2], ten_j[tendon][9:11]])
+
+
+def _tendon_scalar(values: object, tendon: int = 0) -> float:
+    return np.asarray(values).reshape(-1)[tendon].item()
+
+
 class Node:
     """A node of the mujoco graph representing a single body part and it's corresponding single action & observetions."""
 
@@ -850,11 +862,9 @@ def get_parts_and_edges(  # noqa: C901
             0,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: np.concatenate(
-                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
-                ),
-                "ten_length": lambda data: data.ten_length[tendon],
-                "ten_velocity": lambda data: data.ten_velocity[tendon],
+                "ten_J": lambda data: _tendon_jacobian(data, tendon),
+                "ten_length": lambda data: _tendon_scalar(data.ten_length, tendon),
+                "ten_velocity": lambda data: _tendon_scalar(data.ten_velocity, tendon),
             },
         )
         bshin0 = Node("bshin0", -5, -5, 1)
@@ -870,11 +880,9 @@ def get_parts_and_edges(  # noqa: C901
             6,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: np.concatenate(
-                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
-                ),
-                "ten_length": lambda data: data.ten_length[tendon],
-                "ten_velocity": lambda data: data.ten_velocity[tendon],
+                "ten_J": lambda data: _tendon_jacobian(data, tendon),
+                "ten_length": lambda data: _tendon_scalar(data.ten_length, tendon),
+                "ten_velocity": lambda data: _tendon_scalar(data.ten_velocity, tendon),
             },
         )
         bshin1 = Node("bshin1", -5, -5, 7)

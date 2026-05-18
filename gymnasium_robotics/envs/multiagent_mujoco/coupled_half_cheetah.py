@@ -26,6 +26,7 @@ def _tendon_jacobian(data) -> np.ndarray:
         return np.concatenate([ten_j[:2], ten_j[9:11]])
     return np.concatenate([ten_j[0][:2], ten_j[0][9:11]])
 
+
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
