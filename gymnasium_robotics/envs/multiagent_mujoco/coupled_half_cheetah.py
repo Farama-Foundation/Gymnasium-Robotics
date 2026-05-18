@@ -19,6 +19,13 @@ import numpy as np
 from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
 
+
+def _tendon_jacobian(data) -> np.ndarray:
+    ten_J = np.asarray(data.ten_J)
+    if ten_J.ndim == 1:
+        return np.concatenate([ten_J[:2], ten_J[9:11]])
+    return np.concatenate([ten_J[0][:2], ten_J[0][9:11]])
+
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
@@ -218,10 +225,9 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
                 self.data.qpos.flat[1:9],  # exclude rootx0
                 self.data.qpos.flat[10:18],  # exclude rootx1
                 self.data.qvel.flat,
-                self.data.ten_J[0][:2],
-                self.data.ten_J[0][9:11],
-                self.data.ten_length,
-                self.data.ten_velocity,
+                _tendon_jacobian(self.data),
+                np.atleast_1d(self.data.ten_length),
+                np.atleast_1d(self.data.ten_velocity),
             ]
         )
 

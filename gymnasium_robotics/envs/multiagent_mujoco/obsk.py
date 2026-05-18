@@ -30,6 +30,14 @@ from copy import deepcopy
 import numpy as np
 
 
+def _tendon_jacobian(data: object, tendon: int = 0) -> np.ndarray:
+    """Return a stable tendon jacobian observation for a single tendon."""
+    ten_J = np.asarray(data.ten_J)
+    if ten_J.ndim == 1:
+        return np.concatenate([ten_J[:2], ten_J[9:11]])
+    return np.concatenate([ten_J[tendon][:2], ten_J[tendon][9:11]])
+
+
 class Node:
     """A node of the mujoco graph representing a single body part and it's corresponding single action & observetions."""
 
@@ -850,9 +858,7 @@ def get_parts_and_edges(  # noqa: C901
             0,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: np.concatenate(
-                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
-                ),
+                "ten_J": lambda data: _tendon_jacobian(data, tendon),
                 "ten_length": lambda data: data.ten_length[tendon],
                 "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
@@ -870,9 +876,7 @@ def get_parts_and_edges(  # noqa: C901
             6,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: np.concatenate(
-                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
-                ),
+                "ten_J": lambda data: _tendon_jacobian(data, tendon),
                 "ten_length": lambda data: data.ten_length[tendon],
                 "ten_velocity": lambda data: data.ten_velocity[tendon],
             },
