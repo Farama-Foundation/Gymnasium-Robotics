@@ -1,4 +1,5 @@
 """file Containing utily functions for MaMuJoCo.
+
 This file is originally from the `schroederdewitt/multiagent_mujoco` repository hosted on GitHub
 (https://github.com/schroederdewitt/multiagent_mujoco/blob/master/multiagent_mujoco/obsk.py)
 Original Author: Schroeder de Witt
@@ -42,6 +43,7 @@ class Node:
         tendons: tuple[int, ...] = (),
     ):
         """Init.
+
         Args:
             label: the name of the node
             qpos_ids: the corresponding position ID,
@@ -62,37 +64,39 @@ class Node:
         self.tendons = tendons
 
     def __str__(self):
-        """Returns a string of the node using the provided label."""
+        """Return a string of the node using the provided label."""
         return self.label
 
     def __repr__(self):
-        """Returns a string of the node using the provided label."""
+        """Return a string of the node using the provided label."""
         return self.label
 
 
 class HyperEdge:
     """A collection of nodes, that are fully connected (with edges).
+
     If a HyperEdge consists of 2 Nodes, then it is simply an Edge of those Nodes.
     More at: https://en.wikipedia.org/wiki/Hypergraph
     """
 
     def __init__(self, *nodes: Node):
         """Init.
+
         Args:
             nodes: the nodes that are fully connected
         """
         self.nodes = set(nodes)
 
     def __contains__(self, item: Node):
-        """Checks if Item is in the edge."""
+        """Check if item is in the edge."""
         return item in self.nodes
 
     def __str__(self):
-        """Returns a string of the HyperEdge showing all the nodes in it."""
+        """Return a string of the HyperEdge showing all the nodes in it."""
         return f"HyperEdge({self.nodes})"
 
     def __repr__(self):
-        """Returns a string of the HyperEdge showing all the nodes in it."""
+        """Return a string of the HyperEdge showing all the nodes in it."""
         return f"HyperEdge({self.nodes})"
 
 
@@ -102,6 +106,7 @@ def get_joints_at_kdist(
     k: int,
 ) -> dict[int, list[Node]]:
     """Identify all joints at distance <= k from agent.
+
     Args:
         agent_partition:
             tuples of nodes of an agent
@@ -109,6 +114,7 @@ def get_joints_at_kdist(
             hyperedges of the graph
         k:
             kth degree (number of nearest joints to observe)
+
     Returns:
         dict with k as key, and list of joints/nodes at that distance
     """
@@ -153,6 +159,7 @@ def build_obs(
     ignore_body_fn: bool = False,
 ) -> np.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
+
     Args:
         data: a structure containing the global state of the agent.
         k_dict: the k_dict of an agent.
@@ -160,6 +167,7 @@ def build_obs(
         global_nodes: The MuJoCo global godes.
         global_categories: The observation Categories for the global MuJoCo nodes.
         ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable.
+
     Returns:
         observation for the agent (indicated by K_dict)
     """
@@ -221,10 +229,12 @@ def build_obs(
 def get_parts_and_edges(  # noqa: C901
     label: str, partitioning: str | None
 ) -> tuple[list[tuple[Node, ...]], list[HyperEdge], list[Node]]:
-    """Gets the mujoco Graph (nodes & edges) given an optional partitioning,.
+    """Get the mujoco Graph (nodes & edges) given an optional partitioning.
+
     Args:
         label: the mujoco task to partition
         partitioning: the partioneing scheme
+
     Returns:
         the partition of the mujoco graph nodes, the graph edges, and global nodes
     """
