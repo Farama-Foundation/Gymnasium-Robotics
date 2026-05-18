@@ -27,26 +27,7 @@ import itertools
 import typing
 from copy import deepcopy
 
-import mujoco
 import numpy as np
-from packaging.version import Version
-
-
-def _tendon_jacobian(data: object, tendon: int = 0) -> np.ndarray:
-    """Return a stable tendon jacobian observation for a single tendon."""
-    ten_j = np.asarray(data.ten_J)
-    if Version(mujoco.__version__) <= Version("3.5.0"):
-        if ten_j.ndim == 1:
-            return np.concatenate([ten_j[:2], ten_j[9:11]])
-        return np.concatenate([ten_j[tendon][:2], ten_j[tendon][9:11]])
-
-    if ten_j.ndim == 1:
-        return np.concatenate([ten_j[:2], ten_j[3:5]])
-    return np.concatenate([ten_j[tendon][:2], ten_j[tendon][3:5]])
-
-
-def _tendon_scalar(values: object, tendon: int = 0) -> np.ndarray:
-    return np.atleast_1d(np.asarray(values).reshape(-1)[tendon])
 
 
 class Node:
@@ -869,9 +850,11 @@ def get_parts_and_edges(  # noqa: C901
             0,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: _tendon_jacobian(data, tendon),
-                "ten_length": lambda data: _tendon_scalar(data.ten_length, tendon),
-                "ten_velocity": lambda data: _tendon_scalar(data.ten_velocity, tendon),
+                "ten_J": lambda data: np.concatenate(
+                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
+                ),
+                "ten_length": lambda data: np.array([data.ten_length[tendon]]),
+                "ten_velocity": lambda data: np.array([data.ten_velocity[tendon]]),
             },
         )
         bshin0 = Node("bshin0", -5, -5, 1)
@@ -887,9 +870,11 @@ def get_parts_and_edges(  # noqa: C901
             6,
             # tendons=(tendon),
             extra_obs={
-                "ten_J": lambda data: _tendon_jacobian(data, tendon),
-                "ten_length": lambda data: _tendon_scalar(data.ten_length, tendon),
-                "ten_velocity": lambda data: _tendon_scalar(data.ten_velocity, tendon),
+                "ten_J": lambda data: np.concatenate(
+                    [data.ten_J[tendon][:2], data.ten_J[tendon][9:11]]
+                ),
+                "ten_length": lambda data: np.array([data.ten_length[tendon]]),
+                "ten_velocity": lambda data: np.array([data.ten_velocity[tendon]]),
             },
         )
         bshin1 = Node("bshin1", -5, -5, 7)

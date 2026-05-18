@@ -22,18 +22,6 @@ from gymnasium.utils.ezpickle import EzPickle
 from packaging.version import Version
 
 
-def _tendon_jacobian(data) -> np.ndarray:
-    ten_j = np.asarray(data.ten_J)
-    if Version(mujoco.__version__) <= Version("3.5.0"):
-        if ten_j.ndim == 1:
-            return np.concatenate([ten_j[:2], ten_j[9:11]])
-        return np.concatenate([ten_j[0][:2], ten_j[0][9:11]])
-
-    if ten_j.ndim == 1:
-        return np.concatenate([ten_j[:2], ten_j[3:5]])
-    return np.concatenate([ten_j[0][:2], ten_j[0][3:5]])
-
-
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
 }
@@ -163,6 +151,12 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
         Args:
             render_mode: see [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
         """
+        if Version(mujoco.__version__) > Version("3.5.0"):
+            raise ImportError(
+                "`CoupledHalfCheetah` is only supported on `mujoco<=3.5.0` because "
+                "MuJoCo 3.6.0 changed the tendon Jacobian API."
+            )
+
         self._forward_reward_weight = 1
         self._ctrl_cost_weight = 0.1
         self._reset_noise_scale = 0.1
@@ -233,9 +227,9 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
                 self.data.qpos.flat[1:9],  # exclude rootx0
                 self.data.qpos.flat[10:18],  # exclude rootx1
                 self.data.qvel.flat,
-                _tendon_jacobian(self.data),
-                np.atleast_1d(self.data.ten_length),
-                np.atleast_1d(self.data.ten_velocity),
+                np.concatenate([self.data.ten_J[0][:2], self.data.ten_J[0][9:11]]),
+                self.data.ten_length,
+                self.data.ten_velocity,
             ]
         )
 
