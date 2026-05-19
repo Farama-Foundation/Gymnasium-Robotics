@@ -4,15 +4,19 @@ import collections
 import os
 
 import gymnasium
+import mujoco
 import pytest
 from gymnasium.utils.env_checker import data_equivalence
 from gymnasium.utils.env_match import check_environments_match
+from packaging.version import Version
 from pettingzoo.test import parallel_api_test
 
 import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
 from gymnasium_robotics import mamujoco_v1
 
 scenario_conf = collections.namedtuple("scenario_conf", "scenario, conf, kwargs")
+
+COUPLED_HALF_CHEETAH_SUPPORTED = Version(mujoco.__version__) <= Version("3.5.0")
 
 pre_defined_factorizations = [
     scenario_conf("InvertedPendulum", None, {}),  # For Debugging
@@ -91,9 +95,15 @@ pre_defined_factorizations = [
     scenario_conf("ManySegmentSwimmer", "1x2", {}),
     scenario_conf("ManySegmentAnt", "2x3", {}),
     scenario_conf("ManySegmentAnt", "3x1", {}),
-    scenario_conf("CoupledHalfCheetah", "1p1", {}),
-    scenario_conf("CoupledHalfCheetah", None, {}),
 ]
+
+if COUPLED_HALF_CHEETAH_SUPPORTED:
+    pre_defined_factorizations.extend(
+        [
+            scenario_conf("CoupledHalfCheetah", "1p1", {}),
+            scenario_conf("CoupledHalfCheetah", None, {}),
+        ]
+    )
 
 observation_depths = [None, 0, 1, 2]
 
@@ -182,8 +192,12 @@ k_dicts_tasks = [
     pre_computed_k_dict("ManySegmentSwimmer", "6x1", ["[{0: [rot0]}, {0: [rot1]}, {0: [rot2]}, {0: [rot3]}, {0: [rot4]}, {0: [rot5]}]", "[{0: [rot0], 1: [rot1]}, {0: [rot1], 1: [rot0, rot2]}, {0: [rot2], 1: [rot1, rot3]}, {0: [rot3], 1: [rot2, rot4]}, {0: [rot4], 1: [rot3, rot5]}, {0: [rot5], 1: [rot4]}]", "[{0: [rot0], 1: [rot1], 2: [rot2]}, {0: [rot1], 1: [rot0, rot2], 2: [rot3]}, {0: [rot2], 1: [rot1, rot3], 2: [rot0, rot4]}, {0: [rot3], 1: [rot2, rot4], 2: [rot1, rot5]}, {0: [rot4], 1: [rot3, rot5], 2: [rot2]}, {0: [rot5], 1: [rot4], 2: [rot3]}]"]),  # noqa: E501
     pre_computed_k_dict("ManySegmentAnt", "2x3", ["[{0: [ankle1_0, ankle1_1, ankle1_2, ankle2_0, ankle2_1, ankle2_2, hip1_0, hip1_1, hip1_2, hip2_0, hip2_1, hip2_2]}, {0: [ankle1_3, ankle1_4, ankle1_5, ankle2_3, ankle2_4, ankle2_5, hip1_3, hip1_4, hip1_5, hip2_3, hip2_4, hip2_5]}]", "[{0: [ankle1_0, ankle1_1, ankle1_2, ankle2_0, ankle2_1, ankle2_2, hip1_0, hip1_1, hip1_2, hip2_0, hip2_1, hip2_2], 1: [hip1_0, hip1_1, hip2_0, hip2_1]}, {0: [ankle1_3, ankle1_4, ankle1_5, ankle2_3, ankle2_4, ankle2_5, hip1_3, hip1_4, hip1_5, hip2_3, hip2_4, hip2_5], 1: [hip1_2, hip1_3, hip1_4, hip2_2, hip2_3, hip2_4]}]", "[{0: [ankle1_0, ankle1_1, ankle1_2, ankle2_0, ankle2_1, ankle2_2, hip1_0, hip1_1, hip1_2, hip2_0, hip2_1, hip2_2], 1: [hip1_0, hip1_1, hip2_0, hip2_1], 2: []}, {0: [ankle1_3, ankle1_4, ankle1_5, ankle2_3, ankle2_4, ankle2_5, hip1_3, hip1_4, hip1_5, hip2_3, hip2_4, hip2_5], 1: [hip1_2, hip1_3, hip1_4, hip2_2, hip2_3, hip2_4], 2: []}]"]),  # noqa: E501
     pre_computed_k_dict("ManySegmentAnt", "3x1", ["[{0: [ankle1_0, ankle2_0, hip1_0, hip2_0]}, {0: [ankle1_1, ankle2_1, hip1_1, hip2_1]}, {0: [ankle1_2, ankle2_2, hip1_2, hip2_2]}]", "[{0: [ankle1_0, ankle2_0, hip1_0, hip2_0], 1: []}, {0: [ankle1_1, ankle2_1, hip1_1, hip2_1], 1: [hip1_0, hip2_0]}, {0: [ankle1_2, ankle2_2, hip1_2, hip2_2], 1: [hip1_1, hip2_1]}]", "[{0: [ankle1_0, ankle2_0, hip1_0, hip2_0], 1: [], 2: []}, {0: [ankle1_1, ankle2_1, hip1_1, hip2_1], 1: [hip1_0, hip2_0], 2: []}, {0: [ankle1_2, ankle2_2, hip1_2, hip2_2], 1: [hip1_1, hip2_1], 2: []}]"]),  # noqa: E501
-    pre_computed_k_dict("CoupledHalfCheetah", "1p1", ["[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0]}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1]}]", "[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0], 1: []}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1], 1: []}]", "[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0], 1: [], 2: []}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1], 1: [], 2: []}]"]),
 ]
+
+if COUPLED_HALF_CHEETAH_SUPPORTED:
+    k_dicts_tasks.append(
+        pre_computed_k_dict("CoupledHalfCheetah", "1p1", ["[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0]}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1]}]", "[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0], 1: []}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1], 1: []}]", "[{0: [bfoot0, bshin0, bthigh0, ffoot0, fshin0, fthigh0], 1: [], 2: []}, {0: [bfoot1, bshin1, bthigh1, ffoot1, fshin1, fthigh1], 1: [], 2: []}]"]),
+    )
 # fmt: on
 
 
