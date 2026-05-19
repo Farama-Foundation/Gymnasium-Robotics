@@ -42,7 +42,7 @@ class Maze:
     - :meth:`cell_rowcol_to_xy` - Convert from `(i,j)` to `(x,y)`
 
     ### Version History
-    * v4: Refactor compute_terminated into a pure function compute_terminated and a new function update_goal which resets the goal position. Bug fix: missing maze_size_scaling factor added in generate_reset_pos() -- only affects AntMaze.
+    * v4: Refactor compute_terminated into a pure function compute_terminated and a new function update_goal which resets the goal position. Bug fix: missing maze_size_scaling factor added in generated maze context. Add render_mode to environment constructors.
     * v3: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v2 & v1: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
@@ -271,6 +271,11 @@ class MazeEnv(GoalEnv):
 
         self.position_noise_range = position_noise_range
 
+    def close(self):
+        if getattr(self, "tmp_dir", None) is not None:
+            self.tmp_dir.cleanup()
+            self.tmp_dir = None
+
     def generate_target_goal(self) -> np.ndarray:
         assert len(self.maze.unique_goal_locations) > 0
         goal_index = self.np_random.integers(
@@ -303,7 +308,7 @@ class MazeEnv(GoalEnv):
         """Reset the maze simulation.
 
         Args:
-            options (dict[str, np.ndarray]): the options dictionary can contain two items, "goal_cell" and "reset_cell" that will set the initial goal and reset location (i,j) in the self.maze.map list of list maze structure.
+            options (dict[str, np.ndarray]): the options dictionary can contain two items, "goal_cell" and "reset_cell" that will set the initial goal and reset location (i,j) in the self.maze.maze_map data structure. Also, both cells are given as an np.ndarray with shape (2,) and dtype int.
 
         """
         super().reset(seed=seed)
