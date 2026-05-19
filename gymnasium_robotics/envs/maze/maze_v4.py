@@ -272,8 +272,9 @@ class MazeEnv(GoalEnv):
         self.position_noise_range = position_noise_range
 
     def close(self):
-        if getattr(self, "tmp_dir", None) is not None:
-            self.tmp_dir.cleanup()
+        tmp_dir = getattr(self, "tmp_dir", None)
+        if tmp_dir is not None:
+            tmp_dir.cleanup()
             self.tmp_dir = None
 
     def generate_target_goal(self) -> np.ndarray:
