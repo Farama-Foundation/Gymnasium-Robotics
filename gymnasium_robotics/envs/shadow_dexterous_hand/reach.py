@@ -52,7 +52,7 @@ def goal_distance(goal_a, goal_b):
     return np.linalg.norm(goal_a - goal_b, axis=-1)
 
 
-def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
+def get_base_hand_reach_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
     class BaseHandReachEnv(HandEnvClass, EzPickle):
         def __init__(
             self,
@@ -135,7 +135,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
     return BaseHandReachEnv
 
 
-class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
+class MujocoHandReachEnv(get_base_hand_reach_env(MujocoHandEnv)):
     """
     ## Description
 
@@ -447,7 +447,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         self._mujoco.mj_forward(self.model, self.data)
 
 
-class MujocoPyHandReachEnv(get_base_hand_reanch_env(MujocoPyHandEnv)):
+class MujocoPyHandReachEnv(get_base_hand_reach_env(MujocoPyHandEnv)):
     def _get_achieved_goal(self):
         goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
 
