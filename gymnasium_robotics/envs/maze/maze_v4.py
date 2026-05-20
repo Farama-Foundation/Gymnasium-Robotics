@@ -272,6 +272,7 @@ class MazeEnv(GoalEnv):
         self.position_noise_range = position_noise_range
 
     def close(self):
+        """Clean up the temporary directory that stores the generated XML file."""
         tmp_dir = getattr(self, "tmp_dir", None)
         if tmp_dir is not None:
             tmp_dir.cleanup()
