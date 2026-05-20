@@ -3,8 +3,13 @@ import pickle
 import gymnasium as gym
 
 import gymnasium_robotics
+from gymnasium_robotics.envs.shadow_dexterous_hand.reach import get_base_hand_reach_env
 
 gym.register_envs(gymnasium_robotics)
+
+
+def test_reach_factory_name():
+    assert callable(get_base_hand_reach_env)
 
 
 def test_serialize_deserialize():
