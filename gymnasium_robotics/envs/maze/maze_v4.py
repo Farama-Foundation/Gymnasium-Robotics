@@ -60,6 +60,7 @@ class Maze:
         self._unique_goal_locations = []
         self._unique_reset_locations = []
         self._combined_locations = []
+        self._tmp_dir = None
 
         # Get the center cell Cartesian position of the maze. This will be the origin
         self._map_length = len(maze_map)
@@ -233,20 +234,14 @@ class Maze:
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
-        # Save new xml with maze to a temporary file
-        # Make temporary file object and make the string path to our new file
-        tmp_dir = tempfile.TemporaryDirectory()
-        temp_xml_path = path.join(tmp_dir.name, "ant_maze.xml")
+        # Save new xml with maze to a temporary file.
+        maze._tmp_dir = tempfile.TemporaryDirectory()
+        temp_xml_path = path.join(maze._tmp_dir.name, "ant_maze.xml")
 
-        # Write the new xml to the temporary file
         with open(temp_xml_path, "wb") as xml_file:
             tree.write(xml_file)
 
-        return (
-            maze,
-            temp_xml_path,
-            tmp_dir,  # The tmp_dir object is returned to keep it alive
-        )
+        return maze, temp_xml_path
 
 
 class MazeEnv(GoalEnv):
@@ -265,18 +260,20 @@ class MazeEnv(GoalEnv):
         self.reward_type = reward_type
         self.continuing_task = continuing_task
         self.reset_target = reset_target
-        self.maze, self.tmp_xml_file_path, self.tmp_dir = Maze.make_maze(
+        self.maze, self.tmp_xml_file_path = Maze.make_maze(
             agent_xml_path, maze_map, maze_size_scaling, maze_height
         )
+        self._tmp_dir = self.maze._tmp_dir
 
         self.position_noise_range = position_noise_range
 
     def close(self):
         """Clean up the temporary directory that stores the generated XML file."""
-        tmp_dir = getattr(self, "tmp_dir", None)
+        tmp_dir = getattr(self, "_tmp_dir", None)
         if tmp_dir is not None:
             tmp_dir.cleanup()
-            self.tmp_dir = None
+            self._tmp_dir = None
+            self.maze._tmp_dir = None
 
     def generate_target_goal(self) -> np.ndarray:
         assert len(self.maze.unique_goal_locations) > 0

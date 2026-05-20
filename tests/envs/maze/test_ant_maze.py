@@ -29,11 +29,10 @@ def test_temp_xml_file_lifecycle(version):
     try:
         unwrapped_env = env.unwrapped
         temp_xml_path = Path(unwrapped_env.tmp_xml_file_path)
-        temp_dir = Path(unwrapped_env.tmp_dir.name)
+        temp_dir = temp_xml_path.parent
 
         assert temp_xml_path.exists()
         assert temp_dir.exists()
-        assert temp_xml_path.parent == temp_dir
     finally:
         env.close()
 
