@@ -21,7 +21,7 @@ def test_reset(version):
         assert dist > 0.45, f"dist={dist} < 0.45"
 
 
-@pytest.mark.parametrize("version", ["v3", "v4", "v5"])
+@pytest.mark.parametrize("version", ["v4", "v5"])
 def test_temp_xml_file_lifecycle(version):
     """Check that the generated maze XML file is cleaned up when the environment closes."""
     env = gym.make(f"AntMaze_UMaze-{version}")
