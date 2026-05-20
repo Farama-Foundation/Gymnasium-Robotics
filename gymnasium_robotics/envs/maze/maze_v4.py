@@ -153,18 +153,16 @@ class Maze:
         maze_size_scaling: float,
         maze_height: float,
     ):
-        """Class method that returns an instance of Maze with a decoded maze information and the temporal
-           path to the new MJCF (xml) file for the MuJoCo simulation.
+        """Create a maze and a temporary MJCF file for the MuJoCo simulation.
 
         Args:
-            agent_xml_path (str): the goal that was achieved during execution
-            maze_map (list[list[str,int]]): the desired goal that we asked the agent to attempt to achieve
-            maze_size_scaling (float): an info dictionary with additional information
-            maze_height (float): an info dictionary with additional information
+            agent_xml_path: Path to the base agent MJCF file.
+            maze_map: Maze cell layout used to add wall geoms and goal/reset locations.
+            maze_size_scaling: Scaling factor used to map maze cells to MuJoCo coordinates.
+            maze_height: Unscaled height of maze walls.
 
         Returns:
-            Maze: The reward that corresponds to the provided achieved goal w.r.t. to the desired
-            goal. Note that the following should always hold true:
+            Maze: The reward that corresponds to the provided achieved goal w.r.t. to the desired goal. Note that the following should always hold true:
             str: The xml temporal file to the new mjcf model with the included maze.
         """
         tree = ET.parse(agent_xml_path)
