@@ -390,7 +390,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
             qvel=qvel,
         )
 
-    def set_env_state(self, state_dict):
+    def set_env_state(self, state_dict: dict[str, np.ndarray]):
         """
         Set the state which includes hand as well as objects and targets in the scene
         """
