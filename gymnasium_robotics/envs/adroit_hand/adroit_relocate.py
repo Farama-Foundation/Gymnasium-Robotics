@@ -256,6 +256,12 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         self.target_obj_site_id = self._model_names.site_name2id["target"]
         self.S_grasp_site_id = self._model_names.site_name2id["S_grasp"]
         self.obj_body_id = self._model_names.body_name2id["Object"]
+        self.obj_translation_qpos_indices = np.array(
+            [
+                self.model.jnt_qposadr[self._model_names.joint_name2id[joint_name]]
+                for joint_name in ("OBJTx", "OBJTy", "OBJTz")
+            ]
+        )
         self.act_mean = np.mean(self.model.actuator_ctrlrange, axis=1)
         self.act_rng = 0.5 * (
             self.model.actuator_ctrlrange[:, 1] - self.model.actuator_ctrlrange[:, 0]
@@ -388,13 +394,20 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         """
         Set the state which includes hand as well as objects and targets in the scene
         """
+        state = {
+            key: state_dict[key]
+            for key in self._state_space.spaces.keys()
+            if key in state_dict
+        }
         assert self._state_space.contains(
-            state_dict
+            state
         ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
-        qp = state_dict["qpos"]
-        qv = state_dict["qvel"]
+        qp = state["qpos"]
+        qv = state["qvel"]
 
-        self.model.body_pos[self.obj_body_id] = state_dict["obj_pos"]
-        self.model.site_pos[self.target_obj_site_id] = state_dict["target_pos"]
+        self.model.body_pos[self.obj_body_id] = (
+            state["obj_pos"] - qp[self.obj_translation_qpos_indices]
+        )
+        self.model.site_pos[self.target_obj_site_id] = state["target_pos"]
 
         self.set_state(qp, qv)
