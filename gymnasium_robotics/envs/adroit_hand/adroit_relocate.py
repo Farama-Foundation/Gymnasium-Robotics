@@ -394,20 +394,16 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
         """
         Set the state which includes hand as well as objects and targets in the scene
         """
-        state = {
-            key: state_dict[key]
-            for key in self._state_space.spaces.keys()
-            if key in state_dict
-        }
-        assert self._state_space.contains(
-            state
+        assert all(
+            key in state_dict and space.contains(state_dict[key])
+            for key, space in self._state_space.spaces.items()
         ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
-        qp = state["qpos"]
-        qv = state["qvel"]
+        qp = state_dict["qpos"]
+        qv = state_dict["qvel"]
 
         self.model.body_pos[self.obj_body_id] = (
-            state["obj_pos"] - qp[self.obj_translation_qpos_indices]
+            state_dict["obj_pos"] - qp[self.obj_translation_qpos_indices]
         )
-        self.model.site_pos[self.target_obj_site_id] = state["target_pos"]
+        self.model.site_pos[self.target_obj_site_id] = state_dict["target_pos"]
 
         self.set_state(qp, qv)
