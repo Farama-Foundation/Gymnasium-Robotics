@@ -183,7 +183,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     * v2:
         - Fixed the sign of the dense `get_to_hammer` reward term. In `v1`, this term encouraged the hand to move away from the hammer instead of towards it (related [GitHub PR #220](https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220)).
-        - Fixed `set_env_state` to accept the `target_pos` entry returned by `get_env_state`, allowing `set_env_state(get_env_state())` to round-trip.
+        - Fixed `set_env_state` to accept the `target_pos` entry returned by `get_env_state`, allowing `set_env_state(get_env_state())` to round-trip (related [GitHub issue #165](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/165)).
     * v1: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
