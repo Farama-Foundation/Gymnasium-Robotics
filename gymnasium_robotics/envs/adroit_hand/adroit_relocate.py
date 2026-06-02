@@ -176,6 +176,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
 
     * v2:
         - Fixed the sign of the dense `get_to_ball` reward term. In `v1`, this term encouraged the hand to move away from the ball instead of towards it (related [GitHub PR #220](https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220)).
+        - Fixed `set_env_state` to preserve the object's world position when restoring states with non-zero object joint translations, and to accept the full output of `get_env_state` (related [GitHub issue #165](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/165)).
     * v1: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
