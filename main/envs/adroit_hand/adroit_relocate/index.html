@@ -1082,6 +1082,7 @@ The episode is never <code class="docutils literal notranslate"><span class="pre
 <li><p>v2:</p>
 <ul>
 <li><p>Fixed the sign of the dense <code class="docutils literal notranslate"><span class="pre">get_to_ball</span></code> reward term. In <code class="docutils literal notranslate"><span class="pre">v1</span></code>, this term encouraged the hand to move away from the ball instead of towards it (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220">GitHub PR #220</a>).</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">set_env_state</span></code> to preserve the object’s world position when restoring states with non-zero object joint translations, and to accept the full output of <code class="docutils literal notranslate"><span class="pre">get_env_state</span></code> (related <a class="reference external" href="https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/165">GitHub issue #165</a>).</p></li>
 </ul>
 </li>
 <li><p>v1: refactor version of the D4RL environment, also create dependency on newest <a class="reference external" href="https://mujoco.readthedocs.io/en/latest/python.html">mujoco python bindings</a> maintained by the MuJoCo team in Deepmind.</p></li>
