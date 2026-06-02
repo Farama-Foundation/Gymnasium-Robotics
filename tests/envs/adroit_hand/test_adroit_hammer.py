@@ -7,9 +7,7 @@ import gymnasium_robotics
 gym.register_envs(gymnasium_robotics)
 
 
-@pytest.mark.parametrize(
-    "env_id", ["AdroitHandHammer-v2", "AdroitHandHammerSparse-v2"]
-)
+@pytest.mark.parametrize("env_id", ["AdroitHandHammer-v2", "AdroitHandHammerSparse-v2"])
 def test_set_env_state_accepts_full_hammer_state(env_id):
     env = gym.make(env_id, disable_env_checker=True)
     adroit_env = env.unwrapped
