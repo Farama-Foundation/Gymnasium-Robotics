@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v6
       - run: |
            docker build -f .github/docker/py.Dockerfile \
-             --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
+             --build-arg BASE_PYTHON_VERSION=${{ matrix.python-version }} \
              --tag gymnasium-robotics-docker .
       - name: Run tests
         run: docker run gymnasium-robotics-docker pytest

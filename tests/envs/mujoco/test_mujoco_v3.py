@@ -1,6 +1,15 @@
+import sys
+
+import pytest
+
+if sys.version_info >= (3, 14):
+    pytest.skip(
+        "mujoco-py is deprecated and is not supported on Python 3.14",
+        allow_module_level=True,
+    )
+
 import gymnasium as gym
 import numpy as np
-import pytest
 
 import gymnasium_robotics
 

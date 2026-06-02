@@ -26,6 +26,6 @@ If you need to use older `mujoco-py` versions for your work (does not support `c
 pip install gymnasium-robotics[mujoco-py-original]
 ```
 
+The deprecated `mujoco-py` extras are supported on Python versions earlier than 3.14.
 
-
-We support and test for Python 3.10, 3.11, 3.12 and 3.13 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
+We support and test for Python 3.10, 3.11, 3.12, 3.13 and 3.14 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.

@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering :: Artificial Intelligence',
 ]
@@ -38,13 +39,16 @@ dynamic = ["version"]
 [project.optional-dependencies]
 # Update dependencies in `all` if any are added or removed
 testing = [
-	"pytest==7.0.1",
-	"mujoco_py_cython3",
+	"pytest==8.4.2",
+	"mujoco_py_cython3; python_version < '3.14'",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
-mujoco_py = ["mujoco_py_cython3"]
-mujoco_py_original = ["mujoco_py<2.2,>=2.1", "cython<3"]
+mujoco_py = ["mujoco_py_cython3; python_version < '3.14'"]
+mujoco_py_original = [
+    "mujoco_py<2.2,>=2.1; python_version < '3.14'",
+    "cython<3; python_version < '3.14'",
+]
 
 [project.urls]
 Homepage = "https://farama.org"
