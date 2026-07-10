@@ -10,9 +10,9 @@ As well as adding support for the Gymnasium API.
 
 This project is covered by the Apache 2.0 License.
 """
+
 import math
 import tempfile
-import time
 import xml.etree.ElementTree as ET
 from os import path
 from typing import Dict, List, Optional, Union
@@ -53,7 +53,6 @@ class Maze:
         maze_size_scaling: float,
         maze_height: float,
     ):
-
         self._maze_map = maze_map
         self._maze_size_scaling = maze_size_scaling
         self._maze_height = maze_height
@@ -61,6 +60,7 @@ class Maze:
         self._unique_goal_locations = []
         self._unique_reset_locations = []
         self._combined_locations = []
+        self._tmp_dir = None
 
         # Get the center cell Cartesian position of the maze. This will be the origin
         self._map_length = len(maze_map)
@@ -153,18 +153,16 @@ class Maze:
         maze_size_scaling: float,
         maze_height: float,
     ):
-        """Class method that returns an instance of Maze with a decoded maze information and the temporal
-           path to the new MJCF (xml) file for the MuJoCo simulation.
+        """Create a maze and a temporary MJCF file for the MuJoCo simulation.
 
         Args:
-            agent_xml_path (str): the goal that was achieved during execution
-            maze_map (list[list[str,int]]): the desired goal that we asked the agent to attempt to achieve
-            maze_size_scaling (float): an info dictionary with additional information
-            maze_height (float): an info dictionary with additional information
+            agent_xml_path: Path to the base agent MJCF file.
+            maze_map: Maze cell layout used to add wall geoms and goal/reset locations.
+            maze_size_scaling: Scaling factor used to map maze cells to MuJoCo coordinates.
+            maze_height: Unscaled height of maze walls.
 
         Returns:
-            Maze: The reward that corresponds to the provided achieved goal w.r.t. to the desired
-            goal. Note that the following should always hold true:
+            Maze: The reward that corresponds to the provided achieved goal w.r.t. to the desired goal. Note that the following should always hold true:
             str: The xml temporal file to the new mjcf model with the included maze.
         """
         tree = ET.parse(agent_xml_path)
@@ -234,11 +232,12 @@ class Maze:
         maze._unique_goal_locations += maze._combined_locations
         maze._unique_reset_locations += maze._combined_locations
 
-        # Save new xml with maze to a temporary file
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            temp_xml_name = f"ant_maze{str(time.time())}.xml"
-            temp_xml_path = path.join(path.dirname(tmp_dir), temp_xml_name)
-            tree.write(temp_xml_path)
+        # Save new xml with maze to a temporary file.
+        maze._tmp_dir = tempfile.TemporaryDirectory()
+        temp_xml_path = path.join(maze._tmp_dir.name, "ant_maze.xml")
+
+        with open(temp_xml_path, "wb") as xml_file:
+            tree.write(xml_file)
 
         return maze, temp_xml_path
 
@@ -256,15 +255,23 @@ class MazeEnv(GoalEnv):
         position_noise_range: float = 0.25,
         **kwargs,
     ):
-
         self.reward_type = reward_type
         self.continuing_task = continuing_task
         self.reset_target = reset_target
         self.maze, self.tmp_xml_file_path = Maze.make_maze(
             agent_xml_path, maze_map, maze_size_scaling, maze_height
         )
+        self._tmp_dir = self.maze._tmp_dir
 
         self.position_noise_range = position_noise_range
+
+    def close(self):
+        """Clean up the temporary directory that stores the generated XML file."""
+        tmp_dir = getattr(self, "_tmp_dir", None)
+        if tmp_dir is not None:
+            tmp_dir.cleanup()
+            self._tmp_dir = None
+            self.maze._tmp_dir = None
 
     def generate_target_goal(self) -> np.ndarray:
         assert len(self.maze.unique_goal_locations) > 0

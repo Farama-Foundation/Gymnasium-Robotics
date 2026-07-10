@@ -3,10 +3,16 @@ import pickle
 import gymnasium as gym
 import pytest
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
 ENVIRONMENT_IDS = (
-    "HandManipulateEgg-v0",
-    "HandManipulatePen-v0",
-    "HandManipulateBlock-v0",
+    #  "HandManipulateEgg-v0",
+    #  "HandManipulatePen-v0",
+    #  "HandManipulateBlock-v0",
+    "HandManipulateEgg-v1",
+    "HandManipulatePen-v1",
+    "HandManipulateBlock-v1",
 )
 
 

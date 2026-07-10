@@ -45,7 +45,7 @@ Gymnasium-Robotics is a collection of robotics simulation environments for Reinf
    :height: 500
 ```
 
-This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
+This library contains a collection of Reinforcement Learning robotic environments that use the [Gymnasium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
 
 The creation and interaction with the robotic environments follow the Gymnasium interface:
 
@@ -56,7 +56,7 @@ import gymnasium_robotics
 
 gym.register_envs(gymnasium_robotics)
 
-env = gym.make("FetchPickAndPlace-v3", render_mode="human")
+env = gym.make("FetchPickAndPlace-v4", render_mode="human")
 observation, info = env.reset(seed=42)
 for _ in range(1000):
    action = policy(observation)  # User-defined policy function

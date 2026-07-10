@@ -52,7 +52,7 @@ def goal_distance(goal_a, goal_b):
     return np.linalg.norm(goal_a - goal_b, axis=-1)
 
 
-def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
+def get_base_hand_reach_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]):
     class BaseHandReachEnv(HandEnvClass, EzPickle):
         def __init__(
             self,
@@ -135,7 +135,7 @@ def get_base_hand_reanch_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv]
     return BaseHandReachEnv
 
 
-class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
+class MujocoHandReachEnv(get_base_hand_reach_env(MujocoHandEnv)):
     """
     ## Description
 
@@ -346,7 +346,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     | robot0:THJ1                            | -0.0015229223564485414 |
     | robot0:THJ0                            | -0.7894883021600622    |
 
-    For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinete perido of time.
+    For the target cartersian position of the fingers there are two possible initializations chosen randomly. With a probability of 10 % the episodes goal will be to keep the initial position of the finger tips for an indefinite period of time.
     The initial position of the finger tips will then be:
 
     | Finger Tip | Coordinate | Position (m) |
@@ -387,6 +387,8 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
     ```
 
     ## Version History
+
+    * v3: Fixed bug where initial state did not match initial state description in documentation. Hand Reach environments' initial states after reset now match the documentation (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251)).
     * v2: Fixed bug: `env.reset()` not properly resetting the internal state. Fetch environments now properly reset their state (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207)).
     * v1: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: the environment depends on `mujoco_py` which is no longer maintained.
@@ -445,7 +447,7 @@ class MujocoHandReachEnv(get_base_hand_reanch_env(MujocoHandEnv)):
         self._mujoco.mj_forward(self.model, self.data)
 
 
-class MujocoPyHandReachEnv(get_base_hand_reanch_env(MujocoPyHandEnv)):
+class MujocoPyHandReachEnv(get_base_hand_reach_env(MujocoPyHandEnv)):
     def _get_achieved_goal(self):
         goal = [self.sim.data.get_site_xpos(name) for name in FINGERTIP_SITE_NAMES]
 

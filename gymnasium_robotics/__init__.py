@@ -1,11 +1,12 @@
 # noqa: D104
-from gymnasium.envs.registration import register
+import gymnasium
+from gymnasium import register
 
 from gymnasium_robotics.core import GoalEnv
 from gymnasium_robotics.envs.maze import maps
 from gymnasium_robotics.envs.multiagent_mujoco import mamujoco_v1
 
-__version__ = "1.3.0a1"
+__version__ = "1.4.2"
 
 
 def register_robotics_envs():
@@ -30,7 +31,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"FetchSlide{suffix}-v3",
+            id=f"FetchSlide{suffix}-v4",
             entry_point="gymnasium_robotics.envs.fetch.slide:MujocoFetchSlideEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -44,7 +45,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"FetchPickAndPlace{suffix}-v3",
+            id=f"FetchPickAndPlace{suffix}-v4",
             entry_point="gymnasium_robotics.envs.fetch.pick_and_place:MujocoFetchPickAndPlaceEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -58,7 +59,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"FetchReach{suffix}-v3",
+            id=f"FetchReach{suffix}-v4",
             entry_point="gymnasium_robotics.envs.fetch.reach:MujocoFetchReachEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -72,7 +73,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"FetchPush{suffix}-v3",
+            id=f"FetchPush{suffix}-v4",
             entry_point="gymnasium_robotics.envs.fetch.push:MujocoFetchPushEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -87,7 +88,7 @@ def register_robotics_envs():
         )
 
         register(
-            id=f"HandReach{suffix}-v2",
+            id=f"HandReach{suffix}-v3",
             entry_point="gymnasium_robotics.envs.shadow_dexterous_hand.reach:MujocoHandReachEnv",
             kwargs=kwargs,
             max_episode_steps=50,
@@ -835,245 +836,126 @@ def register_robotics_envs():
 
         # ----- AntMaze -----
 
-        register(
-            id=f"AntMaze_UMaze{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.U_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+        for version in ["v3", "v4", "v5"]:
+            register(
+                id=f"AntMaze_UMaze{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.U_MAZE,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=700,
+            )
 
-        register(
-            id=f"AntMaze_UMaze{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.U_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Open{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.OPEN,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=700,
+            )
 
-        register(
-            id=f"AntMaze_Open{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Open_Diverse_G{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.OPEN_DIVERSE_G,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=700,
+            )
 
-        register(
-            id=f"AntMaze_Open{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Open_Diverse_GR{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.OPEN_DIVERSE_GR,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=700,
+            )
 
-        register(
-            id=f"AntMaze_Open_Diverse_G{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Medium{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.MEDIUM_MAZE,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
-        register(
-            id=f"AntMaze_Open_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Medium_Diverse_G{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.MEDIUM_MAZE_DIVERSE_G,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
-        register(
-            id=f"AntMaze_Open_Diverse_GR{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Medium_Diverse_GR{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.MEDIUM_MAZE_DIVERSE_GR,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
-        register(
-            id=f"AntMaze_Open_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.OPEN_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=700,
-        )
+            register(
+                id=f"AntMaze_Large{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.LARGE_MAZE,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
-        register(
-            id=f"AntMaze_Medium{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
+            register(
+                id=f"AntMaze_Large_Diverse_G{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.LARGE_MAZE_DIVERSE_G,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
-        register(
-            id=f"AntMaze_Medium{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Medium_Diverse_G{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Medium_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Medium_Diverse_GR{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Medium_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.MEDIUM_MAZE_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large_Diverse_G{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large_Diverse_G{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE_DIVERSE_G,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large_Diverse_GR{suffix}-v3",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
-
-        register(
-            id=f"AntMaze_Large_Diverse_GR{suffix}-v4",
-            entry_point="gymnasium_robotics.envs.maze.ant_maze_v4:AntMazeEnv",
-            kwargs=_merge(
-                {
-                    "maze_map": maps.LARGE_MAZE_DIVERSE_GR,
-                },
-                kwargs,
-            ),
-            max_episode_steps=1000,
-        )
+            register(
+                id=f"AntMaze_Large_Diverse_GR{suffix}-{version}",
+                entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
+                kwargs=_merge(
+                    {
+                        "maze_map": maps.LARGE_MAZE_DIVERSE_GR,
+                    },
+                    kwargs,
+                ),
+                max_episode_steps=1000,
+            )
 
         # ----- PointMaze -----
 
@@ -1199,7 +1081,7 @@ def register_robotics_envs():
 
     for reward_type in ["sparse", "dense"]:
         suffix = "Sparse" if reward_type == "sparse" else ""
-        version = "v1"
+        version = "v2"
         kwargs = {
             "reward_type": reward_type,
         }
@@ -1236,6 +1118,146 @@ def register_robotics_envs():
         id="FrankaKitchen-v1",
         entry_point="gymnasium_robotics.envs.franka_kitchen:KitchenEnv",
         max_episode_steps=280,
+    )
+
+    # Mujoco (classic mujoco_py based)
+    # ----------------------------------------
+
+    # manipulation
+
+    gymnasium.registry.pop("Reacher-v2")
+    register(
+        id="Reacher-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.reacher_v2:ReacherEnv",
+        max_episode_steps=50,
+        reward_threshold=-3.75,
+    )
+
+    gymnasium.registry.pop("Pusher-v2")
+    register(
+        id="Pusher-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.pusher_v2:PusherEnv",
+        max_episode_steps=100,
+        reward_threshold=0.0,
+    )
+
+    # balance
+
+    gymnasium.registry.pop("InvertedPendulum-v2")
+    register(
+        id="InvertedPendulum-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.inverted_pendulum_v2:InvertedPendulumEnv",
+        max_episode_steps=1000,
+        reward_threshold=950.0,
+    )
+
+    gymnasium.registry.pop("InvertedDoublePendulum-v2")
+    register(
+        id="InvertedDoublePendulum-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.inverted_double_pendulum_v2:InvertedDoublePendulumEnv",
+        max_episode_steps=1000,
+        reward_threshold=9100.0,
+    )
+
+    # runners
+
+    gymnasium.registry.pop("HalfCheetah-v2")
+    register(
+        id="HalfCheetah-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.half_cheetah_v2:HalfCheetahEnv",
+        max_episode_steps=1000,
+        reward_threshold=4800.0,
+    )
+
+    gymnasium.registry.pop("HalfCheetah-v3")
+    register(
+        id="HalfCheetah-v3",
+        entry_point="gymnasium_robotics.envs.mujoco.half_cheetah_v3:HalfCheetahEnv",
+        max_episode_steps=1000,
+        reward_threshold=4800.0,
+    )
+
+    gymnasium.registry.pop("Hopper-v2")
+    register(
+        id="Hopper-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.hopper_v2:HopperEnv",
+        max_episode_steps=1000,
+        reward_threshold=3800.0,
+    )
+
+    gymnasium.registry.pop("Hopper-v3")
+    register(
+        id="Hopper-v3",
+        entry_point="gymnasium_robotics.envs.mujoco.hopper_v3:HopperEnv",
+        max_episode_steps=1000,
+        reward_threshold=3800.0,
+    )
+
+    gymnasium.registry.pop("Swimmer-v2")
+    register(
+        id="Swimmer-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.swimmer_v2:SwimmerEnv",
+        max_episode_steps=1000,
+        reward_threshold=360.0,
+    )
+
+    gymnasium.registry.pop("Swimmer-v3")
+    register(
+        id="Swimmer-v3",
+        entry_point="gymnasium_robotics.envs.mujoco.swimmer_v3:SwimmerEnv",
+        max_episode_steps=1000,
+        reward_threshold=360.0,
+    )
+
+    gymnasium.registry.pop("Walker2d-v2")
+    register(
+        id="Walker2d-v2",
+        max_episode_steps=1000,
+        entry_point="gymnasium_robotics.envs.mujoco.walker2d_v2:Walker2dEnv",
+    )
+
+    gymnasium.registry.pop("Walker2d-v3")
+    register(
+        id="Walker2d-v3",
+        max_episode_steps=1000,
+        entry_point="gymnasium_robotics.envs.mujoco.walker2d_v3:Walker2dEnv",
+    )
+
+    gymnasium.registry.pop("Ant-v2")
+    register(
+        id="Ant-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.ant_v2:AntEnv",
+        max_episode_steps=1000,
+        reward_threshold=6000.0,
+    )
+
+    gymnasium.registry.pop("Ant-v3")
+    register(
+        id="Ant-v3",
+        entry_point="gymnasium_robotics.envs.mujoco.ant_v3:AntEnv",
+        max_episode_steps=1000,
+        reward_threshold=6000.0,
+    )
+
+    gymnasium.registry.pop("Humanoid-v2")
+    register(
+        id="Humanoid-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.humanoid_v2:HumanoidEnv",
+        max_episode_steps=1000,
+    )
+
+    gymnasium.registry.pop("Humanoid-v3")
+    register(
+        id="Humanoid-v3",
+        entry_point="gymnasium_robotics.envs.mujoco.humanoid_v3:HumanoidEnv",
+        max_episode_steps=1000,
+    )
+
+    gymnasium.registry.pop("HumanoidStandup-v2")
+    register(
+        id="HumanoidStandup-v2",
+        entry_point="gymnasium_robotics.envs.mujoco.humanoidstandup_v2:HumanoidStandupEnv",
+        max_episode_steps=1000,
     )
 
 

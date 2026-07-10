@@ -10,13 +10,16 @@ Original Author: Schroeder de Witt
 - fixed `_get_obs()` (now also returns tendon related observations)
 - renamed CoupledHalfCheetah -> CoupledHalfCheetahEnv
 """
+
 import os
 import typing
 
 import gymnasium
+import mujoco
 import numpy as np
 from gymnasium.envs.mujoco import mujoco_env
 from gymnasium.utils.ezpickle import EzPickle
+from packaging.version import Version
 
 DEFAULT_CAMERA_CONFIG = {
     "distance": 4.0,
@@ -145,8 +148,14 @@ class CoupledHalfCheetahEnv(mujoco_env.MujocoEnv, EzPickle):
         """Init.
 
         Args:
-            render_mode: see [Gymansium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
+            render_mode: see [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/)
         """
+        if Version(mujoco.__version__) > Version("3.5.0"):
+            raise ImportError(
+                "`CoupledHalfCheetah` is only supported on `mujoco<=3.5.0` because "
+                "MuJoCo 3.6.0 changed the tendon Jacobian API."
+            )
+
         self._forward_reward_weight = 1
         self._ctrl_cost_weight = 0.1
         self._reset_noise_scale = 0.1

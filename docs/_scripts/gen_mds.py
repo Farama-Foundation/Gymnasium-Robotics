@@ -1,5 +1,5 @@
 """
-   isort:skip_file
+isort:skip_file
 """
 
 import os
@@ -7,10 +7,14 @@ import os
 from tqdm import tqdm
 
 import gymnasium as gym
+import gymnasium_robotics
 
 from importlib import import_module
 from utils import trim
 import re
+
+
+gym.register_envs(gymnasium_robotics)
 
 
 # REWRITE: generate md's for new environments that don't belong to Fetch or Shadow Hand
@@ -21,7 +25,8 @@ for env_spec in gym.envs.registry.values():
     if isinstance(env_spec.entry_point, str):
         if (
             env_spec.entry_point.startswith("gymnasium_robotics.envs")
-            and "MujocoPy" not in env_spec.entry_point
+            # and "MujocoPy" not in env_spec.entry_point
+            and "gymnasium_robotics.envs.mujoco" not in env_spec.entry_point
         ):
             all_envs.append(env_spec)  # Exclude Fetch and Shadow Hand environments
 

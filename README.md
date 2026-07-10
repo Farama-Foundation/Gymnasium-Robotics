@@ -1,10 +1,14 @@
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Python](https://img.shields.io/pypi/pyversions/gymnasium-robotics.svg)](https://badge.fury.io/py/gymnasium-robotics)
+[![PyPI](https://badge.fury.io/py/gymnasium-robotics.svg)](https://badge.fury.io/py/gymnasium-robotics)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/gymrobotics-revised-text.png" width="500px"/>
+  <a href = "https://robotics.farama.org/" target = "_blank"> <img src="https://raw.githubusercontent.com/Farama-Foundation/Gymnasium-Robotics/main/docs/gymnasium-robotics.png" width="500px"/> </a>
 </p>
 
-This library contains a collection of Reinforcement Learning robotic environments that use the [Gymansium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
+This library contains a collection of Reinforcement Learning robotic environments that use the [Gymnasium](https://gymnasium.farama.org/) API. The environments run with the [MuJoCo](https://mujoco.org/) physics engine and the maintained [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html).
 
 The documentation website is at [robotics.farama.org](https://robotics.farama.org/), and we have a public discord server (which we also use to coordinate development work) that you can join here: [https://discord.gg/YymmHrvS](https://discord.gg/YymmHrvS)
 
@@ -12,11 +16,11 @@ The documentation website is at [robotics.farama.org](https://robotics.farama.or
 
 To install the Gymnasium-Robotics environments use `pip install gymnasium-robotics`
 
-These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).  
+These environments also require the MuJoCo engine from Deepmind to be installed. Instructions to install the physics engine can be found at the [MuJoCo website](https://mujoco.org/) and the [MuJoCo Github repository](https://github.com/deepmind/mujoco).
 
 Note that the latest environment versions use the latest mujoco python bindings maintained by the MuJoCo team. If you wish to use the old versions of the environments that depend on [mujoco-py](https://github.com/openai/mujoco-py), please install this library with `pip install gymnasium-robotics[mujoco-py]`
 
-We support and test for Python 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
+We support and test for Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
 
 ## Environments
 
@@ -24,7 +28,7 @@ We support and test for Python 3.8, 3.9, 3.10 and 3.11 on Linux and macOS. We wi
 
 * [Fetch](https://robotics.farama.org/envs/fetch/) - A collection of environments with a 7-DoF robot arm that has to perform manipulation tasks such as Reach, Push, Slide or Pick and Place.
 * [Shadow Dexterous Hand](https://robotics.farama.org/envs/shadow_dexterous_hand/) - A collection of environments with a 24-DoF anthropomorphic robotic hand that has to perform object manipulation tasks with a cube, egg-object, or pen. There are variations of these environments that also include data from 92 touch sensors in the observation space.
-* [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) - A collection of multi agent factorizations of the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environments and a framework for factorizing robotic environments, uses the [pettingzoo.ParallelEnv](https://pettingzoo.farama.org/api/parallel/) API. 
+* [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) - A collection of multi agent factorizations of the [Gymnasium/MuJoCo](https://gymnasium.farama.org/environments/mujoco/) environments and a framework for factorizing robotic environments, uses the [pettingzoo.ParallelEnv](https://pettingzoo.farama.org/api/parallel/) API.
 
 The [D4RL](https://github.com/Farama-Foundation/D4RL) environments are now available. These environments have been refactored and may not have the same action/observation spaces as the original, please read their documentation:
 
@@ -37,7 +41,7 @@ The different tasks involve hammering a nail, opening a door, twirling a pen, or
 
 ## Multi-goal API
 
-The robotic environments use an extension of the core Gymansium API by inheriting from [GoalEnv](https://robotics.farama.org/content/multi-goal_api/) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
+The robotic environments use an extension of the core Gymnasium API by inheriting from [GoalEnv](https://robotics.farama.org/content/multi-goal_api/) class. The new API forces the environments to have a dictionary observation space that contains 3 keys:
 
 * `observation` - The actual observation of the environment
 * `desired_goal` - The goal that the agent has to achieved
@@ -52,8 +56,11 @@ goal, e.g. state derived from the simulation.
 
 ```python
 import gymnasium as gym
+import gymnasium_robotics
 
-env = gym.make("FetchReach-v3")
+gym.register_envs(gymnasium_robotics)
+
+env = gym.make("FetchReach-v4")
 env.reset()
 obs, reward, terminated, truncated, info = env.step(env.action_space.sample())
 
@@ -71,8 +78,8 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 
 The `GoalEnv` class can also be used for custom environments.
 
-## Project Maintainers
-Main Contributors: [Rodrigo Perez-Vicente](https://github.com/rodrigodelazcano), [Kallinteris Andreas](https://github.com/Kallinteris-Andreas), [Jet Tai](https://github.com/jjshoots) 
+## Project Maintainer
+Kallinteris Andreas](https://github.com/Kallinteris-Andreas)
 
 Maintenance for this project is also contributed by the broader Farama team: [farama.org/team](https://farama.org/team).
 
@@ -84,7 +91,7 @@ If you use this in your research, please cite:
   author = {Rodrigo de Lazcano and Kallinteris Andreas and Jun Jet Tai and Seungjae Ryan Lee and Jordan Terry},
   title = {Gymnasium Robotics},
   url = {http://github.com/Farama-Foundation/Gymnasium-Robotics},
-  version = {1.2.4},
-  year = {2023},
+  version = {1.4.0},
+  year = {2024},
 }
 ```

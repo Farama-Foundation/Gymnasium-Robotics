@@ -2,18 +2,23 @@ import pickle
 import warnings
 
 import gymnasium as gym
+import numpy as np
 import pytest
 from gymnasium.envs.mujoco.utils import check_mujoco_reset_state
 from gymnasium.envs.registration import EnvSpec
 from gymnasium.error import Error
 from gymnasium.utils.env_checker import check_env, data_equivalence
 
+import gymnasium_robotics
 from tests.utils import all_testing_env_specs, assert_equals
+
+gym.register_envs(gymnasium_robotics)
 
 CHECK_ENV_IGNORE_WARNINGS = [
     f"\x1b[33mWARN: {message}\x1b[0m"
     for message in [
-        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works).",
+        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works.",
+        "This version of the mujoco environments depends on the mujoco-py bindings, which are no longer maintained and may stop working. Please upgrade to the v5 or v4 versions of the environments (which depend on the mujoco python bindings instead), unless you are trying to precisely replicate previous works.",
         "A Box observation space minimum value is -infinity. This is probably too low.",
         "A Box observation space maximum value is infinity. This is probably too high.",
         "For Box action spaces, we recommend using a symmetric and normalized space (range=[-1, 1] or [0, 1]). See https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html for more information.",
@@ -22,12 +27,17 @@ CHECK_ENV_IGNORE_WARNINGS = [
 
 # Exclude mujoco_py environments in test_render_modes test due to OpenGL error.
 non_mujoco_py_env_specs = [
-    spec for spec in all_testing_env_specs if "MujocoPy" not in spec.entry_point
+    spec
+    for spec in all_testing_env_specs
+    if "MujocoPy" not in spec.entry_point
+    and not spec.entry_point.startswith(
+        "gymnasium_robotics.envs.mujoco."
+    )  # Exclude version 2 and version 3 of the "mujoco" environments
 ]
 
 
 @pytest.mark.parametrize(
-    "spec", all_testing_env_specs, ids=[spec.id for spec in all_testing_env_specs]
+    "spec", non_mujoco_py_env_specs, ids=[spec.id for spec in non_mujoco_py_env_specs]
 )
 def test_env(spec):
     # Capture warnings
@@ -50,7 +60,7 @@ NUM_STEPS = 50
 
 
 @pytest.mark.parametrize(
-    "env_spec", all_testing_env_specs, ids=[env.id for env in all_testing_env_specs]
+    "env_spec", non_mujoco_py_env_specs, ids=[env.id for env in non_mujoco_py_env_specs]
 )
 def test_env_determinism_rollout(env_spec: EnvSpec):
     """Run a rollout with two environments and assert equality.
@@ -160,3 +170,62 @@ def test_pickle_env(env_spec):
     data_equivalence(env.step(action), pickled_env.step(action))
     env.close()
     pickled_env.close()
+
+
+_test_robot_env_reset_list = ["Fetch", "HandReach"]
+
+
+@pytest.mark.parametrize(
+    "spec",
+    [
+        spec
+        for spec in non_mujoco_py_env_specs
+        if np.any([tar in spec.id for tar in _test_robot_env_reset_list])
+    ],
+    ids=[
+        spec.id
+        for spec in non_mujoco_py_env_specs
+        if np.any([tar in spec.id for tar in _test_robot_env_reset_list])
+    ],
+)
+def test_robot_env_reset(spec):
+    """Check initial state of robotic environment, i.e. Fetch and Shadow Dexterous Hand Reach,
+    whether their initial states match the description in the documentation."""
+
+    def _test_initial_states(env, seed=None):
+        diag_dict = {}
+
+        env.reset(seed=seed)
+
+        diag_dict.update(
+            {
+                "qpos": env.unwrapped.data.qpos,
+                "qvel": env.unwrapped.data.qvel,
+                "init_qpos": env.unwrapped.initial_qpos,
+                "init_qvel": env.unwrapped.initial_qvel,
+            }
+        )
+
+        # exclude object location from environments
+        if np.any(
+            [
+                tar in spec.id
+                for tar in [
+                    "FetchPush",
+                    "FetchPickAndPlace",
+                    "FetchSlide",
+                ]
+            ]
+        ):
+            diag_dict["qpos"] = np.delete(diag_dict["qpos"], np.s_[-7:-5])
+            diag_dict["init_qpos"] = np.delete(diag_dict["init_qpos"], np.s_[-7:-5])
+
+        # testing
+        assert np.all(diag_dict["qpos"] == diag_dict["init_qpos"])
+        assert np.all(diag_dict["qvel"] == diag_dict["init_qvel"])
+        return diag_dict
+
+    cur_env: gym.Env = spec.make()
+
+    _test_initial_states(cur_env, seed=24)
+    _test_initial_states(cur_env, seed=10)

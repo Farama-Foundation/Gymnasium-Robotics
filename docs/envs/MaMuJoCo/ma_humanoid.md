@@ -9,7 +9,7 @@ lastpage:
 	<p align="center">
 		<img src="https://gymnasium.farama.org/_images/humanoid.gif" alt="Humanoid" width="200"/>
 	</p>
-</html> 
+</html>
 
 This Environment is part of [MaMuJoCo](https://robotics.farama.org/envs/MaMuJoCo/) environments. Please read that page first for general information.
 The task is [Gymansium's MuJoCo/Humanoid](https://gymnasium.farama.org/environments/mujoco/humanoid/).
@@ -98,7 +98,7 @@ The environment is partitioned in 2 parts, one part corresponding to the upper b
 
 ## Observation Space
 | Observation Categories ||
-|-----------------------|------------------------------------------------------|			
+|-----------------------|------------------------------------------------------|
 | Default `local_categories` | `[["qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"], ["qpos"]]` |
 | Default `global_categories` | `("qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext")` |
 | Supported observation categories | `"qpos", "qvel", "cinert", "cvel", "qfrc_actuator", "cfrc_ext"` |
@@ -132,4 +132,3 @@ Changes from the original `MaMuJoCo` ([schroederdewitt/multiagent_mujoco](https:
 	- Fixed abdomen observations ordering.
 	- Added support for body observations (`cvel`, `cinert`, `cfrc_ext`)
 	- Changed action ordering to be same as [Gymnasium/MuJoCo/Humanoid](https://gymnasium.farama.org/environments/mujoco/humanoid/#action-space)
-

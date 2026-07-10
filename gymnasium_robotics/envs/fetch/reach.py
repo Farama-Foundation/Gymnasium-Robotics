@@ -77,8 +77,8 @@ class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
     the end effector and the goal is lower than 0.05 m).
     - *dense*: the returned reward is the negative Euclidean distance between the achieved goal position and the desired goal.
 
-    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchReach-v3`. However, for `dense`
-    reward the id must be modified to `FetchReachDense-v3` and initialized as follows:
+    To initialize this environment with one of the mentioned reward functions the type of reward must be specified in the id string when the environment is initialized. For `sparse` reward the id is the default of the environment, `FetchReach-v4`. However, for `dense`
+    reward the id must be modified to `FetchReachDense-v4` and initialized as follows:
 
     ```python
     import gymnasium as gym
@@ -86,7 +86,7 @@ class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchReachDense-v3')
+    env = gym.make('FetchReachDense-v4')
     ```
 
     ## Starting State
@@ -111,10 +111,12 @@ class MujocoFetchReachEnv(MujocoFetchEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('FetchReach-v3', max_episode_steps=100)
+    env = gym.make('FetchReach-v4', max_episode_steps=100)
     ```
 
     ## Version History
+
+    * v4: Fixed bug where initial state did not match initial state description in documentation. Fetch environments' initial states after reset now match the documentation (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/251)).
     * v3: Fixed bug: `env.reset()` not properly resetting the internal state. Fetch environments now properly reset their state (related [GitHub issue](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/207)).
     * v2: the environment depends on the newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v1: the environment depends on `mujoco_py` which is no longer maintained.

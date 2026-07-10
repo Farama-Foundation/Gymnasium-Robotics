@@ -282,7 +282,11 @@ class MujocoRobotEnv(BaseRobotEnv):
         from gymnasium.envs.mujoco.mujoco_rendering import MujocoRenderer
 
         self.mujoco_renderer = MujocoRenderer(
-            self.model, self.data, default_camera_config
+            self.model,
+            self.data,
+            default_camera_config,
+            width=self.width,
+            height=self.height,
         )
 
     def _initialize_simulation(self):
@@ -301,6 +305,14 @@ class MujocoRobotEnv(BaseRobotEnv):
     def _reset_sim(self):
         # Reset buffers for joint states, warm-start, control buffers etc.
         mujoco.mj_resetData(self.model, self.data)
+
+        self.data.time = self.initial_time
+        self.data.qpos[:] = np.copy(self.initial_qpos)
+        self.data.qvel[:] = np.copy(self.initial_qvel)
+        if self.model.na != 0:
+            self.data.act[:] = None
+
+        self._mujoco.mj_forward(self.model, self.data)
         return super()._reset_sim()
 
     def render(self):
@@ -358,7 +370,7 @@ class MujocoPyRobotEnv(BaseRobotEnv):
             "on the mujoco-py bindings, which are no longer maintained "
             "and may stop working. Please upgrade to the v4 versions of "
             "the environments (which depend on the mujoco python bindings instead), unless "
-            "you are trying to precisely replicate previous works)."
+            "you are trying to precisely replicate previous works."
         )
 
         super().__init__(**kwargs)

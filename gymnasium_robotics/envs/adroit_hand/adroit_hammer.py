@@ -142,7 +142,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
     - `lift_hammer`: adds a positive reward of `2` if the hammer is lifted a greater distance than `0.04` meters in the z direction.
     - `hammer_nail`: adds a positive reward the closer the head of the nail is to the board. `25` if the distance is less than `0.02` meters and `75` if it is less than `0.01` meters.
 
-    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v1')`.
+    The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandHammerSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
     ## Starting State
@@ -176,11 +176,14 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
 
     gym.register_envs(gymnasium_robotics)
 
-    env = gym.make('AdroitHandHammer-v1', max_episode_steps=400)
+    env = gym.make('AdroitHandHammer-v2', max_episode_steps=400)
     ```
 
     ## Version History
 
+    * v2:
+        - Fixed the sign of the dense `get_to_hammer` reward term. In `v1`, this term encouraged the hand to move away from the hammer instead of towards it (related [GitHub PR #220](https://github.com/Farama-Foundation/Gymnasium-Robotics/pull/220)).
+        - Fixed `set_env_state` to accept the `target_pos` entry returned by `get_env_state`, allowing `set_env_state(get_env_state())` to round-trip (related [GitHub issue #165](https://github.com/Farama-Foundation/Gymnasium-Robotics/issues/165)).
     * v1: refactor version of the D4RL environment, also create dependency on newest [mujoco python bindings](https://mujoco.readthedocs.io/en/latest/python.html) maintained by the MuJoCo team in Deepmind.
     * v0: legacy versions in the [D4RL](https://github.com/Farama-Foundation/D4RL).
     """
@@ -305,7 +308,7 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         # override reward if not sparse reward
         if not self.sparse_reward:
             # get the palm to the hammer handle
-            reward = 0.1 * np.linalg.norm(palm_pos - hamm_pos)
+            reward = -0.1 * np.linalg.norm(palm_pos - hamm_pos)
             # take hammer head to nail
             reward -= np.linalg.norm(head_pos - nail_pos)
             # make nail go inside
@@ -384,12 +387,13 @@ class AdroitHandHammerEnv(MujocoEnv, EzPickle):
         target_pos = self.data.site_xpos[self.target_obj_site_id].ravel().copy()
         return dict(qpos=qpos, qvel=qvel, board_pos=board_pos, target_pos=target_pos)
 
-    def set_env_state(self, state_dict):
+    def set_env_state(self, state_dict: dict[str, np.ndarray]):
         """
         Set the state which includes hand as well as objects and targets in the scene
         """
-        assert self._state_space.contains(
-            state_dict
+        assert all(
+            key in state_dict and space.contains(state_dict[key])
+            for key, space in self._state_space.spaces.items()
         ), f"The state dictionary {state_dict} must be a member of {self._state_space}."
         qp = state_dict["qpos"]
         qv = state_dict["qvel"]

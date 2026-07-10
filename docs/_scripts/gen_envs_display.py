@@ -4,6 +4,10 @@ import re
 import gymnasium as gym
 from tqdm import tqdm
 
+import gymnasium_robotics
+
+gym.register_envs(gymnasium_robotics)
+
 if __name__ == "__main__":
     """
     python gen_envs_display
@@ -16,7 +20,8 @@ if __name__ == "__main__":
         if isinstance(env_spec.entry_point, str):
             if (
                 env_spec.entry_point.startswith("gymnasium_robotics.envs")
-                and "MujocoPy" not in env_spec.entry_point
+                # and "MujocoPy" not in env_spec.entry_point
+                and "gymnasium_robotics.envs.mujoco" not in env_spec.entry_point
             ):
                 all_envs.append(env_spec)  # Exclude Fetch and Shadow Hand environments
     filtered_envs_by_type = {}
