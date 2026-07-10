@@ -78,8 +78,8 @@ substitute_truncated = env.compute_truncated(obs["achieved_goal"], substitute_go
 
 The `GoalEnv` class can also be used for custom environments.
 
-## Project Maintainers
-Main Contributors: [Rodrigo Perez-Vicente](https://github.com/rodrigodelazcano), [Kallinteris Andreas](https://github.com/Kallinteris-Andreas), [Jet Tai](https://github.com/jjshoots)
+## Project Maintainer
+Kallinteris Andreas](https://github.com/Kallinteris-Andreas)
 
 Maintenance for this project is also contributed by the broader Farama team: [farama.org/team](https://farama.org/team).
 
