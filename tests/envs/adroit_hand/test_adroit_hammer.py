@@ -35,9 +35,9 @@ def test_set_env_state_accepts_full_hammer_state(env_id):
         assert "target_pos" in saved_state
 
         state_with_modified_target = dict(saved_state)
-        state_with_modified_target["target_pos"] = (
-            np.array(saved_state["target_pos"], copy=True) + np.array([0.05, 0.0, 0.0])
-        )
+        state_with_modified_target["target_pos"] = np.array(
+            saved_state["target_pos"], copy=True
+        ) + np.array([0.05, 0.0, 0.0])
 
         adroit_env.reset(seed=456)
         adroit_env.set_env_state(state_with_modified_target)
