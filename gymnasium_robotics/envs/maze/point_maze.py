@@ -392,16 +392,24 @@ class PointMazeEnv(MazeEnv, EzPickle):
     def step(self, action):
         obs, _, _, _, info = self.point_env.step(action)
         obs_dict = self._get_obs(obs)
+        # Transition signals use the goal that was active while the action executed.
+        transition_goal = obs_dict["desired_goal"]
 
-        reward = self.compute_reward(obs_dict["achieved_goal"], self.goal, info)
-        terminated = self.compute_terminated(obs_dict["achieved_goal"], self.goal, info)
-        truncated = self.compute_truncated(obs_dict["achieved_goal"], self.goal, info)
+        reward = self.compute_reward(obs_dict["achieved_goal"], transition_goal, info)
+        terminated = self.compute_terminated(
+            obs_dict["achieved_goal"], transition_goal, info
+        )
+        truncated = self.compute_truncated(
+            obs_dict["achieved_goal"], transition_goal, info
+        )
         info["success"] = bool(
-            np.linalg.norm(obs_dict["achieved_goal"] - self.goal) <= 0.45
+            np.linalg.norm(obs_dict["achieved_goal"] - transition_goal) <= 0.45
         )
 
         # Update the goal position if necessary
         self.update_goal(obs_dict["achieved_goal"])
+        # Returned desired_goal is the goal for the next policy step.
+        obs_dict["desired_goal"] = self.goal.copy()
 
         return obs_dict, reward, terminated, truncated, info
 
