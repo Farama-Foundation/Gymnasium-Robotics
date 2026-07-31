@@ -1114,6 +1114,26 @@ def register_robotics_envs():
             kwargs=kwargs,
         )
 
+    # binary reward variants: 0 on environment success, -1 otherwise
+    for env_name, entry_point in [
+        ("Door", "gymnasium_robotics.envs.adroit_hand.adroit_door:AdroitHandDoorEnv"),
+        (
+            "Hammer",
+            "gymnasium_robotics.envs.adroit_hand.adroit_hammer:AdroitHandHammerEnv",
+        ),
+        ("Pen", "gymnasium_robotics.envs.adroit_hand.adroit_pen:AdroitHandPenEnv"),
+        (
+            "Relocate",
+            "gymnasium_robotics.envs.adroit_hand.adroit_relocate:AdroitHandRelocateEnv",
+        ),
+    ]:
+        register(
+            id=f"AdroitHand{env_name}Binary-v1",
+            entry_point=entry_point,
+            max_episode_steps=200,
+            kwargs={"reward_type": "binary"},
+        )
+
     register(
         id="FrankaKitchen-v1",
         entry_point="gymnasium_robotics.envs.franka_kitchen:KitchenEnv",

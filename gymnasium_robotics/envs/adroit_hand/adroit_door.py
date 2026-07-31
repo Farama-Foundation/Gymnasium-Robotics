@@ -123,7 +123,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment can be initialized in either a `dense` or `sparse` reward variant.
+    The environment can be initialized in a `dense`, `sparse`, or `binary` reward variant.
 
     In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `get_to_handle`: increasing negative reward the further away the palm of the hand is from the door handle. This is computed as the 3 dimensional Euclidean distance between both body frames.
@@ -135,6 +135,10 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
+
+    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorBinary-v1')`.
+    In this variant, the environment returns a reward of 0 for environment success and -1 otherwise (i.e. a per-step
+    cost of 1 until the task is solved).
 
     ## Starting State
 
@@ -206,15 +210,13 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         )
         self._model_names = MujocoModelNames(self.model)
 
-        # whether to have sparse rewards
-        if reward_type.lower() == "dense":
-            self.sparse_reward = False
-        elif reward_type.lower() == "sparse":
-            self.sparse_reward = True
-        else:
+        # whether to have dense, sparse, or binary rewards
+        self.reward_type = reward_type.lower()
+        if self.reward_type not in ("dense", "sparse", "binary"):
             raise ValueError(
-                f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}"
+                f"Unknown reward type, expected `dense`, `sparse` or `binary` but got {reward_type}"
             )
+        self.sparse_reward = self.reward_type == "sparse"
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -276,7 +278,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
             }
         )
 
-        EzPickle.__init__(self, **kwargs)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
 
     def step(self, a):
         a = np.clip(a, -1.0, 1.0)
@@ -290,8 +292,12 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
         goal_achieved = goal_distance >= 1.35
         reward = 10.0 if goal_achieved else -0.1
 
-        # override reward if not sparse reward
-        if not self.sparse_reward:
+        # binary reward: 0 on success, -1 otherwise
+        if self.reward_type == "binary":
+            reward = float(goal_achieved) - 1.0
+
+        # override reward if dense reward
+        elif self.reward_type == "dense":
             handle_pos = self.data.site_xpos[self.handle_site_id].ravel()
             palm_pos = self.data.site_xpos[self.grasp_site_id].ravel()
 

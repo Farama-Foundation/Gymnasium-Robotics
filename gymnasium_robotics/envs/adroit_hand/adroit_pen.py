@@ -124,7 +124,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     ## Rewards
 
-    The environment can be initialized in either a `dense` or `sparse` reward variant.
+    The environment can be initialized in a `dense`, `sparse`, or `binary` reward variant.
 
     In the `dense` reward setting, the environment returns a `dense` reward function that consists of the following parts:
     - `target_distance`: increasing negative reward the further away the pen is from its target. This is computed as the 3 dimensional Euclidean distance between both body frames.
@@ -136,6 +136,10 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
+
+    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandPenBinary-v1')`.
+    In this variant, the environment returns a reward of 0 for environment success and -1 otherwise (i.e. a per-step
+    cost of 1 until the task is solved).
 
     ## Starting State
 
@@ -211,14 +215,12 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
         self._model_names = MujocoModelNames(self.model)
 
         # whether to have sparse rewards
-        if reward_type.lower() == "dense":
-            self.sparse_reward = False
-        elif reward_type.lower() == "sparse":
-            self.sparse_reward = True
-        else:
+        self.reward_type = reward_type.lower()
+        if self.reward_type not in ("dense", "sparse", "binary"):
             raise ValueError(
-                f"Unknown reward type, expected `dense` or `sparse` but got {reward_type}"
+                f"Unknown reward type, expected `dense`, `sparse` or `binary` but got {reward_type}"
             )
+        self.sparse_reward = self.reward_type == "sparse"
 
         # Override action_space to -1, 1
         self.action_space = spaces.Box(
@@ -283,7 +285,7 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
             }
         )
 
-        EzPickle.__init__(self, **kwargs)
+        EzPickle.__init__(self, reward_type=reward_type, **kwargs)
 
     def step(self, a):
         a = np.clip(a, -1.0, 1.0)
@@ -311,8 +313,12 @@ class AdroitHandPenEnv(MujocoEnv, EzPickle):
 
         # goal_failed = obj_pos[2] < 0.075
 
-        # override reward if not sparse reward
-        if not self.sparse_reward:
+        # binary reward: 0 on success, -1 otherwise
+        if self.reward_type == "binary":
+            reward = float(goal_achieved) - 1.0
+
+        # override reward if dense reward
+        elif self.reward_type == "dense":
             reward = -goal_distance + orien_similarity
 
             # bonus for being close to desired orientation
