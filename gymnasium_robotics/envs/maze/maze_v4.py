@@ -402,7 +402,7 @@ class MazeEnv(GoalEnv):
 
         if (
             self.continuing_task
-            and self.reset_target
+            and not self.reset_target
             and bool(np.linalg.norm(achieved_goal - self.goal) <= 0.45)
             and len(self.maze.unique_goal_locations) > 1
         ):

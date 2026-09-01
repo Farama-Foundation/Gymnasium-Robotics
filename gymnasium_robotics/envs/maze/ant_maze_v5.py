@@ -294,18 +294,19 @@ class AntMazeEnv(MazeEnv, EzPickle):
 
     def step(self, action):
         ant_obs, _, _, _, info = self.ant_env.step(action)
-        obs = self._get_obs(ant_obs)
-
-        reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
-        terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
-        truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
-        info["success"] = bool(np.linalg.norm(obs["achieved_goal"] - self.goal) <= 0.45)
+        achieved_goal = ant_obs[:2]
+        info["success"] = bool(np.linalg.norm(achieved_goal - self.goal) <= 0.45)
 
         if self.render_mode == "human":
             self.render()
 
         # Update the goal position if necessary
-        self.update_goal(obs["achieved_goal"])
+        self.update_goal(achieved_goal)
+
+        obs = self._get_obs(ant_obs)
+        reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
+        terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
+        truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
 
         return obs, reward, terminated, truncated, info
 
