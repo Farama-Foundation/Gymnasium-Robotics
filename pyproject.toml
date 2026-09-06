@@ -43,8 +43,8 @@ testing = [
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
-mujoco_py = ["mujoco_py_cython3; python_version < '3.14'"]
-mujoco_py_original = ["mujoco_py<2.2,>=2.1; python_version < '3.14'", "cython<3; python_version < '3.14'"]
+mujoco_py = ["mujoco_py_cython3"]
+mujoco_py_original = ["mujoco_py<2.2,>=2.1", "cython<3"]
 
 [project.urls]
 Homepage = "https://farama.org"

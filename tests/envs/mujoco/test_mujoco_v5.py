@@ -1,5 +1,3 @@
-import sys
-
 import gymnasium as gym
 import numpy as np
 import pytest
@@ -7,11 +5,6 @@ from gymnasium.envs.mujoco.mujoco_env import MujocoEnv
 
 import gymnasium_robotics
 from gymnasium_robotics.envs.mujoco.mujoco_py_env import BaseMujocoPyEnv
-
-pytestmark = pytest.mark.skipif(
-    sys.version_info >= (3, 14),
-    reason="The deprecated mujoco-py stack is not supported on Python 3.14",
-)
 
 gym.register_envs(gymnasium_robotics)
 

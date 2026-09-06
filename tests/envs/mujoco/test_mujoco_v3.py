@@ -1,15 +1,8 @@
-import sys
-
 import gymnasium as gym
 import numpy as np
 import pytest
 
 import gymnasium_robotics
-
-pytestmark = pytest.mark.skipif(
-    sys.version_info >= (3, 14),
-    reason="The deprecated mujoco-py stack is not supported on Python 3.14",
-)
 
 gym.register_envs(gymnasium_robotics)
 

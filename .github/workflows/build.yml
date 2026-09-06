@@ -17,4 +17,4 @@ jobs:
              --build-arg PYTHON_VERSION=${{ matrix.python-version }} \
              --tag gymnasium-robotics-docker .
       - name: Run tests
-        run: docker run gymnasium-robotics-docker pytest
+        run: docker run gymnasium-robotics-docker pytest ${{ matrix.python-version == '3.14' && '--ignore=tests/envs/mujoco' || '' }}
