@@ -327,7 +327,7 @@
 <div class="viewcode-block" id="GoalEnv">
 <a class="viewcode-back" href="../../../content/multi-goal_api/#gymnasium_robotics.core.GoalEnv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GoalEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;A goal-based environment.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""A goal-based environment.</span>
 
 <span class="sd">    It functions just as any regular Gymnasium environment but it imposes a required structure on the observation_space. More concretely,</span>
 <span class="sd">    the observation space is required to contain at least three elements, namely `observation`, `desired_goal`, and `achieved_goal`.</span>
@@ -337,7 +337,7 @@
 <span class="sd">    - :meth:`compute_reward` - Externalizes the reward function by taking the achieved and desired goal, as well as extra information. Returns reward.</span>
 <span class="sd">    - :meth:`compute_terminated` - Returns boolean termination depending on the achieved and desired goal, as well as extra information.</span>
 <span class="sd">    - :meth:`compute_truncated` - Returns boolean truncation depending on the achieved and desired goal, as well as extra information.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -345,30 +345,30 @@
         <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the environment.</span>
+<span class="w">        </span><span class="sd">"""Reset the environment.</span>
 
 <span class="sd">        In addition, check if the observation space is correct by inspecting the `observation`, `achieved_goal`, and `desired_goal` keys.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
         <span class="c1"># Enforce that each GoalEnv uses a Goal-compatible observation space.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="p">,</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                <span class="s2">&quot;GoalEnv requires an observation space of type gym.spaces.Dict&quot;</span>
+                <span class="s2">"GoalEnv requires an observation space of type gym.spaces.Dict"</span>
             <span class="p">)</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;observation&quot;</span><span class="p">,</span> <span class="s2">&quot;achieved_goal&quot;</span><span class="p">,</span> <span class="s2">&quot;desired_goal&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"observation"</span><span class="p">,</span> <span class="s2">"achieved_goal"</span><span class="p">,</span> <span class="s2">"desired_goal"</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">spaces</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">error</span><span class="o">.</span><span class="n">Error</span><span class="p">(</span>
-                    <span class="s1">&#39;GoalEnv requires the &quot;</span><span class="si">{}</span><span class="s1">&quot; key to be part of the observation dictionary.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s1">'GoalEnv requires the "</span><span class="si">{}</span><span class="s1">" key to be part of the observation dictionary.'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="n">key</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">achieved_goal</span><span class="p">,</span> <span class="n">desired_goal</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the step reward. This externalizes the reward function and makes it dependent on a desired goal and the one that was achieved.</span>
+<span class="w">        </span><span class="sd">"""Compute the step reward. This externalizes the reward function and makes it dependent on a desired goal and the one that was achieved.</span>
 
 <span class="sd">        If you wish to include additional rewards that are independent of the goal, you can include the necessary values</span>
-<span class="sd">        to derive it in &#39;info&#39; and compute it accordingly.</span>
+<span class="sd">        to derive it in 'info' and compute it accordingly.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            achieved_goal (object): the goal that was achieved during execution</span>
@@ -380,15 +380,15 @@
 <span class="sd">            goal. Note that the following should always hold true:</span>
 
 <span class="sd">                ob, reward, terminated, truncated, info = env.step()</span>
-<span class="sd">                assert reward == env.compute_reward(ob[&#39;achieved_goal&#39;], ob[&#39;desired_goal&#39;], info)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                assert reward == env.compute_reward(ob['achieved_goal'], ob['desired_goal'], info)</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_terminated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">achieved_goal</span><span class="p">,</span> <span class="n">desired_goal</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the step termination. Allows to customize the termination states depending on the desired and the achieved goal.</span>
+<span class="w">        </span><span class="sd">"""Compute the step termination. Allows to customize the termination states depending on the desired and the achieved goal.</span>
 
-<span class="sd">        If you wish to determine termination states independent of the goal, you can include necessary values to derive it in &#39;info&#39;</span>
+<span class="sd">        If you wish to determine termination states independent of the goal, you can include necessary values to derive it in 'info'</span>
 <span class="sd">        and compute it accordingly. The envirtonment reaches a termination state when this state leads to an episode ending in an episodic</span>
 <span class="sd">        task thus breaking .</span>
 
@@ -406,15 +406,15 @@
 <span class="sd">            goal. Note that the following should always hold true:</span>
 
 <span class="sd">                ob, reward, terminated, truncated, info = env.step()</span>
-<span class="sd">                assert terminated == env.compute_terminated(ob[&#39;achieved_goal&#39;], ob[&#39;desired_goal&#39;], info)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                assert terminated == env.compute_terminated(ob['achieved_goal'], ob['desired_goal'], info)</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_truncated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">achieved_goal</span><span class="p">,</span> <span class="n">desired_goal</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the step truncation. Allows to customize the truncated states depending on the desired and the achieved goal.</span>
+<span class="w">        </span><span class="sd">"""Compute the step truncation. Allows to customize the truncated states depending on the desired and the achieved goal.</span>
 
-<span class="sd">        If you wish to determine truncated states independent of the goal, you can include necessary values to derive it in &#39;info&#39;</span>
+<span class="sd">        If you wish to determine truncated states independent of the goal, you can include necessary values to derive it in 'info'</span>
 <span class="sd">        and compute it accordingly. Truncated states are those that are out of the scope of the Markov Decision Process (MDP) such</span>
 <span class="sd">        as time constraints in a continuing task.</span>
 
@@ -430,8 +430,8 @@
 <span class="sd">            goal. Note that the following should always hold true:</span>
 
 <span class="sd">                ob, reward, terminated, truncated, info = env.step()</span>
-<span class="sd">                assert truncated == env.compute_truncated(ob[&#39;achieved_goal&#39;], ob[&#39;desired_goal&#39;], info)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">                assert truncated == env.compute_truncated(ob['achieved_goal'], ob['desired_goal'], info)</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 </pre></div>
