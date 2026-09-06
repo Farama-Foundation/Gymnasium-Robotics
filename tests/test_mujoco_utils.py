@@ -35,3 +35,49 @@ def test_scalar_joint_state(joint_type, field):
     setter(model, data, "target", 0.75)
     np.testing.assert_array_equal(state, [0.25, 0.75])
     np.testing.assert_array_equal(getter(model, data, "target"), [0.75])
+
+
+def test_reset_mocap_welds_resets_relpose_without_changing_anchor():
+    model = mujoco.MjModel.from_xml_string(
+        """
+        <mujoco>
+          <worldbody>
+            <body name="mocap" mocap="true"/>
+            <body name="target">
+              <freejoint/>
+              <geom type="sphere" size="0.01"/>
+            </body>
+            <body name="other" pos="1 0 0">
+              <freejoint/>
+              <geom type="sphere" size="0.01"/>
+            </body>
+          </worldbody>
+          <equality>
+            <weld name="mocap_weld" body1="mocap" body2="target" anchor="0.1 0.2 0.3"/>
+            <connect name="other_connect" body1="target" body2="other" anchor="0.2 0.3 0.4"/>
+          </equality>
+        </mujoco>
+        """
+    )
+    data = mujoco.MjData(model)
+    weld_id = next(
+        i
+        for i, eq_type in enumerate(model.eq_type)
+        if eq_type == mujoco.mjtEq.mjEQ_WELD
+    )
+    connect_id = next(
+        i
+        for i, eq_type in enumerate(model.eq_type)
+        if eq_type == mujoco.mjtEq.mjEQ_CONNECT
+    )
+    anchor = model.eq_data[weld_id, :3].copy()
+    connect_data = model.eq_data[connect_id].copy()
+    model.eq_data[weld_id, 3:10] = [1.0, 2.0, 3.0, 0.0, 0.4, 0.5, 0.6]
+
+    mujoco_utils.reset_mocap_welds(model, data)
+
+    np.testing.assert_array_equal(model.eq_data[weld_id, :3], anchor)
+    np.testing.assert_array_equal(
+        model.eq_data[weld_id, 3:10], [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
+    )
+    np.testing.assert_array_equal(model.eq_data[connect_id], connect_data)
