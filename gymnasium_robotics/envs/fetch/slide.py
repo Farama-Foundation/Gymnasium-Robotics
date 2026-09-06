@@ -43,7 +43,7 @@ class MujocoFetchSlideEnv(MujocoFetchEnv, EzPickle):
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
     The task in the environment is for a manipulator hit a puck in order to reach a target position on top of a long and slippery table. The table has a low friction coefficient in order to make it slippery for the puck to slide and be able to reach the target position which is outside of the robot's workspace.
-    The robot is a 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) with a two-fingered parallel gripper. The robot is controlled by small displacements of the gripper in Cartesian coordinates and the inverse kinematics are computed internally by the MuJoCo framework. The gripper is locked in a closed
+    The robot is a 7-DoF [Fetch Mobile Manipulator](https://www.robotandchisel.com/assets/papers/Fetch-and-Freight-Workshop-Paper.pdf) with a two-fingered parallel gripper. The robot is controlled by small displacements of the gripper in Cartesian coordinates and the inverse kinematics are computed internally by the MuJoCo framework. The gripper is locked in a closed
     configuration since the puck doesn't need to be graspped. The task is also continuing which means that the robot has to maintain the puck in the target position for an indefinite period of time.
 
     The control frequency of the robot is of `f = 25 Hz`. This is achieved by applying the same action in 20 subsequent simulator step (with a time step of `dt = 0.002 s`) before returning the control to the robot.
