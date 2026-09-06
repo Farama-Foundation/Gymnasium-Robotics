@@ -131,7 +131,7 @@ def set_joint_qpos(model, data, name, value):
     """Set the joint positions (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
-    joint_type = mujoco.mjtJoint(model.jnt_type[joint_id])
+    joint_type = int(model.jnt_type[joint_id])
     joint_addr = model.jnt_qposadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
@@ -156,7 +156,7 @@ def set_joint_qvel(model, data, name, value):
     """Set the joints linear and angular (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
-    joint_type = mujoco.mjtJoint(model.jnt_type[joint_id])
+    joint_type = int(model.jnt_type[joint_id])
     joint_addr = model.jnt_dofadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
@@ -181,7 +181,7 @@ def get_joint_qpos(model, data, name):
     """Return the joints position and orientation (qpos) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
-    joint_type = mujoco.mjtJoint(model.jnt_type[joint_id])
+    joint_type = int(model.jnt_type[joint_id])
     joint_addr = model.jnt_qposadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
@@ -202,7 +202,7 @@ def get_joint_qvel(model, data, name):
     """Return the joints linear and angular velocities (qvel) of the model."""
     joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, name)
     assert joint_id != -1, f"Joint with name '{name}' is not part of the model!"
-    joint_type = mujoco.mjtJoint(model.jnt_type[joint_id])
+    joint_type = int(model.jnt_type[joint_id])
     joint_addr = model.jnt_dofadr[joint_id]
 
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
