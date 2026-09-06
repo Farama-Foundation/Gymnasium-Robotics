@@ -28,4 +28,4 @@ pip install gymnasium-robotics[mujoco-py-original]
 
 
 
-We support and test for Python 3.10, 3.11, 3.12 and 3.13 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
+We support and test for Python 3.11, 3.12 and 3.13 on Linux and macOS. We will accept PRs related to Windows, but do not officially support it.
