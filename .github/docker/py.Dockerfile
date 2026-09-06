@@ -1,7 +1,6 @@
 # A Dockerfile that sets up a full gymnasium-robotics install with test dependencies
 ARG PYTHON_VERSION
 FROM python:$PYTHON_VERSION
-ARG PYTHON_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -25,14 +24,11 @@ ENV CFLAGS="-Wno-incompatible-pointer-types -Wno-implicit-function-declaration -
 # NOTE: mujoco-py requires:
 #   - numpy<2.0 due to incompatible C API changes
 #   - setuptools for distutils (removed in Python 3.12)
-# Python 3.14 does not support the NumPy 1.x stack used by mujoco-py.
-RUN if [ "$PYTHON_VERSION" != "3.14" ]; then \
-        pip install "numpy<2.0" setuptools \
-        && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
-        && cd mujoco-py \
-        && pip install -e . \
-        && python -c "import mujoco_py"; \
-    fi
+RUN pip install "numpy<2.0" setuptools \
+    && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
+    && cd mujoco-py \
+    && pip install -e . \
+    && python -c "import mujoco_py"  # Pre-compile Cython extensions
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/

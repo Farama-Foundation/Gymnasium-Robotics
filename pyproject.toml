@@ -39,7 +39,7 @@ dynamic = ["version"]
 # Update dependencies in `all` if any are added or removed
 testing = [
 	"pytest==8.4.2",
-	"mujoco_py_cython3; python_version < '3.14'",
+	"mujoco_py_cython3",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
 ]
