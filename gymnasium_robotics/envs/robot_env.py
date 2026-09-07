@@ -107,7 +107,7 @@ class BaseRobotEnv(GoalEnv):
         """All the available environments are currently continuing tasks and non-time dependent. The objective is to reach the goal for an indefinite period of time."""
         return False
 
-    def compute_truncated(self, achievec_goal, desired_goal, info):
+    def compute_truncated(self, achieved_goal, desired_goal, info):
         """The environments will be truncated only if setting a time limit with max_steps which will automatically wrap the environment in a gymnasium TimeLimit wrapper."""
         return False
 

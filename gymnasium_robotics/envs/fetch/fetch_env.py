@@ -71,9 +71,9 @@ def get_base_fetch_env(RobotEnvClass: Union[MujocoPyRobotEnv, MujocoRobotEnv]):
         # GoalEnv methods
         # ----------------------------
 
-        def compute_reward(self, achieved_goal, goal, info):
+        def compute_reward(self, achieved_goal, desired_goal, info):
             # Compute distance between goal and the achieved goal.
-            d = goal_distance(achieved_goal, goal)
+            d = goal_distance(achieved_goal, desired_goal)
             if self.reward_type == "sparse":
                 return -(d > self.distance_threshold).astype(np.float32)
             else:
