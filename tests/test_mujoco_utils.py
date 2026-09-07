@@ -60,16 +60,8 @@ def test_reset_mocap_welds_resets_relpose_without_changing_anchor():
         """
     )
     data = mujoco.MjData(model)
-    weld_id = next(
-        i
-        for i, eq_type in enumerate(model.eq_type)
-        if eq_type == mujoco.mjtEq.mjEQ_WELD
-    )
-    connect_id = next(
-        i
-        for i, eq_type in enumerate(model.eq_type)
-        if eq_type == mujoco.mjtEq.mjEQ_CONNECT
-    )
+    weld_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_EQUALITY, "mocap_weld")
+    connect_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_EQUALITY, "other_connect")
     anchor = model.eq_data[weld_id, :3].copy()
     connect_data = model.eq_data[connect_id].copy()
     model.eq_data[weld_id, 3:10] = [1.0, 2.0, 3.0, 0.0, 0.4, 0.5, 0.6]
