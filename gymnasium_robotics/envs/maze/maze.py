@@ -283,13 +283,22 @@ class MazeEnv(GoalEnv):
     def compute_terminated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
     ) -> bool:
+        # `compute_reward` above takes the norm along the last axis. Without it a
+        # batch of goals collapses into the Frobenius norm of the whole batch, so
+        # the answer described no row in particular.
+        reached = np.linalg.norm(achieved_goal - desired_goal, axis=-1) <= 0.45
+        batched = reached.ndim > 0
+
         if not self.continuing_task:
             # If task is episodic terminate the episode when the goal is reached
-            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
+            return reached if batched else bool(reached)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
             if (
-                bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
+                # A batch of goals is a relabelling query rather than a step, so
+                # it must not move the goal the environment is working towards.
+                not batched
+                and bool(reached)
                 and len(self.maze.unique_goal_locations) > 1
             ):
                 # Generate another goal
@@ -299,7 +308,7 @@ class MazeEnv(GoalEnv):
                 # Update the position of the target site for visualization
                 self.update_target_site_pos()
 
-            return False
+            return np.zeros_like(reached) if batched else False
 
     def compute_truncated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info

@@ -390,12 +390,17 @@ class MazeEnv(GoalEnv):
     def compute_terminated(
         self, achieved_goal: np.ndarray, desired_goal: np.ndarray, info
     ) -> bool:
+        # `compute_reward` above takes the norm along the last axis. Without it a
+        # batch of goals collapses into the Frobenius norm of the whole batch, so
+        # the answer described no row in particular.
+        reached = np.linalg.norm(achieved_goal - desired_goal, axis=-1) <= 0.45
+
         if not self.continuing_task:
             # If task is episodic terminate the episode when the goal is reached
-            return bool(np.linalg.norm(achieved_goal - desired_goal) <= 0.45)
+            return reached if reached.ndim else bool(reached)
         else:
             # Continuing tasks don't terminate, episode will be truncated when time limit is reached (`max_episode_steps`)
-            return False
+            return np.zeros_like(reached) if reached.ndim else False
 
     def update_goal(self, achieved_goal: np.ndarray) -> None:
         """Update goal position if continuing task and within goal radius."""
