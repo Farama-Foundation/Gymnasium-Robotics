@@ -69,7 +69,8 @@ def test_reset_mocap_welds_resets_relpose_without_changing_anchor():
     mujoco_utils.reset_mocap_welds(model, data)
 
     np.testing.assert_array_equal(model.eq_data[weld_id, :3], anchor)
-    np.testing.assert_array_equal(
-        model.eq_data[weld_id, 3:10], [0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0]
-    )
+    np.testing.assert_array_equal(model.eq_data[weld_id, 3:6], anchor)
+    np.testing.assert_array_equal(model.eq_data[weld_id, 6:10], [1.0, 0.0, 0.0, 0.0])
     np.testing.assert_array_equal(model.eq_data[connect_id], connect_data)
+    # The first six constraint rows belong to the weld between the aligned bodies.
+    np.testing.assert_allclose(data.efc_pos[:6], 0.0, atol=1e-12)

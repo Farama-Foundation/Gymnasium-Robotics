@@ -76,7 +76,8 @@ def reset_mocap_welds(model, data):
     if model.nmocap > 0 and model.eq_data is not None:
         for i in range(model.eq_data.shape[0]):
             if model.eq_type[i] == mujoco.mjtEq.mjEQ_WELD:
-                model.eq_data[i, 3:10] = np.array([0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0])
+                model.eq_data[i, 3:6] = model.eq_data[i, :3]
+                model.eq_data[i, 6:10] = [1.0, 0.0, 0.0, 0.0]
     mujoco.mj_forward(model, data)
 
 
