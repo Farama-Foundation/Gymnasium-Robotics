@@ -1,5 +1,5 @@
 # Fetch Robotics
-The model of the [Fetch](http://fetchrobotics.com/platforms-research-development/) is based on [models provided by Fetch](https://github.com/fetchrobotics/fetch_ros/tree/indigo-devel/fetch_description). It was adapted and refined by OpenAI.
+The model of the [Fetch](https://www.robotandchisel.com/assets/papers/Fetch-and-Freight-Workshop-Paper.pdf) is based on [models provided by Fetch](https://github.com/fetchrobotics/fetch_ros/tree/indigo-devel/fetch_description). It was adapted and refined by OpenAI.
 
 # ShadowHand
 The model of the [ShadowHand](https://www.shadowrobot.com/products/dexterous-hand/) is based on [models provided by ShadowRobot](https://github.com/shadow-robot/sr_common/tree/kinetic-devel/sr_description/hand/model), and on code used under the following license:

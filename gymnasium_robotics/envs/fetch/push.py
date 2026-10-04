@@ -41,7 +41,7 @@ class MujocoFetchPushEnv(MujocoFetchEnv, EzPickle):
 
     This environment was introduced in ["Multi-Goal Reinforcement Learning: Challenging Robotics Environments and Request for Research"](https://arxiv.org/abs/1802.09464).
 
-    The task in the environment is for a manipulator to move a block to a target position on top of a table by pushing with its gripper. The robot is a 7-DoF [Fetch Mobile Manipulator](https://fetchrobotics.com/) with a two-fingered parallel gripper.
+    The task in the environment is for a manipulator to move a block to a target position on top of a table by pushing with its gripper. The robot is a 7-DoF [Fetch Mobile Manipulator](https://www.robotandchisel.com/assets/papers/Fetch-and-Freight-Workshop-Paper.pdf) with a two-fingered parallel gripper.
     The robot is controlled by small displacements of the gripper in Cartesian coordinates and the inverse kinematics are computed internally by the MuJoCo framework. The gripper is locked in a closed configuration in order to perform the push task.
     The task is also continuing which means that the robot has to maintain the block in the target position for an indefinite period of time.
 

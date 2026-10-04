@@ -6,6 +6,9 @@
 # derived from https://github.com/Farama-Foundation/PettingZoo/blob/e230f4d80a5df3baf9bd905149f6d4e8ce22be31/.github/workflows/build-publish.yml
 name: Build artifact for PyPI
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]
@@ -16,6 +19,8 @@ on:
 
 jobs:
   build-wheels:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:
@@ -34,6 +39,8 @@ jobs:
         path: dist
 
   publish:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     needs:
     - build-wheels

@@ -117,12 +117,14 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
         # GoalEnv methods
         # ----------------------------
 
-        def compute_reward(self, achieved_goal, goal, info):
+        def compute_reward(self, achieved_goal, desired_goal, info):
             if self.reward_type == "sparse":
-                success = self._is_success(achieved_goal, goal).astype(np.float32)
+                success = self._is_success(achieved_goal, desired_goal).astype(
+                    np.float32
+                )
                 return success - 1.0
             else:
-                d_pos, d_rot = self._goal_distance(achieved_goal, goal)
+                d_pos, d_rot = self._goal_distance(achieved_goal, desired_goal)
                 # We weigh the difference in position to avoid that `d_pos` (in meters) is completely
                 # dominated by `d_rot` (in radians).
                 return -(10.0 * d_pos + d_rot)
