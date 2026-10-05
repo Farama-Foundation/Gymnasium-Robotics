@@ -45,6 +45,9 @@ if __name__ == "__main__":
         elif env_name not in filtered_envs_by_type[env_type]:
             filtered_envs_by_type[env_type].append(env_name)
 
+    # The grid is embedded as raw HTML, so Sphinx does not rewrite its links. Image
+    # paths must be relative to the rendered page (dirhtml: envs/<type>/),
+    # otherwise versioned builds (e.g. /main/) load the root (stable) release's gifs.
     for env_type, env_names in tqdm(filtered_envs_by_type.items()):
         cells = []
         for env_name in env_names:
@@ -52,7 +55,7 @@ if __name__ == "__main__":
                 <a href="{env_name}">
                     <div class="env-grid__cell">
                         <div class="cell__image-container">
-                            <img src="/_static/videos/{env_type}/{env_name}.gif">
+                            <img src="../../_static/videos/{env_type}/{env_name}.gif">
                         </div>
                         <div class="cell__title">
                             <span>{' '.join(env_name.split('_')).title()}</span>
