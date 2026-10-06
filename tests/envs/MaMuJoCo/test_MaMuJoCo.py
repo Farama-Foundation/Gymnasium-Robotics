@@ -11,6 +11,7 @@ from gymnasium.utils.env_match import check_environments_match
 from packaging.version import Version
 from pettingzoo.test import parallel_api_test
 
+import gymnasium_robotics.envs.multiagent_mujoco.many_segment_ant as many_segment_ant
 import gymnasium_robotics.envs.multiagent_mujoco.many_segment_swimmer as many_segment_swimmer
 from gymnasium_robotics import mamujoco_v1
 
@@ -225,3 +226,34 @@ def test_swimmer_gen():
     os.remove(asset_path)
 
     check_environments_match(env, c_env, num_steps=2000)
+
+
+@pytest.mark.parametrize(
+    "scenario, generator",
+    [
+        ("ManySegmentAnt", many_segment_ant),
+        ("ManySegmentSwimmer", many_segment_swimmer),
+    ],
+    ids=["ManySegmentAnt", "ManySegmentSwimmer"],
+)
+def test_many_segment_asset_path_is_not_shared(scenario, generator, monkeypatch):
+    """Assert that each environment writes its generated model to its own temporary file.
+
+    A shared fixed path breaks when several processes create the environment at the same time.
+    """
+    asset_paths = []
+    gen_asset = generator.gen_asset
+
+    def recording_gen_asset(n_segs, asset_path):
+        asset_paths.append(asset_path)
+        gen_asset(n_segs=n_segs, asset_path=asset_path)
+
+    monkeypatch.setattr(generator, "gen_asset", recording_gen_asset)
+    env_1 = mamujoco_v1.parallel_env(scenario, "2x3")
+    env_2 = mamujoco_v1.parallel_env(scenario, "2x3")
+
+    assert len(asset_paths) == 2
+    assert asset_paths[0] != asset_paths[1]
+    assert not any(os.path.exists(asset_path) for asset_path in asset_paths)
+    env_1.close()
+    env_2.close()
