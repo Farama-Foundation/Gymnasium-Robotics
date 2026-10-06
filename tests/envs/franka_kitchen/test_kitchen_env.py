@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 import gymnasium as gym
+import numpy as np
 import pytest
 
 import gymnasium_robotics
@@ -12,6 +13,20 @@ from gymnasium_robotics.envs.franka_kitchen.kitchen_env import (
 gym.register_envs(gymnasium_robotics)
 
 TASKS = ["microwave", "kettle"]
+
+
+def test_desired_goal_is_not_shared():
+    """Changing a returned `desired_goal` in place must not change the environment's goal."""
+    expected_goal = OBS_ELEMENT_GOALS["microwave"].copy()
+    env = gym.make("FrankaKitchen-v1", tasks_to_complete=TASKS)
+    obs, _ = env.reset(seed=0)
+    next_obs, *_ = env.step(env.action_space.sample())
+    assert obs["desired_goal"]["microwave"] is not next_obs["desired_goal"]["microwave"]
+
+    next_obs["desired_goal"]["microwave"] += 1.0
+    assert np.array_equal(env.unwrapped.goal["microwave"], expected_goal)
+    assert np.array_equal(OBS_ELEMENT_GOALS["microwave"], expected_goal)
+    env.close()
 
 
 @pytest.mark.parametrize(
