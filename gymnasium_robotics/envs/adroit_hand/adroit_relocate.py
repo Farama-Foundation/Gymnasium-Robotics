@@ -137,7 +137,7 @@ class AdroitHandRelocateEnv(MujocoEnv, EzPickle):
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandRelocateSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
-    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandRelocateBinary-v1')`.
+    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandRelocateBinary-v2')`.
     In this variant, the environment returns a reward of 0 for environment success and -1 otherwise (i.e. a per-step
     cost of 1 until the task is solved).
 

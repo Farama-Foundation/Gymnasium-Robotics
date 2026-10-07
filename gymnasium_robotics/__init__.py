@@ -1134,7 +1134,7 @@ def register_robotics_envs():
         ),
     ]:
         register(
-            id=f"AdroitHand{env_name}Binary-v1",
+            id=f"AdroitHand{env_name}Binary-v2",
             entry_point=entry_point,
             max_episode_steps=max_episode_steps,
             kwargs={"reward_type": "binary"},

@@ -136,7 +136,7 @@ class AdroitHandDoorEnv(MujocoEnv, EzPickle):
     The `sparse` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorSparse-v2')`.
     In this variant, the environment returns a reward of 10 for environment success and -0.1 otherwise.
 
-    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorBinary-v1')`.
+    The `binary` reward variant of the environment can be initialized by calling `gym.make('AdroitHandDoorBinary-v2')`.
     In this variant, the environment returns a reward of 0 for environment success and -1 otherwise (i.e. a per-step
     cost of 1 until the task is solved).
 

@@ -28,10 +28,10 @@ target goal and -1.0 otherwise, i.e. a per-step cost of 1 until the task is solv
 limits follow the same convention: 100 steps for the pen task and 200 for the others.
 They can be initialized via:
 
-* `AdroitHandDoorBinary-v1`
-* `AdroitHandHammerBinary-v1`
-* `AdroitHandPenBinary-v1`
-* `AdroitHandRelocateBinary-v1`
+* `AdroitHandDoorBinary-v2`
+* `AdroitHandHammerBinary-v2`
+* `AdroitHandPenBinary-v2`
+* `AdroitHandRelocateBinary-v2`
 
 ```{raw} html
     :file: list.html

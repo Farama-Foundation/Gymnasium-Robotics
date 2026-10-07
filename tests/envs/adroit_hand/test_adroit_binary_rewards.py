@@ -7,17 +7,17 @@ import gymnasium_robotics
 gym.register_envs(gymnasium_robotics)
 
 BINARY_ENV_IDS = [
-    "AdroitHandDoorBinary-v1",
-    "AdroitHandHammerBinary-v1",
-    "AdroitHandPenBinary-v1",
-    "AdroitHandRelocateBinary-v1",
+    "AdroitHandDoorBinary-v2",
+    "AdroitHandHammerBinary-v2",
+    "AdroitHandPenBinary-v2",
+    "AdroitHandRelocateBinary-v2",
 ]
 
 EXPECTED_HORIZONS = {
-    "AdroitHandDoorBinary-v1": 200,
-    "AdroitHandHammerBinary-v1": 200,
-    "AdroitHandPenBinary-v1": 100,
-    "AdroitHandRelocateBinary-v1": 200,
+    "AdroitHandDoorBinary-v2": 200,
+    "AdroitHandHammerBinary-v2": 200,
+    "AdroitHandPenBinary-v2": 100,
+    "AdroitHandRelocateBinary-v2": 200,
 }
 
 DENSE_ENV_IDS = [
@@ -59,7 +59,7 @@ def test_binary_reward_is_zero_on_success():
     # A random policy never opens the door, so drive the hinge past its success
     # threshold directly and check the reward flips to 0 through the env's own
     # success test rather than a stubbed one.
-    env = gym.make("AdroitHandDoorBinary-v1", disable_env_checker=True)
+    env = gym.make("AdroitHandDoorBinary-v2", disable_env_checker=True)
     try:
         unwrapped = env.unwrapped
         unwrapped.reset(seed=0)
