@@ -38,7 +38,7 @@ dynamic = ["version"]
 [project.optional-dependencies]
 # Update dependencies in `all` if any are added or removed
 testing = [
-	"pytest==8.4.2",
+	"pytest==9.0.3",
 	"mujoco_py_cython3",
 	"PettingZoo>=1.23.0",
 	"Jinja2>=3.0.3",
