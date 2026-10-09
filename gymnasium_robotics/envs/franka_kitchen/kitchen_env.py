@@ -415,7 +415,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         for task in self.step_task_completions:
             if task not in self.episode_task_completions:
                 self.episode_task_completions.append(task)
-        info["episode_task_completions"] = self.episode_task_completions
+        info["episode_task_completions"] = self.episode_task_completions.copy()
         if self.terminate_on_tasks_completed:
             # terminate if there are no more tasks to complete
             terminated = len(self.episode_task_completions) == len(self.goal.keys())

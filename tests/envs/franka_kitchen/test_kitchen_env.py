@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 import gymnasium as gym
+import numpy as np
 import pytest
 
 import gymnasium_robotics
@@ -12,6 +13,38 @@ from gymnasium_robotics.envs.franka_kitchen.kitchen_env import (
 gym.register_envs(gymnasium_robotics)
 
 TASKS = ["microwave", "kettle"]
+
+
+@pytest.mark.parametrize("remove_task_when_completed", [True, False])
+@pytest.mark.parametrize("next_operation", ["step", "reset"])
+def test_task_completion_info_snapshot(remove_task_when_completed, next_operation):
+    """Later steps and resets must preserve previously returned completion records."""
+    with gym.make(
+        "FrankaKitchen-v1",
+        tasks_to_complete=TASKS,
+        remove_task_when_completed=remove_task_when_completed,
+        robot_noise_ratio=0,
+        object_noise_ratio=0,
+    ) as env:
+        env.reset(seed=0)
+        action = np.zeros(env.action_space.shape)
+        env.unwrapped.data.qpos[OBS_ELEMENT_INDICES["microwave"]] = OBS_ELEMENT_GOALS[
+            "microwave"
+        ]
+        *_, first_info = env.step(action)
+        assert first_info["episode_task_completions"] == ["microwave"]
+
+        if next_operation == "step":
+            env.unwrapped.data.qpos[OBS_ELEMENT_INDICES["kettle"]] = OBS_ELEMENT_GOALS[
+                "kettle"
+            ]
+            *_, next_info = env.step(action)
+            assert set(next_info["episode_task_completions"]) == set(TASKS)
+        else:
+            _, next_info = env.reset(seed=0)
+            assert next_info["episode_task_completions"] == []
+
+        assert first_info["episode_task_completions"] == ["microwave"]
 
 
 @pytest.mark.parametrize(
