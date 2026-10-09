@@ -47,14 +47,16 @@ class MujocoHandEnv(get_base_hand_env(MujocoRobotEnv)):
         if self.relative_control:
             actuation_center = np.zeros_like(action)
             for i in range(self.data.ctrl.shape[0]):
-                actuation_center[i] = self.data.get_joint_qpos(
-                    self.model.actuator_names[i].replace(":A_", ":")
-                )
+                actuation_center[i] = self._utils.get_joint_qpos(
+                    self.model,
+                    self.data,
+                    self._model_names.actuator_names[i].replace(":A_", ":"),
+                )[0]
             for joint_name in ["FF", "MF", "RF", "LF"]:
-                act_idx = self.model.actuator_name2id(f"robot0:A_{joint_name}J1")
-                actuation_center[act_idx] += self.data.get_joint_qpos(
-                    f"robot0:{joint_name}J0"
-                )
+                act_idx = self._model_names.actuator_name2id[f"robot0:A_{joint_name}J1"]
+                actuation_center[act_idx] += self._utils.get_joint_qpos(
+                    self.model, self.data, f"robot0:{joint_name}J0"
+                )[0]
         else:
             actuation_center = (ctrlrange[:, 1] + ctrlrange[:, 0]) / 2.0
         self.data.ctrl[:] = actuation_center + action * actuation_range

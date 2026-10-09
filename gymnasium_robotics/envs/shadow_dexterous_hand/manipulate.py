@@ -150,7 +150,7 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
 
     def _env_setup(self, initial_qpos):
         for name, value in initial_qpos.items():
-            self.data.set_joint_qpos(name, value)
+            self._utils.set_joint_qpos(self.model, self.data, name, value)
         self._mujoco.mj_forward(self.model, self.data)
 
     def _reset_sim(self):
@@ -268,7 +268,9 @@ class MujocoManipulateEnv(get_base_manipulate_env(MujocoHandEnv)):
             axis = self.np_random.uniform(-1.0, 1.0, size=3)
             target_quat = quat_from_angle_and_axis(angle, axis)
         elif self.target_rotation in ["ignore", "fixed"]:
-            target_quat = self.data.get_joint_qpos("object:joint")
+            target_quat = self._utils.get_joint_qpos(
+                self.model, self.data, "object:joint"
+            )[3:]
         else:
             raise error.Error(
                 f'Unknown target_rotation option "{self.target_rotation}".'
