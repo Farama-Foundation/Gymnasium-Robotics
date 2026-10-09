@@ -391,7 +391,7 @@ class KitchenEnv(GoalEnv, EzPickle):
         obs = {
             "observation": np.concatenate((robot_obs, obj_qpos, obj_qvel)),
             "achieved_goal": achieved_goal,
-            "desired_goal": self.goal,
+            "desired_goal": {task: goal.copy() for task, goal in self.goal.items()},
         }
 
         return obs
