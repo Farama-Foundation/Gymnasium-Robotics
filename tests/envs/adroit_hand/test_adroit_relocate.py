@@ -6,6 +6,27 @@ import gymnasium_robotics
 gym.register_envs(gymnasium_robotics)
 
 
+def test_dense_reward_penalizes_palm_object_distance():
+    """Check the palm-object penalty before any lifting or target bonuses."""
+    env = gym.make("AdroitHandRelocate-v2")
+
+    try:
+        env.reset(seed=123)
+        _, reward, _, _, _ = env.step(np.zeros_like(env.action_space.low))
+        state = env.unwrapped.get_env_state()
+        obj_pos = state["obj_pos"]
+        palm_pos = state["palm_pos"]
+        target_pos = state["target_pos"]
+
+        assert obj_pos[2] <= 0.04
+        assert np.linalg.norm(obj_pos - target_pos) >= 0.1
+        palm_object_distance = np.linalg.norm(palm_pos - obj_pos)
+        assert palm_object_distance > 0.0
+        np.testing.assert_allclose(reward, -0.1 * palm_object_distance)
+    finally:
+        env.close()
+
+
 def test_set_env_state_preserves_relocated_object_position():
     env = gym.make("AdroitHandRelocate-v2", disable_env_checker=True)
     adroit_env = env.unwrapped
