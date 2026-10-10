@@ -178,9 +178,10 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         # Create observation and action spaces
         self.observation_spaces, self.action_spaces = {}, {}
         for agent_id, partition in enumerate(self.agent_action_partitions):
+            action_indices = [node.act_ids for node in partition]
             self.action_spaces[self.possible_agents[agent_id]] = gymnasium.spaces.Box(
-                low=self.single_agent_env.action_space.low[0],
-                high=self.single_agent_env.action_space.high[0],
+                low=self.single_agent_env.action_space.low[action_indices],
+                high=self.single_agent_env.action_space.high[action_indices],
                 shape=(len(partition),),
                 dtype=np.float32,
             )

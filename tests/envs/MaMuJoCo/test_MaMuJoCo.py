@@ -5,6 +5,7 @@ import os
 
 import gymnasium
 import mujoco
+import numpy as np
 import pytest
 from gymnasium.utils.env_checker import data_equivalence
 from gymnasium.utils.env_match import check_environments_match
@@ -106,6 +107,33 @@ if COUPLED_HALF_CHEETAH_SUPPORTED:
     )
 
 observation_depths = [None, 0, 1, 2]
+
+
+@pytest.mark.parametrize(
+    "agent_conf, action_indices",
+    [(None, [list(range(8))]), ("2x4", [[2, 3, 4, 5], [6, 7, 0, 1]])],
+)
+def test_nonuniform_action_bounds(agent_conf, action_indices):
+    """Preserve actuator limits and their order when factoring a custom environment."""
+    low = np.array([-1, -2, -0.25, -4, 0.5, 1, -0.5, -8], dtype=np.float32)
+    high = np.array([1, 2, 0.75, -2, 1.5, 3, 0.5, -4], dtype=np.float32)
+    gym_env = gymnasium.wrappers.RescaleAction(
+        gymnasium.make("Ant-v5"), min_action=low, max_action=high
+    )
+    env = mamujoco_v1.parallel_env("Ant", agent_conf, gym_env=gym_env)
+    try:
+        actions = {}
+        for agent, indices in zip(env.possible_agents, action_indices):
+            space = env.action_space(agent)
+            np.testing.assert_array_equal(space.low, low[indices])
+            np.testing.assert_array_equal(space.high, high[indices])
+            actions[agent] = (space.low + space.high) / 2
+
+        env.reset(seed=0)
+        env.step(actions)
+        np.testing.assert_array_equal(gym_env.unwrapped.data.ctrl, np.zeros(8))
+    finally:
+        env.close()
 
 
 @pytest.mark.parametrize("observation_depth", observation_depths)
