@@ -225,3 +225,26 @@ def test_swimmer_gen():
     os.remove(asset_path)
 
     check_environments_match(env, c_env, num_steps=2000)
+
+
+@pytest.mark.parametrize("agent_obsk, action_sizes", [(1, [2, 3, 3]), (None, [8])])
+def test_custom_factorization_without_agent_conf(agent_obsk, action_sizes):
+    """Honor custom partitions without requiring an unused configuration name."""
+    parts, edges, global_nodes = mamujoco_v1.get_parts_and_edges("Ant", "2x4")
+    nodes = [node for part in parts for node in part]
+    factorization = {
+        "partition": [tuple(nodes[:2]), tuple(nodes[2:5]), tuple(nodes[5:])],
+        "edges": edges,
+        "globals": global_nodes,
+    }
+    env = mamujoco_v1.parallel_env(
+        "Ant", None, agent_obsk=agent_obsk, agent_factorization=factorization
+    )
+    try:
+        observations, _ = env.reset(seed=0)
+        assert len(observations) == len(action_sizes)
+        assert [
+            env.action_space(agent).shape[0] for agent in env.possible_agents
+        ] == action_sizes
+    finally:
+        env.close()
