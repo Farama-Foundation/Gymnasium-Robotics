@@ -296,9 +296,7 @@ def quat_mul(q0, q1):
     x = w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1
     y = w0 * y1 + y0 * w1 + z0 * x1 - x0 * z1
     z = w0 * z1 + z0 * w1 + x0 * y1 - y0 * x1
-    q = np.array([w, x, y, z])
-    if q.ndim == 2:
-        q = q.swapaxes(0, 1)
+    q = np.stack([w, x, y, z], axis=-1)
     assert q.shape == q0.shape
     return q
 
