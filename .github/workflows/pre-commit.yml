@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
-      - run: pipx install pre-commit
+        with:
+          python-version: '3.15'
+      - run: pipx install --python python3.15 pre-commit
       - run: pre-commit --version
       - run: pre-commit install
       - run: pre-commit run --all-files
