@@ -15,6 +15,7 @@ gym.register_envs(gymnasium_robotics)
         "HandManipulateBlock-v1",
         "PointMaze_UMaze-v3",
         "AntMaze_UMaze-v3",
+        "FrankaKitchen-v1",
     ],
 )
 @pytest.mark.parametrize(
