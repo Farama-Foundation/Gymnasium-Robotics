@@ -160,6 +160,7 @@ def build_obs(
     global_nodes: list[Node],
     global_categories: tuple[str, ...],
     ignore_body_fn: bool = False,
+    qvel_clip: tuple[float, float] | None = None,
 ) -> np.ndarray:
     """Given a k_dict from get_joints_at_kdist, extract observation vector.
 
@@ -170,12 +171,14 @@ def build_obs(
         global_nodes: The MuJoCo global godes.
         global_categories: The observation Categories for the global MuJoCo nodes.
         ingore_body_fn: If `True` it ignores the nodes's `body_fn` membeer variable.
+        qvel_clip: Optional bounds applied to observed joint velocities without changing the simulation data.
 
     Returns:
         observation for the agent (indicated by K_dict)
     """
     body_set_dict = {}
     obs_lst = []
+    qvel = data.qvel if qvel_clip is None else np.clip(data.qvel, *qvel_clip)
     # Add local observations
     for k in sorted(list(k_dict.keys())):
         for node in k_dict[k]:
@@ -184,7 +187,7 @@ def build_obs(
                     items = node.extra_obs[category](data).tolist()
                     obs_lst.extend(items if isinstance(items, list) else [items])
                 elif category in ["qvel"]:  # this is a "joint velocity" item
-                    obs_lst.extend([data.qvel[node.qvel_ids]])
+                    obs_lst.extend([qvel[node.qvel_ids]])
                 elif category in ["qpos"]:  # this is a "joint position" item
                     obs_lst.extend([data.qpos[node.qpos_ids]])
                 elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
@@ -211,7 +214,8 @@ def build_obs(
                 items = joint.extra_obs[category](data).tolist()
                 obs_lst.extend(items if isinstance(items, list) else [items])
             elif category in ["qvel", "qpos"]:
-                items = getattr(data, category)[getattr(joint, f"{category}_ids")]
+                values = qvel if category == "qvel" else data.qpos
+                items = values[getattr(joint, f"{category}_ids")]
                 obs_lst.extend(items if isinstance(items, list) else [items])
             elif category in ["qfrc_actuator"]:  # this is a "actuator forces" item
                 obs_lst.extend([data.qfrc_actuator[joint.qvel_ids]])
