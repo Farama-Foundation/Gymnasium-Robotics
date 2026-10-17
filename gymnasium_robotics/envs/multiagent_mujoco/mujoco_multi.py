@@ -119,6 +119,11 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             self.single_agent_env = gym_env
 
+        # Walker2d's single-agent observation clips velocities; its local observations must agree.
+        self._qvel_clip = (
+            (-10, 10) if scenario == "Walker2d" and gym_env is None else None
+        )
+
         if agent_conf is None:
             self.agent_obsk = None
         else:
@@ -546,6 +551,8 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             self.mujoco_globals,
             self.global_categories,
             index_only,
+            # Mapping construction passes integer indices rather than physical velocities.
+            qvel_clip=None if index_only else self._qvel_clip,
         )
 
     def reset(self, seed: int | None = None, options: dict[str, any] | None = None):
