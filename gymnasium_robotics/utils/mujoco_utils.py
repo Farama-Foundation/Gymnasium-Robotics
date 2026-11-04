@@ -209,7 +209,8 @@ def get_joint_qvel(model, data, name):
     if joint_type == mujoco.mjtJoint.mjJNT_FREE:
         ndim = 6
     elif joint_type == mujoco.mjtJoint.mjJNT_BALL:
-        ndim = 4
+        # A ball joint has a 4-value quaternion in qpos but only 3 angular velocities in qvel.
+        ndim = 3
     else:
         assert joint_type in (mujoco.mjtJoint.mjJNT_HINGE, mujoco.mjtJoint.mjJNT_SLIDE)
         ndim = 1
