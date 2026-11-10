@@ -359,8 +359,14 @@ class KitchenEnv(GoalEnv, EzPickle):
         desired_goal: "dict[str, np.ndarray]",
         info: "dict[str, Any]",
     ):
+        tasks_to_complete = self.tasks_to_complete
+        if "tasks_to_complete" in info and "step_task_completions" in info:
+            # Reconstruct the tasks eligible before step removed completed tasks.
+            tasks_to_complete = set(info["tasks_to_complete"]) | set(
+                info["step_task_completions"]
+            )
         self.step_task_completions.clear()
-        for task in self.tasks_to_complete:
+        for task in tasks_to_complete:
             distance = np.linalg.norm(achieved_goal[task] - desired_goal[task])
             complete = distance < BONUS_THRESH
             if complete:
