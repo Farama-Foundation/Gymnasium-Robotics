@@ -104,7 +104,7 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
                     # transform back into quaternions.
                     euler_a = rotations.quat2euler(quat_a)
                     euler_b = rotations.quat2euler(quat_b)
-                    euler_a[2] = euler_b[2]
+                    euler_a[..., 2] = euler_b[..., 2]
                     quat_a = rotations.euler2quat(euler_a)
 
                 # Subtract quaternions and extract angle between them.
