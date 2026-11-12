@@ -22,6 +22,17 @@ They can be initialized via:
 * `AdroitHandPenSparse-v2`
 * `AdroitHandRelocateSparse-v2`
 
+A binary reward variant is also provided, following the convention used by the offline-to-online
+literature (for example RLPD and Cal-QL). These environments have a reward of 0.0 for achieving the
+target goal and -1.0 otherwise, i.e. a per-step cost of 1 until the task is solved. Their episode
+limits follow the same convention: 100 steps for the pen task and 200 for the others.
+They can be initialized via:
+
+* `AdroitHandDoorBinary-v2`
+* `AdroitHandHammerBinary-v2`
+* `AdroitHandPenBinary-v2`
+* `AdroitHandRelocateBinary-v2`
+
 ```{raw} html
     :file: list.html
 ```
