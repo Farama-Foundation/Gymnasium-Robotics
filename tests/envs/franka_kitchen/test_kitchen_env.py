@@ -164,3 +164,71 @@ def test_task_completion(remove_task_when_completed, terminate_on_tasks_complete
             ), "If the environment is initialized with `terminate_on_tasks_complete=False`, the episode must not terminate after all tasks are completed."
 
     env.close()
+
+
+@pytest.mark.parametrize("terminate_on_tasks_completed", [True, False])
+def test_compute_terminated_and_truncated(terminate_on_tasks_completed):
+    """Test compute_terminated and compute_truncated GoalEnv methods."""
+    env = gym.make(
+        "FrankaKitchen-v1",
+        tasks_to_complete=TASKS,
+        terminate_on_tasks_completed=terminate_on_tasks_completed,
+    )
+    unwrapped = env.unwrapped
+    obs, info = env.reset(seed=42)
+
+    # Truncated is always False at the GoalEnv level
+    assert (
+        unwrapped.compute_truncated(obs["achieved_goal"], obs["desired_goal"], info)
+        is False
+    )
+
+    # Initially, no tasks are completed
+    assert (
+        unwrapped.compute_terminated(obs["achieved_goal"], obs["desired_goal"], info)
+        is False
+    )
+
+    # Force all tasks to be completed in achieved_goal
+    achieved_all = deepcopy(obs["achieved_goal"])
+    for task in TASKS:
+        achieved_all[task] = OBS_ELEMENT_GOALS[task]
+
+    terminated_all = unwrapped.compute_terminated(
+        achieved_all, obs["desired_goal"], info
+    )
+    if terminate_on_tasks_completed:
+        assert terminated_all is True
+    else:
+        assert terminated_all is False
+
+    # Test sequential completion via info["episode_task_completions"]
+    info_partial = {"episode_task_completions": [TASKS[0]]}
+    assert (
+        unwrapped.compute_terminated(
+            obs["achieved_goal"], obs["desired_goal"], info_partial
+        )
+        is False
+    )
+
+    info_complete = {"episode_task_completions": list(TASKS)}
+    terminated_from_info = unwrapped.compute_terminated(
+        obs["achieved_goal"], obs["desired_goal"], info_complete
+    )
+    if terminate_on_tasks_completed:
+        assert terminated_from_info is True
+    else:
+        assert terminated_from_info is False
+
+    # Test consistency with step()
+    step_obs, reward, step_term, step_trunc, step_info = env.step(
+        env.action_space.sample()
+    )
+    assert step_term == unwrapped.compute_terminated(
+        step_obs["achieved_goal"], unwrapped.goal, step_info
+    )
+    assert step_trunc == unwrapped.compute_truncated(
+        step_obs["achieved_goal"], unwrapped.goal, step_info
+    )
+
+    env.close()

@@ -368,6 +368,39 @@ class KitchenEnv(GoalEnv, EzPickle):
 
         return float(len(self.step_task_completions))
 
+    def compute_terminated(
+        self,
+        achieved_goal: "dict[str, np.ndarray]",
+        desired_goal: "dict[str, np.ndarray]",
+        info: "dict[str, Any]",
+    ) -> bool:
+        if not self.terminate_on_tasks_completed or len(desired_goal) == 0:
+            return False
+
+        completed_tasks = set()
+        if info and "episode_task_completions" in info:
+            completed_tasks.update(
+                task
+                for task in info["episode_task_completions"]
+                if task in desired_goal
+            )
+
+        for task, goal in desired_goal.items():
+            if task in achieved_goal:
+                distance = np.linalg.norm(achieved_goal[task] - goal)
+                if distance < BONUS_THRESH:
+                    completed_tasks.add(task)
+
+        return len(completed_tasks) == len(desired_goal)
+
+    def compute_truncated(
+        self,
+        achieved_goal: "dict[str, np.ndarray]",
+        desired_goal: "dict[str, np.ndarray]",
+        info: "dict[str, Any]",
+    ) -> bool:
+        return False
+
     def _get_obs(self, robot_obs):
         obj_qpos = self.data.qpos[9:].copy()
         obj_qvel = self.data.qvel[9:].copy()
@@ -416,9 +449,9 @@ class KitchenEnv(GoalEnv, EzPickle):
             if task not in self.episode_task_completions:
                 self.episode_task_completions.append(task)
         info["episode_task_completions"] = self.episode_task_completions
-        if self.terminate_on_tasks_completed:
-            # terminate if there are no more tasks to complete
-            terminated = len(self.episode_task_completions) == len(self.goal.keys())
+
+        terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
+        truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
 
         return obs, reward, terminated, truncated, info
 
