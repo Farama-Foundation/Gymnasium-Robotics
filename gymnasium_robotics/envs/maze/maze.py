@@ -187,7 +187,21 @@ class MazeEnv(GoalEnv):
         return goal
 
     def generate_reset_pos(self) -> np.ndarray:
+        """Sample a reset position outside the goal's exclusion radius.
+
+        Raises:
+            ValueError: No candidate reset location satisfies the separation.
+        """
         assert len(self.maze.unique_reset_locations) > 0
+
+        if not any(
+            np.linalg.norm(location - self.goal) > 0.5
+            for location in self.maze.unique_reset_locations
+        ):
+            raise ValueError(
+                "No reset location is sufficiently far from the sampled goal. "
+                "Use a different maze map or provide an explicit reset_cell."
+            )
 
         # While reset position is close to goal position
         reset_pos = self.goal.copy()
