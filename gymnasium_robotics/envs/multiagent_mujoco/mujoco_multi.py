@@ -87,7 +87,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
                 "Ant", "HalfCheetah", "Hopper", "HumanoidStandup", "Humanoid", "Reacher", "Swimmer", "Pusher", "Walker2d", "InvertedPendulum", "InvertedDoublePendulum", "ManySegmentSwimmer", "ManySegmentAnt", "CoupledHalfCheetah"
             agent_conf: Typical values:
                 '${Number Of Agents}x${Number Of Segments per Agent}${Optionally Additional options}', eg '1x6', '2x4', '2x4d',
-                If it set to None the task becomes single agent (the agent observes the entire environment, and performs all the actions)
+                If it is set to None and no custom factorization is provided, the task becomes single agent (the agent observes the entire environment, and performs all the actions)
             agent_obsk: Number of nearest joints to observe,
                 If set to 0 it only observes local state,
                 If set to 1 it observes local state + 1 joint over,
@@ -119,7 +119,7 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
         else:
             self.single_agent_env = gym_env
 
-        if agent_conf is None:
+        if agent_conf is None and agent_factorization is None:
             self.agent_obsk = None
         else:
             self.agent_obsk = agent_obsk  # if None, fully observable else k>=0 implies observe nearest k agents or joints
