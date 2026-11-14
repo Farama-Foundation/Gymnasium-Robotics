@@ -105,3 +105,40 @@ def test_goal_termination_unchanged(continuing_task):
         assert terminated == (not continuing_task)
     finally:
         env.close()
+
+
+@pytest.mark.parametrize("terminate_when_unhealthy", [False, True])
+@pytest.mark.parametrize("continuing_task", [False, True])
+def test_unhealthy_termination_can_be_recomputed(
+    terminate_when_unhealthy, continuing_task
+):
+    """Recorded termination remains reproducible after the simulator resets."""
+    with gym.make(
+        "AntMaze_UMaze-v6",
+        continuing_task=continuing_task,
+        terminate_when_unhealthy=terminate_when_unhealthy,
+    ) as env:
+        env.reset(seed=0)
+        obs, _, terminated, _, info = _step_with_ant_torso_at_height(env, 2.5)
+        assert not info["success"]
+        assert terminated == terminate_when_unhealthy
+        for after_reset in (False, True):
+            if after_reset:
+                env.reset(seed=1)
+            assert (
+                env.unwrapped.compute_terminated(
+                    obs["achieved_goal"], obs["desired_goal"], info
+                )
+                == terminated
+            )
+
+
+@pytest.mark.parametrize("info", [None, {}, [{"ant_terminated": True}]])
+def test_compute_terminated_without_recorded_health_outcome(info):
+    """`compute_terminated` falls back to the goal-based termination when `info` carries no Ant health outcome."""
+    with gym.make("AntMaze_UMaze-v6", continuing_task=False) as env:
+        env.reset(seed=0)
+        goal = env.unwrapped.goal
+
+        assert env.unwrapped.compute_terminated(goal, goal, info)
+        assert not env.unwrapped.compute_terminated(goal + 5.0, goal, info)

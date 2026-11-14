@@ -300,13 +300,12 @@ class AntMazeEnv(MazeEnv, EzPickle):
     def step(self, action):
         ant_obs, _, ant_terminated, _, info = self.ant_env.step(action)
         obs = self._get_obs(ant_obs)
+        info["ant_terminated"] = bool(ant_terminated)
 
         reward = self.compute_reward(obs["achieved_goal"], self.goal, info)
         # The episode also ends when the Ant is unhealthy (e.g. it is standing on top of a wall),
         # in accordance with the `terminate_when_unhealthy` and `healthy_z_range` Ant arguments.
-        terminated = self.compute_terminated(
-            obs["achieved_goal"], self.goal, info
-        ) or bool(ant_terminated)
+        terminated = self.compute_terminated(obs["achieved_goal"], self.goal, info)
         truncated = self.compute_truncated(obs["achieved_goal"], self.goal, info)
         info["success"] = bool(np.linalg.norm(obs["achieved_goal"] - self.goal) <= 0.45)
 
@@ -317,6 +316,16 @@ class AntMazeEnv(MazeEnv, EzPickle):
         self.update_goal(obs["achieved_goal"])
 
         return obs, reward, terminated, truncated, info
+
+    def compute_terminated(self, achieved_goal, desired_goal, info):
+        """Recompute the termination, including the Ant health outcome that `step` records in `info`."""
+        terminated = super().compute_terminated(achieved_goal, desired_goal, info)
+        # `info` is not always the dict returned by `step` (e.g. `None`, or a batch of dicts from a replay buffer),
+        # in that case only the goal-based termination can be recomputed.
+        ant_terminated = isinstance(info, dict) and bool(
+            info.get("ant_terminated", False)
+        )
+        return terminated or ant_terminated
 
     def _get_obs(self, ant_obs: np.ndarray) -> Dict[str, np.ndarray]:
         achieved_goal = ant_obs[:2]
