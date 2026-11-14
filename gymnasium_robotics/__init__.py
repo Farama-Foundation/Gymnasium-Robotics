@@ -836,7 +836,7 @@ def register_robotics_envs():
 
         # ----- AntMaze -----
 
-        for version in ["v3", "v4", "v5"]:
+        for version in ["v3", "v4", "v5", "v6"]:
             register(
                 id=f"AntMaze_UMaze{suffix}-{version}",
                 entry_point=f"gymnasium_robotics.envs.maze.ant_maze_{version}:AntMazeEnv",
