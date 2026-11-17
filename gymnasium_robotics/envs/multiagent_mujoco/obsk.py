@@ -983,12 +983,12 @@ def get_parts_and_edges(  # noqa: C901
             aux2 = 6 + segment * 7
             ankle2 = 7 + segment * 7
 
-            off = -4 * (n_segs - 1 - segment)
+            off = 4 * (n_segs - 1 - segment)
             hip1n = Node(
                 f"hip1_{segment:d}",
                 -4 - off,
                 -4 - off,
-                2 + 4 * segment,
+                0 + 4 * segment,
                 bodies=(torso, front_right_leg),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
@@ -996,7 +996,7 @@ def get_parts_and_edges(  # noqa: C901
                 f"ankle1_{segment:d}",
                 -3 - off,
                 -3 - off,
-                3 + 4 * segment,
+                1 + 4 * segment,
                 bodies=(front_right_leg, aux1, ankle1),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
@@ -1004,7 +1004,7 @@ def get_parts_and_edges(  # noqa: C901
                 f"hip2_{segment:d}",
                 -2 - off,
                 -2 - off,
-                0 + 4 * segment,
+                2 + 4 * segment,
                 bodies=(torso, back_leg),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
@@ -1012,7 +1012,7 @@ def get_parts_and_edges(  # noqa: C901
                 f"ankle2_{segment:d}",
                 -1 - off,
                 -1 - off,
-                1 + 4 * segment,
+                3 + 4 * segment,
                 bodies=(back_leg, aux2, ankle2),
                 body_fn=lambda _id, x: np.clip(x, -1, 1).tolist(),
             )
