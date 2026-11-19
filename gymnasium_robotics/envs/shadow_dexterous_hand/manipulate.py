@@ -109,7 +109,8 @@ def get_base_manipulate_env(HandEnvClass: Union[MujocoHandEnv, MujocoPyHandEnv])
 
                 # Subtract quaternions and extract angle between them.
                 quat_diff = rotations.quat_mul(quat_a, rotations.quat_conjugate(quat_b))
-                angle_diff = 2 * np.arccos(np.clip(quat_diff[..., 0], -1.0, 1.0))
+                # q and -q are the same rotation, so use |w| to take the shorter angle
+                angle_diff = 2 * np.arccos(np.clip(np.abs(quat_diff[..., 0]), 0.0, 1.0))
                 d_rot = angle_diff
             assert d_pos.shape == d_rot.shape
             return d_pos, d_rot
