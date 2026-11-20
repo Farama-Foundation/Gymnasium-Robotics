@@ -164,3 +164,48 @@ def test_task_completion(remove_task_when_completed, terminate_on_tasks_complete
             ), "If the environment is initialized with `terminate_on_tasks_complete=False`, the episode must not terminate after all tasks are completed."
 
     env.close()
+
+
+@pytest.mark.parametrize("remove_task_when_completed", [False, True])
+def test_reward_recomputation_uses_transition_tasks(remove_task_when_completed):
+    """Recompute a transition's reward after task removal, later steps and reset."""
+    with gym.make(
+        "FrankaKitchen-v1",
+        tasks_to_complete=TASKS,
+        remove_task_when_completed=remove_task_when_completed,
+        robot_noise_ratio=0,
+        object_noise_ratio=0,
+    ) as wrapped:
+        env = wrapped.unwrapped
+        env.reset(seed=0)
+        action = np.zeros(env.action_space.shape)
+        env.data.qpos[OBS_ELEMENT_INDICES["microwave"]] = OBS_ELEMENT_GOALS["microwave"]
+        obs, reward, terminated, _, info = env.step(action)
+        assert reward == 1.0
+        assert not terminated
+        assert (
+            env.compute_reward(obs["achieved_goal"], obs["desired_goal"], info)
+            == reward
+        )
+
+        changed_goal = {task: goal + 2.0 for task, goal in obs["desired_goal"].items()}
+        assert env.compute_reward(obs["achieved_goal"], changed_goal, info) == 0.0
+
+        next_obs, next_reward, _, _, next_info = env.step(action)
+        assert next_reward == (0.0 if remove_task_when_completed else 1.0)
+        assert (
+            env.compute_reward(
+                next_obs["achieved_goal"], next_obs["desired_goal"], next_info
+            )
+            == next_reward
+        )
+        assert (
+            env.compute_reward(obs["achieved_goal"], obs["desired_goal"], info)
+            == reward
+        )
+
+        env.reset(seed=0)
+        assert (
+            env.compute_reward(obs["achieved_goal"], obs["desired_goal"], info)
+            == reward
+        )
