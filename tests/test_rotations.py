@@ -34,3 +34,9 @@ def test_quat2point_quat_identity_in_batch():
 
 def test_mat2quat_empty_rollout():
     assert rotations.mat2quat(np.empty((2, 0, 3, 3))).shape == (2, 0, 4)
+
+
+def test_unit_vector_list_into_buffer():
+    out = np.empty(3)
+    assert rotations.unit_vector([3., 4., 0.], out=out) is None
+    np.testing.assert_allclose(out, [0.6, 0.8, 0.])

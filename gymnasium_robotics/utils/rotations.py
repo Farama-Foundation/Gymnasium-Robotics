@@ -448,7 +448,7 @@ def unit_vector(data, axis=None, out=None):
             return data
     else:
         if out is not data:
-            out[:] = np.array(data, copy=False)
+            out[...] = data
         data = out
     length = np.atleast_1d(np.sum(data * data, axis))
     np.sqrt(length, length)
