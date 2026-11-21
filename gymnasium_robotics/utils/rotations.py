@@ -252,7 +252,7 @@ def quat2mat(quat):
 
     w, x, y, z = quat[..., 0], quat[..., 1], quat[..., 2], quat[..., 3]
     Nq = np.sum(quat * quat, axis=-1)
-    s = 2.0 / Nq
+    s = np.divide(2.0, Nq, out=np.zeros_like(Nq), where=Nq > _FLOAT_EPS)
     X, Y, Z = x * s, y * s, z * s
     wX, wY, wZ = w * X, w * Y, w * Z
     xX, xY, xZ = x * X, x * Y, x * Z
