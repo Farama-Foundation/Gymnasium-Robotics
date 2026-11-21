@@ -353,15 +353,12 @@ def point_euler2euler(euler):
 
 def quat2point_quat(quat):
     # Should be in qw, qx, qy, qz
-    _quat = quat.copy()
-    if len(_quat.shape) < 2:
-        _quat = np.expand_dims(_quat, 0)
-    assert _quat.shape[1] == 4
-    angle = np.arccos(_quat[:, [0]]) * 2
-    xyz = _quat[:, 1:]
-    xyz[np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5] = (xyz / np.sin(angle / 2))[
-        np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5
-    ]
+    quat = np.atleast_2d(np.asarray(quat, dtype=np.float64))
+    assert quat.shape[-1] == 4
+    angle = 2 * np.arccos(np.clip(quat[..., :1], -1, 1))
+    sin_half = np.sin(angle / 2)
+    xyz = quat[..., 1:].copy()
+    np.divide(xyz, sin_half, out=xyz, where=np.abs(sin_half) >= 1e-5)
     return np.concatenate([np.sin(angle), np.cos(angle), xyz], axis=-1)
 
 

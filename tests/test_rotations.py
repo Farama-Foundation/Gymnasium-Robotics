@@ -24,3 +24,9 @@ def test_quat2axisangle_half_turn_roundoff():
         axis, angle = rotations.quat2axisangle(q)
     np.testing.assert_allclose(axis, [1, 0, 0])
     np.testing.assert_allclose(angle, np.pi)
+
+
+def test_quat2point_quat_identity_in_batch():
+    with np.errstate(divide="raise", invalid="raise"):
+        points = rotations.quat2point_quat(np.array([[1., 0, 0, 0], [0., 0, 1, 0]]))
+    np.testing.assert_allclose(points, [[0, 1, 0, 0, 0], [0, -1, 0, 1, 0]], atol=1e-12)
