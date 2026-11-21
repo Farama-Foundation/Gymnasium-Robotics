@@ -210,7 +210,7 @@ def mat2quat(mat):
     K /= 3.0
     # TODO: vectorize this -- probably could be made faster
     q = np.empty(K.shape[:-2] + (4,))
-    it = np.nditer(q[..., 0], flags=["multi_index"])
+    it = np.nditer(q[..., 0], flags=["multi_index", "zerosize_ok"])
     while not it.finished:
         # Use Hermitian eigenvectors, values for speed
         vals, vecs = np.linalg.eigh(K[it.multi_index])
@@ -252,7 +252,7 @@ def quat2mat(quat):
 
     w, x, y, z = quat[..., 0], quat[..., 1], quat[..., 2], quat[..., 3]
     Nq = np.sum(quat * quat, axis=-1)
-    s = 2.0 / Nq
+    s = np.divide(2.0, Nq, out=np.zeros_like(Nq), where=Nq > _FLOAT_EPS)
     X, Y, Z = x * s, y * s, z * s
     wX, wY, wZ = w * X, w * Y, w * Z
     xX, xY, xZ = x * X, x * Y, x * Z
@@ -304,10 +304,14 @@ def quat_mul(q0, q1):
 
 
 def quat_rot_vec(q, v0):
-    q_v0 = np.array([0, v0[0], v0[1], v0[2]])
-    q_v = quat_mul(q, quat_mul(q_v0, quat_conjugate(q)))
-    v = q_v[1:]
-    return v
+    v0 = np.asarray(v0)
+    q = np.asarray(q)
+    assert q.shape[:-1] == v0.shape[:-1] and q.shape[-1] == 4 and v0.shape[-1] == 3
+    vectors = v0.reshape(-1, 3)
+    quats = q.reshape(-1, 4)
+    pure = np.concatenate((np.zeros_like(vectors[:, :1]), vectors), axis=-1)
+    rotated = quat_mul(quats, quat_mul(pure, quat_conjugate(quats)))
+    return rotated[:, 1:].reshape(v0.shape)
 
 
 def quat_identity():
@@ -320,7 +324,7 @@ def quat2axisangle(quat):
     sin_theta = np.linalg.norm(quat[1:])
 
     if sin_theta > 0.0001:
-        theta = 2 * np.arcsin(sin_theta)
+        theta = 2 * np.arctan2(sin_theta, abs(quat[0]))
         theta *= 1 if quat[0] >= 0 else -1
         axis = quat[1:] / sin_theta
 
@@ -349,15 +353,12 @@ def point_euler2euler(euler):
 
 def quat2point_quat(quat):
     # Should be in qw, qx, qy, qz
-    _quat = quat.copy()
-    if len(_quat.shape) < 2:
-        _quat = np.expand_dims(_quat, 0)
-    assert _quat.shape[1] == 4
-    angle = np.arccos(_quat[:, [0]]) * 2
-    xyz = _quat[:, 1:]
-    xyz[np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5] = (xyz / np.sin(angle / 2))[
-        np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5
-    ]
+    quat = np.atleast_2d(np.asarray(quat, dtype=np.float64))
+    assert quat.shape[-1] == 4
+    angle = 2 * np.arccos(np.clip(quat[..., :1], -1, 1))
+    sin_half = np.sin(angle / 2)
+    xyz = quat[..., 1:].copy()
+    np.divide(xyz, sin_half, out=xyz, where=np.abs(sin_half) >= 1e-5)
     return np.concatenate([np.sin(angle), np.cos(angle), xyz], axis=-1)
 
 
@@ -447,7 +448,7 @@ def unit_vector(data, axis=None, out=None):
             return data
     else:
         if out is not data:
-            out[:] = np.array(data, copy=False)
+            out[...] = data
         data = out
     length = np.atleast_1d(np.sum(data * data, axis))
     np.sqrt(length, length)
@@ -490,12 +491,14 @@ def quat_slerp(quat0, quat1, fraction, shortestpath=True):
     elif fraction == 1.0:
         return q1
     d = np.dot(q0, q1)
-    if abs(abs(d) - 1.0) < _EPS4:
-        return q0
     if shortestpath and d < 0.0:
         # invert rotation
         d = -d
         q1 *= -1.0
+    if d >= 1.0 - _EPS4:
+        return unit_vector((1.0 - fraction) * q0 + fraction * q1)
+    if abs(d + 1.0) < _EPS4:
+        return q0
     angle = math.acos(np.clip(d, -1, 1))
     if abs(angle) < _EPS4:
         return q0
