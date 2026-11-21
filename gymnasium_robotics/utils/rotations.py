@@ -210,7 +210,7 @@ def mat2quat(mat):
     K /= 3.0
     # TODO: vectorize this -- probably could be made faster
     q = np.empty(K.shape[:-2] + (4,))
-    it = np.nditer(q[..., 0], flags=["multi_index"])
+    it = np.nditer(q[..., 0], flags=["multi_index", "zerosize_ok"])
     while not it.finished:
         # Use Hermitian eigenvectors, values for speed
         vals, vecs = np.linalg.eigh(K[it.multi_index])

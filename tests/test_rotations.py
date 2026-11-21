@@ -30,3 +30,7 @@ def test_quat2point_quat_identity_in_batch():
     with np.errstate(divide="raise", invalid="raise"):
         points = rotations.quat2point_quat(np.array([[1., 0, 0, 0], [0., 0, 1, 0]]))
     np.testing.assert_allclose(points, [[0, 1, 0, 0, 0], [0, -1, 0, 1, 0]], atol=1e-12)
+
+
+def test_mat2quat_empty_rollout():
+    assert rotations.mat2quat(np.empty((2, 0, 3, 3))).shape == (2, 0, 4)
