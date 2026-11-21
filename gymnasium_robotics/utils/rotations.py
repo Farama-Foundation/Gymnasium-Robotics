@@ -324,7 +324,7 @@ def quat2axisangle(quat):
     sin_theta = np.linalg.norm(quat[1:])
 
     if sin_theta > 0.0001:
-        theta = 2 * np.arcsin(sin_theta)
+        theta = 2 * np.arctan2(sin_theta, abs(quat[0]))
         theta *= 1 if quat[0] >= 0 else -1
         axis = quat[1:] / sin_theta
 

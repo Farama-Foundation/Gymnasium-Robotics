@@ -16,3 +16,11 @@ def test_quat2mat_mixed_zero_and_nonzero_norms():
     with np.errstate(divide="raise", invalid="raise"):
         matrices = rotations.quat2mat([[0, 0, 0, 0], [0, 0, 0, 2]])
     np.testing.assert_array_equal(matrices, [np.eye(3), np.diag([-1, -1, 1])])
+
+
+def test_quat2axisangle_half_turn_roundoff():
+    q = np.array([0, np.nextafter(1.0, 2.0), 0, 0])
+    with np.errstate(invalid="raise"):
+        axis, angle = rotations.quat2axisangle(q)
+    np.testing.assert_allclose(axis, [1, 0, 0])
+    np.testing.assert_allclose(angle, np.pi)
