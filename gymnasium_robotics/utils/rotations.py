@@ -304,10 +304,14 @@ def quat_mul(q0, q1):
 
 
 def quat_rot_vec(q, v0):
-    q_v0 = np.array([0, v0[0], v0[1], v0[2]])
-    q_v = quat_mul(q, quat_mul(q_v0, quat_conjugate(q)))
-    v = q_v[1:]
-    return v
+    v0 = np.asarray(v0)
+    q = np.asarray(q)
+    assert q.shape[:-1] == v0.shape[:-1] and q.shape[-1] == 4 and v0.shape[-1] == 3
+    vectors = v0.reshape(-1, 3)
+    quats = q.reshape(-1, 4)
+    pure = np.concatenate((np.zeros_like(vectors[:, :1]), vectors), axis=-1)
+    rotated = quat_mul(quats, quat_mul(pure, quat_conjugate(quats)))
+    return rotated[:, 1:].reshape(v0.shape)
 
 
 def quat_identity():
