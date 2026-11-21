@@ -28,7 +28,7 @@ def test_quat2axisangle_half_turn_roundoff():
 
 def test_quat2point_quat_identity_in_batch():
     with np.errstate(divide="raise", invalid="raise"):
-        points = rotations.quat2point_quat(np.array([[1., 0, 0, 0], [0., 0, 1, 0]]))
+        points = rotations.quat2point_quat(np.array([[1.0, 0, 0, 0], [0.0, 0, 1, 0]]))
     np.testing.assert_allclose(points, [[0, 1, 0, 0, 0], [0, -1, 0, 1, 0]], atol=1e-12)
 
 
@@ -38,5 +38,15 @@ def test_mat2quat_empty_rollout():
 
 def test_unit_vector_list_into_buffer():
     out = np.empty(3)
-    assert rotations.unit_vector([3., 4., 0.], out=out) is None
-    np.testing.assert_allclose(out, [0.6, 0.8, 0.])
+    assert rotations.unit_vector([3.0, 4.0, 0.0], out=out) is None
+    np.testing.assert_allclose(out, [0.6, 0.8, 0.0])
+
+
+def test_slerp_small_rotation_midpoint():
+    angle = 1e-4
+    start = np.array([1.0, 0.0, 0.0, 0.0])
+    end = np.array([np.cos(angle), 0.0, 0.0, np.sin(angle)])
+    midpoint = rotations.quat_slerp(start, end, 0.5)
+    np.testing.assert_allclose(
+        midpoint, [np.cos(angle / 2), 0.0, 0.0, np.sin(angle / 2)], atol=1e-8
+    )
