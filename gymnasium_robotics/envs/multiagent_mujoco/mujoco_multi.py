@@ -17,6 +17,7 @@ This project is covered by the Apache 2.0 License.
 from __future__ import annotations
 
 import os
+import tempfile
 
 import gymnasium
 import numpy as np
@@ -206,16 +207,16 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             except Exception:
                 raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            asset_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "assets",
-                f"many_segment_ant_{n_segs}_segments.auto.xml",
-            )
-            many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
-            single_agent_env = gymnasium.make(
-                "Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
-            )
-            os.remove(asset_path)
+            # Write the generated model to a private temporary directory, so that
+            # several processes can create the environment at the same time.
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                asset_path = os.path.join(
+                    tmp_dir, f"many_segment_ant_{n_segs}_segments.auto.xml"
+                )
+                many_segment_ant.gen_asset(n_segs=n_segs, asset_path=asset_path)
+                single_agent_env = gymnasium.make(
+                    "Ant-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
+                )
             return single_agent_env
         elif scenario in ["ManySegmentSwimmer"]:
             try:
@@ -223,16 +224,16 @@ class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
             except Exception:
                 raise Exception(f"UNKNOWN partitioning config: {agent_conf}")
 
-            asset_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                "assets",
-                f"many_segment_swimmer_{n_segs}_segments.auto.xml",
-            )
-            many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
-            single_agent_env = gymnasium.make(
-                "Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
-            )
-            os.remove(asset_path)
+            # Write the generated model to a private temporary directory, so that
+            # several processes can create the environment at the same time.
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                asset_path = os.path.join(
+                    tmp_dir, f"many_segment_swimmer_{n_segs}_segments.auto.xml"
+                )
+                many_segment_swimmer.gen_asset(n_segs=n_segs, asset_path=asset_path)
+                single_agent_env = gymnasium.make(
+                    "Swimmer-v5", xml_file=asset_path, **kwargs, render_mode=render_mode
+                )
             return single_agent_env
         elif scenario in ["CoupledHalfCheetah"]:
             return TimeLimit(CoupledHalfCheetahEnv(render_mode), max_episode_steps=1000)
