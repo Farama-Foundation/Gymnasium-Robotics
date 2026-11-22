@@ -342,8 +342,7 @@ def point_euler2euler(euler):
     if len(_euler.shape) < 2:
         _euler = np.expand_dims(_euler, 0)
     assert _euler.shape[1] == 6
-    angle = np.arctan(_euler[..., :3] / _euler[..., 3:])
-    angle[_euler[..., 3:] < 0] += np.pi
+    angle = np.arctan2(_euler[..., :3], _euler[..., 3:])
     return angle
 
 
