@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      # Hooks still use the repository-pinned Python 3.11 interpreter.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
       - uses: actions/setup-python@v7
         with:
           python-version: "3.15"
