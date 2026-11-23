@@ -1,6 +1,7 @@
 import pickle
 
 import gymnasium as gym
+import numpy as np
 import pytest
 
 import gymnasium_robotics
@@ -26,3 +27,15 @@ def test_serialize_deserialize(environment_id):
         env1.target_position,
         env2.target_position,
     )
+
+
+def test_goal_distance_ignores_quaternion_sign():
+    env = gym.make("HandManipulateBlockRotateZ-v1").unwrapped
+    goal = np.array([0.0, 0, 0, 0, 0, 0, 1.0])  # 180 degree yaw
+    achieved = goal.copy()
+    achieved[3:] *= -1  # same orientation, opposite sign
+
+    _, d_rot = env._goal_distance(achieved, goal)
+
+    assert d_rot == pytest.approx(0.0, abs=1e-6)
+    assert env._is_success(achieved, goal) == 1.0
