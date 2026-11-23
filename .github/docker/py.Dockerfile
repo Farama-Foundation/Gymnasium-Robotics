@@ -21,14 +21,18 @@ ENV CFLAGS="-Wno-incompatible-pointer-types -Wno-implicit-function-declaration -
 
 # Build mujoco-py from source. Pypi installs wheel packages and Cython won't recompile old file versions in the Github Actions CI.
 # Thus generating the following error https://github.com/cython/cython/pull/4428
+# Legacy mujoco-py is tested on Python 3.11 and 3.12 only.
+# Newer interpreters use the maintained mujoco bindings.
 # NOTE: mujoco-py requires:
 #   - numpy<2.0 due to incompatible C API changes
 #   - setuptools for distutils (removed in Python 3.12)
-RUN pip install "numpy<2.0" setuptools \
+RUN if python -c "import sys; sys.exit(sys.version_info >= (3, 13))"; then \
+    pip install "numpy<2.0" setuptools \
     && git clone https://github.com/Kallinteris-Andreas/mujoco-py.git \
     && cd mujoco-py \
     && pip install -e . \
-    && python -c "import mujoco_py"  # Pre-compile Cython extensions
+    && python -c "import mujoco_py"; \
+    fi
 
 COPY . /usr/local/gymnasium-robotics/
 WORKDIR /usr/local/gymnasium-robotics/
