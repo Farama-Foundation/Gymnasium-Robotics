@@ -33,6 +33,7 @@ release_notes/index
 
 ```{project-logo} _static/img/robotics-text.png
 :alt: Gymnasium-Robotics Logo
+:class: farama-black-logo-invert
 ```
 
 ```{project-heading}
