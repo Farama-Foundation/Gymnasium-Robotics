@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 import gymnasium as gym
+import numpy as np
 import pytest
 
 import gymnasium_robotics
@@ -12,6 +13,45 @@ from gymnasium_robotics.envs.franka_kitchen.kitchen_env import (
 gym.register_envs(gymnasium_robotics)
 
 TASKS = ["microwave", "kettle"]
+
+
+def test_desired_goal_is_not_reused():
+    """Returned goals must be independent of internal goals and other observations."""
+    env = gym.make("FrankaKitchen-v1", tasks_to_complete=TASKS).unwrapped
+    try:
+        expected_goal = deepcopy(env.goal)
+        reset_obs, _ = env.reset(seed=123)
+        step_obs, *_ = env.step(env.action_space.sample())
+        next_reset_obs, _ = env.reset(seed=123)
+        observations = [reset_obs, step_obs, next_reset_obs]
+
+        for index, obs in enumerate(observations):
+            assert obs["desired_goal"] is not env.goal
+            for task in TASKS:
+                np.testing.assert_array_equal(
+                    obs["desired_goal"][task], expected_goal[task]
+                )
+                assert not np.shares_memory(obs["desired_goal"][task], env.goal[task])
+                for previous_obs in observations[:index]:
+                    assert obs["desired_goal"] is not previous_obs["desired_goal"]
+                    assert not np.shares_memory(
+                        obs["desired_goal"][task], previous_obs["desired_goal"][task]
+                    )
+
+        for goal in reset_obs["desired_goal"].values():
+            goal[:] += 1
+        reset_obs["desired_goal"].clear()
+
+        for task in TASKS:
+            np.testing.assert_array_equal(env.goal[task], expected_goal[task])
+            np.testing.assert_array_equal(
+                step_obs["desired_goal"][task], expected_goal[task]
+            )
+            np.testing.assert_array_equal(
+                next_reset_obs["desired_goal"][task], expected_goal[task]
+            )
+    finally:
+        env.close()
 
 
 @pytest.mark.parametrize(
