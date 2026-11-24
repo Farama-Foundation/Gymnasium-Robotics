@@ -57,7 +57,7 @@ _MUJOCO_GYM_ENVIROMENTS = [
 class MultiAgentMujocoEnv(pettingzoo.utils.env.ParallelEnv):
     """Class for multi agent factorizing mujoco environments.
 
-    Doc can be found at (https://robotics.farama.org/envs/mamujoco/)
+    Doc can be found at (https://robotics.farama.org/envs/MaMuJoCo/)
     """
 
     metadata = {

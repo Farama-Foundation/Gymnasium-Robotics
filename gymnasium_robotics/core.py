@@ -71,7 +71,7 @@ class GoalEnv(gym.Env):
         and compute it accordingly. The envirtonment reaches a termination state when this state leads to an episode ending in an episodic
         task thus breaking .
 
-        More information can be found in: https://farama.org/New-Step-API#theory
+        More information can be found in: https://farama.org/Gymnasium-Terminated-Truncated-Step-API
 
         Termination states are
 
@@ -97,7 +97,7 @@ class GoalEnv(gym.Env):
         and compute it accordingly. Truncated states are those that are out of the scope of the Markov Decision Process (MDP) such
         as time constraints in a continuing task.
 
-        More information can be found in: https://farama.org/New-Step-API#theory
+        More information can be found in: https://farama.org/Gymnasium-Terminated-Truncated-Step-API
 
         Args:
             achieved_goal (object): the goal that was achieved during execution
