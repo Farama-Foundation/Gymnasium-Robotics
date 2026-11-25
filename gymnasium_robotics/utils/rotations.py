@@ -355,9 +355,9 @@ def quat2point_quat(quat):
     assert _quat.shape[1] == 4
     angle = np.arccos(_quat[:, [0]]) * 2
     xyz = _quat[:, 1:]
-    xyz[np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5] = (xyz / np.sin(angle / 2))[
-        np.squeeze(np.abs(np.sin(angle / 2))) >= 1e-5
-    ]
+    sin_half_angle = np.sin(angle / 2)
+    nonzero_angle = np.squeeze(np.abs(sin_half_angle)) >= 1e-5
+    xyz[nonzero_angle] /= sin_half_angle[nonzero_angle]
     return np.concatenate([np.sin(angle), np.cos(angle), xyz], axis=-1)
 
 
@@ -366,7 +366,7 @@ def point_quat2quat(quat):
     if len(_quat.shape) < 2:
         _quat = np.expand_dims(_quat, 0)
     assert _quat.shape[1] == 5
-    angle = np.arctan(_quat[:, [0]] / _quat[:, [1]])
+    angle = np.arctan2(_quat[:, [0]], _quat[:, [1]])
     qw = np.cos(angle / 2)
 
     qxyz = _quat[:, 2:]
